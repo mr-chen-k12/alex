@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice Quiz</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #0056b3;
+        }
+        h2 {
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            color: #444;
+        }
+        .question-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .option-btn {
+            background-color: #e7f3ff;
+            border: 1px solid #b6d4fe;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1em;
+            transition: all 0.2s;
+        }
+        .option-btn:hover {
+            background-color: #d0e8ff;
+        }
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            font-weight: bold;
+        }
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .correct-btn {
+            background-color: #28a745 !important;
+            color: white !important;
+            border-color: #28a745 !important;
+        }
+        .incorrect-btn {
+            background-color: #dc3545 !important;
+            color: white !important;
+            border-color: #dc3545 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Math Practice Review</h1>
+    <p style="text-align: center;">Click an answer to see if you are correct.</p>
+
+    <h2>Topic: Decimals & Order of Operations (Like #15)</h2>
+    
+    <div class="question-card" id="q1">
+        <div class="question-text">1. Solve: \(1 - (0.3 + 0.45)\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q1', this, false)">0.35</button>
+            <button class="option-btn" onclick="checkAnswer('q1', this, true)">0.25</button>
+            <button class="option-btn" onclick="checkAnswer('q1', this, false)">0.15</button>
+            <button class="option-btn" onclick="checkAnswer('q1', this, false)">1.75</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q2">
+        <div class="question-text">2. Solve: \(1 - (0.2 + 0.05)\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q2', this, false)">0.85</button>
+            <button class="option-btn" onclick="checkAnswer('q2', this, false)">0.65</button>
+            <button class="option-btn" onclick="checkAnswer('q2', this, true)">0.75</button>
+            <button class="option-btn" onclick="checkAnswer('q2', this, false)">0.25</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q3">
+        <div class="question-text">3. Solve: \(1 - (0.12 + 0.4)\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q3', this, true)">0.48</button>
+            <button class="option-btn" onclick="checkAnswer('q3', this, false)">0.52</button>
+            <button class="option-btn" onclick="checkAnswer('q3', this, false)">0.38</button>
+            <button class="option-btn" onclick="checkAnswer('q3', this, false)">0.42</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q4">
+        <div class="question-text">4. Solve: \(1 - (0.6 + 0.15)\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q4', this, false)">0.35</button>
+            <button class="option-btn" onclick="checkAnswer('q4', this, false)">0.15</button>
+            <button class="option-btn" onclick="checkAnswer('q4', this, true)">0.25</button>
+            <button class="option-btn" onclick="checkAnswer('q4', this, false)">0.45</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q5">
+        <div class="question-text">5. Solve: \(1 - (0.05 + 0.8)\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q5', this, false)">0.25</button>
+            <button class="option-btn" onclick="checkAnswer('q5', this, false)">0.05</button>
+            <button class="option-btn" onclick="checkAnswer('q5', this, false)">0.10</button>
+            <button class="option-btn" onclick="checkAnswer('q5', this, true)">0.15</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <h2>Topic: Sales Tax & Total Cost (Like #16)</h2>
+
+    <div class="question-card" id="q6">
+        <div class="question-text">6. What is the total cost of 10 notebooks priced at $2.00 each if 5% sales tax is added?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q6', this, false)">$20.50</button>
+            <button class="option-btn" onclick="checkAnswer('q6', this, true)">$21.00</button>
+            <button class="option-btn" onclick="checkAnswer('q6', this, false)">$22.00</button>
+            <button class="option-btn" onclick="checkAnswer('q6', this, false)">$20.10</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q7">
+        <div class="question-text">7. Calculate the total cost of 5 pens at $4.00 each with 10% sales tax added.</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q7', this, false)">$20.00</button>
+            <button class="option-btn" onclick="checkAnswer('q7', this, false)">$21.00</button>
+            <button class="option-btn" onclick="checkAnswer('q7', this, true)">$22.00</button>
+            <button class="option-btn" onclick="checkAnswer('q7', this, false)">$24.00</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q8">
+        <div class="question-text">8. What is the total cost of one dozen erasers priced at $0.50 each with 6% sales tax?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q8', this, true)">$6.36</button>
+            <button class="option-btn" onclick="checkAnswer('q8', this, false)">$6.06</button>
+            <button class="option-btn" onclick="checkAnswer('q8', this, false)">$6.60</button>
+            <button class="option-btn" onclick="checkAnswer('q8', this, false)">$7.00</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q9">
+        <div class="question-text">9. What is the total cost of 20 stickers priced at $1.50 each if 4% sales tax is added?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q9', this, false)">$30.40</button>
+            <button class="option-btn" onclick="checkAnswer('q9', this, false)">$34.00</button>
+            <button class="option-btn" onclick="checkAnswer('q9', this, true)">$31.20</button>
+            <button class="option-btn" onclick="checkAnswer('q9', this, false)">$31.00</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q10">
+        <div class="question-text">10. Calculate the total cost of 4 toy cars at $5.00 each with 8% sales tax.</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q10', this, false)">$20.80</button>
+            <button class="option-btn" onclick="checkAnswer('q10', this, true)">$21.60</button>
+            <button class="option-btn" onclick="checkAnswer('q10', this, false)">$22.00</button>
+            <button class="option-btn" onclick="checkAnswer('q10', this, false)">$21.08</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <h2>Topic: Division of Currency (Like #17)</h2>
+
+    <div class="question-card" id="q11">
+        <div class="question-text">11. How many quarters are in $15.00?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q11', this, false)">40</button>
+            <button class="option-btn" onclick="checkAnswer('q11', this, true)">60</button>
+            <button class="option-btn" onclick="checkAnswer('q11', this, false)">50</button>
+            <button class="option-btn" onclick="checkAnswer('q11', this, false)">45</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q12">
+        <div class="question-text">12. How many dimes (10¢) are in $5.00?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q12', this, false)">20</button>
+            <button class="option-btn" onclick="checkAnswer('q12', this, false)">100</button>
+            <button class="option-btn" onclick="checkAnswer('q12', this, true)">50</button>
+            <button class="option-btn" onclick="checkAnswer('q12', this, false)">40</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q13">
+        <div class="question-text">13. How many nickels (5¢) are in $2.00?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q13', this, true)">40</button>
+            <button class="option-btn" onclick="checkAnswer('q13', this, false)">20</button>
+            <button class="option-btn" onclick="checkAnswer('q13', this, false)">10</button>
+            <button class="option-btn" onclick="checkAnswer('q13', this, false)">100</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q14">
+        <div class="question-text">14. How many quarters are in $35.00?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q14', this, false)">120</button>
+            <button class="option-btn" onclick="checkAnswer('q14', this, true)">140</button>
+            <button class="option-btn" onclick="checkAnswer('q14', this, false)">100</button>
+            <button class="option-btn" onclick="checkAnswer('q14', this, false)">135</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q15">
+        <div class="question-text">15. How many pennies (1¢) are in $1.25?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q15', this, false)">100</button>
+            <button class="option-btn" onclick="checkAnswer('q15', this, false)">25</button>
+            <button class="option-btn" onclick="checkAnswer('q15', this, true)">125</button>
+            <button class="option-btn" onclick="checkAnswer('q15', this, false)">150</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <h2>Topic: Reducing Fractions (Like #27)</h2>
+
+    <div class="question-card" id="q16">
+        <div class="question-text">16. Reduce: \(\frac{2 \cdot 2 \cdot 3 \cdot 5}{2 \cdot 3 \cdot 5 \cdot 5}\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q16', this, true)">\(\frac{2}{5}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q16', this, false)">\(\frac{3}{5}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q16', this, false)">\(\frac{1}{2}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q16', this, false)">\(\frac{4}{5}\)</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q17">
+        <div class="question-text">17. Reduce: \(\frac{3 \cdot 5 \cdot 5}{2 \cdot 3 \cdot 5}\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q17', this, false)">\(\frac{3}{2}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q17', this, true)">\(\frac{5}{2}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q17', this, false)">\(\frac{1}{2}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q17', this, false)">\(\frac{5}{3}\)</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q18">
+        <div class="question-text">18. Reduce: \(\frac{2 \cdot 2 \cdot 2 \cdot 7}{2 \cdot 2 \cdot 7 \cdot 7}\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q18', this, false)">\(\frac{1}{7}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q18', this, false)">\(\frac{4}{7}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q18', this, true)">\(\frac{2}{7}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q18', this, false)">\(\frac{2}{3}\)</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q19">
+        <div class="question-text">19. Reduce: \(\frac{5 \cdot 5 \cdot 3}{5 \cdot 3 \cdot 2}\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q19', this, false)">\(\frac{3}{2}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q19', this, true)">\(\frac{5}{2}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q19', this, false)">\(\frac{5}{3}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q19', this, false)">\(\frac{2}{5}\)</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <div class="question-card" id="q20">
+        <div class="question-text">20. Reduce: \(\frac{2 \cdot 3 \cdot 3}{2 \cdot 2 \cdot 3}\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q20', this, false)">\(\frac{2}{3}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q20', this, false)">\(\frac{1}{2}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q20', this, false)">\(\frac{1}{3}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q20', this, true)">\(\frac{3}{2}\)</button>
+        </div>
+        <div class="feedback"></div>
+    </div>
+
+    <script>
+        function checkAnswer(questionId, btnElement, isCorrect) {
+            const card = document.getElementById(questionId);
+            const feedback = card.querySelector('.feedback');
+            const allButtons = card.querySelectorAll('.option-btn');
+            
+            // Disable all buttons to prevent multiple clicks
+            allButtons.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                btnElement.classList.add('correct-btn');
+                feedback.textContent = "Correct! Great job.";
+                feedback.className = "feedback correct";
+                feedback.style.display = "block";
+            } else {
+                btnElement.classList.add('incorrect-btn');
+                feedback.textContent = "Incorrect. Try calculating again.";
+                feedback.className = "feedback incorrect";
+                feedback.style.display = "block";
+                
+                // Highlight the correct answer
+                allButtons.forEach(btn => {
+                    if (btn.onclick.toString().includes("true")) {
+                        btn.classList.add('correct-btn');
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
