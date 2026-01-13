@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice: Road to Lit</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- Header & Scoreboard Area --- */
+        .header-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin: 0 0 20px 0;
+            font-size: 2em;
+        }
+
+        .scoreboard {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #8e44ad;
+            margin-bottom: 15px;
+        }
+
+        /* --- Canvas Container --- */
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            overflow-x: auto;
+        }
+
+        canvas {
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        /* --- Question Cards --- */
+        .question-card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-left: 6px solid #3498db;
+            transition: transform 0.2s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option-btn {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1.05em;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: #e2e6ea;
+            border-color: #adb5bd;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        /* --- Feedback States --- */
+        .correct-btn {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724 !important;
+        }
+
+        .incorrect-btn {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24 !important;
+        }
+
+        .feedback-msg {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>Math Mastery: Road to Lit</h1>
+        <div class="scoreboard">Points: <span id="score">0</span> / <span id="total-possible">0</span></div>
+        
+        <div class="canvas-container">
+            <canvas id="gaugeCanvas" width="600" height="100"></canvas>
+        </div>
+        <p style="font-size: 0.9em; color: #666;">Answer correctly to move the needle!</p>
+    </div>
+
+    <div id="quiz-container">
+        </div>
+
+    <script>
+        // --- 1. Question Data (Based on uploaded files content) ---
+        const questions = [
+            {
+                id: 1,
+                text: "Solve for $x$: $$\\frac{3}{2}x = 12$$",
+                options: [
+                    { text: "$8$", isCorrect: true },
+                    { text: "$18$", isCorrect: false },
+                    { text: "$6$", isCorrect: false },
+                    { text: "$24$", isCorrect: false }
+                ],
+                explanation: "Multiply both sides by the reciprocal (2/3). $12 \\times \\frac{2}{3} = 8$."
+            },
+            {
+                id: 2,
+                text: "Calculate: $$80 \\div 4$$",
+                options: [
+                    { text: "$25$", isCorrect: false },
+                    { text: "$20$", isCorrect: true },
+                    { text: "$40$", isCorrect: false },
+                    { text: "$15$", isCorrect: false }
+                ],
+                explanation: "80 divided by 4 is 20."
+            },
+            {
+                id: 3,
+                text: "Find $75\\%$ of $40$.",
+                options: [
+                    { text: "$35$", isCorrect: false },
+                    { text: "$25$", isCorrect: false },
+                    { text: "$30$", isCorrect: true },
+                    { text: "$20$", isCorrect: false }
+                ],
+                explanation: "$25\\%$ of $40$ is $10$. So $75\\%$ ($3 \\times 25\\%$) is $30$."
+            },
+            {
+                id: 4,
+                text: "Calculate tax on a $10.00$ item if the tax rate is $0.06$ ($6\\%$).",
+                options: [
+                    { text: "$$0.60$", isCorrect: true },
+                    { text: "$$6.00$", isCorrect: false },
+                    { text: "$$1.60$", isCorrect: false },
+                    { text: "$$0.06$", isCorrect: false }
+                ],
+                explanation: "$10.00 \\times 0.06 = 0.60$."
+            },
+            {
+                id: 5,
+                text: "Which value is equivalent to $\\frac{1}{4}$?",
+                options: [
+                    { text: "$0.4$", isCorrect: false },
+                    { text: "$20\\%$", isCorrect: false },
+                    { text: "$0.25$", isCorrect: true },
+                    { text: "$40\\%$", isCorrect: false }
+                ],
+                explanation: "1 divided by 4 is 0.25."
+            }
+        ];
+
+        // --- 2. State Management ---
+        let currentScore = 0;
+        const totalQuestions = questions.length;
+        const pointsPerQuestion = 10;
+        const maxScore = totalQuestions * pointsPerQuestion;
+        
+        // Initialize HTML Text
+        document.getElementById('total-possible').textContent = maxScore;
+
+        // --- 3. Render Questions ---
+        const quizContainer = document.getElementById('quiz-container');
+
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            // Create Options HTML
+            let optionsHtml = '';
+            q.options.forEach((opt, optIndex) => {
+                // We use replace to handle quotes in math strings safely if needed
+                optionsHtml += `<button class="option-btn" onclick="checkAnswer(this, ${q.id}, ${opt.isCorrect}, ${optIndex})">${opt.text}</button>`;
+            });
+
+            card.innerHTML = `
+                <div class="question-text">${index + 1}. ${q.text}</div>
+                <div class="options-grid" id="options-${q.id}">
+                    ${optionsHtml}
+                </div>
+                <div class="feedback-msg" id="feedback-${q.id}"></div>
+            `;
+            quizContainer.appendChild(card);
+        });
+
+        // --- 4. Logic & Interaction ---
+        function checkAnswer(btn, questionId, isCorrect, optIndex) {
+            const optionsDiv = document.getElementById(`options-${questionId}`);
+            const buttons = optionsDiv.querySelectorAll('.option-btn');
+            const feedbackDiv = document.getElementById(`feedback-${questionId}`);
+
+            // Disable all buttons for this question
+            buttons.forEach(b => b.disabled = true);
+
+            if (isCorrect) {
+                btn.classList.add('correct-btn');
+                feedbackDiv.textContent = "Correct! Great job.";
+                feedbackDiv.style.color = "#155724";
+                feedbackDiv.style.backgroundColor = "#d4edda";
+                feedbackDiv.style.display = "block";
+                
+                // Update Score
+                currentScore += pointsPerQuestion;
+                document.getElementById('score').textContent = currentScore;
+            } else {
+                btn.classList.add('incorrect-btn');
+                feedbackDiv.textContent = "Incorrect.";
+                feedbackDiv.style.color = "#721c24";
+                feedbackDiv.style.backgroundColor = "#f8d7da";
+                feedbackDiv.style.display = "block";
+
+                // Highlight the correct one
+                // We need to find which button was correct based on data or DOM
+                // Simple way: check the onclick attribute or re-reference data. 
+                // Here we simply loop through the generated buttons since we know the order matches.
+                const questionData = questions.find(q => q.id === questionId);
+                questionData.options.forEach((opt, idx) => {
+                    if(opt.isCorrect) {
+                        buttons[idx].classList.add('correct-btn');
+                    }
+                });
+            }
+
+            // Animate Gauge
+            drawGauge();
+        }
+
+        // --- 5. Canvas Gauge (The "Lit Status" Bar) ---
+        const canvas = document.getElementById('gaugeCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function drawGauge() {
+            const w = canvas.width;
+            const h = canvas.height;
+            const barHeight = 30;
+            const barY = h - barHeight - 10;
+            const padding = 40;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, w, h);
+
+            // 1. Draw Gradient Bar
+            // Gradient from Orange (Trying) to Purple/Blue (Lit)
+            const grd = ctx.createLinearGradient(padding, 0, w - padding, 0);
+            grd.addColorStop(0, "#f39c12"); // Trying
+            grd.addColorStop(0.5, "#3498db"); // Working
+            grd.addColorStop(1, "#9b59b6"); // Lit Status
+
+            ctx.fillStyle = grd;
+            ctx.beginPath();
+            ctx.roundRect(padding, barY, w - (padding * 2), barHeight, 15);
+            ctx.fill();
+
+            // 2. Draw Labels
+            ctx.fillStyle = "#555";
+            ctx.font = "bold 14px Segoe UI";
+            ctx.textAlign = "center";
+            
+            ctx.fillText("TRYING", padding + 10, barY + 20);
+            ctx.fillText("LIT STATUS", w - padding - 20, barY + 20);
+
+            // 3. Draw Triangle Pointer
+            // Calculate position based on score percentage
+            const percentage = currentScore / maxScore;
+            // Constrain position between start and end of bar
+            const barWidth = w - (padding * 2);
+            const startX = padding;
+            const currentX = startX + (barWidth * percentage);
+
+            ctx.fillStyle = "#2c3e50";
+            ctx.beginPath();
+            // Triangle pointing down to the bar
+            ctx.moveTo(currentX, barY - 5);      // Tip (touching bar)
+            ctx.lineTo(currentX - 10, barY - 25); // Top Left
+            ctx.lineTo(currentX + 10, barY - 25); // Top Right
+            ctx.closePath();
+            ctx.fill();
+
+            // Score Text above triangle
+            ctx.fillStyle = "#2c3e50";
+            ctx.font = "bold 12px Segoe UI";
+            ctx.fillText(Math.round(percentage * 100) + "%", currentX, barY - 30);
+        }
+
+        // Initial Draw
+        drawGauge();
+
+    </script>
+</body>
+</html>
