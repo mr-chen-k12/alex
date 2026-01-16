@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Mastery Quiz</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --success: #2ECC71;
+            --warning: #F1C40F;
+            --danger: #E74C3C;
+            --lit: #9b59b6; /* Purple for Lit */
+            --bg: #f5f7fa;
+            --card: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        /* SCOREBOARD HEADER */
+        .scoreboard {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .percentage-display {
+            font-size: 2em;
+            color: var(--primary);
+        }
+
+        /* CUSTOM SCORE BAR */
+        .bar-container {
+            position: relative;
+            height: 60px;
+            margin-top: 10px;
+        }
+
+        .gradient-bar {
+            height: 15px;
+            width: 100%;
+            background: linear-gradient(90deg, var(--danger) 0%, var(--warning) 50%, var(--lit) 100%);
+            border-radius: 10px;
+            position: relative;
+            top: 25px;
+        }
+
+        .labels {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #7f8c8d;
+        }
+
+        .triangle-pointer {
+            width: 0; 
+            height: 0; 
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 15px solid #34495e;
+            position: absolute;
+            top: 45px; /* Below the bar */
+            left: 0%; /* Dynamic */
+            transform: translateX(-50%); /* Center the point */
+            transition: left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* QUIZ CARDS */
+        .question-card {
+            background: var(--card);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .q-text {
+            font-size: 1.15em;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .option-btn {
+            background: #ecf0f1;
+            border: 2px solid transparent;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1em;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            background: #dfe6e9;
+        }
+
+        /* States for answers */
+        .option-btn.correct {
+            background-color: #d5f5e3;
+            border-color: var(--success);
+            color: #196f3d;
+        }
+
+        .option-btn.incorrect {
+            background-color: #fadbd8;
+            border-color: var(--danger);
+            color: #922b21;
+        }
+
+        .option-btn.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="scoreboard">
+        <div class="stats-row">
+            <span>Progress: <span id="progress">0</span>/15</span>
+            <span class="percentage-display" id="percent">0%</span>
+        </div>
+        
+        <div class="bar-container">
+            <div class="labels">
+                <span style="flex:1; text-align:left;">Trying...</span>
+                <span style="flex:1; text-align:center;">Good Work</span>
+                <span style="flex:1; text-align:right;">LIT 🔥</span>
+            </div>
+            <div class="gradient-bar"></div>
+            <div class="triangle-pointer" id="pointer"></div>
+        </div>
+    </div>
+
+    <div id="quiz-container">
+        </div>
+
+</div>
+
+<script>
+    // Question Database
+    const questions = [
+        // Topic 1: Difference of Sum and Product
+        {
+            id: 1,
+            tex: "What is the difference between the sum of \\(\\frac{1}{2}\\) and \\(\\frac{1}{3}\\) and their product?",
+            options: ["\\(\\frac{1}{3}\\)", "\\(\\frac{2}{3}\\)", "\\(\\frac{1}{6}\\)", "\\(\\frac{5}{6}\\)"],
+            correctIndex: 1, // 2/3
+            explanation: "Sum = 5/6, Product = 1/6. Diff = 5/6 - 1/6 = 4/6 = 2/3."
+        },
+        {
+            id: 2,
+            tex: "Find the difference: \\((\\frac{1}{4} + \\frac{1}{2}) - (\\frac{1}{4} \\times \\frac{1}{2})\\)",
+            options: ["\\(\\frac{5}{8}\\)", "\\(\\frac{3}{8}\\)", "\\(\\frac{1}{2}\\)", "\\(\\frac{3}{4}\\)"],
+            correctIndex: 0, // 5/8
+            explanation: "Sum = 3/4 (6/8). Product = 1/8. Diff = 6/8 - 1/8 = 5/8."
+        },
+
+        // Topic 2: Division of Mixed Numbers
+        {
+            id: 3,
+            tex: "Calculate: \\(1\\frac{1}{2} \\div 1\\frac{1}{2}\\)",
+            options: ["\\(1\\)", "\\(2\\frac{1}{4}\\)", "\\(0\\)", "\\(1\\frac{1}{2}\\)"],
+            correctIndex: 0, // 1
+            explanation: "Any number divided by itself is 1."
+        },
+        {
+            id: 4,
+            tex: "Calculate: \\(2\\frac{2}{3} \\div 1\\frac{1}{3}\\)",
+            options: ["\\(2\\)", "\\(3\\)", "\\(1\\frac{1}{2}\\)", "\\(2\\frac{1}{3}\\)"],
+            correctIndex: 0, // 2
+            explanation: "8/3 divided by 4/3 equals 2."
+        },
+        {
+            id: 5,
+            tex: "Calculate: \\(3\\frac{1}{3} \\div 10\\)",
+            options: ["\\(\\frac{1}{3}\\)", "\\(3\\)", "\\(\\frac{3}{10}\\)", "\\(\\frac{1}{2}\\)"],
+            correctIndex: 0, // 1/3
+            explanation: "10/3 * 1/10 = 10/30 = 1/3."
+        },
+
+        // Topic 3: Equations with Mixed Numbers
+        {
+            id: 6,
+            tex: "Find \\(x\\): \\(x - 2\\frac{1}{2} = 1\\frac{1}{4}\\)",
+            options: ["\\(3\\frac{3}{4}\\)", "\\(3\\frac{1}{2}\\)", "\\(1\\frac{1}{4}\\)", "\\(4\\)"],
+            correctIndex: 0, // 3 3/4
+            explanation: "Add 2 1/2 to both sides. 1 1/4 + 2 2/4 = 3 3/4."
+        },
+        {
+            id: 7,
+            tex: "Find \\(m\\): \\(m - 5\\frac{1}{8} = 2\\frac{1}{4}\\)",
+            options: ["\\(7\\frac{3}{8}\\)", "\\(7\\frac{1}{8}\\)", "\\(3\\frac{1}{8}\\)", "\\(7\\frac{1}{4}\\)"],
+            correctIndex: 0, // 7 3/8
+            explanation: "2 2/8 + 5 1/8 = 7 3/8."
+        },
+        {
+            id: 8,
+            tex: "Find \\(y\\): \\(y - 1\\frac{2}{3} = 3\\frac{1}{3}\\)",
+            options: ["\\(5\\)", "\\(4\\frac{2}{3}\\)", "\\(5\\frac{1}{3}\\)", "\\(2\\)"],
+            correctIndex: 0, // 5
+            explanation: "1 2/3 + 3 1/3 = 4 3/3 = 5."
+        },
+
+        // Topic 4: Decimal Equations
+        {
+            id: 9,
+            tex: "Solve for \\(d\\): \\(20d = 0.5\\)",
+            options: ["\\(0.025\\)", "\\(2.5\\)", "\\(0.25\\)", "\\(0.005\\)"],
+            correctIndex: 0, // 0.025
+            explanation: "0.5 / 20 = 5 / 200 = 1/40 = 0.025."
+        },
+        {
+            id: 10,
+            tex: "Solve for \\(z\\): \\(0.1z = 3\\)",
+            options: ["\\(30\\)", "\\(0.3\\)", "\\(300\\)", "\\(3\\)"],
+            correctIndex: 0, // 30
+            explanation: "3 divided by 0.1 is 30."
+        },
+
+        // Topic 5: Square Perimeter/Area
+        {
+            id: 11,
+            tex: "The perimeter of a square is 20m. What is the area?",
+            options: ["\\(25 m^2\\)", "\\(20 m^2\\)", "\\(16 m^2\\)", "\\(100 m^2\\)"],
+            correctIndex: 0, // 25
+            explanation: "Side = 20/4 = 5. Area = 5*5 = 25."
+        },
+        {
+            id: 12,
+            tex: "The perimeter of a square is 2.4 ft. What is the length of one side?",
+            options: ["\\(0.6 ft\\)", "\\(0.4 ft\\)", "\\(1.2 ft\\)", "\\(0.8 ft\\)"],
+            correctIndex: 0, // 0.6
+            explanation: "2.4 divided by 4 sides = 0.6."
+        },
+
+        // Topic 6: Elapsed Time
+        {
+            id: 13,
+            tex: "Sunrise is at 6:00 AM and sunset is at 6:30 PM. How long is the day?",
+            options: ["12 hrs 30 mins", "12 hrs", "13 hrs", "11 hrs 30 mins"],
+            correctIndex: 0, // 12h 30m
+            explanation: "6am to 6pm is 12h. Add 30 mins."
+        },
+        {
+            id: 14,
+            tex: "A movie starts at 2:15 PM and ends at 4:45 PM. Duration?",
+            options: ["2 hrs 30 mins", "2 hrs 15 mins", "2 hrs 45 mins", "1 hr 30 mins"],
+            correctIndex: 0, // 2h 30m
+            explanation: "2:15 to 4:15 is 2h. 4:15 to 4:45 is 30m."
+        },
+        {
+            id: 15,
+            tex: "School starts at 8:10 AM and ends at 3:10 PM. Duration?",
+            options: ["7 hours", "6 hours", "8 hours", "7 hours 10 mins"],
+            correctIndex: 0, // 7 hours
+            explanation: "Exact 7 hour difference."
+        }
+    ];
+
+    let score = 0;
+    let answeredCount = 0;
+    const totalQuestions = questions.length;
+
+    function renderQuiz() {
+        const container = document.getElementById('quiz-container');
+        
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            // Create options HTML
+            let optionsHtml = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHtml += `<button class="option-btn" onclick="checkAnswer(this, ${index}, ${optIndex}, ${q.correctIndex})">
+                    ${opt}
+                </button>`;
+            });
+
+            card.innerHTML = `
+                <div class="q-text"><strong>Q${index + 1}:</strong> ${q.tex}</div>
+                <div class="options-grid" id="options-${index}">
+                    ${optionsHtml}
+                </div>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            
+            container.appendChild(card);
+        });
+
+        // Trigger MathJax typeset
+        MathJax.typeset();
+    }
+
+    function checkAnswer(btn, qIndex, selectedIndex, correctIndex) {
+        const optionsDiv = document.getElementById(`options-${qIndex}`);
+        const buttons = optionsDiv.getElementsByClassName('option-btn');
+        const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+
+        // Disable all buttons in this card
+        for (let b of buttons) {
+            b.classList.add('disabled');
+        }
+
+        answeredCount++;
+
+        if (selectedIndex === correctIndex) {
+            // Correct
+            score++;
+            btn.classList.add('correct');
+            feedbackDiv.style.display = 'block';
+            feedbackDiv.style.backgroundColor = '#d5f5e3';
+            feedbackDiv.style.color = '#196f3d';
+            feedbackDiv.innerHTML = "✅ Correct! " + questions[qIndex].explanation;
+        } else {
+            // Incorrect
+            btn.classList.add('incorrect');
+            // Highlight correct one
+            buttons[correctIndex].classList.add('correct');
+            feedbackDiv.style.display = 'block';
+            feedbackDiv.style.backgroundColor = '#fadbd8';
+            feedbackDiv.style.color = '#922b21';
+            feedbackDiv.innerHTML = "❌ incorrect. " + questions[qIndex].explanation;
+        }
+
+        updateScoreboard();
+    }
+
+    function updateScoreboard() {
+        // Calculate Percentage
+        // We calculate percentage based on answered questions to show current performance?
+        // Or based on total? User said "percentage done" usually implies progress, 
+        // but "score bar" implies accuracy. Let's do Accuracy % for the bar, and Progress text.
+        
+        // Let's interpret "Percentage Done" as Score Percentage.
+        let percent = 0;
+        if (answeredCount > 0) {
+            percent = Math.round((score / totalQuestions) * 100); 
+            // Note: If you want percentage of questions ANSWERED correctly so far (e.g. 1/1 = 100%), change denominator to answeredCount.
+            // But usually for a "Test", it's Score/Total. Let's do Score / Total to make it fill up.
+            // Actually, for the "Lit" meter, it feels better if it tracks current accuracy or total accumulation.
+            // Let's do accumulation: (score / 15) * 100.
+        }
+
+        document.getElementById('progress').innerText = answeredCount;
+        document.getElementById('percent').innerText = percent + "%";
+
+        // Update Pointer Position
+        // Map percent (0-100) to left (0% - 100%)
+        const pointer = document.getElementById('pointer');
+        pointer.style.left = percent + "%";
+
+        // Optional: Change pointer color based on tier
+        if (percent < 50) {
+            pointer.style.borderBottomColor = "#f1c40f"; // Trying (Yellow)
+        } else if (percent < 80) {
+            pointer.style.borderBottomColor = "#2ecc71"; // Good (Green)
+        } else {
+            pointer.style.borderBottomColor = "#9b59b6"; // Lit (Purple)
+        }
+    }
+
+    // Initialize
+    window.onload = renderQuiz;
+
+</script>
+
+</body>
+</html>
