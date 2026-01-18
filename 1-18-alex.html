@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 67 Practice Test</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+        }
+
+        .problem-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            border-left: 5px solid #3498db;
+        }
+
+        .problem-header {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #2980b9;
+        }
+
+        .problem-text {
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+
+        .toggle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: background 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .solution-area {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f6f3;
+            border-radius: 5px;
+            border: 1px solid #d4efdf;
+        }
+
+        .solution-step {
+            margin-bottom: 8px;
+        }
+
+        .final-answer {
+            font-weight: bold;
+            color: #27ae60;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #ccc;
+        }
+
+        canvas, svg {
+            display: block;
+            margin: 10px auto;
+            background: #fff;
+            border: 1px solid #eee;
+        }
+    </style>
+
+    <script>
+        function toggleSolution(id) {
+            const sol = document.getElementById('sol-' + id);
+            const btn = document.getElementById('btn-' + id);
+            
+            if (sol.style.display === 'block') {
+                sol.style.display = 'none';
+                btn.textContent = 'Review Answer';
+                btn.style.backgroundColor = '#3498db';
+            } else {
+                sol.style.display = 'block';
+                btn.textContent = 'Hide Answer';
+                btn.style.backgroundColor = '#e74c3c';
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Saxon Math Course 1 - Practice Test</h1>
+    <p class="subtitle">Based on Lesson 67 Concepts • Sequential Practice 1–30</p>
+
+    <div class="problem-card">
+        <div class="problem-header">1. Word Problem: Fractions & Cost</div>
+        <div class="problem-text">
+            Marcus is building a birdhouse. He needs \(3\) feet of oak, \(\frac{1}{2}\) foot of pine, and \(\frac{1}{4}\) foot of cedar. The wood costs $4.00 per foot. How much will the wood cost in total?
+        </div>
+        <button id="btn-1" class="toggle-btn" onclick="toggleSolution(1)">Review Answer</button>
+        <div id="sol-1" class="solution-area">
+            <div class="solution-step"><strong>Step 1:</strong> Find the total length of wood needed.</div>
+            $$ 3 + \frac{1}{2} + \frac{1}{4} = 3 + 0.5 + 0.25 = 3.75 \text{ feet} $$
+            <div class="solution-step"><strong>Step 2:</strong> Multiply the total length by the cost per foot.</div>
+            $$ 3.75 \times \$4.00 = \$15.00 $$
+            <div class="final-answer">Answer: $15.00</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">2. Estimation</div>
+        <div class="problem-text">
+            A standard ton is 2,000 pounds. A metric ton is approximately 2,205 pounds. About how many more pounds is a metric ton than a standard ton?
+        </div>
+        <button id="btn-2" class="toggle-btn" onclick="toggleSolution(2)">Review Answer</button>
+        <div id="sol-2" class="solution-area">
+            <div class="solution-step">Subtract the standard ton from the metric ton.</div>
+            $$ 2205 - 2000 = 205 $$
+            <div class="final-answer">Answer: About 205 pounds</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">3. Equivalent Division</div>
+        <div class="problem-text">
+            Instead of dividing \(2.40 \div 0.04\), Jenny multiplied both numbers by 100 to form an equivalent division problem with whole numbers. Write the new problem and find the quotient.
+        </div>
+        <button id="btn-3" class="toggle-btn" onclick="toggleSolution(3)">Review Answer</button>
+        <div id="sol-3" class="solution-area">
+            <div class="solution-step">Multiply dividend and divisor by 100 to remove decimals.</div>
+            $$ 2.40 \times 100 = 240 $$
+            $$ 0.04 \times 100 = 4 $$
+            <div class="solution-step">Perform division:</div>
+            $$ 240 \div 4 = 60 $$
+            <div class="final-answer">Answer: \(240 \div 4 = 60\)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">4. Find Unknown</div>
+        <div class="problem-text">
+            Find \(x\): \( 5\text{ m} + x = 12\text{ m} \)
+        </div>
+        <button id="btn-4" class="toggle-btn" onclick="toggleSolution(4)">Review Answer</button>
+        <div id="sol-4" class="solution-area">
+            <div class="solution-step">Subtract 5 m from both sides.</div>
+            $$ x = 12 - 5 $$
+            <div class="final-answer">Answer: \(x = 7\text{ m}\)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">5. Find Unknown</div>
+        <div class="problem-text">
+            Find \(y\): \( 6y = 7.2 \)
+        </div>
+        <button id="btn-5" class="toggle-btn" onclick="toggleSolution(5)">Review Answer</button>
+        <div id="sol-5" class="solution-area">
+            <div class="solution-step">Divide both sides by 6.</div>
+            $$ y = \frac{7.2}{6} $$
+            $$ y = 1.2 $$
+            <div class="final-answer">Answer: \(y = 1.2\)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">6. Find Unknown (Fraction)</div>
+        <div class="problem-text">
+            Find \(m\): \( \frac{5}{6} - m = \frac{1}{3} \)
+        </div>
+        <button id="btn-6" class="toggle-btn" onclick="toggleSolution(6)">Review Answer</button>
+        <div id="sol-6" class="solution-area">
+            <div class="solution-step">Rearrange to find \(m\): \(m = \frac{5}{6} - \frac{1}{3}\).</div>
+            <div class="solution-step">Convert \(\frac{1}{3}\) to \(\frac{2}{6}\).</div>
+            $$ m = \frac{5}{6} - \frac{2}{6} = \frac{3}{6} $$
+            <div class="final-answer">Answer: \(m = \frac{1}{2}\)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">7. Proportions</div>
+        <div class="problem-text">
+            Find \(x\): \( \frac{7}{20} = \frac{x}{100} \)
+        </div>
+        <button id="btn-7" class="toggle-btn" onclick="toggleSolution(7)">Review Answer</button>
+        <div id="sol-7" class="solution-area">
+            <div class="solution-step">To get from 20 to 100, multiply by 5.</div>
+            $$ 7 \times 5 = 35 $$
+            <div class="final-answer">Answer: \(x = 35\)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">8. Geometry: Average Length</div>
+        <div class="problem-text">
+            The perimeter of a quadrilateral is 200 cm. What is the average length of each side?
+        </div>
+        <button id="btn-8" class="toggle-btn" onclick="toggleSolution(8)">Review Answer</button>
+        <div id="sol-8" class="solution-area">
+            <div class="solution-step">Divide the total perimeter by the number of sides (4).</div>
+            $$ 200 \div 4 = 50 $$
+            <div class="final-answer">Answer: 50 cm</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">9. Order of Operations (Money)</div>
+        <div class="problem-text">
+            Simplify: \( \$50.00 - (\$12.50 + \$5.25) \)
+        </div>
+        <button id="btn-9" class="toggle-btn" onclick="toggleSolution(9)">Review Answer</button>
+        <div id="sol-9" class="solution-area">
+            <div class="solution-step">Parentheses first: \( 12.50 + 5.25 = 17.75 \)</div>
+            <div class="solution-step">Subtract from total: \( 50.00 - 17.75 \)</div>
+            <div class="final-answer">Answer: $32.25</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">10. Order of Operations (Decimals)</div>
+        <div class="problem-text">
+            Simplify: \( (4 \times 0.5) - (0.5 \times 2) \)
+        </div>
+        <button id="btn-10" class="toggle-btn" onclick="toggleSolution(10)">Review Answer</button>
+        <div id="sol-10" class="solution-area">
+            <div class="solution-step">Multiply terms in parentheses:</div>
+            $$ 4 \times 0.5 = 2.0 $$
+            $$ 0.5 \times 2 = 1.0 $$
+            <div class="solution-step">Subtract: \( 2.0 - 1.0 \)</div>
+            <div class="final-answer">Answer: 1.0</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">11. Analyze: Subtracting Mixed Numbers</div>
+        <div class="problem-text">
+            Calculate: \( 5\frac{1}{3} - 2\frac{5}{6} \)
+        </div>
+        <button id="btn-11" class="toggle-btn" onclick="toggleSolution(11)">Review Answer</button>
+        <div id="sol-11" class="solution-area">
+            <div class="solution-step">Common denominator is 6: \( 5\frac{2}{6} - 2\frac{5}{6} \)</div>
+            <div class="solution-step">Borrow 1 from 5: \( 4\frac{8}{6} - 2\frac{5}{6} \)</div>
+            <div class="solution-step">Subtract: \( (4-2) = 2 \) and \( \frac{8-5}{6} = \frac{3}{6} \)</div>
+            <div class="final-answer">Answer: \( 2\frac{1}{2} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">12. Multiplying with Roots</div>
+        <div class="problem-text">
+            Calculate: \( 1\frac{3}{4} \times \sqrt{16} \)
+        </div>
+        <button id="btn-12" class="toggle-btn" onclick="toggleSolution(12)">Review Answer</button>
+        <div id="sol-12" class="solution-area">
+            <div class="solution-step">Solve root: \( \sqrt{16} = 4 \)</div>
+            <div class="solution-step">Convert fraction: \( 1\frac{3}{4} = \frac{7}{4} \)</div>
+            $$ \frac{7}{4} \times 4 = 7 $$
+            <div class="final-answer">Answer: 7</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">13. Adding Mixed Numbers</div>
+        <div class="problem-text">
+            Calculate: \( 2\frac{1}{2} + 3\frac{2}{5} \)
+        </div>
+        <button id="btn-13" class="toggle-btn" onclick="toggleSolution(13)">Review Answer</button>
+        <div id="sol-13" class="solution-area">
+            <div class="solution-step">Common denominator (10): \( 2\frac{5}{10} + 3\frac{4}{10} \)</div>
+            $$ 5\frac{9}{10} $$
+            <div class="final-answer">Answer: \( 5\frac{9}{10} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">14. Multiplying Mixed Numbers</div>
+        <div class="problem-text">
+            Calculate: \( 1\frac{1}{2} \times 2\frac{2}{3} \)
+        </div>
+        <button id="btn-14" class="toggle-btn" onclick="toggleSolution(14)">Review Answer</button>
+        <div id="sol-14" class="solution-area">
+            <div class="solution-step">Convert to improper fractions: \( \frac{3}{2} \times \frac{8}{3} \)</div>
+            <div class="solution-step">Cross cancel 3s: \( \frac{1}{2} \times \frac{8}{1} = \frac{8}{2} \)</div>
+            <div class="final-answer">Answer: 4</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">15. Decimal Division</div>
+        <div class="problem-text">
+            Divide: \( 1.25 \div 50 \)
+        </div>
+        <button id="btn-15" class="toggle-btn" onclick="toggleSolution(15)">Review Answer</button>
+        <div id="sol-15" class="solution-area">
+            <div class="solution-step">\( 1.25 \div 5 = 0.25 \)</div>
+            <div class="solution-step">\( 0.25 \div 10 = 0.025 \)</div>
+            <div class="final-answer">Answer: 0.025</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">16. Division</div>
+        <div class="problem-text">
+            Divide: \( \$8.00 \div \$0.20 \)
+        </div>
+        <button id="btn-16" class="toggle-btn" onclick="toggleSolution(16)">Review Answer</button>
+        <div id="sol-16" class="solution-area">
+            <div class="solution-step">Shift decimals 2 places: \( 800 \div 20 \)</div>
+            <div class="solution-step">\( 80 \div 2 = 40 \)</div>
+            <div class="final-answer">Answer: 40</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">17. Word Problem: Division</div>
+        <div class="problem-text">
+            Twelve dollars was divided evenly among 5 people. How much did each person receive?
+        </div>
+        <button id="btn-17" class="toggle-btn" onclick="toggleSolution(17)">Review Answer</button>
+        <div id="sol-17" class="solution-area">
+            <div class="solution-step">\( 12.00 \div 5 \)</div>
+            <div class="solution-step">\( 120 \div 5 = 24 \), so \( 2.40 \)</div>
+            <div class="final-answer">Answer: $2.40</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">18. Geometry: Square</div>
+        <div class="problem-text">
+            The area of a regular quadrilateral (square) is 81 sq inches. What is its perimeter?
+        </div>
+        <button id="btn-18" class="toggle-btn" onclick="toggleSolution(18)">Review Answer</button>
+        <div id="sol-18" class="solution-area">
+            <div class="solution-step">Area = \(s^2 = 81\). Side \(s = 9\).</div>
+            <div class="solution-step">Perimeter = \(4 \times 9\).</div>
+            <div class="final-answer">Answer: 36 inches</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">19. Prime Factorization</div>
+        <div class="problem-text">
+            Reduce \( \frac{216}{1000} \) using prime factorization.
+        </div>
+        <button id="btn-19" class="toggle-btn" onclick="toggleSolution(19)">Review Answer</button>
+        <div id="sol-19" class="solution-area">
+            <div class="solution-step">\(216 = 6^3 = 2^3 \times 3^3\)</div>
+            <div class="solution-step">\(1000 = 10^3 = 2^3 \times 5^3\)</div>
+            <div class="solution-step">Cancel \(2^3\): \( \frac{3^3}{5^3} = \frac{27}{125} \)</div>
+            <div class="final-answer">Answer: \( \frac{27}{125} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">20. Area of Rectangle</div>
+        <div class="problem-text">
+            Find the area of a rectangle with sides \(2\frac{1}{2}\) in and \(\frac{2}{3}\) in.
+        </div>
+        <button id="btn-20" class="toggle-btn" onclick="toggleSolution(20)">Review Answer</button>
+        <div id="sol-20" class="solution-area">
+            <div class="solution-step">\( 2\frac{1}{2} = \frac{5}{2} \)</div>
+            <div class="solution-step">\( \frac{5}{2} \times \frac{2}{3} = \frac{10}{6} = \frac{5}{3} \)</div>
+            <div class="final-answer">Answer: \( 1\frac{2}{3} \) sq in</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">21. Word Problem: Fraction</div>
+        <div class="problem-text">
+            In a class of 28 students, 12 are boys. What fraction of the class are boys? (Reduce your answer)
+        </div>
+        <button id="btn-21" class="toggle-btn" onclick="toggleSolution(21)">Review Answer</button>
+        <div id="sol-21" class="solution-area">
+            <div class="solution-step">Fraction = \( \frac{12}{28} \)</div>
+            <div class="solution-step">Divide both by 4: \( \frac{3}{7} \)</div>
+            <div class="final-answer">Answer: \( \frac{3}{7} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">22. Representation</div>
+        <div class="problem-text">
+            Draw a representation of a cube.
+        </div>
+        <button id="btn-22" class="toggle-btn" onclick="toggleSolution(22)">Review Answer</button>
+        <div id="sol-22" class="solution-area">
+            <svg width="150" height="150" viewBox="0 0 150 150">
+                <rect x="40" y="40" width="60" height="60" fill="none" stroke="black" stroke-width="2"/>
+                <polyline points="40,40 60,20 120,20 100,40" fill="none" stroke="black" stroke-width="2"/>
+                <polyline points="120,20 120,80 100,100" fill="none" stroke="black" stroke-width="2"/>
+                <line x1="60" y1="20" x2="60" y2="80" stroke="black" stroke-dasharray="4"/>
+                <line x1="40" y1="100" x2="60" y2="80" stroke="black" stroke-dasharray="4"/>
+                <line x1="120" y1="80" x2="60" y2="80" stroke="black" stroke-dasharray="4"/>
+            </svg>
+            <div class="final-answer">Shown above: A cube (square prism).</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">23. Reciprocals</div>
+        <div class="problem-text">
+            Find the missing number: \( 2\frac{1}{3} \times \square = 1 \)
+        </div>
+        <button id="btn-23" class="toggle-btn" onclick="toggleSolution(23)">Review Answer</button>
+        <div id="sol-23" class="solution-area">
+            <div class="solution-step">Convert to improper: \( \frac{7}{3} \)</div>
+            <div class="solution-step">The reciprocal is \( \frac{3}{7} \).</div>
+            <div class="final-answer">Answer: \( \frac{3}{7} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">24. Metric Conversion</div>
+        <div class="problem-text">
+            There are 100 centimeters in a meter. How many centimeters are in 3.4 meters?
+        </div>
+        <button id="btn-24" class="toggle-btn" onclick="toggleSolution(24)">Review Answer</button>
+        <div id="sol-24" class="solution-area">
+            <div class="solution-step">\( 3.4 \times 100 = 340 \)</div>
+            <div class="final-answer">Answer: 340 cm</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">25. Number Line</div>
+        <div class="problem-text">
+            Which letter points to 0.9 on the number line?
+            <svg width="300" height="60" viewBox="0 0 300 60">
+                <line x1="20" y1="40" x2="280" y2="40" stroke="black" stroke-width="2" />
+                <line x1="50" y1="35" x2="50" y2="45" stroke="black" stroke-width="2" /> <text x="45" y="55">0</text>
+                <line x1="250" y1="35" x2="250" y2="45" stroke="black" stroke-width="2" /> <text x="245" y="55">1</text>
+                
+                <text x="70" y="20" font-weight="bold">A</text>
+                <text x="150" y="20" font-weight="bold">B</text>
+                <text x="230" y="20" font-weight="bold">C</text>
+                
+                <line x1="70" y1="25" x2="70" y2="40" stroke="black" stroke-width="1"/>
+                <line x1="150" y1="25" x2="150" y2="40" stroke="black" stroke-width="1"/>
+                <line x1="230" y1="25" x2="230" y2="40" stroke="black" stroke-width="1"/>
+            </svg>
+        </div>
+        <button id="btn-25" class="toggle-btn" onclick="toggleSolution(25)">Review Answer</button>
+        <div id="sol-25" class="solution-area">
+            <div class="solution-step">0.9 is very close to 1. Point C is the closest to 1.</div>
+            <div class="final-answer">Answer: C</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">26. Circular Motion</div>
+        <div class="problem-text">
+            The tip of a minute hand is 10 cm from the center. How far does it travel in one hour? (Use 3.14 for \(\pi\))
+        </div>
+        <button id="btn-26" class="toggle-btn" onclick="toggleSolution(26)">Review Answer</button>
+        <div id="sol-26" class="solution-area">
+            <div class="solution-step">Circumference \( C = 2 \pi r \).</div>
+            $$ C = 2 \times 3.14 \times 10 $$
+            $$ C = 6.28 \times 10 = 62.8 $$
+            <div class="final-answer">Answer: 62.8 cm</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">27. Geometric Solid</div>
+        <div class="problem-text">
+            A soup can is an example of what geometric solid?
+        </div>
+        <button id="btn-27" class="toggle-btn" onclick="toggleSolution(27)">Review Answer</button>
+        <div id="sol-27" class="solution-area">
+            <div class="final-answer">Answer: Cylinder</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">28. Percent Conversion</div>
+        <div class="problem-text">
+            Write 23% as a fraction and as a decimal.
+        </div>
+        <button id="btn-28" class="toggle-btn" onclick="toggleSolution(28)">Review Answer</button>
+        <div id="sol-28" class="solution-area">
+            <div class="solution-step">Fraction: \( \frac{23}{100} \)</div>
+            <div class="solution-step">Decimal: 0.23</div>
+            <div class="final-answer">Answer: \( \frac{23}{100} \) and 0.23</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">29. Probability</div>
+        <div class="problem-text">
+            What is the probability of rolling an odd number with a single number cube (die)?
+        </div>
+        <button id="btn-29" class="toggle-btn" onclick="toggleSolution(29)">Review Answer</button>
+        <div id="sol-29" class="solution-area">
+            <div class="solution-step">Odd numbers: {1, 3, 5} (3 numbers).</div>
+            <div class="solution-step">Total outcomes: {1, 2, 3, 4, 5, 6} (6 outcomes).</div>
+            $$ \frac{3}{6} = \frac{1}{2} $$
+            <div class="final-answer">Answer: \( \frac{1}{2} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">30. Shape Identification</div>
+        <div class="problem-text">
+            This quadrilateral has two pairs of parallel sides and no right angles.
+            <svg width="100" height="60" viewBox="0 0 100 60">
+                <polygon points="20,50 80,50 90,10 30,10" fill="none" stroke="black" stroke-width="2"/>
+            </svg>
+            What kind of quadrilateral is it?
+        </div>
+        <button id="btn-30" class="toggle-btn" onclick="toggleSolution(30)">Review Answer</button>
+        <div id="sol-30" class="solution-area">
+            <div class="final-answer">Answer: Parallelogram</div>
+        </div>
+    </div>
+
+</body>
+</html>
