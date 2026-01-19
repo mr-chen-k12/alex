@@ -1,127 +1,42 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex - Homework Index</title>
+    <title>File Index</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            background-color: #f6f8fa;
-            color: #24292f;
-        }
-        h1 {
-            border-bottom: 1px solid #d0d7de;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-            background: white;
-            border: 1px solid #d0d7de;
-            border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-        }
-        li {
-            border-bottom: 1px solid #d0d7de;
-        }
-        li:last-child {
-            border-bottom: none;
-        }
-        a {
-            display: block;
-            padding: 16px;
-            text-decoration: none;
-            color: #0969da;
-            font-size: 16px;
-            font-weight: 500;
-            transition: background-color 0.2s;
-        }
-        a:hover {
-            background-color: #f3f4f6;
-            text-decoration: underline;
-        }
-        .file-icon {
-            margin-right: 10px;
-            color: #57606a;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 40px 20px; background-color: #f6f8fa; color: #24292f; }
+        h1 { border-bottom: 1px solid #d0d7de; padding-bottom: 10px; margin-bottom: 20px; text-transform: capitalize; }
+        ul { list-style-type: none; padding: 0; background: white; border: 1px solid #d0d7de; border-radius: 6px; }
+        li { border-bottom: 1px solid #d0d7de; }
+        li:last-child { border-bottom: none; }
+        a { display: block; padding: 16px; text-decoration: none; color: #0969da; font-weight: 500; }
+        a:hover { background-color: #f3f4f6; text-decoration: underline; }
+        .file-icon { margin-right: 10px; color: #57606a; }
     </style>
 </head>
 <body>
+    <h1 id="repo-title">Directory Index</h1>
+    <ul id="file-list"><li>Loading...</li></ul>
 
-    <h1>Alex Homework Directory</h1>
+    <script>
+        // Update the title based on the URL (e.g., ".../miriam/" becomes "Miriam")
+        const folderName = window.location.pathname.split('/').filter(Boolean).pop();
+        if(folderName) document.getElementById('repo-title').innerText = folderName + " Directory";
 
-    <ul>
-        <li>
-            <a href="1-11-alex-extra.html">
-                <span class="file-icon">📄</span> 1-11-alex-extra.html
-            </a>
-        </li>
-        <li>
-            <a href="1-11.html">
-                <span class="file-icon">📄</span> 1-11.html
-            </a>
-        </li>
-        <li>
-            <a href="1-12-math.html">
-                <span class="file-icon">📄</span> 1-12-math.html
-            </a>
-        </li>
-        <li>
-            <a href="1-13-extra-study.html">
-                <span class="file-icon">📄</span> 1-13-extra-study.html
-            </a>
-        </li>
-        <li>
-            <a href="1-14-extra.html">
-                <span class="file-icon">📄</span> 1-14-extra.html
-            </a>
-        </li>
-        <li>
-            <a href="1-14.html">
-                <span class="file-icon">📄</span> 1-14.html
-            </a>
-        </li>
-        <li>
-            <a href="1-15-extra.html">
-                <span class="file-icon">📄</span> 1-15-extra.html
-            </a>
-        </li>
-        <li>
-            <a href="1-15.html">
-                <span class="file-icon">📄</span> 1-15.html
-            </a>
-        </li>
-        <li>
-            <a href="1-16-quiz.html">
-                <span class="file-icon">📄</span> 1-16-quiz.html
-            </a>
-        </li>
-        <li>
-            <a href="1-18-alex.html">
-                <span class="file-icon">📄</span> 1-18-alex.html
-            </a>
-        </li>
-        <li>
-            <a href="1-7-26.html">
-                <span class="file-icon">📄</span> 1-7-26.html
-            </a>
-        </li>
-        <li>
-            <a href="1-7-extra.html">
-                <span class="file-icon">📄</span> 1-7-extra.html
-            </a>
-        </li>
-        <li>
-            <a href="1-8.html">
-                <span class="file-icon">📄</span> 1-8.html
-            </a>
-        </li>
-    </ul>
-
+        fetch('files.json')
+            .then(response => response.json())
+            .then(files => {
+                const list = document.getElementById('file-list');
+                list.innerHTML = ''; // Clear loading text
+                files.forEach(filename => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="${filename}"><span class="file-icon">📄</span> ${filename}</a>`;
+                    list.appendChild(li);
+                });
+            })
+            .catch(e => document.getElementById('file-list').innerHTML = '<li style="padding:20px; color:red">Error: files.json not found.</li>');
+    </script>
 </body>
 </html>
