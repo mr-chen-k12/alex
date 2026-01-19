@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice: Similar Problems</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #16a085;
+            --bg: #f4f6f7;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--secondary);
+            margin-bottom: 40px;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-top: 50px;
+            border-left: 5px solid var(--accent);
+            padding-left: 15px;
+        }
+
+        .problem-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        button.review-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        button.review-btn:hover {
+            background-color: #1c5980;
+        }
+
+        .answer-panel {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f8f5;
+            border-radius: 4px;
+            border: 1px solid #d1f2eb;
+            color: var(--secondary);
+        }
+
+        .canvas-container {
+            margin: 10px 0;
+            display: flex;
+            justify-content: center;
+            background: #fafafa;
+            border: 1px dashed #ccc;
+            border-radius: 4px;
+            padding: 10px;
+        }
+
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+    <script>
+        function toggleAnswer(id) {
+            var x = document.getElementById(id);
+            if (x.style.display === "none" || x.style.display === "") {
+                x.style.display = "block";
+                // Trigger canvas redraw if visible
+                if(id.includes('canvas-trigger')) {
+                    const canvasId = id.replace('ans-', 'cvs-');
+                    drawSquare(canvasId);
+                }
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+        // Function to draw a square on canvas for geometry problems
+        function drawSquare(canvasId, sideLabel, perimeterLabel) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+            
+            // Clear
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const size = 100;
+            const padding = 40;
+            const x = (canvas.width - size) / 2;
+            const y = (canvas.height - size) / 2;
+
+            // Draw Square
+            ctx.beginPath();
+            ctx.rect(x, y, size, size);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "#2980b9";
+            ctx.stroke();
+            ctx.fillStyle = "rgba(41, 128, 185, 0.1)";
+            ctx.fill();
+
+            // Labels
+            ctx.fillStyle = "#333";
+            ctx.font = "14px Arial";
+            ctx.textAlign = "center";
+            
+            // Top Label (Side)
+            if(sideLabel) {
+                ctx.fillText("s = " + sideLabel, x + size/2, y - 10);
+            } else {
+                ctx.fillText("s = ?", x + size/2, y - 10);
+            }
+
+            // Bottom Label (Perimeter)
+            if(perimeterLabel) {
+                ctx.fillText("P = " + perimeterLabel, x + size/2, y + size + 20);
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Math Skills Practice</h1>
+    <p style="text-align: center; color: #666;">Practice set with 30 similar problems based on your request.</p>
+
+    <h2>1. Sum vs. Product of Fractions</h2>
+    <p><em>Concept: Find the difference between (A + B) and (A × B).</em></p>
+
+    <div class="problem-card">
+        <div class="question-text">1.1) Find the difference between the sum and product of \(\frac{1}{3}\) and \(\frac{1}{6}\).</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-1-1')">Review Answer</button>
+        <div id="ans-1-1" class="answer-panel">
+            <strong>Answer:</strong> \(\frac{4}{9}\)<br>
+            Sum: \(\frac{2}{6} + \frac{1}{6} = \frac{3}{6} = \frac{1}{2}\)<br>
+            Product: \(\frac{1}{18}\)<br>
+            Difference: \(\frac{9}{18} - \frac{1}{18} = \frac{8}{18} = \frac{4}{9}\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">1.2) Calculate: \((\frac{1}{4} + \frac{1}{5}) - (\frac{1}{4} \times \frac{1}{5})\).</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-1-2')">Review Answer</button>
+        <div id="ans-1-2" class="answer-panel">
+            <strong>Answer:</strong> \(\frac{2}{5}\)<br>
+            Sum: \(\frac{9}{20}\) | Product: \(\frac{1}{20}\)<br>
+            Difference: \(\frac{8}{20} = \frac{2}{5}\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">1.3) Find the difference between the sum and product of \(\frac{1}{2}\) and \(\frac{1}{5}\).</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-1-3')">Review Answer</button>
+        <div id="ans-1-3" class="answer-panel">
+            <strong>Answer:</strong> \(\frac{3}{5}\)<br>
+            Sum: \(\frac{7}{10}\) | Product: \(\frac{1}{10}\)<br>
+            Difference: \(\frac{6}{10} = \frac{3}{5}\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">1.4) Evaluate for \(\frac{2}{3}\) and \(\frac{1}{4}\): (Sum) - (Product).</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-1-4')">Review Answer</button>
+        <div id="ans-1-4" class="answer-panel">
+            <strong>Answer:</strong> \(\frac{3}{4}\)<br>
+            Sum: \(\frac{11}{12}\) | Product: \(\frac{2}{12}\)<br>
+            Difference: \(\frac{9}{12} = \frac{3}{4}\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">1.5) Find the difference between the sum and product of \(\frac{3}{4}\) and \(\frac{1}{2}\).</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-1-5')">Review Answer</button>
+        <div id="ans-1-5" class="answer-panel">
+            <strong>Answer:</strong> \(\frac{7}{8}\)<br>
+            Sum: \(\frac{5}{4} = \frac{10}{8}\) | Product: \(\frac{3}{8}\)<br>
+            Difference: \(\frac{7}{8}\)
+        </div>
+    </div>
+
+    <h2>2. Division of Mixed Numbers</h2>
+    <p><em>Concept: Convert to improper fractions, then multiply by the reciprocal.</em></p>
+
+    <div class="problem-card">
+        <div class="question-text">2.1) Calculate: \(1\frac{1}{4} \div 2\frac{1}{2}\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-2-1')">Review Answer</button>
+        <div id="ans-2-1" class="answer-panel">
+            <strong>Answer:</strong> \(\frac{1}{2}\)<br>
+            \(\frac{5}{4} \div \frac{5}{2} = \frac{5}{4} \times \frac{2}{5} = \frac{10}{20}\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">2.2) Calculate: \(3\frac{1}{3} \div 1\frac{2}{3}\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-2-2')">Review Answer</button>
+        <div id="ans-2-2" class="answer-panel">
+            <strong>Answer:</strong> \(2\)<br>
+            \(\frac{10}{3} \div \frac{5}{3} = \frac{10}{3} \times \frac{3}{5} = \frac{30}{15} = 2\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">2.3) Calculate: \(2\frac{1}{5} \div 1\frac{1}{10}\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-2-3')">Review Answer</button>
+        <div id="ans-2-3" class="answer-panel">
+            <strong>Answer:</strong> \(2\)<br>
+            \(\frac{11}{5} \div \frac{11}{10} = \frac{11}{5} \times \frac{10}{11} = 2\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">2.4) Calculate: \(5\frac{1}{2} \div 1\frac{3}{8}\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-2-4')">Review Answer</button>
+        <div id="ans-2-4" class="answer-panel">
+            <strong>Answer:</strong> \(4\)<br>
+            \(\frac{11}{2} \div \frac{11}{8} = \frac{11}{2} \times \frac{8}{11} = 4\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">2.5) Calculate: \(1\frac{7}{8} \div 1\frac{1}{4}\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-2-5')">Review Answer</button>
+        <div id="ans-2-5" class="answer-panel">
+            <strong>Answer:</strong> \(1\frac{1}{2}\)<br>
+            \(\frac{15}{8} \div \frac{5}{4} = \frac{15}{8} \times \frac{4}{5} = \frac{3}{2}\)
+        </div>
+    </div>
+
+    <h2>3. Solving Mixed Number Equations</h2>
+    <p><em>Concept: Isolate variables (e.g., \(m - A = B \rightarrow m = B + A\)).</em></p>
+
+    <div class="problem-card">
+        <div class="question-text">3.1) Solve for \(m\): \(m - 2\frac{1}{2} = 3\frac{3}{4}\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-3-1')">Review Answer</button>
+        <div id="ans-3-1" class="answer-panel">
+            <strong>Answer:</strong> \(6\frac{1}{4}\)<br>
+            \(m = 3\frac{3}{4} + 2\frac{2}{4} = 5\frac{5}{4}\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">3.2) Solve for \(x\): \(x - 4\frac{1}{3} = 1\frac{5}{6}\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-3-2')">Review Answer</button>
+        <div id="ans-3-2" class="answer-panel">
+            <strong>Answer:</strong> \(6\frac{1}{6}\)<br>
+            \(x = 1\frac{5}{6} + 4\frac{2}{6} = 5\frac{7}{6}\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">3.3) Solve for \(y\): \(y - 1\frac{3}{8} = 2\frac{1}{2}\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-3-3')">Review Answer</button>
+        <div id="ans-3-3" class="answer-panel">
+            <strong>Answer:</strong> \(3\frac{7}{8}\)<br>
+            \(y = 2\frac{4}{8} + 1\frac{3}{8} = 3\frac{7}{8}\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">3.4) Solve for \(a\): \(a - 5\frac{2}{5} = 3\frac{7}{10}\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-3-4')">Review Answer</button>
+        <div id="ans-3-4" class="answer-panel">
+            <strong>Answer:</strong> \(9\frac{1}{10}\)<br>
+            \(a = 3\frac{7}{10} + 5\frac{4}{10} = 8\frac{11}{10}\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">3.5) Solve for \(b\): \(b - 3\frac{1}{4} = 1\frac{2}{3}\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-3-5')">Review Answer</button>
+        <div id="ans-3-5" class="answer-panel">
+            <strong>Answer:</strong> \(4\frac{11}{12}\)<br>
+            \(b = 1\frac{8}{12} + 3\frac{3}{12} = 4\frac{11}{12}\)
+        </div>
+    </div>
+
+    <h2>4. Decimal Equations</h2>
+    <p><em>Concept: Divide to isolate the variable.</em></p>
+
+    <div class="problem-card">
+        <div class="question-text">4.1) Solve for \(d\): \(20d = 0.5\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-4-1')">Review Answer</button>
+        <div id="ans-4-1" class="answer-panel">
+            <strong>Answer:</strong> \(0.025\)<br>
+            \(d = 0.5 \div 20 = 0.025\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">4.2) Solve for \(x\): \(0.4x = 1.2\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-4-2')">Review Answer</button>
+        <div id="ans-4-2" class="answer-panel">
+            <strong>Answer:</strong> \(3\)<br>
+            \(x = 1.2 \div 0.4 = 12 \div 4 = 3\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">4.3) Solve for \(y\): \(15y = 4.5\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-4-3')">Review Answer</button>
+        <div id="ans-4-3" class="answer-panel">
+            <strong>Answer:</strong> \(0.3\)<br>
+            \(y = 4.5 \div 15 = 0.3\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">4.4) Solve for \(z\): \(0.05z = 10\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-4-4')">Review Answer</button>
+        <div id="ans-4-4" class="answer-panel">
+            <strong>Answer:</strong> \(200\)<br>
+            \(z = 10 \div 0.05 = 1000 \div 5 = 200\)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">4.5) Solve for \(m\): \(50m = 0.1\)</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-4-5')">Review Answer</button>
+        <div id="ans-4-5" class="answer-panel">
+            <strong>Answer:</strong> \(0.002\)<br>
+            \(m = 0.1 \div 50 = 0.002\)
+        </div>
+    </div>
+
+    <h2>5. Geometry: Square Perimeter & Area</h2>
+    <p><em>Concept: \(P = 4s\) and \(A = s^2\)</em></p>
+
+    <div class="problem-card">
+        <div class="question-text">5.1) The perimeter of a square is 3.6 meters. a) How long is each side? b) What is the area?</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-canvas-trigger-5-1'); drawSquare('cvs-5-1', '0.9m', '3.6m');">Review Answer</button>
+        <div id="ans-canvas-trigger-5-1" class="answer-panel">
+            <div class="canvas-container">
+                <canvas id="cvs-5-1" width="200" height="200"></canvas>
+            </div>
+            <strong>a) Side:</strong> 0.9 m<br>
+            <strong>b) Area:</strong> 0.81 sq meters<br>
+            (3.6 ÷ 4 = 0.9) and (0.9 × 0.9 = 0.81)
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">5.2) The perimeter of a square is 20 inches. Find the side length and area.</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-canvas-trigger-5-2'); drawSquare('cvs-5-2', '5 in', '20 in');">Review Answer</button>
+        <div id="ans-canvas-trigger-5-2" class="answer-panel">
+            <div class="canvas-container">
+                <canvas id="cvs-5-2" width="200" height="200"></canvas>
+            </div>
+            <strong>Side:</strong> 5 in<br>
+            <strong>Area:</strong> 25 sq in
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">5.3) The perimeter of a square is 4.8 cm. Find the side length and area.</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-canvas-trigger-5-3'); drawSquare('cvs-5-3', '1.2cm', '4.8cm');">Review Answer</button>
+        <div id="ans-canvas-trigger-5-3" class="answer-panel">
+            <div class="canvas-container">
+                <canvas id="cvs-5-3" width="200" height="200"></canvas>
+            </div>
+            <strong>Side:</strong> 1.2 cm<br>
+            <strong>Area:</strong> 1.44 sq cm
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">5.4) The perimeter is 1 meter. Find the side length (decimal) and area.</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-canvas-trigger-5-4'); drawSquare('cvs-5-4', '0.25m', '1m');">Review Answer</button>
+        <div id="ans-canvas-trigger-5-4" class="answer-panel">
+            <div class="canvas-container">
+                <canvas id="cvs-5-4" width="200" height="200"></canvas>
+            </div>
+            <strong>Side:</strong> 0.25 m<br>
+            <strong>Area:</strong> 0.0625 sq m
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">5.5) The perimeter is 12 feet. Find side and area.</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-canvas-trigger-5-5'); drawSquare('cvs-5-5', '3ft', '12ft');">Review Answer</button>
+        <div id="ans-canvas-trigger-5-5" class="answer-panel">
+            <div class="canvas-container">
+                <canvas id="cvs-5-5" width="200" height="200"></canvas>
+            </div>
+            <strong>Side:</strong> 3 ft<br>
+            <strong>Area:</strong> 9 sq ft
+        </div>
+    </div>
+
+    <h2>6. Elapsed Time</h2>
+    <p><em>Concept: Calculate duration between start and end times.</em></p>
+
+    <div class="problem-card">
+        <div class="question-text">6.1) Sunrise was at 6:15 a.m. and sunset was at 7:30 p.m. How long was the day?</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-6-1')">Review Answer</button>
+        <div id="ans-6-1" class="answer-panel">
+            <strong>Answer:</strong> 13 hours, 15 minutes<br>
+            6:15 am to 6:15 pm = 12 hours.<br>
+            6:15 pm to 7:30 pm = 1 hour 15 minutes.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">6.2) A movie started at 1:45 p.m. and ended at 4:10 p.m. How long was it?</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-6-2')">Review Answer</button>
+        <div id="ans-6-2" class="answer-panel">
+            <strong>Answer:</strong> 2 hours, 25 minutes<br>
+            1:45 to 3:45 = 2 hours.<br>
+            3:45 to 4:10 = 25 minutes.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">6.3) School starts at 8:10 a.m. and ends at 2:50 p.m. Duration?</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-6-3')">Review Answer</button>
+        <div id="ans-6-3" class="answer-panel">
+            <strong>Answer:</strong> 6 hours, 40 minutes<br>
+            8:10 to 2:10 = 6 hours.<br>
+            2:10 to 2:50 = 40 minutes.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">6.4) A train departed at 10:30 a.m. and arrived at 1:15 p.m. Trip time?</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-6-4')">Review Answer</button>
+        <div id="ans-6-4" class="answer-panel">
+            <strong>Answer:</strong> 2 hours, 45 minutes<br>
+            10:30 to 12:30 = 2 hours.<br>
+            12:30 to 1:15 = 45 minutes.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">6.5) A shift is 7:55 a.m. to 4:25 p.m. Total time?</div>
+        <button class="review-btn" onclick="toggleAnswer('ans-6-5')">Review Answer</button>
+        <div id="ans-6-5" class="answer-panel">
+            <strong>Answer:</strong> 8 hours, 30 minutes<br>
+            7:55 to 3:55 = 8 hours.<br>
+            3:55 to 4:25 = 30 minutes.
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
