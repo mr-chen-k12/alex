@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parallel Math Practice Set</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --header-bg: #2c3e50;
+            --primary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--header-bg);
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 40px;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        .problem-block {
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
+        }
+
+        .question {
+            font-weight: 500;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        button.toggle-btn {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        button.toggle-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .solution {
+            display: none;
+            margin-top: 15px;
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 0 5px 5px 0;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        canvas {
+            border: 1px dashed #ccc;
+            margin-top: 10px;
+            background: #fff;
+        }
+
+        .grid-visual {
+            display: grid;
+            grid-template-columns: repeat(4, 20px);
+            gap: 2px;
+            margin-top: 10px;
+        }
+        .g-cell { width: 20px; height: 20px; background: #ddd; }
+        .filled { background: var(--primary); }
+
+    </style>
+    <script>
+        function toggle(id) {
+            const el = document.getElementById(id);
+            if (el.style.display === 'block') {
+                el.style.display = 'none';
+            } else {
+                el.style.display = 'block';
+                // Trigger canvas drawing if it exists inside this block
+                const canvas = el.querySelector('canvas');
+                if (canvas) {
+                    drawShape(canvas);
+                }
+            }
+        }
+
+        function drawShape(canvas) {
+            const ctx = canvas.getContext('2d');
+            const type = canvas.dataset.type;
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            ctx.clearRect(0,0,width,height);
+            ctx.strokeStyle = '#2c3e50';
+            ctx.lineWidth = 2;
+            ctx.fillStyle = '#eaf2f8';
+
+            if (type === 'rect') {
+                ctx.fillRect(50, 50, 150, 80);
+                ctx.strokeRect(50, 50, 150, 80);
+                ctx.fillStyle = 'black';
+                ctx.font = '14px Arial';
+                ctx.fillText(canvas.dataset.l, 100, 40);
+                ctx.fillText(canvas.dataset.w, 10, 90);
+            } else if (type === 'square') {
+                ctx.fillRect(75, 50, 100, 100);
+                ctx.strokeRect(75, 50, 100, 100);
+                ctx.fillStyle = 'black';
+                ctx.font = '14px Arial';
+                ctx.fillText('P = ' + canvas.dataset.p, 90, 170);
+            } else if (type === 'angle') {
+                ctx.beginPath();
+                ctx.moveTo(50, 150);
+                ctx.lineTo(150, 150); // base
+                ctx.lineTo(120, 50);  // angle
+                ctx.stroke();
+                ctx.fillText(canvas.dataset.label, 130, 140);
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Parallel Practice Set</h1>
+    <p>This set mirrors the problems from your original file but with new numbers. Use this to test your understanding of the concepts.</p>
+
+    <h2>Lesson Practice (Similar Problems)</h2>
+
+    <div class="problem-block">
+        <div class="question">f. Calculate: \( 3 \frac{1}{3} \div 2 \frac{1}{2} \)</div>
+        <button class="toggle-btn" onclick="toggle('s-f')">Review Answer</button>
+        <div id="s-f" class="solution">
+            <strong>Answer: \( 1 \frac{1}{3} \)</strong><br>
+            Convert: \( \frac{10}{3} \div \frac{5}{2} \)<br>
+            Multiply Reciprocal: \( \frac{10}{3} \times \frac{2}{5} = \frac{20}{15} \)<br>
+            Simplify: \( \frac{4}{3} = 1 \frac{1}{3} \)
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">g. Calculate: \( 4 \frac{1}{2} \div 1 \frac{1}{2} \)</div>
+        <button class="toggle-btn" onclick="toggle('s-g')">Review Answer</button>
+        <div id="s-g" class="solution">
+            <strong>Answer: \( 3 \)</strong><br>
+            \( \frac{9}{2} \div \frac{3}{2} = \frac{9}{2} \times \frac{2}{3} = \frac{18}{6} = 3 \)
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">j. Sarah has \( 3 \frac{3}{4} \) hours to finish 5 tasks. If she divides her time equally, what fraction of an hour is spent on each?</div>
+        <button class="toggle-btn" onclick="toggle('s-j')">Review Answer</button>
+        <div id="s-j" class="solution">
+            <strong>Answer: \( \frac{3}{4} \) hour</strong><br>
+            \( 3 \frac{3}{4} = \frac{15}{4} \)<br>
+            \( \frac{15}{4} \div 5 = \frac{15}{4} \times \frac{1}{5} = \frac{3}{4} \)
+        </div>
+    </div>
+
+    <h2>Written Practice (Similar Problems)</h2>
+
+    <div class="problem-block">
+        <div class="question">1. Find the difference between the sum of \( \frac{1}{3} \) and \( \frac{1}{6} \) and the product of \( \frac{1}{3} \) and \( \frac{1}{6} \).</div>
+        <button class="toggle-btn" onclick="toggle('s-1')">Review Answer</button>
+        <div id="s-1" class="solution">
+            <strong>Answer: \( \frac{4}{9} \)</strong><br>
+            Sum: \( \frac{2}{6} + \frac{1}{6} = \frac{3}{6} = \frac{1}{2} \)<br>
+            Product: \( \frac{1}{18} \)<br>
+            Diff: \( \frac{9}{18} - \frac{1}{18} = \frac{8}{18} = \frac{4}{9} \)
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">2. Tom ran a mile in 5 minutes 20 seconds. How many total seconds is that?</div>
+        <button class="toggle-btn" onclick="toggle('s-2')">Review Answer</button>
+        <div id="s-2" class="solution">
+            <strong>Answer: 320 seconds</strong><br>
+            \( 5 \times 60 = 300 \)<br>
+            \( 300 + 20 = 320 \)
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">3. A table is 5 feet \( 2\frac{1}{2} \) inches long. How many inches is that?</div>
+        <button class="toggle-btn" onclick="toggle('s-3')">Review Answer</button>
+        <div id="s-3" class="solution">
+            <strong>Answer: \( 62\frac{1}{2} \) inches</strong><br>
+            \( 5 \text{ ft} \times 12 = 60 \text{ in} \)<br>
+            \( 60 + 2\frac{1}{2} = 62\frac{1}{2} \)
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">6. In 5 games, the team scored 85 points. What was the average score?</div>
+        <button class="toggle-btn" onclick="toggle('s-6')">Review Answer</button>
+        <div id="s-6" class="solution">
+            <strong>Answer: 17 points</strong><br>
+            \( 85 \div 5 = 17 \)
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">7. Write the prime factorizations of 18 and 60. Then reduce \( \frac{18}{60} \).</div>
+        <button class="toggle-btn" onclick="toggle('s-7')">Review Answer</button>
+        <div id="s-7" class="solution">
+            <strong>Answer: \( \frac{3}{10} \)</strong><br>
+            18: \( 2 \cdot 3 \cdot 3 \)<br>
+            60: \( 2 \cdot 2 \cdot 3 \cdot 5 \)<br>
+            Reduce: Divide both by 6.
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">8. Find \( m \): \( m - 4\frac{2}{5} = 2\frac{3}{10} \)</div>
+        <button class="toggle-btn" onclick="toggle('s-8')">Review Answer</button>
+        <div id="s-8" class="solution">
+            <strong>Answer: \( 6\frac{7}{10} \)</strong><br>
+            \( m = 2\frac{3}{10} + 4\frac{4}{10} = 6\frac{7}{10} \)
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">10. Solve for \( d \): \( 50d = 0.25 \)</div>
+        <button class="toggle-btn" onclick="toggle('s-10')">Review Answer</button>
+        <div id="s-10" class="solution">
+            <strong>Answer: \( 0.005 \)</strong><br>
+            \( d = \frac{0.25}{50} = \frac{25}{5000} = \frac{1}{200} = 0.005 \)
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">15. What is the area of a rectangle 6 inches long and \( 2\frac{1}{2} \) inches wide?</div>
+        <button class="toggle-btn" onclick="toggle('s-15')">Review Answer</button>
+        <div id="s-15" class="solution">
+            <canvas data-type="rect" data-l="6 in" data-w="2.5 in" width="250" height="150"></canvas><br>
+            <strong>Answer: 15 sq inches</strong><br>
+            \( 6 \times 2.5 = 15 \)
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">18. ANALYZE: The product \( 4.5 \times 100 \) is equal to: <br> A) \( 4500 \div 10 \) B) \( 45 \div 10 \)</div>
+        <button class="toggle-btn" onclick="toggle('s-18')">Review Answer</button>
+        <div id="s-18" class="solution">
+            <strong>Answer: A) \( 4500 \div 10 \)</strong><br>
+            \( 4.5 \times 100 = 450 \)<br>
+            Option A is \( 450 \). Option B is \( 4.5 \).
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">19. Find the sum of 1245, 2810, and 5950 to the nearest thousand.</div>
+        <button class="toggle-btn" onclick="toggle('s-19')">Review Answer</button>
+        <div id="s-19" class="solution">
+            <strong>Answer: 10,000</strong><br>
+            Exact sum: 10,005. Rounds to 10,000.
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">21. The perimeter of a square is 3.2 meters. Find the side length and area.</div>
+        <button class="toggle-btn" onclick="toggle('s-21')">Review Answer</button>
+        <div id="s-21" class="solution">
+            <canvas data-type="square" data-p="3.2m" width="250" height="200"></canvas><br>
+            <strong>Side: 0.8 m | Area: 0.64 sq m</strong><br>
+            \( 3.2 \div 4 = 0.8 \)<br>
+            \( 0.8 \times 0.8 = 0.64 \)
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">22. What is the tax on a $25,000 car if the rate is 6%?</div>
+        <button class="toggle-btn" onclick="toggle('s-22')">Review Answer</button>
+        <div id="s-22" class="solution">
+            <strong>Answer: $1,500</strong><br>
+            \( 25,000 \times 0.06 = 1,500 \)
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">23. If the probability of rain is 20%, what is the probability it will NOT rain?</div>
+        <button class="toggle-btn" onclick="toggle('s-23')">Review Answer</button>
+        <div id="s-23" class="solution">
+            <strong>Answer: 80% (or \( \frac{4}{5} \))</strong><br>
+            \( 100\% - 20\% = 80\% \)
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">27. An angle is 110 degrees. Is it acute, obtuse, or right?</div>
+        <button class="toggle-btn" onclick="toggle('s-27')">Review Answer</button>
+        <div id="s-27" class="solution">
+            <canvas data-type="angle" data-label="110°" width="200" height="200"></canvas><br>
+            <strong>Answer: Obtuse</strong><br>
+            Angles greater than 90° and less than 180° are obtuse.
+        </div>
+    </div>
+
+    <div class="problem-block">
+        <div class="question">30. Sunrise is 6:10 AM and Sunset is 8:25 PM. How long is the day?</div>
+        <button class="toggle-btn" onclick="toggle('s-30')">Review Answer</button>
+        <div id="s-30" class="solution">
+            <strong>Answer: 14 hours 15 minutes</strong><br>
+            6:10 AM to 6:10 PM = 12 hours.<br>
+            6:10 PM to 8:10 PM = 2 hours.<br>
+            8:10 PM to 8:25 PM = 15 mins.<br>
+            Total: 14 hrs 15 mins.
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
