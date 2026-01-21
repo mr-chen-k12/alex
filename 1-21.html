@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice Set 2</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --header: #4a148c; /* Deep Purple */
+            --btn: #7b1fa2;
+            --bg: #f3e5f5;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--header);
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .q-title {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+        }
+
+        .q-text {
+            font-size: 1.15em;
+            margin-bottom: 20px;
+        }
+
+        button.toggle-btn {
+            background-color: var(--btn);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        button.toggle-btn:hover {
+            background-color: #4a148c;
+        }
+
+        .answer-area {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fce4ec; /* Light pink background for answers */
+            border-left: 5px solid #d81b60;
+            border-radius: 4px;
+        }
+
+        /* Canvas styling */
+        .canvas-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            background: #fff;
+            padding: 10px;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+        }
+    </style>
+    <script>
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.style.display === 'block') {
+                el.style.display = 'none';
+            } else {
+                el.style.display = 'block';
+                // Trigger canvas draw if present
+                const canvas = el.querySelector('canvas');
+                if (canvas) {
+                    drawGeometry(canvas);
+                }
+            }
+        }
+
+        function drawGeometry(canvas) {
+            const ctx = canvas.getContext('2d');
+            const type = canvas.dataset.type;
+            const w = canvas.width;
+            const h = canvas.height;
+
+            // Clear
+            ctx.clearRect(0, 0, w, h);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#333';
+            ctx.fillStyle = '#e1bee7'; // Light purple fill
+
+            if (type === 'rect') {
+                ctx.fillRect(40, 40, 160, 80);
+                ctx.strokeRect(40, 40, 160, 80);
+                // Labels
+                ctx.fillStyle = '#000';
+                ctx.font = "16px Arial";
+                ctx.fillText(canvas.dataset.l, 100, 30); // Top label
+                ctx.fillText(canvas.dataset.w, 5, 90);   // Side label
+            } else if (type === 'square') {
+                ctx.fillRect(60, 40, 100, 100);
+                ctx.strokeRect(60, 40, 100, 100);
+                ctx.fillStyle = '#000';
+                ctx.font = "16px Arial";
+                ctx.fillText("P = " + canvas.dataset.p, 80, 170);
+            } else if (type === 'angle') {
+                ctx.beginPath();
+                ctx.moveTo(150, 150);
+                ctx.lineTo(50, 150); // Vertex at 50,150
+                ctx.lineTo(50, 50);
+                ctx.stroke();
+                // Right angle mark
+                ctx.strokeRect(50, 130, 20, 20);
+                ctx.fillStyle = '#000';
+                ctx.fillText("Right Angle", 70, 100);
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Math Practice Set 2</h1>
+
+    <div class="question-card">
+        <div class="q-title">Problem 1</div>
+        <div class="q-text">What is the difference between the sum of \(\frac{2}{3}\) and \(\frac{1}{6}\) and the product of \(\frac{2}{3}\) and \(\frac{1}{6}\)?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-1')">Check Answer</button>
+        <div id="ans-1" class="answer-area">
+            <strong>Answer: \(\frac{13}{18}\)</strong><br><br>
+            Sum: \(\frac{4}{6} + \frac{1}{6} = \frac{5}{6} = \frac{15}{18}\)<br>
+            Product: \(\frac{2}{18} = \frac{1}{9}\)<br>
+            Difference: \(\frac{15}{18} - \frac{2}{18} = \frac{13}{18}\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 2</div>
+        <div class="q-text">A song lasts 4 minutes and 12 seconds. How many total seconds is that?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-2')">Check Answer</button>
+        <div id="ans-2" class="answer-area">
+            <strong>Answer: 252 seconds</strong><br><br>
+            \(4 \times 60 = 240\)<br>
+            \(240 + 12 = 252\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 3</div>
+        <div class="q-text">A rope is 6 feet \(3\frac{1}{2}\) inches long. Convert this length entirely to inches.</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-3')">Check Answer</button>
+        <div id="ans-3" class="answer-area">
+            <strong>Answer: \(75\frac{1}{2}\) inches</strong><br><br>
+            \(6 \text{ ft} \times 12 = 72 \text{ in}\)<br>
+            \(72 + 3\frac{1}{2} = 75\frac{1}{2}\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 4</div>
+        <div class="q-text">Calculate: \(2\frac{2}{5} \div 1\frac{1}{5}\)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-4')">Check Answer</button>
+        <div id="ans-4" class="answer-area">
+            <strong>Answer: \(2\)</strong><br><br>
+            \(\frac{12}{5} \div \frac{6}{5} = \frac{12}{5} \times \frac{5}{6} = \frac{12}{6} = 2\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 5</div>
+        <div class="q-text">Calculate: \(8 \div 2\frac{2}{3}\)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-5')">Check Answer</button>
+        <div id="ans-5" class="answer-area">
+            <strong>Answer: \(3\)</strong><br><br>
+            \(8 \div \frac{8}{3} = \frac{8}{1} \times \frac{3}{8} = 3\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 6</div>
+        <div class="q-text">Over 5 days, a shop sold a total of 150 items. What was the average number of items sold per day?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-6')">Check Answer</button>
+        <div id="ans-6" class="answer-area">
+            <strong>Answer: 30 items</strong><br><br>
+            \(150 \div 5 = 30\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 7</div>
+        <div class="q-text">Write the prime factorization of 45 and 75. Then reduce \(\frac{45}{75}\).</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-7')">Check Answer</button>
+        <div id="ans-7" class="answer-area">
+            <strong>Answer: \(\frac{3}{5}\)</strong><br><br>
+            45: \(3 \times 3 \times 5\)<br>
+            75: \(3 \times 5 \times 5\)<br>
+            Reduce: Divide both by 15.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 8</div>
+        <div class="q-text">Find \(m\): \(m - 3\frac{1}{2} = 4\frac{3}{4}\)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-8')">Check Answer</button>
+        <div id="ans-8" class="answer-area">
+            <strong>Answer: \(8\frac{1}{4}\)</strong><br><br>
+            \(m = 4\frac{3}{4} + 3\frac{2}{4} = 7\frac{5}{4} = 8\frac{1}{4}\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 9</div>
+        <div class="q-text">Find \(n\): \(n + 1\frac{1}{3} = 3\frac{5}{6}\)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-9')">Check Answer</button>
+        <div id="ans-9" class="answer-area">
+            <strong>Answer: \(2\frac{1}{2}\)</strong><br><br>
+            \(n = 3\frac{5}{6} - 1\frac{2}{6} = 2\frac{3}{6} = 2\frac{1}{2}\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 10</div>
+        <div class="q-text">Solve for \(k\): \(40k = 1.2\)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-10')">Check Answer</button>
+        <div id="ans-10" class="answer-area">
+            <strong>Answer: 0.03</strong><br><br>
+            \(k = \frac{1.2}{40} = \frac{12}{400} = \frac{3}{100} = 0.03\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 11</div>
+        <div class="q-text">Solve for \(x\): \(\frac{7}{20} = \frac{x}{100}\)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-11')">Check Answer</button>
+        <div id="ans-11" class="answer-area">
+            <strong>Answer: 35</strong><br><br>
+            \(20 \times 5 = 100\), so \(7 \times 5 = 35\).
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 12</div>
+        <div class="q-text">Calculate: \(7\frac{1}{4} - 2\frac{3}{4}\)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-12')">Check Answer</button>
+        <div id="ans-12" class="answer-area">
+            <strong>Answer: \(4\frac{1}{2}\)</strong><br><br>
+            Borrow from 7: \(6\frac{5}{4} - 2\frac{3}{4} = 4\frac{2}{4} = 4\frac{1}{2}\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 13</div>
+        <div class="q-text">Calculate: \(2\frac{1}{2} \times 3\frac{1}{3}\)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-13')">Check Answer</button>
+        <div id="ans-13" class="answer-area">
+            <strong>Answer: \(8\frac{1}{3}\)</strong><br><br>
+            \(\frac{5}{2} \times \frac{10}{3} = \frac{50}{6} = \frac{25}{3} = 8\frac{1}{3}\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 14</div>
+        <div class="q-text">Calculate: \(5\frac{1}{3} \div 2\)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-14')">Check Answer</button>
+        <div id="ans-14" class="answer-area">
+            <strong>Answer: \(2\frac{2}{3}\)</strong><br><br>
+            \(\frac{16}{3} \times \frac{1}{2} = \frac{8}{3} = 2\frac{2}{3}\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 15</div>
+        <div class="q-text">What is the area of a rectangle 5 inches long and \(2\frac{1}{4}\) inches wide?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-15')">Check Answer</button>
+        <div id="ans-15" class="answer-area">
+            <div class="canvas-wrapper">
+                <canvas data-type="rect" data-l="5 in" data-w="2.25 in" width="250" height="150"></canvas>
+            </div>
+            <strong>Answer: \(11\frac{1}{4}\) sq in</strong><br><br>
+            \(5 \times \frac{9}{4} = \frac{45}{4} = 11\frac{1}{4}\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 16</div>
+        <div class="q-text">Calculate: \((4.5 + 2.5) - (0.8 \times 5)\)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-16')">Check Answer</button>
+        <div id="ans-16" class="answer-area">
+            <strong>Answer: 3</strong><br><br>
+            \(7.0 - 4.0 = 3\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 17</div>
+        <div class="q-text">Calculate: \(14.4 \div 0.6\)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-17')">Check Answer</button>
+        <div id="ans-17" class="answer-area">
+            <strong>Answer: 24</strong><br><br>
+            \(144 \div 6 = 24\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 18</div>
+        <div class="q-text">The product \(2.8 \times 10\) equals which of the following?</div>
+        <div style="margin-top:10px; font-style: italic;">A) \(280 \div 10\) &nbsp;&nbsp; B) \(2800 \div 10\)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-18')">Check Answer</button>
+        <div id="ans-18" class="answer-area">
+            <strong>Answer: A) \(280 \div 10\)</strong><br><br>
+            \(2.8 \times 10 = 28\).<br>
+            Option A is \(28\). Option B is \(280\).
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 19</div>
+        <div class="q-text">Find the sum of 3120, 4850, and 1990 to the nearest thousand.</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-19')">Check Answer</button>
+        <div id="ans-19" class="answer-area">
+            <strong>Answer: 10,000</strong><br><br>
+            Sum is 9,960. Rounded to nearest thousand is 10,000.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 20</div>
+        <div class="q-text">Instead of \(900 \div 30\), divide both by 10. What is the new problem and quotient?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-20')">Check Answer</button>
+        <div id="ans-20" class="answer-area">
+            <strong>Problem: \(90 \div 3\)</strong><br>
+            <strong>Quotient: 30</strong>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 21</div>
+        <div class="q-text">The perimeter of a square is 6 meters. Find the side length and area.</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-21')">Check Answer</button>
+        <div id="ans-21" class="answer-area">
+            <div class="canvas-wrapper">
+                <canvas data-type="square" data-p="6m" width="250" height="200"></canvas>
+            </div>
+            <strong>Side: 1.5 m</strong><br>
+            <strong>Area: 2.25 sq m</strong><br><br>
+            \(6 \div 4 = 1.5\)<br>
+            \(1.5 \times 1.5 = 2.25\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 22</div>
+        <div class="q-text">What is the tax on a $12,000 car if the tax rate is 7%?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-22')">Check Answer</button>
+        <div id="ans-22" class="answer-area">
+            <strong>Answer: $840</strong><br><br>
+            \(12,000 \times 0.07 = 840\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 23</div>
+        <div class="q-text">If the probability of winning is \( \frac{1}{4} \), what is the probability of NOT winning?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-23')">Check Answer</button>
+        <div id="ans-23" class="answer-area">
+            <strong>Answer: \(\frac{3}{4}\)</strong><br><br>
+            \(1 - \frac{1}{4} = \frac{3}{4}\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 24</div>
+        <div class="q-text">Why is a semicircle not considered a polygon?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-24')">Check Answer</button>
+        <div id="ans-24" class="answer-area">
+            <strong>Answer:</strong> Because it has a curved edge. Polygons must have only straight sides.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 25</div>
+        <div class="q-text">Compare: \(\frac{1}{5} \times 10\) and \(10 \div 5\)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-25')">Check Answer</button>
+        <div id="ans-25" class="answer-area">
+            <strong>Answer: Equal (=)</strong><br><br>
+            Both equal 2.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 26</div>
+        <div class="q-text">If a line segment is 1 inch long and you extend it by \(\frac{3}{8}\) of an inch, how long is it?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-26')">Check Answer</button>
+        <div id="ans-26" class="answer-area">
+            <strong>Answer: \(1\frac{3}{8}\) inches</strong>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 27</div>
+        <div class="q-text">What type of angle forms a perfect "L" shape?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-27')">Check Answer</button>
+        <div id="ans-27" class="answer-area">
+            <div class="canvas-wrapper">
+                <canvas data-type="angle" width="200" height="200"></canvas>
+            </div>
+            <strong>Answer: Right Angle (90 degrees)</strong>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 28</div>
+        <div class="q-text">Write 8% as a reduced fraction and as a decimal.</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-28')">Check Answer</button>
+        <div id="ans-28" class="answer-area">
+            <strong>Fraction: \(\frac{2}{25}\)</strong><br>
+            <strong>Decimal: 0.08</strong><br><br>
+            \(\frac{8}{100} = \frac{2}{25}\)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 29</div>
+        <div class="q-text">A basketball is an example of what geometric solid?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-29')">Check Answer</button>
+        <div id="ans-29" class="answer-area">
+            <strong>Answer: Sphere</strong>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="q-title">Problem 30</div>
+        <div class="q-text">A worker started at 8:30 a.m. and finished at 3:15 p.m. How long did they work?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('ans-30')">Check Answer</button>
+        <div id="ans-30" class="answer-area">
+            <strong>Answer: 6 hours 45 minutes</strong><br><br>
+            8:30 to 2:30 is 6 hours.<br>
+            2:30 to 3:15 is 45 minutes.
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
