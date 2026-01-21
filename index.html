@@ -1,42 +1,188 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Index</title>
+    <title>Homework Zone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 40px 20px; background-color: #f6f8fa; color: #24292f; }
-        h1 { border-bottom: 1px solid #d0d7de; padding-bottom: 10px; margin-bottom: 20px; text-transform: capitalize; }
-        ul { list-style-type: none; padding: 0; background: white; border: 1px solid #d0d7de; border-radius: 6px; }
-        li { border-bottom: 1px solid #d0d7de; }
-        li:last-child { border-bottom: none; }
-        a { display: block; padding: 16px; text-decoration: none; color: #0969da; font-weight: 500; }
-        a:hover { background-color: #f3f4f6; text-decoration: underline; }
-        .file-icon { margin-right: 10px; color: #57606a; }
+        /* --- FUN STYLING STARTS HERE --- */
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Title Area */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            letter-spacing: 2px;
+            text-transform: capitalize;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-top: 10px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* The Grid of Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* Individual Card Design */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            text-decoration: none;
+            color: #444;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Fun Hover Effects */
+        .card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+            border-color: #ffd700;
+        }
+
+        /* The Big Icon inside the card */
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        /* Loading & Error States */
+        #loading {
+            color: white;
+            font-size: 1.5rem;
+            margin-top: 50px;
+        }
+
+        /* Different Colors for cards (Assigned by JS) */
+        .style-1 { border-bottom: 8px solid #FF6B6B; }
+        .style-2 { border-bottom: 8px solid #4ECDC4; }
+        .style-3 { border-bottom: 8px solid #FFE66D; }
+        .style-4 { border-bottom: 8px solid #1A535C; }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
     </style>
 </head>
 <body>
-    <h1 id="repo-title">Directory Index</h1>
-    <ul id="file-list"><li>Loading...</li></ul>
+
+    <header>
+        <h1 id="repo-name">Homework</h1>
+        <p class="subtitle">Select a mission to begin!</p>
+    </header>
+
+    <div id="loading">🚀 Loading missions...</div>
+    <div class="card-grid" id="file-list"></div>
 
     <script>
-        // Update the title based on the URL (e.g., ".../miriam/" becomes "Miriam")
-        const folderName = window.location.pathname.split('/').filter(Boolean).pop();
-        if(folderName) document.getElementById('repo-title').innerText = folderName + " Directory";
+        // 1. Get the folder name for the title (e.g. "Miriam")
+        const folderName = window.location.pathname.split('/').filter(Boolean).pop() || "Home";
+        document.getElementById('repo-name').innerText = folderName;
 
+        // 2. Fetch the JSON list you uploaded
         fetch('files.json')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error("Missing files.json");
+                return response.json();
+            })
             .then(files => {
                 const list = document.getElementById('file-list');
-                list.innerHTML = ''; // Clear loading text
-                files.forEach(filename => {
-                    const li = document.createElement('li');
-                    li.innerHTML = `<a href="${filename}"><span class="file-icon">📄</span> ${filename}</a>`;
-                    list.appendChild(li);
+                const loading = document.getElementById('loading');
+                loading.style.display = 'none';
+
+                if (files.length === 0) {
+                    list.innerHTML = '<div style="color:white; font-size:1.5rem; grid-column: 1/-1; text-align:center;">All clear! No homework today. 🎉</div>';
+                    return;
+                }
+
+                // 3. Create a card for each file
+                files.forEach((filename, index) => {
+                    // Create the link element
+                    const a = document.createElement('a');
+                    a.href = filename;
+                    
+                    // Assign a random color style (1-4)
+                    const styleNum = (index % 4) + 1;
+                    a.className = `card style-${styleNum}`;
+
+                    // Guess the icon based on the name
+                    let icon = "📄"; // Default
+                    const lowerName = filename.toLowerCase();
+                    if (lowerName.includes("math")) icon = "📐";
+                    else if (lowerName.includes("quiz")) icon = "🏆";
+                    else if (lowerName.includes("extra")) icon = "🌟";
+                    else if (lowerName.includes("study")) icon = "🧠";
+                    else if (lowerName.includes("game")) icon = "🎮";
+                    else if (lowerName.includes("reading")) icon = "📚";
+                    else if (lowerName.includes("test")) icon = "📝";
+
+                    // Build the HTML inside the card
+                    a.innerHTML = `
+                        <div class="card-icon">${icon}</div>
+                        <div class="card-title">${cleanName(filename)}</div>
+                    `;
+                    
+                    list.appendChild(a);
                 });
             })
-            .catch(e => document.getElementById('file-list').innerHTML = '<li style="padding:20px; color:red">Error: files.json not found.</li>');
+            .catch(error => {
+                document.getElementById('loading').innerHTML = 
+                    '⚠️ Oops! Could not find <b>files.json</b>.<br><span style="font-size:1rem">Did you run the python script and upload the json file?</span>';
+            });
+
+        // Helper: Removes ".html" from the display text to make it cleaner
+        function cleanName(name) {
+            return name.replace('.html', '').replace(/-/g, ' '); // Replaces dashes with spaces
+        }
     </script>
+
 </body>
 </html>
