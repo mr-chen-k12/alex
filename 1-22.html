@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Problem Solutions</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .problem-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-left: 5px solid #3498db;
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .toggle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.3s;
+        }
+        .toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        .solution-area {
+            display: none; /* Hidden by default */
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            background-color: #fafafa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            background-color: #fff;
+            display: block;
+            margin: 10px auto;
+        }
+        .step {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Problem Set Review</h1>
+
+    <div class="problem-container">
+        <div class="question-text">
+            1. Solve for \( x \) in the quadratic equation \( 2x^2 - 4x - 6 = 0 \).
+        </div>
+        
+        <button class="toggle-btn" onclick="toggleSolution('sol1')">Show Answer & Explanation</button>
+        
+        <div id="sol1" class="solution-area">
+            <h3>Solution:</h3>
+            <div class="step">
+                First, we can divide the entire equation by 2 to simplify:
+                $$ x^2 - 2x - 3 = 0 $$
+            </div>
+            <div class="step">
+                We factor the quadratic:
+                $$ (x - 3)(x + 1) = 0 $$
+            </div>
+            <div class="step">
+                Therefore, the possible values for \( x \) are:
+                $$ x = 3 \quad \text{or} \quad x = -1 $$
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question-text">
+            2. Visualize a right triangle with a base of 150 units and a height of 100 units.
+        </div>
+
+        <button class="toggle-btn" onclick="toggleSolution('sol2')">Show Diagram</button>
+
+        <div id="sol2" class="solution-area">
+            <h3>Diagram:</h3>
+            <p>Below is a dynamic rendering using HTML Canvas:</p>
+            <canvas id="triangleCanvas" width="300" height="200"></canvas>
+            <script>
+                // Simple script to draw on the canvas
+                const canvas = document.getElementById('triangleCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Draw Triangle
+                ctx.beginPath();
+                ctx.moveTo(50, 150); // Bottom Left
+                ctx.lineTo(200, 150); // Bottom Right
+                ctx.lineTo(50, 50);   // Top Left
+                ctx.closePath();
+                
+                // Style
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#e74c3c';
+                ctx.stroke();
+                ctx.fillStyle = "rgba(231, 76, 60, 0.1)";
+                ctx.fill();
+
+                // Labels
+                ctx.fillStyle = "black";
+                ctx.font = "14px Arial";
+                ctx.fillText("Height = 100", 60, 100);
+                ctx.fillText("Base = 150", 100, 170);
+            </script>
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle visibility
+        function toggleSolution(id) {
+            var x = document.getElementById(id);
+            var btn = x.previousElementSibling; 
+            
+            if (x.style.display === "block") {
+                x.style.display = "none";
+                btn.innerText = "Show Answer & Explanation";
+            } else {
+                x.style.display = "block";
+                btn.innerText = "Hide Answer";
+            }
+        }
+    </script>
+
+</body>
+</html>
