@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Problem Solutions</title>
+    <title>Physics Problem Solutions</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
@@ -21,7 +19,7 @@
             text-align: center;
             color: #2c3e50;
         }
-        .problem-container {
+        .problem-card {
             background: white;
             border-radius: 8px;
             padding: 20px;
@@ -32,122 +30,142 @@
         .question-text {
             font-size: 1.1em;
             margin-bottom: 15px;
-            font-weight: 600;
+            font-weight: 500;
         }
-        .toggle-btn {
-            background-color: #3498db;
+        .canvas-container {
+            text-align: center;
+            margin: 15px 0;
+            border: 1px dashed #ccc;
+            background: #fafafa;
+        }
+        .reveal-btn {
+            background-color: #27ae60;
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 10px 20px;
+            font-size: 16px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 0.9em;
             transition: background 0.3s;
         }
-        .toggle-btn:hover {
-            background-color: #2980b9;
+        .reveal-btn:hover {
+            background-color: #219150;
         }
-        .solution-area {
+        .solution-section {
             display: none; /* Hidden by default */
-            margin-top: 15px;
+            margin-top: 20px;
             padding-top: 15px;
             border-top: 1px solid #eee;
-            background-color: #fafafa;
-            padding: 15px;
-            border-radius: 5px;
-        }
-        canvas {
-            border: 1px solid #ddd;
-            background-color: #fff;
-            display: block;
-            margin: 10px auto;
+            animation: fadeIn 0.5s;
         }
         .step {
             margin-bottom: 10px;
+        }
+        .final-answer {
+            background-color: #e8f8f5;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #16a085;
+            margin-top: 15px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-    <h1>Problem Set Review</h1>
+    <h1>Physics Problem Solutions</h1>
 
-    <div class="problem-container">
+    <div class="problem-card" id="p1">
+        <h3>Problem 1: Projectile Motion</h3>
         <div class="question-text">
-            1. Solve for \( x \) in the quadratic equation \( 2x^2 - 4x - 6 = 0 \).
-        </div>
-        
-        <button class="toggle-btn" onclick="toggleSolution('sol1')">Show Answer & Explanation</button>
-        
-        <div id="sol1" class="solution-area">
-            <h3>Solution:</h3>
-            <div class="step">
-                First, we can divide the entire equation by 2 to simplify:
-                $$ x^2 - 2x - 3 = 0 $$
-            </div>
-            <div class="step">
-                We factor the quadratic:
-                $$ (x - 3)(x + 1) = 0 $$
-            </div>
-            <div class="step">
-                Therefore, the possible values for \( x \) are:
-                $$ x = 3 \quad \text{or} \quad x = -1 $$
-            </div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question-text">
-            2. Visualize a right triangle with a base of 150 units and a height of 100 units.
+            A ball is launched from the ground with an initial velocity of $v_0 = 50 \, \text{m/s}$ at an angle of $\theta = 30^\circ$ above the horizontal. Calculate the total time of flight ($t$) and the maximum height ($H$) reached. Assume $g = 9.8 \, \text{m/s}^2$ and ignore air resistance.
         </div>
 
-        <button class="toggle-btn" onclick="toggleSolution('sol2')">Show Diagram</button>
+        <div class="canvas-container">
+            <canvas id="canvas1" width="400" height="200"></canvas>
+        </div>
 
-        <div id="sol2" class="solution-area">
-            <h3>Diagram:</h3>
-            <p>Below is a dynamic rendering using HTML Canvas:</p>
-            <canvas id="triangleCanvas" width="300" height="200"></canvas>
-            <script>
-                // Simple script to draw on the canvas
-                const canvas = document.getElementById('triangleCanvas');
-                const ctx = canvas.getContext('2d');
-                
-                // Draw Triangle
-                ctx.beginPath();
-                ctx.moveTo(50, 150); // Bottom Left
-                ctx.lineTo(200, 150); // Bottom Right
-                ctx.lineTo(50, 50);   // Top Left
-                ctx.closePath();
-                
-                // Style
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = '#e74c3c';
-                ctx.stroke();
-                ctx.fillStyle = "rgba(231, 76, 60, 0.1)";
-                ctx.fill();
+        <button class="reveal-btn" onclick="toggleSolution('sol1')">Review Answer & Explanation</button>
 
-                // Labels
-                ctx.fillStyle = "black";
-                ctx.font = "14px Arial";
-                ctx.fillText("Height = 100", 60, 100);
-                ctx.fillText("Base = 150", 100, 170);
-            </script>
+        <div id="sol1" class="solution-section">
+            <h4>Explanation:</h4>
+            <div class="step">
+                <strong>Step 1: Break down the velocity vector.</strong><br>
+                The initial velocity components are:
+                $$v_{0x} = v_0 \cos(\theta) = 50 \cos(30^\circ) \approx 43.3 \, \text{m/s}$$
+                $$v_{0y} = v_0 \sin(\theta) = 50 \sin(30^\circ) = 25 \, \text{m/s}$$
+            </div>
+            <div class="step">
+                <strong>Step 2: Calculate Time of Flight ($t$).</strong><br>
+                The total time is determined by the vertical motion. The ball lands when vertical displacement is zero.
+                $$y = v_{0y}t - \frac{1}{2}gt^2 = 0 \implies t(v_{0y} - \frac{1}{2}gt) = 0$$
+                $$t = \frac{2v_{0y}}{g} = \frac{2(25)}{9.8} \approx 5.10 \, \text{s}$$
+            </div>
+            <div class="step">
+                <strong>Step 3: Calculate Maximum Height ($H$).</strong><br>
+                Max height occurs when $v_y = 0$.
+                $$v_y^2 = v_{0y}^2 - 2gH \implies 0 = (25)^2 - 2(9.8)H$$
+                $$H = \frac{625}{19.6} \approx 31.89 \, \text{m}$$
+            </div>
+            
+            <div class="final-answer">
+                Final Answer: Time of flight is 5.10 s and Maximum Height is 31.89 m.
+            </div>
         </div>
     </div>
 
     <script>
-        // Function to toggle visibility
+        // Function to toggle solution visibility
         function toggleSolution(id) {
             var x = document.getElementById(id);
-            var btn = x.previousElementSibling; 
-            
             if (x.style.display === "block") {
                 x.style.display = "none";
-                btn.innerText = "Show Answer & Explanation";
             } else {
                 x.style.display = "block";
-                btn.innerText = "Hide Answer";
             }
         }
+
+        // DRAWING ON CANVAS
+        window.onload = function() {
+            var c = document.getElementById("canvas1");
+            var ctx = c.getContext("2d");
+
+            // Draw Ground
+            ctx.beginPath();
+            ctx.moveTo(10, 180);
+            ctx.lineTo(390, 180);
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw Trajectory (Parabola)
+            ctx.beginPath();
+            ctx.moveTo(20, 180);
+            ctx.quadraticCurveTo(200, 0, 380, 180);
+            ctx.strokeStyle = "#e74c3c";
+            ctx.setLineDash([5, 5]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Draw Initial Vector
+            ctx.beginPath();
+            ctx.moveTo(20, 180);
+            ctx.lineTo(60, 140);
+            ctx.strokeStyle = "#2980b9";
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Labels
+            ctx.font = "14px Arial";
+            ctx.fillStyle = "black";
+            ctx.fillText("v0", 65, 140);
+            ctx.fillText("θ = 30°", 40, 170);
+            ctx.fillText("H max", 190, 50);
+        };
     </script>
 
 </body>
