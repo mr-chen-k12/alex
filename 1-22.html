@@ -3,170 +3,537 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Physics Problem Solutions</title>
+    <title>Saxon Math Course 1 - Lesson 70 Practice Solutions</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            max-width: 800px;
+            background-color: var(--bg-color);
+            color: #333;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f4f4f9;
-            color: #333;
+            line-height: 1.6;
         }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
+        h1, h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
         }
         .problem-card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            border-left: 5px solid #3498db;
+            margin-bottom: 20px;
+            padding: 20px;
+            transition: transform 0.2s;
         }
-        .question-text {
+        .problem-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .problem-header {
+            font-weight: bold;
             font-size: 1.1em;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .problem-text {
             margin-bottom: 15px;
-            font-weight: 500;
         }
-        .canvas-container {
-            text-align: center;
-            margin: 15px 0;
-            border: 1px dashed #ccc;
-            background: #fafafa;
-        }
-        .reveal-btn {
-            background-color: #27ae60;
+        .btn-reveal {
+            background-color: var(--accent-color);
             color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 5px;
+            padding: 8px 16px;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 0.9em;
             transition: background 0.3s;
         }
-        .reveal-btn:hover {
-            background-color: #219150;
+        .btn-reveal:hover {
+            background-color: #2980b9;
         }
-        .solution-section {
-            display: none; /* Hidden by default */
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-            animation: fadeIn 0.5s;
+        .answer-panel {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f6f3;
+            border-left: 4px solid #1abc9c;
+            border-radius: 4px;
         }
-        .step {
-            margin-bottom: 10px;
+        .answer-step {
+            margin-bottom: 8px;
         }
         .final-answer {
-            background-color: #e8f8f5;
-            padding: 10px;
-            border-radius: 5px;
             font-weight: bold;
             color: #16a085;
-            margin-top: 15px;
+            margin-top: 10px;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .visual-container {
+            margin: 15px 0;
+            text-align: center;
         }
+        svg {
+            max-width: 100%;
+            height: auto;
+            background: white;
+            border: 1px solid #ddd;
+        }
+        /* Graph styles */
+        .chart-grid line { stroke: #e0e0e0; }
+        .chart-axis text { font-size: 12px; fill: #666; }
+        .chart-line { fill: none; stroke: #3498db; stroke-width: 2; }
+        .chart-point { fill: #3498db; }
+        .geom-shape { fill: none; stroke: #2c3e50; stroke-width: 2; }
     </style>
 </head>
 <body>
 
-    <h1>Physics Problem Solutions</h1>
+    <h1>Lesson 70: Practice Solutions</h1>
+    <p>Below are the step-by-step solutions for the problems presented in the images. Click "Show Answer" to review the explanation.</p>
 
-    <div class="problem-card" id="p1">
-        <h3>Problem 1: Projectile Motion</h3>
-        <div class="question-text">
-            A ball is launched from the ground with an initial velocity of $v_0 = 50 \, \text{m/s}$ at an angle of $\theta = 30^\circ$ above the horizontal. Calculate the total time of flight ($t$) and the maximum height ($H$) reached. Assume $g = 9.8 \, \text{m/s}^2$ and ignore air resistance.
+    <h2>Lesson Practice</h2>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>a. Reduce before multiplying: \( \frac{3}{4} \cdot \frac{4}{5} \)</span> <button class="btn-reveal" onclick="toggleAnswer('lp-a')">Show Answer</button></div>
+        <div id="lp-a" class="answer-panel">
+            <div class="answer-step">We can cancel the 4 in the numerator and the denominator.</div>
+            <div class="answer-step">$$ \frac{3}{\bcancel{4}} \cdot \frac{\bcancel{4}}{5} = \frac{3}{1} \cdot \frac{1}{5} $$</div>
+            <div class="final-answer">Answer: \( \frac{3}{5} \)</div>
         </div>
+    </div>
 
-        <div class="canvas-container">
-            <canvas id="canvas1" width="400" height="200"></canvas>
+    <div class="problem-card">
+        <div class="problem-header"><span>b. Reduce before multiplying: \( \frac{2}{3} \cdot \frac{3}{4} \)</span> <button class="btn-reveal" onclick="toggleAnswer('lp-b')">Show Answer</button></div>
+        <div id="lp-b" class="answer-panel">
+            <div class="answer-step">Cancel the 3s (one on top, one on bottom). Reduce 2 and 4 by dividing both by 2.</div>
+            <div class="answer-step">$$ \frac{\bcancel{2}^1}{\bcancel{3}_1} \cdot \frac{\bcancel{3}^1}{\bcancel{4}_2} = \frac{1}{1} \cdot \frac{1}{2} $$</div>
+            <div class="final-answer">Answer: \( \frac{1}{2} \)</div>
         </div>
+    </div>
 
-        <button class="reveal-btn" onclick="toggleSolution('sol1')">Review Answer & Explanation</button>
+    <div class="problem-card">
+        <div class="problem-header"><span>c. Reduce before multiplying: \( \frac{8}{9} \cdot \frac{9}{10} \)</span> <button class="btn-reveal" onclick="toggleAnswer('lp-c')">Show Answer</button></div>
+        <div id="lp-c" class="answer-panel">
+            <div class="answer-step">Cancel the 9s. Reduce 8 and 10 by dividing both by 2.</div>
+            <div class="answer-step">$$ \frac{\bcancel{8}^4}{\bcancel{9}_1} \cdot \frac{\bcancel{9}^1}{\bcancel{10}_5} = \frac{4}{1} \cdot \frac{1}{5} $$</div>
+            <div class="final-answer">Answer: \( \frac{4}{5} \)</div>
+        </div>
+    </div>
 
-        <div id="sol1" class="solution-section">
-            <h4>Explanation:</h4>
-            <div class="step">
-                <strong>Step 1: Break down the velocity vector.</strong><br>
-                The initial velocity components are:
-                $$v_{0x} = v_0 \cos(\theta) = 50 \cos(30^\circ) \approx 43.3 \, \text{m/s}$$
-                $$v_{0y} = v_0 \sin(\theta) = 50 \sin(30^\circ) = 25 \, \text{m/s}$$
+    <div class="problem-card">
+        <div class="problem-header"><span>d. Write in fraction form, then reduce: \( 2\frac{1}{4} \times 4 \)</span> <button class="btn-reveal" onclick="toggleAnswer('lp-d')">Show Answer</button></div>
+        <div id="lp-d" class="answer-panel">
+            <div class="answer-step">Convert mixed number to improper fraction: \( 2\frac{1}{4} = \frac{9}{4} \). Write 4 as \( \frac{4}{1} \).</div>
+            <div class="answer-step">$$ \frac{9}{4} \cdot \frac{4}{1} $$</div>
+            <div class="answer-step">Cancel the 4s.</div>
+            <div class="final-answer">Answer: 9</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>e. Write in fraction form, then reduce: \( 1\frac{1}{2} \times 2\frac{2}{3} \)</span> <button class="btn-reveal" onclick="toggleAnswer('lp-e')">Show Answer</button></div>
+        <div id="lp-e" class="answer-panel">
+            <div class="answer-step">Convert to improper fractions: \( 1\frac{1}{2} = \frac{3}{2} \) and \( 2\frac{2}{3} = \frac{8}{3} \).</div>
+            <div class="answer-step">$$ \frac{3}{2} \cdot \frac{8}{3} $$</div>
+            <div class="answer-step">Cancel the 3s. Reduce 8 and 2 (\(8 \div 2 = 4\)).</div>
+            <div class="final-answer">Answer: 4</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>f. Write in fraction form, then reduce: \( 3\frac{1}{3} \times 2\frac{1}{4} \)</span> <button class="btn-reveal" onclick="toggleAnswer('lp-f')">Show Answer</button></div>
+        <div id="lp-f" class="answer-panel">
+            <div class="answer-step">Convert: \( 3\frac{1}{3} = \frac{10}{3} \) and \( 2\frac{1}{4} = \frac{9}{4} \).</div>
+            <div class="answer-step">$$ \frac{10}{3} \cdot \frac{9}{4} $$</div>
+            <div class="answer-step">Reduce 10 and 4 (by 2) -> 5 and 2. Reduce 9 and 3 (by 3) -> 3 and 1.</div>
+            <div class="answer-step">$$ \frac{5}{1} \cdot \frac{3}{2} = \frac{15}{2} $$</div>
+            <div class="final-answer">Answer: \( 7\frac{1}{2} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>g. Rewrite division as multiplication: \( \frac{2}{5} \div \frac{2}{3} \)</span> <button class="btn-reveal" onclick="toggleAnswer('lp-g')">Show Answer</button></div>
+        <div id="lp-g" class="answer-panel">
+            <div class="answer-step">Multiply by the reciprocal of the second fraction: \( \frac{2}{5} \cdot \frac{3}{2} \).</div>
+            <div class="answer-step">Cancel the 2s.</div>
+            <div class="final-answer">Answer: \( \frac{3}{5} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>h. Rewrite division as multiplication: \( \frac{8}{9} \div \frac{2}{3} \)</span> <button class="btn-reveal" onclick="toggleAnswer('lp-h')">Show Answer</button></div>
+        <div id="lp-h" class="answer-panel">
+            <div class="answer-step">Multiply by reciprocal: \( \frac{8}{9} \cdot \frac{3}{2} \).</div>
+            <div class="answer-step">Reduce 8 and 2 -> 4 and 1. Reduce 3 and 9 -> 1 and 3.</div>
+            <div class="answer-step">\( \frac{4}{3} \cdot \frac{1}{1} = \frac{4}{3} \)</div>
+            <div class="final-answer">Answer: \( 1\frac{1}{3} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>i. Rewrite division as multiplication: \( \frac{9}{10} \div 1\frac{1}{5} \)</span> <button class="btn-reveal" onclick="toggleAnswer('lp-i')">Show Answer</button></div>
+        <div id="lp-i" class="answer-panel">
+            <div class="answer-step">Convert mixed number: \( 1\frac{1}{5} = \frac{6}{5} \).</div>
+            <div class="answer-step">Rewrite: \( \frac{9}{10} \div \frac{6}{5} = \frac{9}{10} \cdot \frac{5}{6} \).</div>
+            <div class="answer-step">Reduce 9 and 6 (by 3) -> 3 and 2. Reduce 5 and 10 (by 5) -> 1 and 2.</div>
+            <div class="answer-step">\( \frac{3}{2} \cdot \frac{1}{2} = \frac{3}{4} \)</div>
+            <div class="final-answer">Answer: \( \frac{3}{4} \)</div>
+        </div>
+    </div>
+
+    <h2>Written Practice</h2>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>1. Write using digits: Seven million, two hundred thousand dollars.</span> <button class="btn-reveal" onclick="toggleAnswer('wp-1')">Show Answer</button></div>
+        <div id="wp-1" class="answer-panel">
+            <div class="final-answer">Answer: $7,200,000</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>2. How many eighth notes equal a half note?</span> <button class="btn-reveal" onclick="toggleAnswer('wp-2')">Show Answer</button></div>
+        <div id="wp-2" class="answer-panel">
+            <div class="answer-step">A half note is \( \frac{1}{2} \). An eighth note is \( \frac{1}{8} \).</div>
+            <div class="answer-step">\( \frac{1}{2} \div \frac{1}{8} = \frac{1}{2} \cdot \frac{8}{1} = 4 \)</div>
+            <div class="final-answer">Answer: 4 eighth notes</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>3. Double \( 12\frac{1}{2} \) and \( 2\frac{1}{2} \), then divide.</span> <button class="btn-reveal" onclick="toggleAnswer('wp-3')">Show Answer</button></div>
+        <div id="wp-3" class="answer-panel">
+            <div class="answer-step">Double \( 12\frac{1}{2} \) = 25.</div>
+            <div class="answer-step">Double \( 2\frac{1}{2} \) = 5.</div>
+            <div class="answer-step">Divide: \( 25 \div 5 = 5 \).</div>
+            <div class="final-answer">Answer: 5</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>4. Reduce before multiplying: \( \frac{5}{6} \cdot \frac{4}{5} \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-4')">Show Answer</button></div>
+        <div id="wp-4" class="answer-panel">
+            <div class="answer-step">Cancel 5s. Reduce 4 and 6 by 2 -> 2 and 3.</div>
+            <div class="final-answer">Answer: \( \frac{2}{3} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>5. \( \frac{5}{6} \div \frac{5}{2} \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-5')">Show Answer</button></div>
+        <div id="wp-5" class="answer-panel">
+            <div class="answer-step">Flip and multiply: \( \frac{5}{6} \cdot \frac{2}{5} \).</div>
+            <div class="answer-step">Cancel 5s. Reduce 2 and 6 -> 1 and 3.</div>
+            <div class="final-answer">Answer: \( \frac{1}{3} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>6. Reduce before multiplying: \( \frac{9}{10} \cdot \frac{5}{6} \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-6')">Show Answer</button></div>
+        <div id="wp-6" class="answer-panel">
+            <div class="answer-step">Reduce 9 and 6 (by 3) -> 3 and 2. Reduce 5 and 10 (by 5) -> 1 and 2.</div>
+            <div class="answer-step">\( \frac{3}{2} \cdot \frac{1}{2} \)</div>
+            <div class="final-answer">Answer: \( \frac{3}{4} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>7. What number is halfway between \( \frac{1}{2} \) and 1?</span> <button class="btn-reveal" onclick="toggleAnswer('wp-7')">Show Answer</button></div>
+        <div id="wp-7" class="answer-panel">
+            <div class="answer-step">Average them: \( \frac{\frac{1}{2} + 1}{2} = \frac{1.5}{2} = 0.75 \).</div>
+            <div class="final-answer">Answer: \( \frac{3}{4} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>8. \( \sqrt{100} + 10^2 \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-8')">Show Answer</button></div>
+        <div id="wp-8" class="answer-panel">
+            <div class="answer-step">\( \sqrt{100} = 10 \). \( 10^2 = 100 \).</div>
+            <div class="answer-step">\( 10 + 100 = 110 \).</div>
+            <div class="final-answer">Answer: 110</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>9. \( 3\frac{2}{3} + 4\frac{5}{6} \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-9')">Show Answer</button></div>
+        <div id="wp-9" class="answer-panel">
+            <div class="answer-step">Common denominator is 6. \( 3\frac{4}{6} + 4\frac{5}{6} \).</div>
+            <div class="answer-step">Add: \( 7\frac{9}{6} = 7 + 1\frac{3}{6} = 8\frac{1}{2} \).</div>
+            <div class="final-answer">Answer: \( 8\frac{1}{2} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>10. \( 7\frac{1}{8} - 2\frac{1}{2} \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-10')">Show Answer</button></div>
+        <div id="wp-10" class="answer-panel">
+            <div class="answer-step">Common denominator 8: \( 7\frac{1}{8} - 2\frac{4}{8} \).</div>
+            <div class="answer-step">Borrow from 7: \( 6\frac{9}{8} - 2\frac{4}{8} \).</div>
+            <div class="final-answer">Answer: \( 4\frac{5}{8} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>11. \( 4.37 + 12.8 + 6 \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-11')">Show Answer</button></div>
+        <div id="wp-11" class="answer-panel">
+            <div class="answer-step">Align decimals: <br> 4.37 <br> 12.80 <br> 6.00</div>
+            <div class="final-answer">Answer: 23.17</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>12. \( 0.46 \div 5 \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-12')">Show Answer</button></div>
+        <div id="wp-12" class="answer-panel">
+            <div class="answer-step">Perform long division: 0.460 / 5.</div>
+            <div class="final-answer">Answer: 0.092</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>13. \( 60 \div 0.8 \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-13')">Show Answer</button></div>
+        <div id="wp-13" class="answer-panel">
+            <div class="answer-step">Shift decimal: \( 600 \div 8 \).</div>
+            <div class="final-answer">Answer: 75</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>14. Average of the three numbers marked by arrows.</span> <button class="btn-reveal" onclick="toggleAnswer('wp-14')">Show Answer</button></div>
+        <div id="wp-14" class="answer-panel">
+            <div class="answer-step">The number line shows marks between 4 and 5, and 5 and 6.</div>
+            <div class="answer-step">First arrow: 4.2. Second arrow: 4.7. Third arrow: 5.2.</div>
+            <div class="answer-step">Sum: \( 4.2 + 4.7 + 5.2 = 14.1 \).</div>
+            <div class="answer-step">Average: \( 14.1 \div 3 = 4.7 \).</div>
+            <div class="final-answer">Answer: 4.7</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>15. The problem \( 1.5 \div 0.06 \) is equivalent to?</span> <button class="btn-reveal" onclick="toggleAnswer('wp-15')">Show Answer</button></div>
+        <div id="wp-15" class="answer-panel">
+            <div class="answer-step">To clear the decimal in 0.06 (move 2 places), we move the decimal in 1.5 two places right.</div>
+            <div class="answer-step">\( 1.50 \div 0.06 = 150 \div 6 \).</div>
+            <div class="final-answer">Answer: B (150 ÷ 6)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>16. How many milliliters in 3.8 liters?</span> <button class="btn-reveal" onclick="toggleAnswer('wp-16')">Show Answer</button></div>
+        <div id="wp-16" class="answer-panel">
+            <div class="answer-step">1 Liter = 1000 mL.</div>
+            <div class="answer-step">\( 3.8 \times 1000 = 3800 \).</div>
+            <div class="final-answer">Answer: 3800 mL</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>17. \( \frac{2}{3} + n = 1 \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-17')">Show Answer</button></div>
+        <div id="wp-17" class="answer-panel">
+            <div class="answer-step">\( n = 1 - \frac{2}{3} \).</div>
+            <div class="final-answer">Answer: \( n = \frac{1}{3} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>18. \( \frac{2}{3}m = 1 \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-18')">Show Answer</button></div>
+        <div id="wp-18" class="answer-panel">
+            <div class="answer-step">m must be the reciprocal of \( \frac{2}{3} \).</div>
+            <div class="final-answer">Answer: \( m = \frac{3}{2} \) or \( 1\frac{1}{2} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>19. \( f - \frac{3}{4} = \frac{5}{6} \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-19')">Show Answer</button></div>
+        <div id="wp-19" class="answer-panel">
+            <div class="answer-step">\( f = \frac{5}{6} + \frac{3}{4} \). Common denominator 12.</div>
+            <div class="answer-step">\( \frac{10}{12} + \frac{9}{12} = \frac{19}{12} \).</div>
+            <div class="final-answer">Answer: \( 1\frac{7}{12} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>20. A pyramid with a triangular base has how many...</span> <button class="btn-reveal" onclick="toggleAnswer('wp-20')">Show Answer</button></div>
+        <div id="wp-20" class="answer-panel">
+            <div class="visual-container">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                    <polygon points="50,10 20,80 80,80" class="geom-shape" style="fill:#e0f7fa" />
+                    <line x1="50" y1="10" x2="50" y2="70" style="stroke:#2c3e50; stroke-width:1; stroke-dasharray:4" />
+                    <line x1="20" y1="80" x2="50" y2="70" style="stroke:#2c3e50; stroke-width:1; stroke-dasharray:4" />
+                    <line x1="80" y1="80" x2="50" y2="70" style="stroke:#2c3e50; stroke-width:1; stroke-dasharray:4" />
+                </svg>
             </div>
-            <div class="step">
-                <strong>Step 2: Calculate Time of Flight ($t$).</strong><br>
-                The total time is determined by the vertical motion. The ball lands when vertical displacement is zero.
-                $$y = v_{0y}t - \frac{1}{2}gt^2 = 0 \implies t(v_{0y} - \frac{1}{2}gt) = 0$$
-                $$t = \frac{2v_{0y}}{g} = \frac{2(25)}{9.8} \approx 5.10 \, \text{s}$$
-            </div>
-            <div class="step">
-                <strong>Step 3: Calculate Maximum Height ($H$).</strong><br>
-                Max height occurs when $v_y = 0$.
-                $$v_y^2 = v_{0y}^2 - 2gH \implies 0 = (25)^2 - 2(9.8)H$$
-                $$H = \frac{625}{19.6} \approx 31.89 \, \text{m}$$
-            </div>
+            <div class="answer-step">This shape is a tetrahedron.</div>
+            <div class="final-answer">a. Faces: 4</div>
+            <div class="final-answer">b. Edges: 6</div>
+            <div class="final-answer">c. Vertices: 4</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>21. \( 1\frac{2}{3} \times 1\frac{1}{5} \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-21')">Show Answer</button></div>
+        <div id="wp-21" class="answer-panel">
+            <div class="answer-step">Convert: \( \frac{5}{3} \times \frac{6}{5} \).</div>
+            <div class="answer-step">Cancel 5s. Reduce 6/3 = 2.</div>
+            <div class="final-answer">Answer: 2</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>22. \( \frac{8}{9} \div 2\frac{2}{3} \)</span> <button class="btn-reveal" onclick="toggleAnswer('wp-22')">Show Answer</button></div>
+        <div id="wp-22" class="answer-panel">
+            <div class="answer-step">Convert: \( \frac{8}{9} \div \frac{8}{3} \).</div>
+            <div class="answer-step">Flip and multiply: \( \frac{8}{9} \times \frac{3}{8} \).</div>
+            <div class="answer-step">Cancel 8s. Reduce 3/9 = 1/3.</div>
+            <div class="final-answer">Answer: \( \frac{1}{3} \)</div>
+        </div>
+    </div>
+
+    <h3>Graph Questions (23-25)</h3>
+    <div class="visual-container">
+        <svg width="400" height="200" viewBox="0 0 400 200" class="chart-grid">
+            <text x="130" y="20" font-weight="bold">John's Waking Pulse</text>
+            <line x1="40" y1="150" x2="380" y2="150" /> <text x="10" y="155" class="chart-axis">60</text>
+            <line x1="40" y1="130" x2="380" y2="130" /> <text x="10" y="135" class="chart-axis">62</text>
+            <line x1="40" y1="110" x2="380" y2="110" /> <text x="10" y="115" class="chart-axis">64</text>
+            <line x1="40" y1="90" x2="380" y2="90" /> <text x="10" y="95" class="chart-axis">66</text>
+            <line x1="40" y1="70" x2="380" y2="70" /> <text x="10" y="75" class="chart-axis">68</text>
+            <line x1="40" y1="50" x2="380" y2="50" /> <text x="10" y="55" class="chart-axis">70</text>
             
-            <div class="final-answer">
-                Final Answer: Time of flight is 5.10 s and Maximum Height is 31.89 m.
-            </div>
+            <text x="50" y="170" class="chart-axis">Sun</text>
+            <text x="100" y="170" class="chart-axis">Mon</text>
+            <text x="150" y="170" class="chart-axis">Tue</text>
+            <text x="200" y="170" class="chart-axis">Wed</text>
+            <text x="250" y="170" class="chart-axis">Thu</text>
+            <text x="300" y="170" class="chart-axis">Fri</text>
+            <text x="350" y="170" class="chart-axis">Sat</text>
+
+            <polyline points="55,110 105,100 155,120 205,80 255,100 305,70 355,50" class="chart-line" />
+            <circle cx="55" cy="110" r="3" class="chart-point" />
+            <circle cx="105" cy="100" r="3" class="chart-point" />
+            <circle cx="155" cy="120" r="3" class="chart-point" />
+            <circle cx="205" cy="80" r="3" class="chart-point" />
+            <circle cx="255" cy="100" r="3" class="chart-point" />
+            <circle cx="305" cy="70" r="3" class="chart-point" />
+            <circle cx="355" cy="50" r="3" class="chart-point" />
+            
+            <text x="5" y="100" transform="rotate(-90, 15, 100)" class="chart-axis">Beats per Minute</text>
+        </svg>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>23. How many beats per minute more on Saturday than Tuesday?</span> <button class="btn-reveal" onclick="toggleAnswer('wp-23')">Show Answer</button></div>
+        <div id="wp-23" class="answer-panel">
+            <div class="answer-step">Saturday pulse: 70 bpm.</div>
+            <div class="answer-step">Tuesday pulse: 63 bpm (point is exactly halfway between 62 and 64).</div>
+            <div class="answer-step">Difference: \( 70 - 63 = 7 \).</div>
+            <div class="final-answer">Answer: 7 beats per minute</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>24. Monday pulse for 3 mins. Total beats?</span> <button class="btn-reveal" onclick="toggleAnswer('wp-24')">Show Answer</button></div>
+        <div id="wp-24" class="answer-panel">
+            <div class="answer-step">Monday pulse: 65 bpm.</div>
+            <div class="answer-step">\( 65 \text{ beats/min} \times 3 \text{ min} = 195 \).</div>
+            <div class="final-answer">Answer: 195 beats</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>25. Write a question that relates to the graph.</span> <button class="btn-reveal" onclick="toggleAnswer('wp-25')">Show Answer</button></div>
+        <div id="wp-25" class="answer-panel">
+            <div class="final-answer">Sample Answer: On which day was John's pulse the lowest? (Answer: Tuesday)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>26. Prime factorization of 72/300, then reduce.</span> <button class="btn-reveal" onclick="toggleAnswer('wp-26')">Show Answer</button></div>
+        <div id="wp-26" class="answer-panel">
+            <div class="answer-step">Numerator 72: \( 8 \times 9 = 2^3 \times 3^2 \).</div>
+            <div class="answer-step">Denominator 300: \( 3 \times 100 = 3 \times 10^2 = 3 \times (2 \times 5)^2 = 2^2 \times 3 \times 5^2 \).</div>
+            <div class="answer-step">\( \frac{2 \cdot 2 \cdot 2 \cdot 3 \cdot 3}{2 \cdot 2 \cdot 3 \cdot 5 \cdot 5} \)</div>
+            <div class="answer-step">Cancel \( 2^2 \) and one 3. Remaining: Top \( 2 \cdot 3 \), Bottom \( 5 \cdot 5 \).</div>
+            <div class="final-answer">Answer: \( \frac{6}{25} \)</div>
+        </div>
+    </div>
+
+    <h3>Rectangle Questions (27-30)</h3>
+    <div class="visual-container">
+        <svg width="250" height="150" viewBox="0 0 250 150">
+            <rect x="50" y="40" width="150" height="90" class="geom-shape" />
+            <text x="40" y="35">A</text> <text x="210" y="35">B</text>
+            <text x="40" y="145">D</text> <text x="210" y="145">C</text>
+            <text x="110" y="30" font-size="12">2.5 cm</text>
+            <text x="210" y="90" font-size="12">1.5 cm</text>
+        </svg>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>27. What is the perimeter of this rectangle?</span> <button class="btn-reveal" onclick="toggleAnswer('wp-27')">Show Answer</button></div>
+        <div id="wp-27" class="answer-panel">
+            <div class="answer-step">Formula: \( 2(L + W) \).</div>
+            <div class="answer-step">\( 2(2.5 + 1.5) = 2(4) = 8 \).</div>
+            <div class="final-answer">Answer: 8 cm</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>28. What is the area of this rectangle?</span> <button class="btn-reveal" onclick="toggleAnswer('wp-28')">Show Answer</button></div>
+        <div id="wp-28" class="answer-panel">
+            <div class="answer-step">Formula: \( L \times W \).</div>
+            <div class="answer-step">\( 2.5 \times 1.5 = 3.75 \).</div>
+            <div class="final-answer">Answer: 3.75 sq. cm</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>29. Name two segments perpendicular to DC.</span> <button class="btn-reveal" onclick="toggleAnswer('wp-29')">Show Answer</button></div>
+        <div id="wp-29" class="answer-panel">
+            <div class="answer-step">DC is the bottom horizontal line. The vertical sides are perpendicular to it.</div>
+            <div class="final-answer">Answer: AD and BC</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header"><span>30. If BD were drawn, what would be the area of each part?</span> <button class="btn-reveal" onclick="toggleAnswer('wp-30')">Show Answer</button></div>
+        <div id="wp-30" class="answer-panel">
+            <div class="answer-step">A diagonal divides a rectangle into two equal triangles.</div>
+            <div class="answer-step">Total Area = 3.75.</div>
+            <div class="answer-step">\( 3.75 \div 2 = 1.875 \).</div>
+            <div class="final-answer">Answer: 1.875 sq. cm</div>
+        </div>
+    </div>
+
+    <h2>Real-World Connection</h2>
+    <div class="problem-card">
+        <div class="problem-header"><span>Roland's Shopping Trip</span> <button class="btn-reveal" onclick="toggleAnswer('rw-1')">Show Answer</button></div>
+        <div class="problem-text">Roland bought a roller ($8.97), milk ($2.89), magazine ($1.59), and two identical gallons of paint. Total was $47.83. Find the price of each gallon.</div>
+        <div id="rw-1" class="answer-panel">
+            <div class="answer-step">1. Sum of known items: \( 8.97 + 2.89 + 1.59 = 13.45 \).</div>
+            <div class="answer-step">2. Subtract from total to find cost of paint: \( 47.83 - 13.45 = 34.38 \).</div>
+            <div class="answer-step">3. Divide by 2 gallons: \( 34.38 \div 2 = 17.19 \).</div>
+            <div class="final-answer">Answer: $17.19 per gallon</div>
         </div>
     </div>
 
     <script>
-        // Function to toggle solution visibility
-        function toggleSolution(id) {
-            var x = document.getElementById(id);
-            if (x.style.display === "block") {
-                x.style.display = "none";
+        function toggleAnswer(id) {
+            var element = document.getElementById(id);
+            if (element.style.display === "block") {
+                element.style.display = "none";
             } else {
-                x.style.display = "block";
+                element.style.display = "block";
             }
         }
-
-        // DRAWING ON CANVAS
-        window.onload = function() {
-            var c = document.getElementById("canvas1");
-            var ctx = c.getContext("2d");
-
-            // Draw Ground
-            ctx.beginPath();
-            ctx.moveTo(10, 180);
-            ctx.lineTo(390, 180);
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // Draw Trajectory (Parabola)
-            ctx.beginPath();
-            ctx.moveTo(20, 180);
-            ctx.quadraticCurveTo(200, 0, 380, 180);
-            ctx.strokeStyle = "#e74c3c";
-            ctx.setLineDash([5, 5]);
-            ctx.stroke();
-            ctx.setLineDash([]);
-
-            // Draw Initial Vector
-            ctx.beginPath();
-            ctx.moveTo(20, 180);
-            ctx.lineTo(60, 140);
-            ctx.strokeStyle = "#2980b9";
-            ctx.lineWidth = 3;
-            ctx.stroke();
-
-            // Labels
-            ctx.font = "14px Arial";
-            ctx.fillStyle = "black";
-            ctx.fillText("v0", 65, 140);
-            ctx.fillText("θ = 30°", 40, 170);
-            ctx.fillText("H max", 190, 50);
-        };
     </script>
-
 </body>
 </html>
