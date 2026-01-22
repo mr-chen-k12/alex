@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice - Targeted Review</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #2980b9;
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --success-color: #27ae60;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        h2 {
+            color: var(--accent-color);
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        .problem-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+            padding: 20px;
+            transition: all 0.2s ease;
+            border-left: 5px solid var(--accent-color);
+        }
+        .problem-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .problem-header {
+            font-weight: 600;
+            font-size: 1.05em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .btn-reveal {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn-reveal:hover {
+            background-color: #34495e;
+        }
+        .answer-panel {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f1f9f5;
+            border-radius: 6px;
+            border: 1px solid #d4efdf;
+        }
+        .answer-step {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+        .final-answer {
+            font-weight: bold;
+            color: var(--success-color);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #ccc;
+        }
+        .svg-container {
+            margin: 10px 0;
+            text-align: center;
+        }
+        .geom-shape {
+            fill: none;
+            stroke: #2c3e50;
+            stroke-width: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Targeted Math Practice</h1>
+    <p class="subtitle">5 practice questions for each key topic from your list: 4, 6, 7, 13, 19, 20, 21</p>
+
+    <h2>Topics #4 & #6: Reducing Before Multiplying</h2>
+    <p><i>Goal: Cancel common factors between numerators and denominators before multiplying.</i></p>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>1. Multiply: \( \frac{2}{3} \cdot \frac{3}{5} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q4-1')">Check Answer</button>
+        </div>
+        <div id="q4-1" class="answer-panel">
+            <div class="answer-step">Cancel the 3s: \( \frac{2}{\bcancel{3}} \cdot \frac{\bcancel{3}}{5} \)</div>
+            <div class="final-answer">Answer: \( \frac{2}{5} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>2. Multiply: \( \frac{5}{8} \cdot \frac{4}{5} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q4-2')">Check Answer</button>
+        </div>
+        <div id="q4-2" class="answer-panel">
+            <div class="answer-step">Cancel the 5s. Reduce 4 and 8 (divide by 4):</div>
+            <div class="answer-step">\( \frac{1}{2} \cdot \frac{1}{1} \)</div>
+            <div class="final-answer">Answer: \( \frac{1}{2} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>3. Multiply: \( \frac{3}{4} \cdot \frac{8}{9} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q4-3')">Check Answer</button>
+        </div>
+        <div id="q4-3" class="answer-panel">
+            <div class="answer-step">Reduce 3 and 9 (to 1 and 3). Reduce 8 and 4 (to 2 and 1).</div>
+            <div class="answer-step">\( \frac{1}{1} \cdot \frac{2}{3} \)</div>
+            <div class="final-answer">Answer: \( \frac{2}{3} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>4. Multiply: \( \frac{7}{10} \cdot \frac{5}{14} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q4-4')">Check Answer</button>
+        </div>
+        <div id="q4-4" class="answer-panel">
+            <div class="answer-step">Reduce 7 and 14 (to 1 and 2). Reduce 5 and 10 (to 1 and 2).</div>
+            <div class="answer-step">\( \frac{1}{2} \cdot \frac{1}{2} \)</div>
+            <div class="final-answer">Answer: \( \frac{1}{4} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>5. Multiply: \( \frac{6}{7} \cdot \frac{7}{12} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q4-5')">Check Answer</button>
+        </div>
+        <div id="q4-5" class="answer-panel">
+            <div class="answer-step">Cancel the 7s. Reduce 6 and 12 (to 1 and 2).</div>
+            <div class="final-answer">Answer: \( \frac{1}{2} \)</div>
+        </div>
+    </div>
+
+
+    <h2>Topic #7: Finding Midpoints</h2>
+    <p><i>Goal: Find the number exactly halfway between two others (find the average).</i></p>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>1. What number is halfway between 0 and 1?</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q7-1')">Check Answer</button>
+        </div>
+        <div id="q7-1" class="answer-panel">
+            <div class="answer-step">Average: \( \frac{0+1}{2} \)</div>
+            <div class="final-answer">Answer: \( \frac{1}{2} \) (or 0.5)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>2. What number is halfway between \( \frac{1}{3} \) and \( \frac{2}{3} \)?</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q7-2')">Check Answer</button>
+        </div>
+        <div id="q7-2" class="answer-panel">
+            <div class="answer-step">Numerator: \( 1+2=3 \). Denominator stays 3. \( \frac{3}{3} = 1 \).</div>
+            <div class="answer-step">Divide by 2: \( 1 \div 2 \)</div>
+            <div class="final-answer">Answer: \( \frac{1}{2} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>3. What number is halfway between \( \frac{1}{4} \) and \( \frac{3}{4} \)?</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q7-3')">Check Answer</button>
+        </div>
+        <div id="q7-3" class="answer-panel">
+            <div class="answer-step">Add: \( \frac{1}{4} + \frac{3}{4} = \frac{4}{4} = 1 \).</div>
+            <div class="answer-step">Divide by 2: \( 1 \div 2 \)</div>
+            <div class="final-answer">Answer: \( \frac{1}{2} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>4. What number is halfway between 0.2 and 0.8?</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q7-4')">Check Answer</button>
+        </div>
+        <div id="q7-4" class="answer-panel">
+            <div class="answer-step">Add: \( 0.2 + 0.8 = 1.0 \).</div>
+            <div class="answer-step">Divide by 2: \( 1.0 \div 2 \)</div>
+            <div class="final-answer">Answer: 0.5</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>5. What number is halfway between 2 and 4?</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q7-5')">Check Answer</button>
+        </div>
+        <div id="q7-5" class="answer-panel">
+            <div class="answer-step">Add: \( 2 + 4 = 6 \). Divide by 2.</div>
+            <div class="final-answer">Answer: 3</div>
+        </div>
+    </div>
+
+
+    <h2>Topic #13: Dividing by Decimals</h2>
+    <p><i>Goal: Move the decimal point to make the divisor a whole number.</i></p>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>1. Calculate: \( 20 \div 0.5 \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q13-1')">Check Answer</button>
+        </div>
+        <div id="q13-1" class="answer-panel">
+            <div class="answer-step">Move decimal right one spot for both: \( 200 \div 5 \).</div>
+            <div class="final-answer">Answer: 40</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>2. Calculate: \( 12 \div 0.4 \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q13-2')">Check Answer</button>
+        </div>
+        <div id="q13-2" class="answer-panel">
+            <div class="answer-step">Move decimal: \( 120 \div 4 \).</div>
+            <div class="final-answer">Answer: 30</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>3. Calculate: \( 9 \div 0.3 \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q13-3')">Check Answer</button>
+        </div>
+        <div id="q13-3" class="answer-panel">
+            <div class="answer-step">Move decimal: \( 90 \div 3 \).</div>
+            <div class="final-answer">Answer: 30</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>4. Calculate: \( 45 \div 0.9 \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q13-4')">Check Answer</button>
+        </div>
+        <div id="q13-4" class="answer-panel">
+            <div class="answer-step">Move decimal: \( 450 \div 9 \).</div>
+            <div class="final-answer">Answer: 50</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>5. Calculate: \( 100 \div 0.2 \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q13-5')">Check Answer</button>
+        </div>
+        <div id="q13-5" class="answer-panel">
+            <div class="answer-step">Move decimal: \( 1000 \div 2 \).</div>
+            <div class="final-answer">Answer: 500</div>
+        </div>
+    </div>
+
+
+    <h2>Topic #19: Solving Fraction Equations</h2>
+    <p><i>Goal: Isolate the variable by doing the inverse operation (adding).</i></p>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>1. Find \( x \): \( x - \frac{1}{3} = \frac{1}{2} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q19-1')">Check Answer</button>
+        </div>
+        <div id="q19-1" class="answer-panel">
+            <div class="answer-step">Add \( \frac{1}{3} \) to both sides. Common denominator is 6.</div>
+            <div class="answer-step">\( \frac{2}{6} + \frac{3}{6} \)</div>
+            <div class="final-answer">Answer: \( \frac{5}{6} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>2. Find \( m \): \( m - \frac{1}{4} = \frac{3}{8} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q19-2')">Check Answer</button>
+        </div>
+        <div id="q19-2" class="answer-panel">
+            <div class="answer-step">Add \( \frac{1}{4} \) (which is \( \frac{2}{8} \)) to \( \frac{3}{8} \).</div>
+            <div class="answer-step">\( \frac{3}{8} + \frac{2}{8} \)</div>
+            <div class="final-answer">Answer: \( \frac{5}{8} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>3. Find \( y \): \( y - \frac{2}{5} = \frac{1}{5} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q19-3')">Check Answer</button>
+        </div>
+        <div id="q19-3" class="answer-panel">
+            <div class="answer-step">Add \( \frac{2}{5} \) to \( \frac{1}{5} \).</div>
+            <div class="final-answer">Answer: \( \frac{3}{5} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>4. Find \( k \): \( k - \frac{5}{6} = \frac{1}{3} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q19-4')">Check Answer</button>
+        </div>
+        <div id="q19-4" class="answer-panel">
+            <div class="answer-step">Convert \( \frac{1}{3} \) to \( \frac{2}{6} \). Add \( \frac{5}{6} \).</div>
+            <div class="answer-step">\( \frac{5}{6} + \frac{2}{6} = \frac{7}{6} \)</div>
+            <div class="final-answer">Answer: \( 1\frac{1}{6} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>5. Find \( w \): \( w - \frac{1}{2} = \frac{1}{4} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q19-5')">Check Answer</button>
+        </div>
+        <div id="q19-5" class="answer-panel">
+            <div class="answer-step">Convert \( \frac{1}{2} \) to \( \frac{2}{4} \). Add to \( \frac{1}{4} \).</div>
+            <div class="final-answer">Answer: \( \frac{3}{4} \)</div>
+        </div>
+    </div>
+
+
+    <h2>Topic #20: Geometry (Solids)</h2>
+    <p><i>Goal: Identify faces, edges, and vertices of geometric solids.</i></p>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>1. How many faces does a Triangular Pyramid have?</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q20-1')">Check Answer</button>
+        </div>
+        <div id="q20-1" class="answer-panel">
+            <div class="svg-container">
+                <svg width="80" height="80" viewBox="0 0 100 100">
+                    <polygon points="50,10 20,80 80,80" class="geom-shape" style="stroke-width:1" />
+                    <line x1="50" y1="10" x2="50" y2="70" style="stroke:#2c3e50; stroke-width:1; stroke-dasharray:4" />
+                    <line x1="20" y1="80" x2="50" y2="70" style="stroke:#2c3e50; stroke-width:1; stroke-dasharray:4" />
+                    <line x1="80" y1="80" x2="50" y2="70" style="stroke:#2c3e50; stroke-width:1; stroke-dasharray:4" />
+                </svg>
+            </div>
+            <div class="answer-step">It has 1 base (triangle) and 3 sides (triangles).</div>
+            <div class="final-answer">Answer: 4 faces</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>2. How many edges does a Cube have?</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q20-2')">Check Answer</button>
+        </div>
+        <div id="q20-2" class="answer-panel">
+            <div class="answer-step">4 on top, 4 on bottom, 4 vertical.</div>
+            <div class="final-answer">Answer: 12 edges</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>3. How many vertices does a Rectangular Prism have?</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q20-3')">Check Answer</button>
+        </div>
+        <div id="q20-3" class="answer-panel">
+            <div class="answer-step">These are the corners. 4 on top, 4 on bottom.</div>
+            <div class="final-answer">Answer: 8 vertices</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>4. How many faces does a Square Pyramid have?</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q20-4')">Check Answer</button>
+        </div>
+        <div id="q20-4" class="answer-panel">
+            <div class="answer-step">1 square base + 4 triangular sides.</div>
+            <div class="final-answer">Answer: 5 faces</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>5. How many edges does a Triangular Prism have?</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q20-5')">Check Answer</button>
+        </div>
+        <div id="q20-5" class="answer-panel">
+            <div class="answer-step">3 on one triangle base, 3 on the other, 3 connecting them.</div>
+            <div class="final-answer">Answer: 9 edges</div>
+        </div>
+    </div>
+
+
+    <h2>Topic #21: Multiplying Mixed Numbers</h2>
+    <p><i>Goal: Convert to improper fractions first, then multiply.</i></p>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>1. Multiply: \( 1\frac{1}{2} \times 1\frac{1}{3} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q21-1')">Check Answer</button>
+        </div>
+        <div id="q21-1" class="answer-panel">
+            <div class="answer-step">Convert: \( \frac{3}{2} \times \frac{4}{3} \)</div>
+            <div class="answer-step">Cancel 3s. Reduce 4 and 2.</div>
+            <div class="final-answer">Answer: 2</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>2. Multiply: \( 2\frac{1}{2} \times 1\frac{1}{5} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q21-2')">Check Answer</button>
+        </div>
+        <div id="q21-2" class="answer-panel">
+            <div class="answer-step">Convert: \( \frac{5}{2} \times \frac{6}{5} \)</div>
+            <div class="answer-step">Cancel 5s. Reduce 6 and 2.</div>
+            <div class="final-answer">Answer: 3</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>3. Multiply: \( 1\frac{1}{4} \times 2 \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q21-3')">Check Answer</button>
+        </div>
+        <div id="q21-3" class="answer-panel">
+            <div class="answer-step">Convert: \( \frac{5}{4} \times \frac{2}{1} \)</div>
+            <div class="answer-step">Reduce 2 and 4. \( \frac{5}{2} \).</div>
+            <div class="final-answer">Answer: \( 2\frac{1}{2} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>4. Multiply: \( 3\frac{1}{3} \times 1\frac{1}{2} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q21-4')">Check Answer</button>
+        </div>
+        <div id="q21-4" class="answer-panel">
+            <div class="answer-step">Convert: \( \frac{10}{3} \times \frac{3}{2} \)</div>
+            <div class="answer-step">Cancel 3s. Reduce 10 and 2.</div>
+            <div class="final-answer">Answer: 5</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">
+            <span>5. Multiply: \( 1\frac{2}{5} \times 2\frac{1}{2} \)</span> 
+            <button class="btn-reveal" onclick="toggleAnswer('q21-5')">Check Answer</button>
+        </div>
+        <div id="q21-5" class="answer-panel">
+            <div class="answer-step">Convert: \( \frac{7}{5} \times \frac{5}{2} \)</div>
+            <div class="answer-step">Cancel 5s. Result \( \frac{7}{2} \).</div>
+            <div class="final-answer">Answer: \( 3\frac{1}{2} \)</div>
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(id) {
+            var element = document.getElementById(id);
+            if (element.style.display === "block") {
+                element.style.display = "none";
+            } else {
+                element.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
