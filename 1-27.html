@@ -30,12 +30,40 @@
 
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             color: var(--primary-color);
         }
 
         h1 {
             margin-bottom: 10px;
+        }
+        
+        /* Sticky control bar for the "Show All" button */
+        .controls {
+            position: sticky;
+            top: 0;
+            background: var(--bg-color);
+            padding: 10px 0;
+            z-index: 100;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .btn-main {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .btn-main:hover {
+            background-color: #219150;
         }
 
         .question-card {
@@ -44,12 +72,6 @@
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
-
-        .question-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
         .question-header {
@@ -57,8 +79,6 @@
             font-size: 1.1em;
             margin-bottom: 10px;
             color: var(--primary-color);
-            display: flex;
-            justify-content: space-between;
         }
 
         .question-text {
@@ -74,20 +94,27 @@
             cursor: pointer;
             font-size: 0.9em;
             transition: background 0.3s;
+            outline: none;
         }
 
         .btn-reveal:hover {
             background-color: #2980b9;
         }
 
+        /* The answer section is hidden by default using this class */
         .answer-section {
+            display: none; 
             margin-top: 15px;
             padding-top: 15px;
             border-top: 1px solid #eee;
-            display: none; /* Hidden by default */
             background-color: #fafafa;
             padding: 15px;
             border-radius: 4px;
+        }
+
+        /* When the 'visible' class is added via JS, it becomes block */
+        .answer-section.visible {
+            display: block;
         }
 
         .answer-header {
@@ -100,18 +127,7 @@
             font-size: 0.95em;
             color: #555;
         }
-
-        .figure-placeholder {
-            border: 1px dashed #ccc;
-            background: #eee;
-            padding: 10px;
-            text-align: center;
-            margin: 10px 0;
-            font-style: italic;
-            color: #777;
-        }
         
-        /* Specific styling for the menu table */
         .menu-table {
             width: 100%;
             border-collapse: collapse;
@@ -127,21 +143,61 @@
             background-color: #f2f2f2;
         }
     </style>
+    <script>
+        // Toggle a single answer
+        function toggleAnswer(id) {
+            var element = document.getElementById(id);
+            // Toggle the 'visible' class
+            if (element.classList.contains('visible')) {
+                element.classList.remove('visible');
+            } else {
+                element.classList.add('visible');
+            }
+        }
+
+        // Toggle ALL answers
+        function toggleAll() {
+            var answers = document.getElementsByClassName('answer-section');
+            var btn = document.getElementById('toggleAllBtn');
+            var isShowing = btn.innerText.includes("Show");
+            
+            for (var i = 0; i < answers.length; i++) {
+                if (isShowing) {
+                    answers[i].classList.add('visible');
+                } else {
+                    answers[i].classList.remove('visible');
+                }
+            }
+            
+            // Update button text
+            if (isShowing) {
+                btn.innerText = "Hide All Answers";
+                btn.style.backgroundColor = "#c0392b";
+            } else {
+                btn.innerText = "Show All Answers";
+                btn.style.backgroundColor = "#27ae60";
+            }
+        }
+    </script>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>Math Course 1 - Written Practice</h1>
-        <p>Lesson 72 Solutions & Explanations</p>
+        <h1>Math Course 1 - Lesson 72</h1>
+        <p>Solutions & Explanations</p>
     </header>
+    
+    <div class="controls">
+        <button id="toggleAllBtn" class="btn-main" onclick="toggleAll()">Show All Answers</button>
+    </div>
 
     <div class="question-card">
         <div class="question-header">Problem 1</div>
         <div class="question-text">
             What is the average of 4.2, 2.61, and 3.6?
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans1')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans1')">Show/Hide Explanation</button>
         <div id="ans1" class="answer-section">
             <div class="answer-header">Answer: 3.47</div>
             <div class="steps">
@@ -158,7 +214,7 @@
         <div class="question-text">
             Four tablespoons equals \(\frac{1}{4}\) cup. How many tablespoons would equal one full cup?
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans2')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans2')">Show/Hide Explanation</button>
         <div id="ans2" class="answer-section">
             <div class="answer-header">Answer: 16 tablespoons</div>
             <div class="steps">
@@ -174,7 +230,7 @@
         <div class="question-text">
             The temperature on the moon ranges from a high of about \(130^\circ\text{C}\) to a low of about \(-110^\circ\text{C}\). This is a difference of how many degrees?
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans3')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans3')">Show/Hide Explanation</button>
         <div id="ans3" class="answer-section">
             <div class="answer-header">Answer: 240 degrees</div>
             <div class="steps">
@@ -193,7 +249,7 @@
             b. not blue?<br>
             c. What word names the relationship between the events in a and b?
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans4')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans4')">Show/Hide Explanation</button>
         <div id="ans4" class="answer-section">
             <div class="answer-header">Answers: a. \(\frac{1}{3}\), b. \(\frac{2}{3}\), c. Complementary</div>
             <div class="steps">
@@ -209,7 +265,7 @@
         <div class="question-text">
             The diameter of a circle is 1 meter. The circumference is how many centimeters? (Use 3.14 for \(\pi\).)
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans5')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans5')">Show/Hide Explanation</button>
         <div id="ans5" class="answer-section">
             <div class="answer-header">Answer: 314 cm</div>
             <div class="steps">
@@ -225,7 +281,7 @@
         <div class="question-text">
             What fraction of a dollar is a nickel?
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans6')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans6')">Show/Hide Explanation</button>
         <div id="ans6" class="answer-section">
             <div class="answer-header">Answer: \(\frac{1}{20}\)</div>
             <div class="steps">
@@ -241,7 +297,7 @@
         <div class="question-text">
             Find the unknown number: \( n - \frac{1}{2} = \frac{3}{6} \)
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans7')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans7')">Show/Hide Explanation</button>
         <div id="ans7" class="answer-section">
             <div class="answer-header">Answer: \(n = 1\)</div>
             <div class="steps">
@@ -257,7 +313,7 @@
         <div class="question-text">
             Find the unknown number: \( 1 - w = \frac{7}{12} \)
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans8')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans8')">Show/Hide Explanation</button>
         <div id="ans8" class="answer-section">
             <div class="answer-header">Answer: \(w = \frac{5}{12}\)</div>
             <div class="steps">
@@ -273,7 +329,7 @@
         <div class="question-text">
             Find the unknown number: \( w + 2\frac{1}{2} = 3\frac{1}{3} \)
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans9')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans9')">Show/Hide Explanation</button>
         <div id="ans9" class="answer-section">
             <div class="answer-header">Answer: \(w = \frac{5}{6}\)</div>
             <div class="steps">
@@ -293,7 +349,7 @@
         <div class="question-text">
             Find the unknown number: \( 1 - w = 0.23 \)
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans10')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans10')">Show/Hide Explanation</button>
         <div id="ans10" class="answer-section">
             <div class="answer-header">Answer: \(w = 0.77\)</div>
             <div class="steps">
@@ -308,7 +364,7 @@
         <div class="question-text">
             Write the standard decimal number for: \( (6 \times 10) + (4 \times \frac{1}{10}) + (3 \times \frac{1}{100}) \)
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans11')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans11')">Show/Hide Explanation</button>
         <div id="ans11" class="answer-section">
             <div class="answer-header">Answer: 60.43</div>
             <div class="steps">
@@ -326,7 +382,7 @@
             Which of these numbers is closest to 1?<br>
             A. -1 &nbsp;&nbsp;&nbsp; B. 0.1 &nbsp;&nbsp;&nbsp; C. 10
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans12')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans12')">Show/Hide Explanation</button>
         <div id="ans12" class="answer-section">
             <div class="answer-header">Answer: B (0.1)</div>
             <div class="steps">
@@ -346,7 +402,7 @@
         <div class="question-text">
             What is the largest prime number that is less than 100?
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans13')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans13')">Show/Hide Explanation</button>
         <div id="ans13" class="answer-section">
             <div class="answer-header">Answer: 97</div>
             <div class="steps">
@@ -363,7 +419,7 @@
             Which of these figures is not a parallelogram?<br>
             A. (Rectangle) &nbsp; B. (Parallelogram) &nbsp; C. (Trapezoid) &nbsp; D. (Square)
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans14')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans14')">Show/Hide Explanation</button>
         <div id="ans14" class="answer-section">
             <div class="answer-header">Answer: C</div>
             <div class="steps">
@@ -380,7 +436,7 @@
             a. How many inches long is each side of the square?<br>
             b. What is the area of the square in square inches?
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans15')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans15')">Show/Hide Explanation</button>
         <div id="ans15" class="answer-section">
             <div class="answer-header">Answer: a. 6 inches, b. 36 sq inches</div>
             <div class="steps">
@@ -398,7 +454,7 @@
             a. Name an angle complementary to \(\angle DCM\).<br>
             b. Name an angle supplementary to \(\angle AMC\).
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans16')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans16')">Show/Hide Explanation</button>
         <div id="ans16" class="answer-section">
             <div class="answer-header">Answers: a. \(\angle BCM\), b. \(\angle BMC\)</div>
             <div class="steps">
@@ -424,7 +480,7 @@
         <div class="question-text">
             From this menu the Johnsons ordered two grilled chicken sandwiches, one green salad, one small juice, and two medium juices. What was the total price?
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans17')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans17')">Show/Hide Explanation</button>
         <div id="ans17" class="answer-section">
             <div class="answer-header">Answer: $13.34</div>
             <div class="steps">
@@ -442,7 +498,7 @@
         <div class="question-text">
             If 7% tax is added to the bill (from problem 17), and if the Johnsons pay for the food with a $20 bill, how much money should they get back?
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans18')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans18')">Show/Hide Explanation</button>
         <div id="ans18" class="answer-section">
             <div class="answer-header">Answer: $5.73</div>
             <div class="steps">
@@ -458,7 +514,7 @@
         <div class="question-text">
             Make up an order from the menu. Then calculate the bill, not including tax.
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans19')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans19')">Show/Hide Explanation</button>
         <div id="ans19" class="answer-section">
             <div class="answer-header">Sample Answer</div>
             <div class="steps">
@@ -474,7 +530,7 @@
         <div class="question-text">
             If \( A = lw \), and if \( l \) equals 2.5 and \( w \) equals 0.4, what does \( A \) equal?
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans20')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans20')">Show/Hide Explanation</button>
         <div id="ans20" class="answer-section">
             <div class="answer-header">Answer: 1</div>
             <div class="steps">
@@ -490,7 +546,7 @@
         <div class="question-text">
             Write the prime factorization of both the numerator and the denominator of this fraction. Then reduce the fraction: \( \frac{72}{120} \)
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans21')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans21')">Show/Hide Explanation</button>
         <div id="ans21" class="answer-section">
             <div class="answer-header">Answer: \(\frac{3}{5}\)</div>
             <div class="steps">
@@ -511,7 +567,7 @@
             a. K<br>
             b. F
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans22')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans22')">Show/Hide Explanation</button>
         <div id="ans22" class="answer-section">
             <div class="answer-header">Answer: a. (-4, 5), b. (2, -3)</div>
             <div class="steps">
@@ -529,7 +585,7 @@
             a. (3, -4)<br>
             b. (-3, 0)
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans23')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans23')">Show/Hide Explanation</button>
         <div id="ans23" class="answer-section">
             <div class="answer-header">Answer: a. E, b. I</div>
             <div class="steps">
@@ -544,7 +600,7 @@
         <div class="question-text">
             Draw a pair of parallel lines. Then draw a second pair of parallel lines perpendicular to the first pair... Trace the quadrilateral formed. Is the quadrilateral a rectangle?
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans24')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans24')">Show/Hide Explanation</button>
         <div id="ans24" class="answer-section">
             <div class="answer-header">Answer: Yes</div>
             <div class="steps">
@@ -559,7 +615,7 @@
         <div class="question-text">
             Simplify: \( \frac{1}{2} \cdot \frac{5}{6} \cdot \frac{3}{5} \)
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans25')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans25')">Show/Hide Explanation</button>
         <div id="ans25" class="answer-section">
             <div class="answer-header">Answer: \(\frac{1}{4}\)</div>
             <div class="steps">
@@ -576,7 +632,7 @@
         <div class="question-text">
             Simplify: \( 3 \times 1\frac{1}{2} \times 2\frac{2}{3} \)
         </div>
-        <button class="btn-reveal" onclick="toggleAnswer('ans26')">Show Answer & Explanation</button>
+        <button class="btn-reveal" onclick="toggleAnswer('ans26')">Show/Hide Explanation</button>
         <div id="ans26" class="answer-section">
             <div class="answer-header">Answer: 12</div>
             <div class="steps">
@@ -585,4 +641,113 @@
                 <p>\( 1\frac{1}{2} = \frac{3}{2} \)</p>
                 <p>\( 2\frac{2}{3} = \frac{8}{3} \)</p>
                 <p>Multiply: \( \frac{3}{1} \times \frac{3}{2} \times \frac{8}{3} \)</p>
-                <p>Cancel the
+                <p>Cancel the 3 in numerator and denominator. \( \frac{3 \times 8}{2} = \frac{24}{2} = 12 \).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-header">Problem 27</div>
+        <div class="question-text">
+            Simplify: \( \frac{1}{4} \div 2 \)
+        </div>
+        <button class="btn-reveal" onclick="toggleAnswer('ans27')">Show/Hide Explanation</button>
+        <div id="ans27" class="answer-section">
+            <div class="answer-header">Answer: \(\frac{1}{8}\)</div>
+            <div class="steps">
+                <p>Dividing by 2 is the same as multiplying by \(\frac{1}{2}\).</p>
+                <p>\( \frac{1}{4} \times \frac{1}{2} = \frac{1}{8} \).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-header">Problem 28</div>
+        <div class="question-text">
+            Simplify: \( 1\frac{1}{2} \div 1\frac{2}{3} \)
+        </div>
+        <button class="btn-reveal" onclick="toggleAnswer('ans28')">Show/Hide Explanation</button>
+        <div id="ans28" class="answer-section">
+            <div class="answer-header">Answer: \(\frac{9}{10}\)</div>
+            <div class="steps">
+                <p>Convert to improper fractions:</p>
+                <p>\( 1\frac{1}{2} = \frac{3}{2} \)</p>
+                <p>\( 1\frac{2}{3} = \frac{5}{3} \)</p>
+                <p>Multiply by the reciprocal of the divisor:</p>
+                <p>\( \frac{3}{2} \times \frac{3}{5} = \frac{9}{10} \).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-header">Problem 29</div>
+        <div class="question-text">
+            Simplify: \( (0.12)(0.24) \)
+        </div>
+        <button class="btn-reveal" onclick="toggleAnswer('ans29')">Show/Hide Explanation</button>
+        <div id="ans29" class="answer-section">
+            <div class="answer-header">Answer: 0.0288</div>
+            <div class="steps">
+                <p>Multiply \( 12 \times 24 = 288 \).</p>
+                <p>Count decimal places: 0.12 has 2, 0.24 has 2. Total = 4.</p>
+                <p>Move decimal 4 places left on 288: 0.0288.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-header">Problem 30</div>
+        <div class="question-text">
+            Simplify: \( 0.6 \div 0.25 \)
+        </div>
+        <button class="btn-reveal" onclick="toggleAnswer('ans30')">Show/Hide Explanation</button>
+        <div id="ans30" class="answer-section">
+            <div class="answer-header">Answer: 2.4</div>
+            <div class="steps">
+                <p>Shift decimal two places right for both numbers: \( 60 \div 25 \).</p>
+                <p>\( 60 \div 25 = 2.4 \).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" style="border-left: 5px solid #e67e22;">
+        <div class="question-header" style="color: #e67e22;">Real-World Connection</div>
+        <div class="question-text">
+            LaDonna had errands... She calculated she would spend 20 minutes in the post office, 10 minutes at the hardware store, 5 minutes at the cleaners, and 30 minutes eating lunch. The meter read: $0.25 = 15 min, $0.10 = 6 min, $0.05 = 3 min.<br><br>
+            a. How much time will LaDonna spend to finish doing her errands?<br>
+            b. If the meter has ten minutes left, how much money will she need to put into the meter?
+        </div>
+        <button class="btn-reveal" onclick="toggleAnswer('ansRealWorld')">Show/Hide Explanation</button>
+        <div id="ansRealWorld" class="answer-section">
+            <div class="answer-header">Answer: a. 65 minutes (1 hr 5 min), b. $0.95 (approx)</div>
+            <div class="steps">
+                <p><strong>a. Total Time:</strong> \( 20 + 10 + 5 + 30 = 65 \) minutes.</p>
+                <p><strong>b. Money Needed:</strong></p>
+                <p>She needs 65 minutes total. The meter has 10 minutes already. She needs to buy \( 65 - 10 = 55 \) minutes.</p>
+                <p>Let's calculate the cost using the rate of $0.05 per 3 minutes (which is the base rate for all options).</p>
+                <p>55 minutes is not perfectly divisible by 3, so she needs to pay for enough time to cover 55 mins. \( 55 \div 3 = 18.33 \). She needs 19 "units" of 3 minutes (57 mins).</p>
+                <p>\( 19 \times 0.05 = \$0.95 \).</p>
+                <p>Alternatively, she could use combinations: 3 quarters (45 min) + 1 dime (6 min) + 2 nickels (6 min) = 57 minutes for $0.95.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" style="border-left: 5px solid #8e44ad;">
+        <div class="question-header" style="color: #8e44ad;">Motivating Mindset</div>
+        <div class="question-text">
+            When Tran got back his math test, he saw that he missed five questions. How can Tran use his test results as a learning opportunity?
+        </div>
+        <button class="btn-reveal" onclick="toggleAnswer('ansMindset')">Show/Hide Explanation</button>
+        <div id="ansMindset" class="answer-section">
+            <div class="answer-header">Reflection</div>
+            <div class="steps">
+                <p>Tran shouldn't just look at the grade. He should examine the five specific questions he missed.</p>
+                <p>By solving them again and finding out <em>why</em> he missed them (was it a calculation error? did he misunderstand the concept?), he can identify his weak spots. This turns a mistake into a roadmap for what to study next, ensuring he won't make the same mistakes on future tests.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
