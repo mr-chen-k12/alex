@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saxon Math Course 1 - Lesson 73 Solutions</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f9;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .problem-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .problem {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .problem:last-child {
+            border-bottom: none;
+        }
+        .question {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .btn-reveal {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .btn-reveal:hover {
+            background-color: #2980b9;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f6f3;
+            border-left: 4px solid #1abc9c;
+            border-radius: 4px;
+        }
+        .canvas-container {
+            margin: 10px 0;
+            text-align: center;
+        }
+        canvas, svg {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .stem-leaf {
+            font-family: 'Courier New', Courier, monospace;
+            background: #fff;
+            padding: 10px;
+            border: 1px solid #ddd;
+            display: inline-block;
+        }
+    </style>
+    <script>
+        function toggleAnswer(id) {
+            var x = document.getElementById(id);
+            if (x.style.display === "none" || x.style.display === "") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Saxon Math Course 1 - Lesson 73</h1>
+    <p>Solutions and Explanations for Lesson Practice and Written Practice.</p>
+
+    <div class="problem-section">
+        <h2>Lesson Practice</h2>
+        
+        <div class="problem">
+            <div class="question">a. Find the value of \(10^4\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('lp-a')">Show Solution</button>
+            <div id="lp-a" class="explanation">
+                <p>The exponent 4 tells us to multiply the base (10) by itself 4 times.</p>
+                $$10^4 = 10 \times 10 \times 10 \times 10 = 10,000$$
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">b. Find the value of \(2^3 + 2^4\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('lp-b')">Show Solution</button>
+            <div id="lp-b" class="explanation">
+                <p>First, evaluate the exponents:</p>
+                $$2^3 = 2 \times 2 \times 2 = 8$$
+                $$2^4 = 2 \times 2 \times 2 \times 2 = 16$$
+                <p>Then add the results:</p>
+                $$8 + 16 = 24$$
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">c. Find the value of \(2^2 \cdot 5^2\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('lp-c')">Show Solution</button>
+            <div id="lp-c" class="explanation">
+                <p>Evaluate the exponents first:</p>
+                $$2^2 = 4$$
+                $$5^2 = 25$$
+                <p>Then multiply:</p>
+                $$4 \cdot 25 = 100$$
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">d. Write the prime factorization of 72 using exponents.</div>
+            <button class="btn-reveal" onclick="toggleAnswer('lp-d')">Show Solution</button>
+            <div id="lp-d" class="explanation">
+                <p>First, find the prime factors of 72:</p>
+                $$72 = 8 \times 9$$
+                $$8 = 2 \times 2 \times 2 = 2^3$$
+                $$9 = 3 \times 3 = 3^2$$
+                <p>Combine them:</p>
+                $$72 = 2^3 \cdot 3^2$$
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">Write each decimal number as a fraction or mixed number:</div>
+            <p><strong>e.</strong> 12.5 &nbsp; <strong>f.</strong> 1.25 &nbsp; <strong>g.</strong> 0.125 &nbsp; <strong>h.</strong> 0.05 &nbsp; <strong>i.</strong> 0.24 &nbsp; <strong>j.</strong> 10.2</p>
+            <button class="btn-reveal" onclick="toggleAnswer('lp-decimals')">Show Solution</button>
+            <div id="lp-decimals" class="explanation">
+                <ul>
+                    <li><strong>e. 12.5:</strong> \(12 \frac{5}{10} = 12 \frac{1}{2}\)</li>
+                    <li><strong>f. 1.25:</strong> \(1 \frac{25}{100} = 1 \frac{1}{4}\)</li>
+                    <li><strong>g. 0.125:</strong> \(\frac{125}{1000} = \frac{1}{8}\)</li>
+                    <li><strong>h. 0.05:</strong> \(\frac{5}{100} = \frac{1}{20}\)</li>
+                    <li><strong>i. 0.24:</strong> \(\frac{24}{100} = \frac{6}{25}\)</li>
+                    <li><strong>j. 10.2:</strong> \(10 \frac{2}{10} = 10 \frac{1}{5}\)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-section">
+        <h2>Written Practice</h2>
+
+        <div class="problem">
+            <div class="question">1. Tomas's temperature was \(102^\circ F\). Normal body temperature is \(98.6^\circ F\). How many degrees above normal was Tomas's temperature? Write an equation and solve.</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q1')">Show Solution</button>
+            <div id="q1" class="explanation">
+                <p>Let \(d\) be the difference in temperature.</p>
+                <p>Equation: \(98.6 + d = 102\) or \(d = 102 - 98.6\)</p>
+                <p>Solve: \(102.0 - 98.6 = 3.4\)</p>
+                <p><strong>Answer: \(3.4^\circ F\)</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">2. Jill has read 42 pages of a 180-page book. How many pages are left for her to read? Write an equation and solve.</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q2')">Show Solution</button>
+            <div id="q2" class="explanation">
+                <p>Let \(p\) be the pages left.</p>
+                <p>Equation: \(42 + p = 180\) or \(p = 180 - 42\)</p>
+                <p>Solve: \(180 - 42 = 138\)</p>
+                <p><strong>Answer: 138 pages</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">3. If Jill wants to finish the book in the next three days, then she should read an average of how many pages per day?</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q3')">Show Solution</button>
+            <div id="q3" class="explanation">
+                <p>Using the result from Problem 2 (138 pages left) and dividing by 3 days:</p>
+                <p>Equation: \(138 \div 3 = x\)</p>
+                $$ \frac{138}{3} = 46 $$
+                <p><strong>Answer: 46 pages per day</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">4. Write 2.5 as a reduced mixed number.</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q4')">Show Solution</button>
+            <div id="q4" class="explanation">
+                $$ 2.5 = 2 \frac{5}{10} $$
+                <p>Reduce the fraction \(\frac{5}{10}\) to \(\frac{1}{2}\).</p>
+                <p><strong>Answer: \(2 \frac{1}{2}\)</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">5. Write 0.35 as a reduced fraction.</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q5')">Show Solution</button>
+            <div id="q5" class="explanation">
+                $$ 0.35 = \frac{35}{100} $$
+                <p>Divide numerator and denominator by 5:</p>
+                $$ \frac{35 \div 5}{100 \div 5} = \frac{7}{20} $$
+                <p><strong>Answer: \(\frac{7}{20}\)</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">6. What is the total cost of a $12.60 item when \(7\frac{1}{2}\%\) (0.075) sales tax is added?</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q6')">Show Solution</button>
+            <div id="q6" class="explanation">
+                <p>First, calculate the tax amount:</p>
+                $$ \$12.60 \times 0.075 = \$0.945 $$
+                <p>Round tax to the nearest cent: \(\$0.95\)</p>
+                <p>Add tax to the original price:</p>
+                $$ \$12.60 + \$0.95 = \$13.55 $$
+                <p><strong>Answer: $13.55</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">7. \(\frac{3}{4} \times 2 \times 1\frac{1}{3}\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q7')">Show Solution</button>
+            <div id="q7" class="explanation">
+                <p>Convert whole numbers and mixed numbers to improper fractions:</p>
+                $$ \frac{3}{4} \times \frac{2}{1} \times \frac{4}{3} $$
+                <p>Multiply straight across or cancel out. Notice the 3 in the numerator and denominator cancel out, and the 4s cancel out.</p>
+                $$ \frac{3}{4} \times \frac{4}{3} \times \frac{2}{1} = 1 \times 2 = 2 $$
+                <p><strong>Answer: 2</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">8. \((100 - 10^2) \div 5^2\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q8')">Show Solution</button>
+            <div id="q8" class="explanation">
+                <p>Order of operations (PEMDAS):</p>
+                <p>1. Exponents inside parenthesis: \(10^2 = 100\)</p>
+                $$ (100 - 100) \div 5^2 $$
+                <p>2. Parenthesis subtraction: \(100 - 100 = 0\)</p>
+                $$ 0 \div 5^2 $$
+                <p>3. Exponent: \(5^2 = 25\)</p>
+                $$ 0 \div 25 = 0 $$
+                <p><strong>Answer: 0</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">9. \(3 + 2\frac{1}{3} + 1\frac{3}{4}\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q9')">Show Solution</button>
+            <div id="q9" class="explanation">
+                <p>Find a common denominator for 3 and 4, which is 12.</p>
+                $$ 2\frac{1}{3} = 2\frac{4}{12} $$
+                $$ 1\frac{3}{4} = 1\frac{9}{12} $$
+                <p>Add whole numbers: \(3 + 2 + 1 = 6\)</p>
+                <p>Add fractions: \(\frac{4}{12} + \frac{9}{12} = \frac{13}{12} = 1\frac{1}{12}\)</p>
+                <p>Combine: \(6 + 1\frac{1}{12} = 7\frac{1}{12}\)</p>
+                <p><strong>Answer: \(7\frac{1}{12}\)</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">10. \(5\frac{1}{6} - 3\frac{1}{2}\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q10')">Show Solution</button>
+            <div id="q10" class="explanation">
+                <p>Find a common denominator (6).</p>
+                $$ 3\frac{1}{2} = 3\frac{3}{6} $$
+                <p>Set up subtraction: \(5\frac{1}{6} - 3\frac{3}{6}\)</p>
+                <p>We cannot subtract \(\frac{3}{6}\) from \(\frac{1}{6}\), so we borrow from the 5.</p>
+                $$ 5\frac{1}{6} = 4\frac{7}{6} $$
+                $$ 4\frac{7}{6} - 3\frac{3}{6} = 1\frac{4}{6} $$
+                <p>Reduce fraction: \(1\frac{4}{6} = 1\frac{2}{3}\)</p>
+                <p><strong>Answer: \(1\frac{2}{3}\)</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">11. \(\frac{3}{4} \div 1\frac{1}{2}\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q11')">Show Solution</button>
+            <div id="q11" class="explanation">
+                <p>Convert mixed number to improper fraction:</p>
+                $$ 1\frac{1}{2} = \frac{3}{2} $$
+                <p>To divide by a fraction, multiply by its reciprocal:</p>
+                $$ \frac{3}{4} \times \frac{2}{3} $$
+                <p>Cancel out 3s and simplify \(\frac{2}{4}\):</p>
+                $$ \frac{1}{2} $$
+                <p><strong>Answer: \(\frac{1}{2}\)</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">12. \(7 \div 0.4\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q12')">Show Solution</button>
+            <div id="q12" class="explanation">
+                <p>Move the decimal one place to the right for both numbers to divide by a whole number:</p>
+                $$ 70 \div 4 $$
+                $$ 70 \div 4 = 17.5 $$
+                <p><strong>Answer: 17.5</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">13. Compare: <br>a. \(5^2 \bigcirc 2^5\) <br>b. \(0.3 \bigcirc 0.125\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q13')">Show Solution</button>
+            <div id="q13" class="explanation">
+                <p><strong>a.</strong> \(5^2 = 25\) and \(2^5 = 32\). Since \(25 < 32\), the answer is <strong>&lt;</strong>.</p>
+                <p><strong>b.</strong> Write 0.3 as 0.300 to compare easily with 0.125. Since 300 > 125, the answer is <strong>&gt;</strong>.</p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">14. The diameter of a quarter is about 2.4 cm.<br>a. What is the circumference? (\(\pi = 3.14\))<br>b. What is the ratio of the radius to the diameter?</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q14')">Show Solution</button>
+            <div id="q14" class="explanation">
+                <p><strong>a.</strong> Circumference formula: \(C = \pi d\)</p>
+                $$ C = 3.14 \times 2.4 = 7.536 \text{ cm} $$
+                <p><strong>b.</strong> The radius is always half of the diameter.</p>
+                <p>Ratio radius : diameter = \(r : 2r\) = <strong>1 : 2</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">15. Find the unknown: \(25m = 0.175\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q15')">Show Solution</button>
+            <div id="q15" class="explanation">
+                <p>Divide both sides by 25:</p>
+                $$ m = \frac{0.175}{25} $$
+                <p>Calculation: \(0.175 \div 25 = 0.007\)</p>
+                <p><strong>Answer: \(m = 0.007\)</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">16. Find the unknown: \(1.2 + y + 4.25 = 7\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q16')">Show Solution</button>
+            <div id="q16" class="explanation">
+                <p>First combine like terms:</p>
+                $$ 1.2 + 4.25 = 5.45 $$
+                $$ 5.45 + y = 7 $$
+                <p>Subtract 5.45 from 7:</p>
+                $$ y = 7 - 5.45 = 1.55 $$
+                <p><strong>Answer: \(y = 1.55\)</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">17. Which digit is in the ten-thousands place in 123,456.78?</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q17')">Show Solution</button>
+            <div id="q17" class="explanation">
+                <p>Place values starting from decimal point leftwards: Ones (6), Tens (5), Hundreds (4), Thousands (3), Ten-Thousands (2).</p>
+                <p><strong>Answer: 2</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">18. Arrange these numbers from least to greatest: \(1, \frac{1}{2}, \frac{1}{10}, \frac{1}{4}, 0\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q18')">Show Solution</button>
+            <div id="q18" class="explanation">
+                <p>Convert to decimals for easier comparison:</p>
+                <ul>
+                    <li>1 = 1.0</li>
+                    <li>\(\frac{1}{2} = 0.5\)</li>
+                    <li>\(\frac{1}{10} = 0.1\)</li>
+                    <li>\(\frac{1}{4} = 0.25\)</li>
+                    <li>0 = 0</li>
+                </ul>
+                <p>Order: 0, 0.1, 0.25, 0.5, 1</p>
+                <p><strong>Answer: \(0, \frac{1}{10}, \frac{1}{4}, \frac{1}{2}, 1\)</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">19. Write the prime factorization of 200 using exponents.</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q19')">Show Solution</button>
+            <div id="q19" class="explanation">
+                <p>Factor tree for 200:</p>
+                $$ 200 = 2 \times 100 $$
+                $$ 100 = 10 \times 10 = (2 \times 5) \times (2 \times 5) $$
+                <p>Gather all primes: \(2, 2, 5, 2, 5\)</p>
+                <p>Group them: \(2^3 \times 5^2\)</p>
+                <p><strong>Answer: \(2^3 \cdot 5^2\)</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">20. The store offered a 20% discount. Regular price was $18.00.<br>a. How much is the discount?<br>b. What is the new price?</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q20')">Show Solution</button>
+            <div id="q20" class="explanation">
+                <p><strong>a.</strong> \(20\%\) of \(18.00 = 0.2 \times 18 = 3.6\). Discount is <strong>$3.60</strong>.</p>
+                <p><strong>b.</strong> New Price = \(18.00 - 3.60 = 14.4\). New price is <strong>$14.40</strong>.</p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">21. The length of AB is 16 mm. The length of AC is 50 mm. What is the length of BC?</div>
+            <div class="canvas-container">
+                <svg width="300" height="50">
+                    <line x1="20" y1="25" x2="280" y2="25" stroke="black" stroke-width="2" />
+                    <circle cx="20" cy="25" r="3" fill="black" />
+                    <text x="20" y="45" font-family="Arial" font-size="12" text-anchor="middle">A</text>
+                    <circle cx="100" cy="25" r="3" fill="black" />
+                    <text x="100" y="45" font-family="Arial" font-size="12" text-anchor="middle">B</text>
+                    <circle cx="280" cy="25" r="3" fill="black" />
+                    <text x="280" y="45" font-family="Arial" font-size="12" text-anchor="middle">C</text>
+                </svg>
+            </div>
+            <button class="btn-reveal" onclick="toggleAnswer('q21')">Show Solution</button>
+            <div id="q21" class="explanation">
+                <p>Points A, B, and C are on a line.</p>
+                <p>\(AC = AB + BC\)</p>
+                <p>\(50 = 16 + BC\)</p>
+                <p>\(BC = 50 - 16 = 34\)</p>
+                <p><strong>Answer: 34 mm</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">22. One half of the area of this square is shaded. What is the area of the shaded region? (Side length = 6 in)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q22')">Show Solution</button>
+            <div id="q22" class="explanation">
+                <p>Area of the full square = \(side \times side = 6 \times 6 = 36 \text{ sq in}\).</p>
+                <p>Shaded area is half of the total area.</p>
+                $$ 36 \div 2 = 18 $$
+                <p><strong>Answer: 18 sq in.</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">23. Verify: Is every square a rectangle?</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q23')">Show Solution</button>
+            <div id="q23" class="explanation">
+                <p><strong>Answer: Yes.</strong></p>
+                <p>A rectangle is defined as a quadrilateral with four right angles. A square has four right angles and equal sides. Therefore, a square fits the definition of a rectangle (it is a special type of rectangle).</p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">24. Analyze: \(\frac{2^2 + 2^3}{2}\)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q24')">Show Solution</button>
+            <div id="q24" class="explanation">
+                <p>Calculate numerator first:</p>
+                $$ 2^2 = 4 $$
+                $$ 2^3 = 8 $$
+                $$ 4 + 8 = 12 $$
+                <p>Now divide:</p>
+                $$ \frac{12}{2} = 6 $$
+                <p><strong>Answer: 6</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">25. Explain "fraction form" for multiplying fractions.</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q25')">Show Solution</button>
+            <div id="q25" class="explanation">
+                <p>When multiplying fractions, especially with mixed numbers, we convert all numbers into <strong>improper fractions</strong>. This "fraction form" (numerator over denominator) allows us to multiply numerators together and denominators together easily.</p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">26. Identify the coordinates of the following points:<br>a. H<br>b. L</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q26')">Show Solution</button>
+            <div id="q26" class="explanation">
+                <p>Using the coordinate plane provided in the problem:</p>
+                <p><strong>a. H:</strong> Go left 4, down 3. Coordinates: <strong>(-4, -3)</strong></p>
+                <p><strong>b. L:</strong> Go right 3, up 4. Coordinates: <strong>(3, 4)</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">27. Name the points that have the following coordinates:<br>a. (-4, 3)<br>b. (3, 0)</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q27')">Show Solution</button>
+            <div id="q27" class="explanation">
+                <p><strong>a. (-4, 3):</strong> Left 4, Up 3. This corresponds to point <strong>J</strong>.</p>
+                <p><strong>b. (3, 0):</strong> Right 3, on the x-axis. <em>Note: On the specific graph image provided, there is no letter explicitly labeled at (3,0), though the grid line exists. Point C is at (3, 1) and F is at (3, -3). If a point were there, it would be on the horizontal axis.</em></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">28. If \(s = 9\), what does \(s^2\) equal?</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q28')">Show Solution</button>
+            <div id="q28" class="explanation">
+                $$ s^2 = 9^2 = 9 \times 9 = 81 $$
+                <p><strong>Answer: 81</strong></p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">29. Name an everyday object that has the same shape as each of these geometric solids:<br>a. cylinder <br>b. rectangular prism <br>c. sphere <br>d. cube</div>
+            <button class="btn-reveal" onclick="toggleAnswer('q29')">Show Solution</button>
+            <div id="q29" class="explanation">
+                <ul>
+                    <li><strong>a. Cylinder:</strong> Soda can, soup can.</li>
+                    <li><strong>b. Rectangular prism:</strong> Cereal box, brick, book.</li>
+                    <li><strong>c. Sphere:</strong> Basketball, orange, marble.</li>
+                    <li><strong>d. Cube:</strong> Dice, Rubik's cube, ice cube.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">30. The measure of \(\angle W\) in parallelogram WXYZ is \(75^\circ\).<br>a. Measure of \(\angle X\)?<br>b. Measure of \(\angle Y\)?</div>
+             <div class="canvas-container">
+                <svg width="200" height="100">
+                    <polygon points="50,80 150,80 180,20 80,20" style="fill:none;stroke:black;stroke-width:2" />
+                    <text x="40" y="95" font-family="Arial">W</text>
+                    <text x="160" y="95" font-family="Arial">X</text>
+                    <text x="190" y="20" font-family="Arial">Y</text>
+                    <text x="70" y="20" font-family="Arial">Z</text>
+                    <text x="60" y="75" font-size="12">75°</text>
+                </svg>
+            </div>
+            <button class="btn-reveal" onclick="toggleAnswer('q30')">Show Solution</button>
+            <div id="q30" class="explanation">
+                <p>In a parallelogram:</p>
+                <p>Consecutive angles (next to each other) add up to \(180^\circ\).</p>
+                <p>Opposite angles are equal.</p>
+                <p><strong>a. \(\angle X\):</strong> \(180^\circ - 75^\circ = 105^\circ\)</p>
+                <p><strong>b. \(\angle Y\):</strong> Opposite to \(\angle W\), so it is equal. \(75^\circ\)</p>
+            </div>
+        </div>
+
+        <div class="problem">
+            <div class="question">Real-World Connection: Statistics</div>
+            <p>Data: 61, 65, 73, 80, 35, 56, 57, 71, 52, 86, 39, 58, 55, 67, 63, 66, 83, 70, 51, 54, 66, 64, 41</p>
+            <p>Which display is best (stem-and-leaf vs line graph) and why? Draw it.</p>
+            <button class="btn-reveal" onclick="toggleAnswer('stats')">Show Solution</button>
+            <div id="stats" class="explanation">
+                <p><strong>Choice:</strong> A <strong>stem-and-leaf plot</strong> is the most appropriate way to display this data.</p>
+                <p><strong>Justification:</strong> A line graph is typically used to show changes over time. This data represents a single set of estimates from different students (frequency distribution), not a trend. A stem-and-leaf plot shows the shape of the data while keeping every individual value visible.</p>
+                <p><strong>The Display:</strong></p>
+                <div class="stem-leaf">
+   3 | 5 9<br>
+   4 | 1<br>
+   5 | 1 2 4 5 6 7 8<br>
+   6 | 1 3 4 5 6 6 7<br>
+   7 | 0 1 3<br>
+   8 | 0 3 6<br>
+   <br>
+   Key: 3 | 5 means 35
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
