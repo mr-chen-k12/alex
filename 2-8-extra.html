@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice - Lesson 79 Review</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 80px; /* Space for scoreboard */
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+        .question-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .question-card:hover {
+            transform: translateY(-2px);
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin-bottom: 10px;
+        }
+        .options label {
+            cursor: pointer;
+            display: block;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+            transition: background 0.2s;
+        }
+        .options label:hover {
+            background-color: #e8f4fc;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        .check-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .check-btn:hover {
+            background-color: #2980b9;
+        }
+        .check-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+        }
+        .correct { color: #27ae60; }
+        .incorrect { color: #c0392b; }
+        
+        .explanation {
+            display: none;
+            margin-top: 10px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #f1c40f;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        
+        /* Scoreboard Footer */
+        .scoreboard {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2em;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-around;
+        }
+        .score-value {
+            font-weight: bold;
+            color: #f1c40f;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lesson 79 Practice Quiz</h1>
+    <p style="text-align:center; margin-bottom: 30px;">Select the correct answer for each problem. Click "Check Answer" to see if you are correct and to view the explanation.</p>
+
+    <div id="quiz-container">
+        </div>
+
+    <div class="scoreboard">
+        <span>Score: <span id="score" class="score-value">0</span> / 30</span>
+        <span>Progress: <span id="progress" class="score-value">0</span>%</span>
+    </div>
+
+    <script>
+        // Question Data Base
+        const questions = [
+            {
+                q: "Find the area of a triangle with a base of 8 ft and a height of 5 ft.",
+                options: ["13 ft²", "20 ft²", "40 ft²", "26 ft²"],
+                answer: 1, // Index of correct answer
+                explanation: "Area = 1/2 × base × height. A = 1/2 × 8 × 5 = 4 × 5 = 20 ft²."
+            },
+            {
+                q: "Find the area of a right triangle with legs measuring 10 cm and 12 cm.",
+                options: ["120 cm²", "60 cm²", "22 cm²", "50 cm²"],
+                answer: 1,
+                explanation: "For a right triangle, the legs act as base and height. A = 1/2 × 10 × 12 = 60 cm²."
+            },
+            {
+                q: "If the base of a triangle is 20 mm and the area is 150 mm², what is the height?",
+                options: ["7.5 mm", "15 mm", "30 mm", "10 mm"],
+                answer: 1,
+                explanation: "Area = 1/2 × b × h. 150 = 1/2 × 20 × h. 150 = 10 × h. h = 15 mm."
+            },
+            {
+                q: "An obtuse triangle has a base of 6 in and a height of 4 in. What is its area?",
+                options: ["24 in²", "12 in²", "10 in²", "18 in²"],
+                answer: 1,
+                explanation: "The formula is the same regardless of the triangle type. A = 1/2 × 6 × 4 = 12 in²."
+            },
+            {
+                q: "If you double the height of a triangle but keep the base the same, what happens to the area?",
+                options: ["It stays the same", "It doubles", "It quadruples", "It is halved"],
+                answer: 1,
+                explanation: "Area is directly proportional to height. If h becomes 2h, Area becomes 2 × Area."
+            },
+            {
+                q: "The perimeter of a rectangle is 30 cm. If the length is 10 cm, what is the width?",
+                options: ["10 cm", "20 cm", "5 cm", "15 cm"],
+                answer: 2,
+                explanation: "P = 2l + 2w. 30 = 2(10) + 2w. 30 = 20 + 2w. 10 = 2w. w = 5 cm."
+            },
+            {
+                q: "Which statement is true regarding liters and quarts?",
+                options: ["1 Liter < 1 Quart", "1 Liter > 1 Quart", "1 Liter = 1 Quart", "1 Liter = 2 Quarts"],
+                answer: 1,
+                explanation: "A liter is slightly larger than a quart (approx 1.06 quarts)."
+            },
+            {
+                q: "Mr. Smith started working at age 25 and retired 40 years later. How old was he when he retired?",
+                options: ["55", "60", "65", "70"],
+                answer: 2,
+                explanation: "25 (start age) + 40 (years worked) = 65 years old."
+            },
+            {
+                q: "True or False: Every square is a rectangle.",
+                options: ["True", "False", "Only if it's tilted", "Only if sides are unequal"],
+                answer: 0,
+                explanation: "True. A square fits the definition of a rectangle (4 right angles and parallel opposite sides)."
+            },
+            {
+                q: "80% of 40 students passed the test. How many students passed?",
+                options: ["30", "32", "35", "28"],
+                answer: 1,
+                explanation: "0.80 × 40 = 32 students."
+            },
+            {
+                q: "20 out of 25 students brought lunch. What percentage brought lunch?",
+                options: ["75%", "80%", "85%", "90%"],
+                answer: 1,
+                explanation: "20/25 = 4/5 = 0.80 = 80%."
+            },
+            {
+                q: "A parallelogram has a base of 15 cm and a height of 10 cm. It is divided into two congruent triangles. What is the area of one triangle?",
+                options: ["150 cm²", "75 cm²", "30 cm²", "100 cm²"],
+                answer: 1,
+                explanation: "Area of parallelogram = 15 × 10 = 150. Area of one triangle = 150 ÷ 2 = 75 cm²."
+            },
+            {
+                q: "Simplify: \\( 10^4 \\div 10^2 \\)",
+                options: ["10", "100", "1000", "20"],
+                answer: 1,
+                explanation: "Subtract exponents: 4 - 2 = 2. So, \\( 10^2 = 100 \\)."
+            },
+            {
+                q: "Calculate: 5.5 + 2.25 + 1.0",
+                options: ["8.25", "8.75", "7.85", "8.05"],
+                answer: 1,
+                explanation: "Align decimals: 5.50 + 2.25 + 1.00 = 8.75."
+            },
+            {
+                q: "Multiply: 2.5 × 0.4",
+                options: ["1.0", "0.1", "10.0", "0.01"],
+                answer: 0,
+                explanation: "25 × 4 = 100. Two decimal places total -> 1.00."
+            },
+            {
+                q: "Divide: 48 ÷ 0.6",
+                options: ["8", "80", "800", "0.8"],
+                answer: 1,
+                explanation: "Move decimal one place right: 480 ÷ 6 = 80."
+            },
+            {
+                q: "Solve: \\( 2\\frac{1}{2} \\times \\frac{2}{5} \\)",
+                options: ["1", "2", "5/4", "1/2"],
+                answer: 0,
+                explanation: "Convert mixed number: 5/2. Multiply: (5/2) × (2/5) = 10/10 = 1."
+            },
+            {
+                q: "Solve: \\( 3\\frac{1}{3} \\div 2 \\)",
+                options: ["1", "5/3", "3/2", "5/6"],
+                answer: 1,
+                explanation: "Convert: 10/3. Divide by 2 is multiply by 1/2. (10/3) × (1/2) = 10/6 = 5/3."
+            },
+            {
+                q: "Find m: \\( 15 - m = 12.5 \\)",
+                options: ["2.5", "3.5", "1.5", "2.0"],
+                answer: 0,
+                explanation: "m = 15 - 12.5 = 2.5."
+            },
+            {
+                q: "Find x: \\( 5x = 0.25 \\)",
+                options: ["0.5", "0.05", "5.0", "0.005"],
+                answer: 1,
+                explanation: "x = 0.25 / 5 = 0.05."
+            },
+            {
+                q: "The perimeter of a square is 100 inches. What is the area?",
+                options: ["100 sq in", "25 sq in", "625 sq in", "500 sq in"],
+                answer: 2,
+                explanation: "Side = 100 / 4 = 25. Area = 25 × 25 = 625."
+            },
+            {
+                q: "Write as a decimal: \\( (5 \\times 10) + (3 \\times 1) + (2 \\times \\frac{1}{10}) \\)",
+                options: ["53.02", "53.2", "503.2", "5.32"],
+                answer: 1,
+                explanation: "50 + 3 + 0.2 = 53.2."
+            },
+            {
+                q: "If the radius of a circle is 5, what is the circumference? (Use \\(\\pi = 3.14\\))",
+                options: ["15.7", "31.4", "78.5", "10"],
+                answer: 1,
+                explanation: "C = 2 × pi × r = 2 × 3.14 × 5 = 31.4."
+            },
+            {
+                q: "Which number is closest to zero?",
+                options: ["-0.5", "0.1", "-0.05", "1"],
+                answer: 2,
+                explanation: "|-0.5|=0.5, |0.1|=0.1, |-0.05|=0.05. 0.05 is the smallest distance."
+            },
+            {
+                q: "Estimate the product of 4.8 and 5.2 by rounding to the nearest whole number.",
+                options: ["20", "24", "25", "30"],
+                answer: 2,
+                explanation: "4.8 rounds to 5. 5.2 rounds to 5. 5 × 5 = 25."
+            },
+            {
+                q: "What number is the prime factorization \\( 2^3 \\times 3 \\)?",
+                options: ["12", "18", "24", "36"],
+                answer: 2,
+                explanation: "\\( 2^3 = 8 \\). 8 × 3 = 24."
+            },
+            {
+                q: "What number is halfway between 0.1 and 0.2?",
+                options: ["0.12", "0.15", "0.05", "0.25"],
+                answer: 1,
+                explanation: "(0.1 + 0.2) / 2 = 0.3 / 2 = 0.15."
+            },
+            {
+                q: "Which quadrilateral has exactly one pair of parallel sides?",
+                options: ["Square", "Parallelogram", "Trapezoid", "Rhombus"],
+                answer: 2,
+                explanation: "A trapezoid is defined by having exactly one pair of parallel sides."
+            },
+            {
+                q: "A square and a regular pentagon (5 sides) share a side length of 4 cm. What is the perimeter of the pentagon?",
+                options: ["16 cm", "20 cm", "24 cm", "12 cm"],
+                answer: 1,
+                explanation: "A regular pentagon has 5 equal sides. 5 × 4 cm = 20 cm."
+            },
+            {
+                q: "Reduce the fraction \\( \\frac{12}{16} \\) to simplest form.",
+                options: ["\\( \\frac{3}{4} \\)", "\\( \\frac{1}{2} \\)", "\\( \\frac{5}{8} \\)", "\\( \\frac{2}{3} \\)"],
+                answer: 0,
+                explanation: "Divide numerator and denominator by 4: 12/4=3, 16/4=4. Result: 3/4."
+            }
+        ];
+
+        let score = 0;
+        let answeredCount = 0;
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            
+            questions.forEach((q, index) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'question-card';
+                qDiv.id = `q-card-${index}`;
+                
+                let optionsHtml = '';
+                q.options.forEach((opt, optIndex) => {
+                    optionsHtml += `
+                        <li>
+                            <label>
+                                <input type="radio" name="q${index}" value="${optIndex}">
+                                ${opt}
+                            </label>
+                        </li>
+                    `;
+                });
+
+                qDiv.innerHTML = `
+                    <div class="question-text">${index + 1}. ${q.q}</div>
+                    <ul class="options">${optionsHtml}</ul>
+                    <button class="check-btn" onclick="checkAnswer(${index})">Check Answer</button>
+                    <div class="feedback" id="feedback-${index}"></div>
+                    <div class="explanation" id="exp-${index}">
+                        <strong>Explanation:</strong> ${q.explanation}
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+            
+            // Re-render MathJax after inserting dynamic content
+            MathJax.typeset();
+        }
+
+        function checkAnswer(index) {
+            const radios = document.getElementsByName(`q${index}`);
+            let selectedValue = null;
+            let btn = document.querySelector(`#q-card-${index} .check-btn`);
+            
+            for (const radio of radios) {
+                if (radio.checked) {
+                    selectedValue = parseInt(radio.value);
+                    break;
+                }
+            }
+
+            if (selectedValue === null) {
+                alert("Please select an answer first.");
+                return;
+            }
+
+            // Disable button and inputs after checking
+            btn.disabled = true;
+            for (const radio of radios) {
+                radio.disabled = true;
+            }
+
+            const feedbackEl = document.getElementById(`feedback-${index}`);
+            const expEl = document.getElementById(`exp-${index}`);
+            
+            if (selectedValue === questions[index].answer) {
+                score++;
+                feedbackEl.innerHTML = "Correct! ✅";
+                feedbackEl.className = "feedback correct";
+            } else {
+                feedbackEl.innerHTML = "Incorrect ❌";
+                feedbackEl.className = "feedback incorrect";
+            }
+
+            answeredCount++;
+            updateScoreboard();
+            
+            feedbackEl.style.display = "block";
+            expEl.style.display = "block";
+            
+            // Re-render MathJax in case explanation contains math
+            MathJax.typesetPromise([expEl]);
+        }
+
+        function updateScoreboard() {
+            document.getElementById('score').innerText = score;
+            const percentage = Math.round((answeredCount / questions.length) * 100);
+            document.getElementById('progress').innerText = percentage;
+        }
+
+        // Initialize
+        renderQuiz();
+
+    </script>
+</body>
+</html>
