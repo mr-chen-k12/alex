@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saxon Math Course 1 - Lesson 79 Solutions</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .problem-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .problem-text {
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        .diagram-container {
+            margin: 15px 0;
+            text-align: center;
+        }
+        svg {
+            border: 1px solid #eee;
+            background-color: #fff;
+            max-width: 100%;
+        }
+        .toggle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        .toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        .answer-panel {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+        }
+        .answer-panel p {
+            margin: 0 0 10px 0;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lesson 79 Solutions</h1>
+    <p>Below are the solutions to the Lesson Practice and Written Practice problems found in the uploaded images.</p>
+
+    <h2>Lesson Practice</h2>
+    <p><em>Find the area of each triangle:</em></p>
+
+    <div class="problem-container">
+        <div class="problem-text">a. Base = 6 ft, Height = 6 ft</div>
+        <div class="diagram-container">
+            <svg width="200" height="150" viewBox="-10 -10 120 120">
+                <polygon points="10,100 90,100 50,20" style="fill:none;stroke:black;stroke-width:2" />
+                <line x1="50" y1="20" x2="50" y2="100" style="stroke:black;stroke-width:1;stroke-dasharray:4" />
+                <polyline points="50,90 55,90 55,100" style="fill:none;stroke:black;stroke-width:1"/>
+                <text x="55" y="60" font-size="12">6 ft</text>
+                <text x="40" y="115" font-size="12">6 ft</text>
+            </svg>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer('lp-a')">Show Answer & Explanation</button>
+        <div id="lp-a" class="answer-panel">
+            <p><span class="highlight">Answer:</span> $18 \text{ ft}^2$</p>
+            <p><strong>Explanation:</strong> The formula for the area of a triangle is $A = \frac{1}{2}bh$.</p>
+            <p>Here, $b = 6$ ft and $h = 6$ ft.</p>
+            <p>$$A = \frac{1}{2} \cdot 6 \cdot 6 = 3 \cdot 6 = 18$$</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">b. Right Triangle: Base = 6 in, Height = 8 in, Hypotenuse = 10 in</div>
+        <div class="diagram-container">
+            <svg width="200" height="150" viewBox="-10 -10 120 120">
+                <polygon points="20,100 80,100 80,20" style="fill:none;stroke:black;stroke-width:2" />
+                <rect x="70" y="90" width="10" height="10" style="fill:none;stroke:black;stroke-width:1" />
+                <text x="40" y="115" font-size="12">6 in.</text>
+                <text x="85" y="60" font-size="12">8 in.</text>
+                <text x="35" y="50" font-size="12">10 in.</text>
+            </svg>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer('lp-b')">Show Answer & Explanation</button>
+        <div id="lp-b" class="answer-panel">
+            <p><span class="highlight">Answer:</span> $24 \text{ in}^2$</p>
+            <p><strong>Explanation:</strong> We use the perpendicular sides as the base and height.</p>
+            <p>Base $b = 6$ in, Height $h = 8$ in.</p>
+            <p>$$A = \frac{1}{2} \cdot 6 \cdot 8 = 3 \cdot 8 = 24$$</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">c. Base = 25 mm, Height = 15 mm</div>
+        <div class="diagram-container">
+            <svg width="200" height="150" viewBox="-10 -10 120 120">
+                <polygon points="10,100 90,100 70,30" style="fill:none;stroke:black;stroke-width:2" />
+                <line x1="70" y1="30" x2="70" y2="100" style="stroke:black;stroke-width:1;stroke-dasharray:4" />
+                <polyline points="70,90 75,90 75,100" style="fill:none;stroke:black;stroke-width:1"/>
+                <text x="40" y="115" font-size="12">25 mm</text>
+                <text x="75" y="70" font-size="12">15 mm</text>
+            </svg>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer('lp-c')">Show Answer & Explanation</button>
+        <div id="lp-c" class="answer-panel">
+            <p><span class="highlight">Answer:</span> $187.5 \text{ mm}^2$</p>
+            <p><strong>Explanation:</strong> $A = \frac{1}{2}bh = \frac{1}{2} \cdot 25 \cdot 15$.</p>
+            <p>$25 \cdot 15 = 375$.</p>
+            <p>$$375 \div 2 = 187.5$$</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">d. Obtuse Triangle: Base = 6 cm, Height = 4 cm</div>
+        <div class="diagram-container">
+            <svg width="200" height="120" viewBox="-10 -10 150 100">
+                <polygon points="30,80 90,80 10,20" style="fill:none;stroke:black;stroke-width:2" />
+                <line x1="30" y1="80" x2="10" y2="80" style="stroke:black;stroke-width:1;stroke-dasharray:4" />
+                <line x1="10" y1="20" x2="10" y2="80" style="stroke:black;stroke-width:1;stroke-dasharray:4" />
+                <rect x="10" y="70" width="10" height="10" style="fill:none;stroke:black;stroke-width:1" />
+                <text x="50" y="95" font-size="12">6 cm</text>
+                <text x="15" y="50" font-size="12">4 cm</text>
+            </svg>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer('lp-d')">Show Answer & Explanation</button>
+        <div id="lp-d" class="answer-panel">
+            <p><span class="highlight">Answer:</span> $12 \text{ cm}^2$</p>
+            <p><strong>Explanation:</strong> $A = \frac{1}{2}bh$. The base is $6$ cm. The height (perpendicular distance to the opposite vertex) is $4$ cm.</p>
+            <p>$$A = \frac{1}{2} \cdot 6 \cdot 4 = 12$$</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">e. <strong>Predict:</strong> If the height of the triangle in <strong>c</strong> is doubled to 30 mm, would the area double? Calculate to check your prediction.</div>
+        <button class="toggle-btn" onclick="toggleAnswer('lp-e')">Show Answer & Explanation</button>
+        <div id="lp-e" class="answer-panel">
+            <p><span class="highlight">Answer:</span> Yes, the area doubles to $375 \text{ mm}^2$.</p>
+            <p><strong>Explanation:</strong></p>
+            <p>Original area (height 15): $187.5$.</p>
+            <p>New Area = $\frac{1}{2} \cdot 25 \cdot 30 = \frac{1}{2} \cdot 750 = 375$.</p>
+            <p>$187.5 \times 2 = 375$. The prediction is correct.</p>
+        </div>
+    </div>
+
+    <h2>Written Practice</h2>
+
+    <div class="problem-container">
+        <div class="problem-text">1. <strong>Explain</strong> If you know both the perimeter and the length of a rectangle, how can you determine the width of the rectangle?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-1')">Show Answer & Explanation</button>
+        <div id="wp-1" class="answer-panel">
+            <p><span class="highlight">Answer:</span> Subtract twice the length from the perimeter, then divide the result by 2.</p>
+            <p><strong>Explanation:</strong> Perimeter formula: $P = 2l + 2w$.</p>
+            <p>To solve for $w$: $2w = P - 2l$, so $w = \frac{P - 2l}{2}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">2. A 2-liter bottle contained 2 qt 3.6 oz of beverage. Use this information to compare a liter and a quart:<br>
+        $$1 \text{ liter} \bigcirc 1 \text{ quart}$$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-2')">Show Answer & Explanation</button>
+        <div id="wp-2" class="answer-panel">
+            <p><span class="highlight">Answer:</span> $>$ (Greater than)</p>
+            <p><strong>Explanation:</strong> The problem states that 2 liters equals "2 quarts plus 3.6 ounces". Since 2 liters is more than 2 quarts, 1 liter must be slightly more than 1 quart.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">3. Mr. Johnson was 38 years old when he started his job. He worked for 33 years. How old was he when he retired?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-3')">Show Answer & Explanation</button>
+        <div id="wp-3" class="answer-panel">
+            <p><span class="highlight">Answer:</span> 71 years old</p>
+            <p><strong>Explanation:</strong> Start Age + Duration = End Age</p>
+            <p>$$38 + 33 = 71$$</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">4. <strong>Verify:</strong> Answer "true" or "false" for each statement:<br>
+        a. "Every rectangle is a square."<br>
+        b. "Every rectangle is a parallelogram."</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-4')">Show Answer & Explanation</button>
+        <div id="wp-4" class="answer-panel">
+            <p><span class="highlight">Answer:</span><br>a. False<br>b. True</p>
+            <p><strong>Explanation:</strong><br>a. A rectangle has 4 right angles. A square requires 4 right angles AND 4 equal sides. A rectangle like a standard sheet of paper does not have equal sides.<br>b. A parallelogram is a quadrilateral with two pairs of parallel sides. All rectangles have two pairs of parallel sides, so they are parallelograms.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">5. Ninety percent of 30 trees are birch trees.<br>
+        a. How many trees are birch trees?<br>
+        b. What is the ratio of birch trees to all other trees?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-5')">Show Answer & Explanation</button>
+        <div id="wp-5" class="answer-panel">
+            <p><span class="highlight">Answer:</span> a. 27 trees, b. 9 to 1</p>
+            <p><strong>Explanation:</strong><br>a. $0.90 \times 30 = 27$.<br>b. Total = 30. Birch = 27. Other = $30 - 27 = 3$.<br>Ratio Birch : Other = $27 : 3$, which reduces to $9 : 1$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">6. Eighteen of the twenty-four runners finished the race.<br>
+        a. What fraction of the runners finished the race?<br>
+        b. What fraction of the runners did not finish the race?<br>
+        c. What percent of the runners did not finish the race?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-6')">Show Answer & Explanation</button>
+        <div id="wp-6" class="answer-panel">
+            <p><span class="highlight">Answer:</span> a. $\frac{3}{4}$, b. $\frac{1}{4}$, c. 25%</p>
+            <p><strong>Explanation:</strong><br>a. Finished: $\frac{18}{24}$. Divide both by 6 to get $\frac{3}{4}$.<br>b. Did not finish: $24 - 18 = 6$. Fraction: $\frac{6}{24} = \frac{1}{4}$.<br>c. $\frac{1}{4} = 0.25 = 25\%$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">7. <strong>Analyze:</strong> This parallelogram is divided into two congruent triangles. What is the area of each triangle?<br>
+        <em>(Diagram shows parallelogram with base 20mm and height 12mm)</em></div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-7')">Show Answer & Explanation</button>
+        <div id="wp-7" class="answer-panel">
+            <p><span class="highlight">Answer:</span> $120 \text{ mm}^2$</p>
+            <p><strong>Explanation:</strong> The area of the whole parallelogram is $b \times h = 20 \times 12 = 240 \text{ mm}^2$. Since it is divided into two congruent triangles, the area of one triangle is half of that: $240 \div 2 = 120$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">8. $10^3 \div 10^2$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-8')">Show Answer & Explanation</button>
+        <div id="wp-8" class="answer-panel">
+            <p><span class="highlight">Answer:</span> 10</p>
+            <p><strong>Explanation:</strong> $10^3 = 1000$ and $10^2 = 100$. $1000 \div 100 = 10$.<br>Alternatively, subtract exponents: $3 - 2 = 1$, so $10^1 = 10$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">9. $6.42 + 12.7 + 8$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-9')">Show Answer & Explanation</button>
+        <div id="wp-9" class="answer-panel">
+            <p><span class="highlight">Answer:</span> 27.12</p>
+            <p><strong>Explanation:</strong> Align the decimal points:<br>
+            &nbsp;&nbsp;6.42<br>
+            +12.70<br>
+            + 8.00<br>
+            -------<br>
+            27.12</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">10. $1.2(0.12)$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-10')">Show Answer & Explanation</button>
+        <div id="wp-10" class="answer-panel">
+            <p><span class="highlight">Answer:</span> 0.144</p>
+            <p><strong>Explanation:</strong> Multiply $12 \times 12 = 144$. Count decimal places: 1 (from 1.2) + 2 (from 0.12) = 3 total places. Place decimal: 0.144.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">11. $64 \div 0.08$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-11')">Show Answer & Explanation</button>
+        <div id="wp-11" class="answer-panel">
+            <p><span class="highlight">Answer:</span> 800</p>
+            <p><strong>Explanation:</strong> Move the decimal point 2 places to the right for both numbers: $6400 \div 8$.<br>$64 \div 8 = 8$, add two zeros $\rightarrow 800$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">12. $3\frac{1}{3} \times 1\frac{3}{5} \times \frac{3}{4}$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-12')">Show Answer & Explanation</button>
+        <div id="wp-12" class="answer-panel">
+            <p><span class="highlight">Answer:</span> 4</p>
+            <p><strong>Explanation:</strong> Convert to improper fractions:<br>
+            $3\frac{1}{3} = \frac{10}{3}$<br>
+            $1\frac{3}{5} = \frac{8}{5}$<br>
+            Calculation: $\frac{10}{3} \times \frac{8}{5} \times \frac{3}{4}$<br>
+            Simplify: The 3s cancel. $\frac{10}{5} = 2$. $\frac{8}{4} = 2$.<br>
+            Remaining: $2 \times 2 = 4$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">13. $2\frac{1}{2} \div 3$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-13')">Show Answer & Explanation</button>
+        <div id="wp-13" class="answer-panel">
+            <p><span class="highlight">Answer:</span> $\frac{5}{6}$</p>
+            <p><strong>Explanation:</strong> Convert mixed number: $2\frac{1}{2} = \frac{5}{2}$.<br>Divide by 3 is multiplying by $\frac{1}{3}$.<br>$\frac{5}{2} \times \frac{1}{3} = \frac{5}{6}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">14. Find unknown number: $10 - q = 9.87$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-14')">Show Answer & Explanation</button>
+        <div id="wp-14" class="answer-panel">
+            <p><span class="highlight">Answer:</span> $q = 0.13$</p>
+            <p><strong>Explanation:</strong> $q = 10 - 9.87$.<br>10.00 - 9.87 = 0.13.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">15. Find unknown number: $24m = 0.288$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-15')">Show Answer & Explanation</button>
+        <div id="wp-15" class="answer-panel">
+            <p><span class="highlight">Answer:</span> $m = 0.012$</p>
+            <p><strong>Explanation:</strong> $m = 0.288 \div 24$.<br>Ignore decimal temporarily: $288 \div 24 = 12$.<br>Place decimal (3 places): 0.012.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">16. Find unknown number: $n - 2\frac{3}{4} = 3\frac{1}{3}$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-16')">Show Answer & Explanation</button>
+        <div id="wp-16" class="answer-panel">
+            <p><span class="highlight">Answer:</span> $n = 6\frac{1}{12}$</p>
+            <p><strong>Explanation:</strong> $n = 3\frac{1}{3} + 2\frac{3}{4}$.<br>Common denominator is 12.<br>$3\frac{4}{12} + 2\frac{9}{12} = 5\frac{13}{12}$.<br>Simplify: $5 + 1\frac{1}{12} = 6\frac{1}{12}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">17. Find unknown number: $w + \frac{1}{4} = \frac{5}{6}$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-17')">Show Answer & Explanation</button>
+        <div id="wp-17" class="answer-panel">
+            <p><span class="highlight">Answer:</span> $w = \frac{7}{12}$</p>
+            <p><strong>Explanation:</strong> $w = \frac{5}{6} - \frac{1}{4}$.<br>Common denominator 12.<br>$\frac{10}{12} - \frac{3}{12} = \frac{7}{12}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">18. The perimeter of a square is 80 cm. What is its area?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-18')">Show Answer & Explanation</button>
+        <div id="wp-18" class="answer-panel">
+            <p><span class="highlight">Answer:</span> $400 \text{ cm}^2$</p>
+            <p><strong>Explanation:</strong> Side length = Perimeter $\div 4 = 80 \div 4 = 20$ cm.<br>Area = Side $\times$ Side = $20 \times 20 = 400$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">19. Write the decimal number for the following:<br>
+        $(9 \times 10) + (6 \times 1) + (3 \times \frac{1}{100})$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-19')">Show Answer & Explanation</button>
+        <div id="wp-19" class="answer-panel">
+            <p><span class="highlight">Answer:</span> 96.03</p>
+            <p><strong>Explanation:</strong> $90 + 6 + 0.03 = 96.03$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">20. **Connect** Juana set the radius on the compass to 10 cm and drew a circle. What was the circumference of the circle? (Use 3.14 for $\pi$)</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-20')">Show Answer & Explanation</button>
+        <div id="wp-20" class="answer-panel">
+            <p><span class="highlight">Answer:</span> 62.8 cm</p>
+            <p><strong>Explanation:</strong> Circumference $C = 2 \pi r$.<br>$C \approx 2 \times 3.14 \times 10$.<br>$2 \times 3.14 = 6.28$.<br>$6.28 \times 10 = 62.8$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">21. Which of these numbers is closest to zero?<br>
+        A. -2 &nbsp;&nbsp; B. 0.2 &nbsp;&nbsp; C. 1 &nbsp;&nbsp; D. $\frac{1}{2}$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-21')">Show Answer & Explanation</button>
+        <div id="wp-21" class="answer-panel">
+            <p><span class="highlight">Answer:</span> B. 0.2</p>
+            <p><strong>Explanation:</strong> We look at the absolute value (distance from zero).<br>|-2| = 2<br>|0.2| = 0.2<br>|1| = 1<br>|1/2| = 0.5<br>0.2 is the smallest value.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">22. **Estimate** Find the product of 6.7 and 7.3 by rounding each number to the nearest whole number before multiplying.</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-22')">Show Answer & Explanation</button>
+        <div id="wp-22" class="answer-panel">
+            <p><span class="highlight">Answer:</span> 49</p>
+            <p><strong>Explanation:</strong><br>6.7 rounds to 7.<br>7.3 rounds to 7.<br>$7 \times 7 = 49$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">23. **Analyze** The expression $2^4$ (two to the fourth power) is the prime factorization of 16. The expression $3^4$ is the prime factorization of what number?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-23')">Show Answer & Explanation</button>
+        <div id="wp-23" class="answer-panel">
+            <p><span class="highlight">Answer:</span> 81</p>
+            <p><strong>Explanation:</strong> $3^4 = 3 \times 3 \times 3 \times 3$.<br>$3 \times 3 = 9$.<br>$9 \times 9 = 81$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">24. What number is halfway between 0.2 and 0.3?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-24')">Show Answer & Explanation</button>
+        <div id="wp-24" class="answer-panel">
+            <p><span class="highlight">Answer:</span> 0.25</p>
+            <p><strong>Explanation:</strong> Average the two numbers: $\frac{0.2 + 0.3}{2} = \frac{0.5}{2} = 0.25$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">25. **Connect** To what decimal number is the arrow pointing on the number line below?<br>
+        <em>(Number line between 10 and 11 with 10 tick marks)</em></div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-25')">Show Answer & Explanation</button>
+        <div id="wp-25" class="answer-panel">
+            <p><span class="highlight">Answer:</span> 10.7</p>
+            <p><strong>Explanation:</strong> There are 10 spaces between 10 and 11, so each tick mark represents 0.1. The arrow is on the 7th tick mark after 10.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">26. Which quadrilateral has only one pair of parallel sides?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-26')">Show Answer & Explanation</button>
+        <div id="wp-26" class="answer-panel">
+            <p><span class="highlight">Answer:</span> Trapezoid</p>
+            <p><strong>Explanation:</strong> By definition, a trapezoid is a quadrilateral with exactly one pair of parallel sides.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">27. **Analyze** The coordinates of the vertices of a quadrilateral are (-5, 5), (1, 5), (3, 1), and (-3, 1). What is the name for this kind of quadrilateral?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-27')">Show Answer & Explanation</button>
+        <div id="wp-27" class="answer-panel">
+            <p><span class="highlight">Answer:</span> Parallelogram</p>
+            <p><strong>Explanation:</strong><br>
+            Top side: (-5,5) to (1,5) is horizontal, length 6.<br>
+            Bottom side: (-3,1) to (3,1) is horizontal, length 6.<br>
+            Since we have a pair of sides that are both equal in length and parallel (both horizontal), the shape is a parallelogram.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">28. In the figure below, a square and a regular hexagon share a common side. The area of the square is 100 sq. cm.<br>
+        a. What is the length of each side of the square?<br>
+        b. What is the perimeter of the square?</div>
+        <div class="diagram-container">
+             <svg width="200" height="150" viewBox="0 0 150 150">
+                <rect x="30" y="30" width="40" height="40" style="fill:none;stroke:black;stroke-width:1"/>
+                <polygon points="70,30 105,10 140,30 140,70 105,90 70,70" style="fill:none;stroke:black;stroke-width:1"/>
+            </svg>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-28')">Show Answer & Explanation</button>
+        <div id="wp-28" class="answer-panel">
+            <p><span class="highlight">Answer:</span> a. 10 cm, b. 40 cm</p>
+            <p><strong>Explanation:</strong><br>a. Area of square = $s^2 = 100$. So $s = \sqrt{100} = 10$.<br>b. Perimeter = $4 \times s = 4 \times 10 = 40$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">29. Use the information from problem 28:<br>
+        a. What is the length of each side of the hexagon?<br>
+        b. What is the perimeter of the hexagon?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-29')">Show Answer & Explanation</button>
+        <div id="wp-29" class="answer-panel">
+            <p><span class="highlight">Answer:</span> a. 10 cm, b. 60 cm</p>
+            <p><strong>Explanation:</strong><br>a. The hexagon shares a side with the square, so its side length is also 10 cm.<br>b. A regular hexagon has 6 equal sides. $P = 6 \times 10 = 60$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text">30. Write the prime factorization of both the numerator and the denominator of this fraction. Then reduce the fraction:<br>
+        $$\frac{32}{48}$$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('wp-30')">Show Answer & Explanation</button>
+        <div id="wp-30" class="answer-panel">
+            <p><span class="highlight">Answer:</span> $\frac{2}{3}$</p>
+            <p><strong>Explanation:</strong><br>
+            Numerator 32: $2 \times 2 \times 2 \times 2 \times 2$ ($2^5$)<br>
+            Denominator 48: $2 \times 2 \times 2 \times 2 \times 3$ ($2^4 \times 3$)<br>
+            Reduction: Cancel four 2s from both.<br>
+            $$\frac{2 \cdot 2 \cdot 2 \cdot 2 \cdot 2}{2 \cdot 2 \cdot 2 \cdot 2 \cdot 3} = \frac{2}{3}$$</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(id) {
+            var element = document.getElementById(id);
+            if (element.style.display === "block") {
+                element.style.display = "none";
+            } else {
+                element.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
