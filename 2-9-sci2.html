@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earth Systems Interactive Study Guide</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #app-container {
+            width: 90%;
+            max-width: 800px;
+            background: white;
+            padding: 2rem;
+            margin-top: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        button {
+            padding: 1rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+            background: var(--secondary);
+            color: white;
+        }
+
+        button:hover { background: #2980b9; transform: translateY(-2px); }
+        button:active { transform: translateY(0); }
+
+        .hidden { display: none; }
+
+        /* Flashcard Styling */
+        #flashcard {
+            height: 250px;
+            perspective: 1000px;
+            margin: 2rem 0;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 15px;
+        }
+
+        #flashcard.flipped .card-inner { transform: rotateY(180deg); }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 15px;
+            font-size: 1.4rem;
+            border: 2px solid var(--secondary);
+        }
+
+        .card-back { background: var(--light); transform: rotateY(180deg); color: var(--primary); }
+
+        /* Quiz Styling */
+        #canvas-container { margin: 1rem 0; }
+        canvas { background: #fff; border: 1px solid #ddd; border-radius: 8px; max-width: 100%; }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .option-btn { background: var(--light); color: var(--primary); text-align: left; }
+        .option-btn:hover { background: #dee2e6; }
+        .correct { background: var(--success) !important; color: white; }
+        .wrong { background: var(--danger) !important; color: white; }
+
+        #score-board {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    <div id="main-menu">
+        <h1>Earth Systems Study Suite</h1>
+        <p>Select a category to begin:</p>
+        <div class="menu-grid">
+            <button onclick="startMode('Vocabulary')">Vocabulary</button>
+            <button onclick="startMode('Water Cycle')">Water Cycle</button>
+            <button onclick="startMode('Geosphere')">Layers & Rocks</button>
+            <button onclick="startMode('Atmosphere')">Atmosphere</button>
+            <button onclick="startMode('Interactions')">Sphere Interactions</button>
+        </div>
+        <div style="margin-top: 20px;">
+            <button style="background: var(--primary);" onclick="startMode('Quiz')">Comprehensive Diagram Quiz</button>
+        </div>
+    </div>
+
+    <div id="flashcard-section" class="hidden">
+        <h2 id="category-title">Category</h2>
+        <div id="flashcard" onclick="this.classList.toggle('flipped')">
+            <div class="card-inner">
+                <div class="card-front" id="card-q">Question</div>
+                <div class="card-back" id="card-a">Answer</div>
+            </div>
+        </div>
+        <button onclick="nextCard()">Next Card</button>
+        <button onclick="showMenu()" style="background: #95a5a6;">Main Menu</button>
+    </div>
+
+    <div id="quiz-section" class="hidden">
+        <div id="score-board">Score: 0</div>
+        <div id="canvas-container">
+            <canvas id="quizCanvas" width="400" height="300"></canvas>
+        </div>
+        <h3 id="quiz-question">Question text here?</h3>
+        <div id="options" class="options-container"></div>
+        <div id="feedback" style="margin-top:10px; font-weight:bold;"></div>
+        <button id="next-quiz-btn" class="hidden" onclick="loadQuizQuestion()" style="margin-top:1rem">Next Question</button>
+        <button onclick="showMenu()" style="background: #95a5a6; margin-top:1rem">Exit to Menu</button>
+    </div>
+</div>
+
+<script>
+/** DATASET BASED ON PROVIDED IMAGES **/
+const studyData = {
+    Vocabulary: [
+        { q: "Hydrosphere", a: "Earth system containing all the water on Earth." },
+        { q: "Geosphere", a: "Earth system containing all the rocky layers of Earth." },
+        { q: "Biosphere", a: "Earth system composed of all living things on Earth." },
+        { q: "Atmosphere", a: "Earth system composed of all the gases surrounding Earth." },
+        { q: "Rain Shadow", a: "Dry region on one side of a mountain resulting from precipitation removing moisture on the other side." },
+        { q: "Transpiration", a: "The release of water vapor from the leaves of plants." }
+    ],
+    "Water Cycle": [
+        { q: "Evaporation", a: "Sun energy turns liquid water into water vapor." },
+        { q: "Condensation", a: "Water vapor rises, cools, and turns into cloud droplets." },
+        { q: "Precipitation", a: "Liquid water falling back down to Earth." }
+    ],
+    "Geosphere": [
+        { q: "Inner Core", a: "The solid, innermost layer of the Earth." },
+        { q: "Outer Core", a: "The liquid layer of the Earth surrounding the inner core." },
+        { q: "Igneous Rock", a: "Formed from the melting and cooling of rock." },
+        { q: "Sedimentary Rock", a: "Formed from the breaking down and deposition of sediments." }
+    ],
+    "Atmosphere": [
+        { q: "Nitrogen Percentage", a: "78% of the Atmosphere." },
+        { q: "Oxygen Percentage", a: "20% of the Atmosphere." },
+        { q: "Troposphere", a: "The lowest layer of the atmosphere (0-11km)." },
+        { q: "Ozone Layer", a: "Located in the Stratosphere; blocks harmful UV rays." }
+    ],
+    "Interactions": [
+        { q: "Atmosphere -> Geosphere", a: "Chemicals in air affect landforms/erosion." },
+        { q: "Biosphere -> Atmosphere", a: "Exchange of oxygen and carbon dioxide through respiration." },
+        { q: "Hydrosphere -> Biosphere", a: "Water distributes nutrients and allows plants to grow." }
+    ]
+};
+
+/** QUIZ LOGIC **/
+let currentMode = "";
+let currentCardIndex = 0;
+let score = 0;
+let quizPool = [];
+
+function showMenu() {
+    document.getElementById('main-menu').classList.remove('hidden');
+    document.getElementById('flashcard-section').classList.add('hidden');
+    document.getElementById('quiz-section').classList.add('hidden');
+}
+
+function startMode(mode) {
+    currentMode = mode;
+    document.getElementById('main-menu').classList.add('hidden');
+    
+    if (mode === 'Quiz') {
+        startQuiz();
+    } else {
+        currentCardIndex = 0;
+        document.getElementById('flashcard-section').classList.remove('hidden');
+        document.getElementById('category-title').innerText = mode;
+        showCard();
+    }
+}
+
+// Flashcard Functions
+function showCard() {
+    const card = studyData[currentMode][currentCardIndex];
+    document.getElementById('flashcard').classList.remove('flipped');
+    document.getElementById('card-q').innerText = card.q;
+    document.getElementById('card-a').innerText = card.a;
+}
+
+function nextCard() {
+    currentCardIndex = (currentCardIndex + 1) % studyData[currentMode].length;
+    showCard();
+}
+
+// Diagram Quiz Logic
+function startQuiz() {
+    score = 0;
+    updateScore();
+    document.getElementById('quiz-section').classList.remove('hidden');
+    loadQuizQuestion();
+}
+
+function updateScore() {
+    document.getElementById('score-board').innerText = `Score: ${score}`;
+}
+
+const quizQuestions = [
+    { 
+        type: 'diagram', 
+        draw: drawEarth, 
+        q: "Which layer is the arrow pointing to?", 
+        options: ["Inner Core", "Outer Core", "Mantle", "Crust"], 
+        correct: 0,
+        target: 'inner' 
+    },
+    { 
+        type: 'diagram', 
+        draw: drawEarth, 
+        q: "Which layer is the outermost rocky shell?", 
+        options: ["Inner Core", "Mantle", "Crust", "Atmosphere"], 
+        correct: 2,
+        target: 'crust' 
+    },
+    { 
+        type: 'diagram', 
+        draw: drawAtmosphere, 
+        q: "In which layer is the Ozone Layer located?", 
+        options: ["Troposphere", "Stratosphere", "Mesosphere", "Thermosphere"], 
+        correct: 1 
+    },
+    { 
+        type: 'text', 
+        q: "What gas makes up 78% of our atmosphere?", 
+        options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Argon"], 
+        correct: 2 
+    },
+    {
+        type: 'diagram',
+        draw: drawRockCycle,
+        q: "What process turns Sedimentary rock into Metamorphic rock?",
+        options: ["Melting", "Heat and Pressure", "Breaking Down", "Evaporation"],
+        correct: 1
+    }
+];
+
+function loadQuizQuestion() {
+    const qData = quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
+    const canvas = document.getElementById('quizCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    document.getElementById('feedback').innerText = "";
+    document.getElementById('next-quiz-btn').classList.add('hidden');
+    document.getElementById('quiz-question').innerText = qData.q;
+    
+    if (qData.type === 'diagram') {
+        canvas.classList.remove('hidden');
+        qData.draw(ctx);
+    } else {
+        canvas.classList.add('hidden');
+    }
+
+    const optionsDiv = document.getElementById('options');
+    optionsDiv.innerHTML = "";
+    qData.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(index, qData.correct, btn);
+        optionsDiv.appendChild(btn);
+    });
+}
+
+function checkAnswer(selected, correct, btn) {
+    const allBtns = document.querySelectorAll('.option-btn');
+    allBtns.forEach(b => b.disabled = true);
+    
+    if (selected === correct) {
+        btn.classList.add('correct');
+        score += 10;
+        document.getElementById('feedback').innerText = "Correct! ✨";
+    } else {
+        btn.classList.add('wrong');
+        allBtns[correct].classList.add('correct');
+        document.getElementById('feedback').innerText = "Keep studying!";
+    }
+    updateScore();
+    document.getElementById('next-quiz-btn').classList.remove('hidden');
+}
+
+/** CANVAS DRAWING FUNCTIONS **/
+function drawEarth(ctx) {
+    const centerX = 200;
+    const centerY = 150;
+    
+    // Draw layers
+    const layers = [
+        { r: 120, color: '#3498db', label: 'Crust' },
+        { r: 100, color: '#e67e22', label: 'Mantle' },
+        { r: 60, color: '#f1c40f', label: 'Outer Core' },
+        { r: 30, color: '#ecf0f1', label: 'Inner Core' }
+    ];
+
+    layers.forEach(l => {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, l.r, 0, 2 * Math.PI);
+        ctx.fillStyle = l.color;
+        ctx.fill();
+        ctx.stroke();
+    });
+
+    // Drawing the pointer for the question
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(centerX + 140, centerY - 80);
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.fillText("POINTING HERE", centerX + 100, centerY - 90);
+}
+
+function drawAtmosphere(ctx) {
+    ctx.fillStyle = "#000";
+    ctx.font = "12px Arial";
+    // Earth surface
+    ctx.beginPath();
+    ctx.arc(200, 400, 200, 0, 2 * Math.PI);
+    ctx.fillStyle = "#2ecc71";
+    ctx.fill();
+    
+    // Layers
+    const layers = ["Troposphere", "Stratosphere (Ozone)", "Mesosphere"];
+    for(let i=0; i<3; i++) {
+        ctx.beginPath();
+        ctx.arc(200, 400, 220 + (i*30), Math.PI, 0);
+        ctx.strokeStyle = "#3498db";
+        ctx.stroke();
+        ctx.fillStyle = "#2c3e50";
+        ctx.fillText(layers[i], 10, 180 - (i*30));
+    }
+}
+
+function drawRockCycle(ctx) {
+    ctx.font = "14px Arial";
+    ctx.fillStyle = "black";
+    ctx.strokeRect(50, 50, 100, 40);
+    ctx.fillText("Sedimentary", 60, 75);
+    
+    ctx.strokeRect(250, 50, 100, 40);
+    ctx.fillText("Metamorphic", 260, 75);
+    
+    // Arrow
+    ctx.beginPath();
+    ctx.moveTo(150, 70);
+    ctx.lineTo(250, 70);
+    ctx.stroke();
+    ctx.fillText("?", 195, 65);
+}
+
+</script>
+</body>
+</html>
