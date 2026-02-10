@@ -3,251 +3,326 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earth Systems Study Cards</title>
+    <title>Comprehensive Earth Systems Study Guide</title>
     <style>
         :root {
-            --primary: #4a90e2;
-            --secondary: #50c878;
-            --accent: #ff9f43;
-            --bg: #f0f7ff;
+            --primary: #2563eb;
+            --secondary: #64748b;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Scoreboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+            background: var(--card);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .stat-box {
+            font-size: 0.85rem;
+            padding: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .stat-box span {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Menu */
+        .menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .set-btn {
+            background: var(--card);
+            border: 2px solid #e2e8f0;
             padding: 20px;
-            color: #333;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        h1 { color: var(--primary); margin-bottom: 10px; }
-
-        .game-header {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-            background: white;
-            padding: 15px 30px;
-            border-radius: 50px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        .set-btn:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
         }
 
-        .score-box { font-weight: bold; font-size: 1.2rem; }
-        #score { color: var(--secondary); }
-        #wrong { color: #e74c3c; }
+        .set-btn h3 { margin: 0; color: var(--primary); }
+        .set-btn p { margin: 5px 0 0; color: var(--secondary); font-size: 0.9rem; }
 
-        .set-selector {
-            margin-bottom: 20px;
-            display: flex;
+        /* Quiz Card */
+        .quiz-card {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            display: none;
+        }
+
+        .progress-container {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .question-box {
+            margin-bottom: 25px;
+        }
+
+        .question-box h2 {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .options-grid {
+            display: grid;
             gap: 10px;
         }
 
-        button.set-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
+        .option {
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
             cursor: pointer;
-            background: white;
-            border: 2px solid var(--primary);
-            transition: 0.3s;
+            transition: all 0.2s;
+            background: #fff;
         }
 
-        button.set-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .card-container {
-            perspective: 1000px;
-            width: 350px;
-            height: 250px;
-            cursor: pointer;
-        }
-
-        .card {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            border-radius: 15px;
-        }
-
-        .card.flipped { transform: rotateY(180deg); }
-
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            box-sizing: border-box;
-            border-radius: 15px;
-            font-size: 1.3rem;
-            background: white;
-            border: 4px solid var(--primary);
-        }
-
-        .card-back {
-            background: #fffdf0;
-            transform: rotateY(180deg);
-            color: #2c3e50;
-        }
+        .option:hover { background: #f1f5f9; }
+        .option.correct { background: var(--success); color: white; border-color: var(--success); }
+        .option.wrong { background: var(--danger); color: white; border-color: var(--danger); }
 
         .controls {
-            margin-top: 30px;
+            margin-top: 25px;
             display: flex;
-            gap: 15px;
+            justify-content: space-between;
         }
 
-        .btn-action {
-            padding: 12px 25px;
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
             border: none;
-            border-radius: 10px;
-            color: white;
-            font-weight: bold;
             cursor: pointer;
+            font-weight: 600;
         }
 
-        .btn-correct { background-color: var(--secondary); }
-        .btn-wrong { background-color: #e74c3c; }
-        .btn-next { background-color: var(--accent); }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: var(--secondary); color: white; }
 
-        #review-list {
-            margin-top: 40px;
-            width: 100%;
-            max-width: 500px;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            display: none;
-        }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <h1>🌍 Earth Explorers Study Cards</h1>
+<div class="container">
+    <header>
+        <h1>Earth Systems Mastery</h1>
+        <p>Comprehensive Study Guide & Quiz</p>
+    </header>
 
-    <div class="game-header">
-        <div class="score-box">✅ Correct: <span id="score">0</span></div>
-        <div class="score-box">❌ To Review: <span id="wrong">0</span></div>
+    <div id="scoreboard" class="stats-grid">
+        <div class="stat-box">Vocabulary: <span id="score-Vocab">0%</span></div>
+        <div class="stat-box">Water/Rocks: <span id="score-Cycle">0%</span></div>
+        <div class="stat-box">Atmosphere: <span id="score-Atmo">0%</span></div>
+        <div class="stat-box">Interactions: <span id="score-Inter">0%</span></div>
     </div>
 
-    <div class="set-selector">
-        <button class="set-btn active" onclick="changeSet(0)">The 4 Spheres</button>
-        <button class="set-btn" onclick="changeSet(1)">Processes & Rocks</button>
-        <button class="set-btn" onclick="changeSet(2)">Water Wonders</button>
+    <div id="main-menu" class="menu-list">
+        <button class="set-btn" onclick="startQuiz('Vocab')">
+            <div>
+                <h3>Set 1: Systems & Core Vocab</h3>
+                <p>Hydrosphere, Geosphere, Biomes, and more.</p>
+            </div>
+            <span>→</span>
+        </button>
+        <button class="set-btn" onclick="startQuiz('Cycle')">
+            <div>
+                <h3>Set 2: The Cycles</h3>
+                <p>Water cycle phases, Rock types, and Layers of Earth.</p>
+            </div>
+            <span>→</span>
+        </button>
+        <button class="set-btn" onclick="startQuiz('Atmo')">
+            <div>
+                <h3>Set 3: Atmosphere & Air</h3>
+                <p>Gases, layers (Troposphere to Mesosphere), and air pressure.</p>
+            </div>
+            <span>→</span>
+        </button>
+        <button class="set-btn" onclick="startQuiz('Inter')">
+            <div>
+                <h3>Set 4: Sphere Interactions</h3>
+                <p>How the 4 spheres exchange energy and matter.</p>
+            </div>
+            <span>→</span>
+        </button>
     </div>
 
-    <div class="card-container" onclick="flipCard()">
-        <div class="card" id="mainCard">
-            <div class="card-front" id="frontText">Select a set to begin!</div>
-            <div class="card-back" id="backText">The answer is here.</div>
+    <div id="quiz-area" class="quiz-card">
+        <div class="progress-container"><div id="progress-bar"></div></div>
+        <div class="question-box">
+            <h2 id="question-text">Question</h2>
+            <div id="options-container" class="options-grid"></div>
+        </div>
+        <div class="controls">
+            <button class="btn btn-secondary" onclick="backToMenu()">Quit</button>
+            <button id="next-btn" class="btn btn-primary hidden" onclick="handleNext()">Next Question</button>
         </div>
     </div>
+</div>
 
-    <div class="controls">
-        <button class="btn-action btn-wrong" onclick="markWrong()">I'm not sure / Wrong</button>
-        <button class="btn-action btn-correct" onclick="markCorrect()">I got it right!</button>
-        <button class="btn-action btn-next" onclick="nextCard()">Skip/Next</button>
-    </div>
+<script>
+// COMPREHENSIVE DATASET FROM ALL IMAGES
+const studyData = {
+    Vocab: [
+        { q: "What system contains all the rocky layers of Earth?", a: "Geosphere", alt: ["Hydrosphere", "Atmosphere", "Biosphere"] },
+        { q: "A dry region on one side of a mountain caused by precipitation on the other side is a:", a: "Rain Shadow", alt: ["Aquifer", "Biome", "Reservoir"] },
+        { q: "Water stored in spaces between materials beneath Earth's surface is:", a: "Groundwater", alt: ["Salt Water", "Aquifer", "Water Table"] },
+        { q: "The variety of species on Earth or in one environment is:", a: "Biodiversity", alt: ["Species", "Biome", "Biosphere"] },
+        { q: "An underground region of rocky material containing water for wells is an:", a: "Aquifer", alt: ["Reservoir", "Water Table", "Groundwater"] },
+        { q: "The upper surface or level of groundwater is the:", a: "Water Table", alt: ["Aquifer", "Geologic", "Soil"] },
+        { q: "Naturally occurring solid inorganic substances are:", a: "Minerals", alt: ["Rocks", "Sediments", "Soil"] },
+        { q: "The process of dropping sediment in a new location is:", a: "Deposition", alt: ["Erosion", "Weathering", "Melting"] }
+    ],
+    Cycle: [
+        { q: "Sun energy turns liquid water into water vapor during:", a: "Evaporation", alt: ["Condensation", "Precipitation", "Transpiration"] },
+        { q: "As water vapor rises and cools, it turns into cloud droplets during:", a: "Condensation", alt: ["Evaporation", "Precipitation", "Respiration"] },
+        { q: "The release of water vapor from the leaves of plants is:", a: "Transpiration", alt: ["Respiration", "Evaporation", "Cellular Respiration"] },
+        { q: "Which rock is formed from the melting and cooling of other rocks?", a: "Igneous", alt: ["Sedimentary", "Metamorphic", "Mineral"] },
+        { q: "Which rock type is formed by heat and pressure?", a: "Metamorphic", alt: ["Igneous", "Sedimentary", "Soil"] },
+        { q: "The liquid layer of Earth surrounding the inner core is the:", a: "Outer core", alt: ["Inner core", "Lower mantle", "Crust"] },
+        { q: "Which part of the Earth is the solid, innermost center?", a: "Inner core", alt: ["Outer core", "Upper mantle", "Crust"] }
+    ],
+    Atmo: [
+        { q: "What percentage of the atmosphere is Nitrogen?", a: "78%", alt: ["20%", "2%", "50%"] },
+        { q: "What percentage of the atmosphere is Oxygen?", a: "20%", alt: ["78%", "2%", "10%"] },
+        { q: "In which layer of the atmosphere is the Ozone Layer located?", a: "Stratosphere", alt: ["Troposphere", "Mesosphere", "Thermosphere"] },
+        { q: "Which layer is closest to Earth (0-11 km)?", a: "Troposphere", alt: ["Stratosphere", "Mesosphere", "Ozone Layer"] },
+        { q: "The weight of air pressing on all things beneath it is:", a: "Air Pressure", alt: ["Altitude", "Air Mass", "Respiration"] },
+        { q: "The exchange of gases with the environment (breathing) is:", a: "Respiration", alt: ["Cellular Respiration", "Transpiration", "Condensation"] }
+    ],
+    Inter: [
+        { q: "Acid rain and lake-effect snow are interactions between:", a: "Hydrosphere & Atmosphere", alt: ["Geosphere & Biosphere", "Atmosphere & Geosphere", "Hydrosphere & Biosphere"] },
+        { q: "Water distributing nutrients to plants is an interaction between:", a: "Hydrosphere & Biosphere", alt: ["Atmosphere & Geosphere", "Biosphere & Geosphere", "Atmosphere & Hydrosphere"] },
+        { q: "Amount of precipitation creating different biomes is an interaction between:", a: "Geosphere & Atmosphere", alt: ["Biosphere & Hydrosphere", "Geosphere & Biosphere", "Hydrosphere & Atmosphere"] },
+        { q: "Animals creating soil with waste is an interaction between:", a: "Biosphere & Geosphere", alt: ["Atmosphere & Hydrosphere", "Geosphere & Atmosphere", "Hydrosphere & Biosphere"] },
+        { q: "Ozone blocking sun rays that are harmful to organisms is an interaction between:", a: "Atmosphere & Biosphere", alt: ["Geosphere & Biosphere", "Hydrosphere & Atmosphere", "Geosphere & Atmosphere"] }
+    ]
+};
 
-    <div id="review-list">
-        <h3>📝 Cards to Study Again:</h3>
-        <ul id="wrong-items"></ul>
-    </div>
+let currentCategory = '';
+let currentIdx = 0;
+let correctCount = 0;
+let scores = { Vocab: 0, Cycle: 0, Atmo: 0, Inter: 0 };
 
-    <script>
-        const cardSets = [
-            [ // Set 1: The 4 Spheres
-                { q: "What is the Geosphere?", a: "The sphere made of rocks, mountains, and the Earth's crust." },
-                { q: "What is the Hydrosphere?", a: "All the water on Earth, found in oceans, lakes, and the air." },
-                { q: "What is the Biosphere?", a: "The sphere made up of all living things on Earth." },
-                { q: "What is the Atmosphere?", a: "The layer of air and gases surrounding the Earth." },
-                { q: "Where is the Geosphere located relative to others?", a: "It is the solid foundation beneath the other spheres." }
-            ],
-            [ // Set 2: Processes & Rocks
-                { q: "What is Weathering?", a: "The breaking down of rock into smaller pieces." },
-                { q: "What is Erosion?", a: "The movement of sediment from its original location." },
-                { q: "What is Deposition?", a: "When sediment is dropped in a new location." },
-                { q: "What cycle does the Geosphere belong to?", a: "The Rock Cycle." },
-                { q: "What is an Air Mass?", a: "A large volume of air with specific temperature and moisture." }
-            ],
-            [ // Set 3: Water Wonders
-                { q: "Why is the ocean salty?", a: "Minerals and salts are washed from the land into the ocean over time." },
-                { q: "What are Condensation and Evaporation?", a: "Opposites: Evaporation turns liquid to gas; Condensation turns gas to liquid." },
-                { q: "What is a Reservoir?", a: "A large lake or area used to store water for human supply." },
-                { q: "What is the Water Table?", a: "The upper level of underground water." },
-                { q: "What interacts to shape the Grand Canyon?", a: "The Hydrosphere (River) and the Geosphere (Rock) through weathering/erosion." }
-            ]
-        ];
+function startQuiz(cat) {
+    currentCategory = cat;
+    currentIdx = 0;
+    correctCount = 0;
+    document.getElementById('main-menu').classList.add('hidden');
+    document.getElementById('quiz-area').style.display = 'block';
+    renderQuestion();
+}
 
-        let currentSetIndex = 0;
-        let currentCardIndex = 0;
-        let score = 0;
-        let wrongCount = 0;
-        let reviewItems = new Set();
+function renderQuestion() {
+    const data = studyData[currentCategory][currentIdx];
+    const options = [...data.alt, data.a].sort(() => Math.random() - 0.5);
+    
+    document.getElementById('next-btn').classList.add('hidden');
+    document.getElementById('question-text').innerText = data.q;
+    document.getElementById('progress-bar').style.width = `${(currentIdx / studyData[currentCategory].length) * 100}%`;
 
-        function changeSet(index) {
-            currentSetIndex = index;
-            currentCardIndex = 0;
-            document.querySelectorAll('.set-btn').forEach((btn, i) => {
-                btn.classList.toggle('active', i === index);
-            });
-            updateCard();
-            resetCardFlip();
-        }
+    const container = document.getElementById('options-container');
+    container.innerHTML = '';
+    
+    options.forEach(opt => {
+        const btn = document.createElement('div');
+        btn.className = 'option';
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(btn, opt, data.a);
+        container.appendChild(btn);
+    });
+}
 
-        function flipCard() {
-            document.getElementById('mainCard').classList.toggle('flipped');
-        }
+function checkAnswer(el, selected, correct) {
+    const all = document.querySelectorAll('.option');
+    all.forEach(o => o.style.pointerEvents = 'none');
 
-        function resetCardFlip() {
-            document.getElementById('mainCard').classList.remove('flipped');
-        }
+    if (selected === correct) {
+        el.classList.add('correct');
+        correctCount++;
+    } else {
+        el.classList.add('wrong');
+        all.forEach(o => { if(o.innerText === correct) o.classList.add('correct'); });
+    }
+    document.getElementById('next-btn').classList.remove('hidden');
+}
 
-        function updateCard() {
-            const set = cardSets[currentSetIndex];
-            document.getElementById('frontText').innerText = set[currentCardIndex].q;
-            document.getElementById('backText').innerText = set[currentCardIndex].a;
-        }
+function handleNext() {
+    currentIdx++;
+    if (currentIdx < studyData[currentCategory].length) {
+        renderQuestion();
+    } else {
+        const percent = Math.round((correctCount / studyData[currentCategory].length) * 100);
+        scores[currentCategory] = Math.max(scores[currentCategory], percent);
+        document.getElementById(`score-${currentCategory}`).innerText = `${percent}%`;
+        alert(`Finished! You scored ${percent}%`);
+        backToMenu();
+    }
+}
 
-        function nextCard() {
-            currentCardIndex = (currentCardIndex + 1) % cardSets[currentSetIndex].length;
-            resetCardFlip();
-            setTimeout(updateCard, 200);
-        }
+function backToMenu() {
+    document.getElementById('main-menu').classList.remove('hidden');
+    document.getElementById('quiz-area').style.display = 'none';
+}
+</script>
 
-        function markCorrect() {
-            score++;
-            document.getElementById('score').innerText = score;
-            nextCard();
-        }
-
-        function markWrong() {
-            const card = cardSets[currentSetIndex][currentCardIndex];
-            if (!reviewItems.has(card.q)) {
-                reviewItems.add(card.q);
-                wrongCount++;
-                document.getElementById('wrong').innerText = wrongCount;
-                
-                const li = document.createElement('li');
-                li.innerText = card.q;
-                document.getElementById('wrong-items').appendChild(li);
-                document.getElementById('review-list').style.display = 'block';
-            }
-            nextCard();
-        }
-
-        // Initialize first card
-        updateCard();
-    </script>
 </body>
 </html>
