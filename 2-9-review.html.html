@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math 7/6 Review: Linear Quiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/dist/jax/esm/latest.js"></script>
+    <style>
+        body { background-color: #f0f2f5; padding-bottom: 50px; }
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #ffffff;
+            border-bottom: 2px solid #007bff;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .option-btn {
+            text-align: left;
+            margin-bottom: 8px;
+            border: 2px solid #e9ecef;
+        }
+        .option-btn:hover:not([disabled]) {
+            border-color: #007bff;
+            background-color: #f8f9fa;
+        }
+        .feedback {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        .correct { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .wrong { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .score-box { font-size: 1.25rem; font-weight: bold; color: #007bff; }
+    </style>
+</head>
+<body>
+
+<div class="sticky-header mb-4">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">Math 7/6 Test 15 Review</h4>
+        <div class="score-box">
+            Score: <span id="current-score">0</span> / 30
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div id="quiz-container">
+        </div>
+    <div class="text-center mt-5">
+        <button class="btn btn-lg btn-success" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Back to Top</button>
+    </div>
+</div>
+
+<script>
+const quizData = [
+    { q: "What is the formula for the area of a parallelogram? [cite: 2]", a: ["Area = base + height", "Area = base × height", "Area = 1/2 × base × height", "Area = side²"], c: 1, e: "The formula is base times height[cite: 2]." },
+    { q: "Base and height in a parallelogram are always ______? [cite: 3]", a: ["Parallel", "Equal", "Perpendicular (Right Angle)", "Diagonal"], c: 2, e: "They must form a right angle[cite: 3]." },
+    { q: "Calculate the area if base = 10cm and height = 3cm. ", a: ["13 cm²", "30 cm²", "33 cm²", "15 cm²"], c: 1, e: "$3 \\times 10 = 30$." },
+    { q: "To change a percent to a decimal, move the decimal point two times to the ______? [cite: 9]", a: ["Right", "Left", "Up", "Down"], c: 1, e: "Move it to the LEFT[cite: 9]." },
+    { q: "When multiplying price and tax, you should line up the ______? [cite: 10]", a: ["Decimals", "Zeros", "Digits", "Commas"], c: 2, e: "Line up digits, not decimals[cite: 10]." },
+    { q: "What is 6% written as a decimal? [cite: 16]", a: ["0.6", "6.0", "0.006", "0.06"], c: 3, e: "6% = 0.06[cite: 16]." },
+    { q: "If the total cost is $15.11, what is the change from a $20 bill? [cite: 26]", a: ["$4.89", "$5.89", "$5.11", "$4.11"], c: 0, e: "$20.00 - $15.11 = $4.89[cite: 26, 27]." },
+    { q: "How do you find a common denominator for fractions? [cite: 30]", a: ["Find the GCF", "Find the LCM", "Add the denominators", "Subtract the numerators"], c: 1, e: "Find the Least Common Multiple[cite: 30]." },
+    { q: "Which is greater: $3/5$ or $13/25$? [cite: 32]", a: ["13/25", "3/5", "They are equal", "Cannot tell"], c: 1, e: "$3/5 = 15/25$, which is larger than $13/25$[cite: 33, 36]." },
+    { q: "What are the coordinates of the Origin? [cite: 45]", a: ["(1, 1)", "(0, 1)", "(0, 0)", "(1, 0)"], c: 2, e: "Origin is (0, 0)[cite: 45]." },
+    { q: "The X-Axis is ______? [cite: 41]", a: ["Vertical", "Diagonal", "Horizontal", "Curved"], c: 2, e: "X-Axis is Horizontal[cite: 41]." },
+    { q: "The Y-Axis is ______? [cite: 42]", a: ["Horizontal", "Vertical", "Circular", "Short"], c: 1, e: "Y-Axis is Vertical[cite: 42]." },
+    { q: "Point F at (-4, 2) means moving ______? [cite: 76]", a: ["Right 4, Up 2", "Left 4, Up 2", "Down 4, Left 2", "Up 4, Right 2"], c: 1, e: "Left 4 times, up 2 times[cite: 76]." },
+    { q: "Point E at (0, -3) means moving ______? [cite: 74]", a: ["Down 3 times", "Left 3 times", "Up 3 times", "Right 3 times"], c: 0, e: "Don't move left/right, move down 3[cite: 74, 75]." },
+    { q: "A polygon with 5 sides is called a ______? [cite: 79]", a: ["Hexagon", "Pentagon", "Octagon", "Triangle"], c: 1, e: "5 sides = Pentagon[cite: 79]." },
+    { q: "A polygon with 6 sides is called a ______? [cite: 79]", a: ["Octagon", "Pentagon", "Hexagon", "Quadrilateral"], c: 2, e: "6 sides = Hexagon[cite: 79]." },
+    { q: "A number with exactly 2 factors (1 and itself) is ______? [cite: 81]", a: ["Composite", "Even", "Prime", "Zero"], c: 2, e: "This is a Prime number[cite: 81, 82]." },
+    { q: "What is the only even prime number? [cite: 88]", a: ["4", "2", "6", "8"], c: 1, e: "Two is the only even prime[cite: 88]." },
+    { q: "The number 1 is ______? [cite: 87]", a: ["Prime", "Composite", "Neither", "Both"], c: 2, e: "One is neither prime nor composite[cite: 87]." },
+    { q: "What is the prime factorization of 100? [cite: 97]", a: ["10 × 10", "2 × 2 × 5 × 5", "4 × 25", "5 × 20"], c: 1, e: "$2 \\cdot 2 \\cdot 5 \\cdot 5 = 100$[cite: 97, 106]." },
+    { q: "When reducing fractions, you cancel ______? [cite: 112]", a: ["Odd numbers", "Common numbers top to bottom", "The denominators", "The numerators"], c: 1, e: "Cancel common numbers top to bottom[cite: 112]." },
+    { q: "Convert $3/5$ to a decimal. [cite: 128]", a: ["0.3", "0.5", "0.6", "0.35"], c: 2, e: "$3 \\div 5 = 0.6$[cite: 128]." },
+    { q: "To convert a decimal to a fraction, the digits become the ______? [cite: 140]", a: ["Denominator", "Whole number", "Numerator", "Factor"], c: 2, e: "Digits = Numerator[cite: 140]." },
+    { q: "To find the LCM, you list a number's ______? [cite: 154]", a: ["Factors", "Multiples", "Square roots", "Divisors"], c: 1, e: "Multiply the number by 1, 2, 3... to find multiples[cite: 154]." },
+    { q: "What is the LCM of 3, 8, and 12? [cite: 155]", a: ["12", "36", "24", "48"], c: 2, e: "24 is the smallest multiple they share[cite: 158, 159]." },
+    { q: "In PEMDAS, what does 'P' stand for? [cite: 162]", a: ["Prime", "Plus", "Parentheses", "Product"], c: 2, e: "P = Parentheses[cite: 162]." },
+    { q: "In PEMDAS, Multiplication and Division are done ______? [cite: 164]", a: ["Always multiply first", "Always divide first", "Left to right", "Right to left"], c: 2, e: "Left to right[cite: 164]." },
+    { q: "Solve for y: $y - 3.2 = 1.6$.", a: ["1.6", "4.8", "3.2", "5.0"], c: 1, e: "Add the known numbers: $3.2 + 1.6 = 4.8$." },
+    { q: "Solve for n: $15.5 - n = 7.4$.", a: ["22.9", "8.1", "7.1", "9.4"], c: 1, e: "Subtract: $15.5 - 7.4 = 8.1$." },
+    { q: "When dividing decimals, the divisor ______? [cite: 190]", a: ["Must be a decimal", "Can never be a decimal", "Must be zero", "Must be prime"], c: 1, e: "The divisor can never be a decimal[cite: 190]." }
+];
+
+let score = 0;
+const answeredQuestions = new Set();
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+    quizData.forEach((data, index) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.id = `q-card-${index}`;
+        
+        card.innerHTML = `
+            <h5>${index + 1}. ${data.q}</h5>
+            <div class="d-grid gap-2 mt-3" id="options-${index}">
+                ${data.a.map((opt, i) => `
+                    <button class="btn btn-light option-btn" onclick="checkAnswer(${index}, ${i})">${opt}</button>
+                `).join('')}
+            </div>
+            <div id="feedback-${index}" class="feedback"></div>
+        `;
+        container.appendChild(card);
+    });
+    if (window.MathJax) MathJax.typeset();
+}
+
+window.checkAnswer = function(qIdx, selectedIdx) {
+    if (answeredQuestions.has(qIdx)) return;
+    answeredQuestions.add(qIdx);
+
+    const data = quizData[qIdx];
+    const feedback = document.getElementById(`feedback-${qIdx}`);
+    const buttons = document.getElementById(`options-${qIdx}`).querySelectorAll('button');
+    
+    buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === data.c) {
+            btn.classList.replace('btn-light', 'btn-success');
+        } else if (i === selectedIdx) {
+            btn.classList.replace('btn-light', 'btn-danger');
+        }
+    });
+
+    feedback.style.display = 'block';
+    if (selectedIdx === data.c) {
+        score++;
+        feedback.className = 'feedback correct';
+        feedback.innerHTML = `<strong>Correct!</strong> ${data.e}`;
+    } else {
+        feedback.className = 'feedback wrong';
+        feedback.innerHTML = `<strong>Incorrect.</strong> ${data.e}`;
+    }
+
+    document.getElementById('current-score').innerText = score;
+};
+
+renderQuiz();
+</script>
+</body>
+</html>
