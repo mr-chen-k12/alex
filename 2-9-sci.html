@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastery Earth Science Quiz</title>
+    <style>
+        :root {
+            --primary: #2d3436;
+            --accent: #0984e3;
+            --success: #00b894;
+            --danger: #d63031;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #dfe6e9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .header {
+            text-align: center;
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .score-board {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        .set-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .set-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .set-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .quiz-container {
+            width: 90%;
+            max-width: 500px;
+            perspective: 1000px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-bottom: 5px solid var(--accent);
+        }
+
+        .question-num {
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .option {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        .option:hover { background: #f9f9f9; border-color: #ccc; }
+        .option.correct { background: var(--success) !important; color: white; border-color: var(--success); }
+        .option.wrong { background: var(--danger) !important; color: white; border-color: var(--danger); }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+        }
+
+        #mistake-log {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 500px;
+            background: #fab1a0;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🌍 Earth Science Master Quiz</h1>
+        <div class="score-board">
+            <span>✅ Correct: <span id="correct-count">0</span></span>
+            <span>❌ Wrong: <span id="wrong-count">0</span></span>
+        </div>
+    </div>
+
+    <div class="set-nav" id="set-nav">
+        </div>
+
+    <div class="quiz-container">
+        <div class="card" id="quiz-card">
+            <span class="question-num" id="q-number">Question 1</span>
+            <p class="question-text" id="q-text">Loading...</p>
+            <div id="options-list"></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="nav-btn" onclick="prevQ()">⬅️ Previous</button>
+        <button class="nav-btn" onclick="nextQ()">Next ➡️</button>
+    </div>
+
+    <div id="mistake-log">
+        <strong>📝 Keep practicing these:</strong>
+        <ul id="mistake-list"></ul>
+    </div>
+
+    <script>
+        const allQuestions = [
+            {
+                title: "1. The Hydrosphere",
+                questions: [
+                    { q: "Where is the hydrosphere found?", o: ["Only in the ocean", "Only in the air", "In the ocean, on land, and in the air", "Underground only"], a: 2 },
+                    { q: "What is the opposite of condensation?", o: ["Freezing", "Evaporation", "Erosion", "Precipitation"], a: 1 },
+                    { q: "In the 1,000 mL water model, how much represents fresh groundwater?", o: ["965 mL", "17 mL", "8 mL", "1 drop"], a: 2 },
+                    { q: "Why do people keep close track of fresh water?", o: ["Because it's everywhere", "Because there is a limited amount for drinking/farming", "To make more salt water", "To change the weather"], a: 1 },
+                    { q: "How much of the 1,000 mL model is left as ocean water?", o: ["100 mL", "965 mL", "500 mL", "8 mL"], a: 1 }
+                ]
+            },
+            {
+                title: "2. The Geosphere & Layers",
+                questions: [
+                    { q: "What does the fruit of a peach represent in the Earth model?", o: ["Crust", "Mantle", "Outer Core", "Inner Core"], a: 1 },
+                    { q: "What does the skin of a peach represent?", o: ["Mantle", "Atmosphere", "Crust", "Hydrosphere"], a: 2 },
+                    { q: "What is the Geosphere?", o: ["The air surrounding Earth", "The solid part of Earth (rocks/soil)", "All living things", "Only the oceans"], a: 1 },
+                    { q: "Which part of Earth's layers is NOT shown well by a peach?", o: ["The Crust", "The Mantle", "Inner mantle and outer core", "The surface"], a: 2 },
+                    { q: "The Geosphere is described as a 'dynamic system' because of what cycle?", o: ["Water cycle", "Life cycle", "Rock cycle", "Bicycle"], a: 2 }
+                ]
+            },
+            {
+                title: "3. Weathering & Erosion",
+                questions: [
+                    { q: "What is the breakdown of rock into smaller pieces called?", o: ["Erosion", "Weathering", "Deposition", "Composition"], a: 1 },
+                    { q: "What is the movement of sediment to a new location?", o: ["Weathering", "Erosion", "Respiration", "Gravity"], a: 1 },
+                    { q: "Which interaction formed the Grand Canyon?", o: ["Wind and Sun", "River flow (Hydrosphere) and Rock (Geosphere)", "Plants and Animals", "Humans and Machines"], a: 1 },
+                    { q: "What is it called when sediment is dropped in a new location?", o: ["Weathering", "Erosion", "Deposition", "Vacuum"], a: 2 },
+                    { q: "What are two types of weathering?", o: ["Hot and Cold", "Chemical and Physical", "Fast and Slow", "Wet and Dry"], a: 1 }
+                ]
+            },
+            {
+                title: "4. The Atmosphere & Gases",
+                questions: [
+                    { q: "Which gas takes up about 20% of the air and is used in respiration?", o: ["Nitrogen", "Carbon Dioxide", "Oxygen", "Methane"], a: 2 },
+                    { q: "What is a space that has no matter (or very little) called?", o: ["Reservoir", "Vacuum", "Atmosphere", "Medium"], a: 1 },
+                    { q: "What gas is important to plants but cannot be absorbed directly from the air?", o: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Helium"], a: 1 },
+                    { q: "What is a carbon-based energy source made from remains of organisms?", o: ["Fossil Fuel", "Renewable Energy", "Atmosphere", "Medium"], a: 0 },
+                    { q: "What is the weight of the atmosphere pressing down called?", o: ["Gravity", "Air Pressure", "Wind", "Vacuum"], a: 1 }
+                ]
+            },
+            {
+                title: "5. Interactions & Biosphere",
+                questions: [
+                    { q: "What is the sphere made up of all living things?", o: ["Atmosphere", "Biosphere", "Geosphere", "Hydrosphere"], a: 1 },
+                    { q: "What side of a mountain do you find a 'rain shadow'?", o: ["Windward side", "Top side", "Leeward side", "Inside"], a: 2 },
+                    { q: "Which term describes a region with certain characteristics like a forest or tundra?", o: ["Species", "Biome", "Aquifer", "Reservoir"], a: 1 },
+                    { q: "What happens when an entire species no longer exists?", o: ["Evolution", "Extinction", "Deposition", "Weathering"], a: 1 },
+                    { q: "What is a large lake used as a source of water supply?", o: ["Water Table", "Reservoir", "Aquifer", "Biome"], a: 1 }
+                ]
+            }
+        ];
+
+        let currentSet = 0;
+        let currentQ = 0;
+        let score = 0;
+        let mistakes = 0;
+        let answered = false;
+        let missedQuestions = new Set();
+
+        function init() {
+            const nav = document.getElementById('set-nav');
+            allQuestions.forEach((set, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'set-btn' + (i===0 ? ' active' : '');
+                btn.innerText = set.title;
+                btn.onclick = () => {
+                    currentSet = i;
+                    currentQ = 0;
+                    updateNav();
+                    loadQuestion();
+                };
+                nav.appendChild(btn);
+            });
+            loadQuestion();
+        }
+
+        function updateNav() {
+            document.querySelectorAll('.set-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === currentSet);
+            });
+        }
+
+        function loadQuestion() {
+            answered = false;
+            const qData = allQuestions[currentSet].questions[currentQ];
+            document.getElementById('q-number').innerText = `Set ${currentSet + 1} - Question ${currentQ + 1}`;
+            document.getElementById('q-text').innerText = qData.q;
+            
+            const list = document.getElementById('options-list');
+            list.innerHTML = '';
+            
+            qData.o.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(i, btn);
+                list.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(idx, btn) {
+            if (answered) return;
+            answered = true;
+            const correctIdx = allQuestions[currentSet].questions[currentQ].a;
+            
+            if (idx === correctIdx) {
+                btn.classList.add('correct');
+                score++;
+                document.getElementById('correct-count').innerText = score;
+            } else {
+                btn.classList.add('wrong');
+                mistakes++;
+                document.getElementById('wrong-count').innerText = mistakes;
+                document.getElementById('options-list').children[correctIdx].classList.add('correct');
+                
+                // Log mistake
+                const qText = allQuestions[currentSet].questions[currentQ].q;
+                if (!missedQuestions.has(qText)) {
+                    missedQuestions.add(qText);
+                    const li = document.createElement('li');
+                    li.innerText = qText;
+                    document.getElementById('mistake-list').appendChild(li);
+                    document.getElementById('mistake-log').style.display = 'block';
+                }
+            }
+        }
+
+        function nextQ() {
+            if (currentQ < allQuestions[currentSet].questions.length - 1) {
+                currentQ++;
+                loadQuestion();
+            } else {
+                alert("You finished this set! Try another set at the top.");
+            }
+        }
+
+        function prevQ() {
+            if (currentQ > 0) {
+                currentQ--;
+                loadQuestion();
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
