@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earth Systems Mastery Quiz</title>
+    <style>
+        :root {
+            --bg: #f0f2f5;
+            --card-bg: #ffffff;
+            --primary: #4a90e2;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --text: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #app {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .header { text-align: center; margin-bottom: 30px; }
+
+        /* Scoreboard Styling */
+        .scoreboard {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .score-item { font-size: 0.9rem; border-left: 3px solid var(--primary); padding-left: 10px; }
+
+        /* Category Selection */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .category-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .category-btn:hover { background: var(--primary); color: white; }
+
+        /* Flashcard Quiz Styling */
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #ddd;
+            border-radius: 3px;
+            margin-bottom: 20px;
+        }
+
+        #progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .question-text { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; line-height: 1.4; }
+
+        .options-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .option {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: left;
+            background: white;
+        }
+
+        .option:hover { background: #f8f9fa; border-color: var(--primary); }
+        .option.correct { background: var(--success); color: white; border-color: var(--success); }
+        .option.wrong { background: var(--danger); color: white; border-color: var(--danger); }
+
+        .controls { margin-top: 20px; display: flex; justify-content: space-between; }
+        .btn-nav { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; background: #95a5a6; color: white; }
+        
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div class="header">
+        <h1>🌍 Earth Systems Quiz</h1>
+        <p>Master the vocabulary through active recall</p>
+    </div>
+
+    <div class="scoreboard" id="scoreboard">
+        <div class="score-item"><b>General:</b> <span id="s-General">0%</span></div>
+        <div class="score-item"><b>Geosphere:</b> <span id="s-Geosphere">0%</span></div>
+        <div class="score-item"><b>Atmosphere:</b> <span id="s-Atmosphere">0%</span></div>
+        <div class="score-item"><b>Interactions:</b> <span id="s-Interactions">0%</span></div>
+    </div>
+
+    <div id="menu" class="menu-grid">
+        <button class="category-btn" onclick="startQuiz('General')">Set 1: General Systems & Water</button>
+        <button class="category-btn" onclick="startQuiz('Geosphere')">Set 2: Rocks & Inner Earth</button>
+        <button class="category-btn" onclick="startQuiz('Atmosphere')">Set 3: Atmosphere & Air</button>
+        <button class="category-btn" onclick="startQuiz('Interactions')">Set 4: Sphere Interactions</button>
+    </div>
+
+    <div id="quiz-container" class="hidden">
+        <div class="card">
+            <div class="progress-bar"><div id="progress-fill"></div></div>
+            <div id="question-area">
+                <div class="question-text" id="q-text">Question goes here?</div>
+                <div class="options-list" id="options"></div>
+            </div>
+            <div class="controls">
+                <button class="btn-nav" onclick="exitToMenu()">Back to Sets</button>
+                <button class="btn-nav hidden" id="next-btn" onclick="nextQuestion()" style="background: var(--primary);">Next Question →</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// DATA REPOSITORY FROM IMAGES
+const quizData = {
+    "General": [
+        { q: "What is the system that contains all water on Earth?", a: "Hydrosphere", alt: ["Atmosphere", "Geosphere", "Biosphere"] },
+        { q: "Water stored in spaces between materials beneath Earth's surface is:", a: "Groundwater", alt: ["Aquifer", "Reservoir", "Surface Water"] },
+        { q: "The process of breaking down rocks into smaller pieces is called:", a: "Weathering", alt: ["Erosion", "Deposition", "Subduction"] },
+        { q: "The release of water vapor from the leaves of plants is:", a: "Transpiration", alt: ["Evaporation", "Condensation", "Respiration"] },
+        { q: "A place where water collects is known as a:", a: "Reservoir", alt: ["Aquifer", "Water Table", "Rain Shadow"] }
+    ],
+    "Geosphere": [
+        { q: "Which rock type is formed from the melting and cooling of rock?", a: "Igneous", alt: ["Sedimentary", "Metamorphic", "Mineral"] },
+        { q: "The process of dropping sediment in a new location is:", a: "Deposition", alt: ["Weathering", "Erosion", "Melting"] },
+        { q: "Which layer of the Earth is a solid metal ball at the very center?", a: "Inner Core", alt: ["Outer Core", "Mantle", "Crust"] },
+        { q: "Naturally occurring solid inorganic substances are:", a: "Minerals", alt: ["Sediments", "Rocks", "Soil"] },
+        { q: "The movement of sediment from one place to another is:", a: "Erosion", alt: ["Weathering", "Deposition", "Transpiration"] }
+    ],
+    "Atmosphere": [
+        { q: "What is the most abundant gas in Earth's atmosphere (78%)?", a: "Nitrogen", alt: ["Oxygen", "Carbon Dioxide", "Argon"] },
+        { q: "In which layer is the Ozone Layer located?", a: "Stratosphere", alt: ["Troposphere", "Mesosphere", "Thermosphere"] },
+        { q: "The measure of height upward from sea level is:", a: "Altitude", alt: ["Air Pressure", "Topography", "Latitude"] },
+        { q: "The exchange of gases with the environment (breathing) is:", a: "Respiration", alt: ["Transpiration", "Cellular Respiration", "Condensation"] },
+        { q: "A large body of air with similar temperature and moisture is an:", a: "Air Mass", alt: ["Atmosphere", "Rain Shadow", "Biome"] }
+    ],
+    "Interactions": [
+        { q: "Acid rain is an interaction between which two spheres?", a: "Atmosphere & Hydrosphere", alt: ["Geosphere & Biosphere", "Atmosphere & Geosphere", "Hydrosphere & Biosphere"] },
+        { q: "Plants changing the landscape is an interaction between:", a: "Biosphere & Geosphere", alt: ["Hydrosphere & Atmosphere", "Atmosphere & Biosphere", "Geosphere & Hydrosphere"] },
+        { q: "Animals breathing in oxygen is an interaction between:", a: "Biosphere & Atmosphere", alt: ["Biosphere & Geosphere", "Hydrosphere & Atmosphere", "Geosphere & Atmosphere"] },
+        { q: "Wind causing erosion and shaping landforms is:", a: "Atmosphere & Geosphere", alt: ["Biosphere & Geosphere", "Hydrosphere & Geosphere", "Atmosphere & Hydrosphere"] }
+    ]
+};
+
+let currentSet = "";
+let currentIndex = 0;
+let correctCount = 0;
+let scores = { "General": 0, "Geosphere": 0, "Atmosphere": 0, "Interactions": 0 };
+
+function startQuiz(setName) {
+    currentSet = setName;
+    currentIndex = 0;
+    correctCount = 0;
+    document.getElementById('menu').classList.add('hidden');
+    document.getElementById('quiz-container').classList.remove('hidden');
+    loadQuestion();
+}
+
+function loadQuestion() {
+    const data = quizData[currentSet][currentIndex];
+    const nextBtn = document.getElementById('next-btn');
+    nextBtn.classList.add('hidden');
+    
+    // Update Progress
+    const progress = ((currentIndex) / quizData[currentSet].length) * 100;
+    document.getElementById('progress-fill').style.width = progress + "%";
+
+    document.getElementById('q-text').innerText = data.q;
+    
+    // Shuffle options
+    let options = [...data.alt, data.a].sort(() => Math.random() - 0.5);
+    
+    const optionsDiv = document.getElementById('options');
+    optionsDiv.innerHTML = "";
+    
+    options.forEach(opt => {
+        const btn = document.createElement('div');
+        btn.className = 'option';
+        btn.innerText = opt;
+        btn.onclick = () => selectOption(btn, opt, data.a);
+        optionsDiv.appendChild(btn);
+    });
+}
+
+function selectOption(element, selected, correct) {
+    const allOptions = document.querySelectorAll('.option');
+    allOptions.forEach(opt => opt.style.pointerEvents = 'none');
+
+    if (selected === correct) {
+        element.classList.add('correct');
+        correctCount++;
+    } else {
+        element.classList.add('wrong');
+        allOptions.forEach(opt => {
+            if (opt.innerText === correct) opt.classList.add('correct');
+        });
+    }
+
+    document.getElementById('next-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+    currentIndex++;
+    if (currentIndex < quizData[currentSet].length) {
+        loadQuestion();
+    } else {
+        finishSet();
+    }
+}
+
+function finishSet() {
+    const percent = Math.round((correctCount / quizData[currentSet].length) * 100);
+    scores[currentSet] = Math.max(scores[currentSet], percent);
+    document.getElementById(`s-${currentSet}`).innerText = percent + "%";
+    
+    alert(`Set Complete! Your score: ${percent}%`);
+    exitToMenu();
+}
+
+function exitToMenu() {
+    document.getElementById('menu').classList.remove('hidden');
+    document.getElementById('quiz-container').classList.add('hidden');
+}
+</script>
+
+</body>
+</html>
