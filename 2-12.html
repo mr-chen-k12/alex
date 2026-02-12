@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Lesson 81 Solutions</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
+        .problem-card { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-left: 5px solid #3498db; }
+        .problem-text { font-weight: bold; margin-bottom: 10px; color: #2c3e50; }
+        .btn { background-color: #3498db; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background 0.3s; }
+        .btn:hover { background-color: #2980b9; }
+        .answer-section { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ddd; background-color: #f9f9f9; padding: 10px; border-radius: 4px; }
+        .final-ans { color: #27ae60; font-weight: bold; font-size: 1.1em; }
+        .canvas-container { margin-top: 10px; text-align: center; }
+        canvas { border: 1px solid #ccc; background: #fff; }
+    </style>
+</head>
+<body>
+
+<h1>Written Practice - Lesson 81</h1>
+
+<div class="problem-card">
+    <div class="problem-text">1. The Jones family had 2 gallons of milk. They used 2 quarts. How many quarts are left?</div>
+    <button class="btn" onclick="toggle('ans1')">Review Answer</button>
+    <div id="ans1" class="answer-section">
+        <p>1 gallon = 4 quarts. So, 2 gallons = 8 quarts.</p>
+        <p>Calculation: \(8 \text{ quarts} - 2 \text{ quarts} = 6 \text{ quarts}\).</p>
+        <p class="final-ans">Answer: 6 quarts</p>
+    </div>
+</div>
+
+<div class="problem-card">
+    <div class="problem-text">4. A plane flew 1200 miles in 3 hours. Find the average speed.</div>
+    <button class="btn" onclick="toggle('ans4')">Review Answer</button>
+    <div id="ans4" class="answer-section">
+        <p>Speed = Distance ÷ Time</p>
+        <p>$$\frac{1200 \text{ miles}}{3 \text{ hours}} = 400 \text{ mph}$$</p>
+        <p class="final-ans">Answer: 400 miles per hour</p>
+    </div>
+</div>
+
+<div class="problem-card">
+    <div class="problem-text">7. What is the area of the parallelogram (Base 24m, Height 25m, Slant 26m)?</div>
+    <button class="btn" onclick="toggle('ans7')">Review Answer</button>
+    <div id="ans7" class="answer-section">
+        <p>Area of a parallelogram = \(Base \times Height\). We use the perpendicular height (25m), not the slant (26m).</p>
+        <p>$$24\text{m} \times 25\text{m} = 600\text{m}^2$$</p>
+        <p class="final-ans">Answer: 600 m²</p>
+    </div>
+</div>
+
+<div class="problem-card">
+    <div class="problem-text">18. Simplify: \(\frac{5}{6} \cdot \frac{4}{5} \cdot \frac{3}{8}\)</div>
+    <button class="btn" onclick="toggle('ans18')">Review Answer</button>
+    <div id="ans18" class="answer-section">
+        <p>Multiply numerators and denominators (or cancel out first):</p>
+        <p>$$\frac{5 \cdot 4 \cdot 3}{6 \cdot 5 \cdot 8} = \frac{60}{240} = \frac{1}{4}$$</p>
+        <p class="final-ans">Answer: 1/4</p>
+    </div>
+</div>
+
+<div class="problem-card">
+    <div class="problem-text">21-22. Perimeter of square is 2 meters. Find side in cm, and circle diameter/circumference.</div>
+    <div class="canvas-container">
+        <canvas id="canvasCircle" width="150" height="150"></canvas>
+    </div>
+    <button class="btn" onclick="toggle('ans21')">Review Answer</button>
+    <div id="ans21" class="answer-section">
+        <p><strong>21:</strong> Perimeter = 2m = 200cm. Side = \(200 / 4 = 50\text{cm}\).</p>
+        <p><strong>22a:</strong> The diameter of the inscribed circle equals the side of the square. Diameter = 50cm.</p>
+        <p><strong>22b:</strong> Circumference = \(\pi d = 3.14 \times 50 = 157\text{cm}\).</p>
+        <p class="final-ans">Answers: 21) 50cm | 22a) 50cm | 22b) 157cm</p>
+    </div>
+</div>
+
+<div class="problem-card">
+    <div class="problem-text">27. What is the name of the geometric solid?</div>
+    <div class="canvas-container">
+        <canvas id="canvasCone" width="100" height="120"></canvas>
+    </div>
+    <button class="btn" onclick="toggle('ans27')">Review Answer</button>
+    <div id="ans27" class="answer-section">
+        <p>The solid has a circular base and tapers to a single point (vertex).</p>
+        <p class="final-ans">Answer: Cone</p>
+    </div>
+</div>
+
+<script>
+    function toggle(id) {
+        var x = document.getElementById(id);
+        if (x.style.display === "block") {
+            x.style.display = "none";
+        } else {
+            x.style.display = "block";
+        }
+    }
+
+    // Canvas Drawing for Problem 21/22
+    const ctxC = document.getElementById('canvasCircle').getContext('2d');
+    ctxC.strokeRect(25, 25, 100, 100); // Square
+    ctxC.beginPath();
+    ctxC.arc(75, 75, 50, 0, 2 * Math.PI); // Inscribed Circle
+    ctxC.stroke();
+
+    // Canvas Drawing for Cone (Problem 27)
+    const ctxCone = document.getElementById('canvasCone').getContext('2d');
+    ctxCone.beginPath();
+    ctxCone.moveTo(50, 10); // Top
+    ctxCone.lineTo(10, 90); // Left side
+    ctxCone.ellipse(50, 90, 40, 15, 0, 0, Math.PI, false); // Bottom curve
+    ctxCone.lineTo(50, 10); // Back to top
+    ctxCone.stroke();
+</script>
+
+</body>
+</html>
