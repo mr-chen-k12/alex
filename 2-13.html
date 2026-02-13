@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Similar Math Practice</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
+        .problem-card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .question-text { font-weight: bold; color: #1a5a96; margin-bottom: 15px; }
+        .answer-box { display: none; margin-top: 15px; padding: 15px; background-color: #eef9f1; border-left: 5px solid #4caf50; border-radius: 4px; }
+        button { background-color: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background 0.3s; }
+        button:hover { background-color: #2980b9; }
+    </style>
+</head>
+<body>
+
+<h1>Additional Practice Problems</h1>
+
+<div id="problems-container"></div>
+
+<script>
+// Note: Backslashes are doubled here so they render correctly in the HTML/MathJax output.
+const problems = [
+    { id: 1, q: "If 3 pounds of apples cost $4.50, what is the cost of 5 pounds?", a: "First, find the unit rate: $4.50 &divide; 3 = $1.50 per pound. <br> Then, multiply by 5: $1.50 \\times 5 = 7.50$. <br> **Answer: $7.50**" },
+    { id: 2, q: "Simplify: $5\\frac{1}{4} - 2\\frac{5}{8}$", a: "Find a common denominator (8): $5\\frac{2}{8} - 2\\frac{5}{8}$. <br> Borrow from the whole number: $4\\frac{10}{8} - 2\\frac{5}{8} = 2\\frac{5}{8}$. <br> **Answer: $2\\frac{5}{8}$**" },
+    { id: 3, q: "The basketball team won 75% of their 24 games. How many games did they win?", a: "Convert 75% to a fraction (3/4) or decimal (0.75). <br> $24 \\times 0.75 = 18$. <br> **Answer: 18 games**" },
+    { id: 4, q: "What time is 3 and a half hours after 11:15 a.m.?", a: "Add 3 hours: 11:15 a.m. &rarr; 2:15 p.m. <br> Add 30 minutes: 2:15 p.m. + 30 mins = 2:45 p.m. <br> **Answer: 2:45 p.m.**" },
+    { id: 5, q: "Simplify: $\\frac{3}{4} \\times \\frac{8}{9} \\div \\frac{1}{2}$", a: "Change division to multiplication by the reciprocal: $\\frac{3}{4} \\times \\frac{8}{9} \\times \\frac{2}{1}$. <br> Multiply numerators: $3 \\times 8 \\times 2 = 48$. <br> Multiply denominators: $4 \\times 9 \\times 1 = 36$. <br> Simplify: $48/36 = 4/3 = 1\\frac{1}{3}$. <br> **Answer: $1\\frac{1}{3}$**" },
+    { id: 6, q: "What is the area and perimeter of a rectangle with a length of 12 cm and a width of 8 cm?", a: "Area = length $\\times$ width = $12 \\times 8 = 96$. <br> Perimeter = $2(l + w) = 2(12 + 8) = 2(20) = 40$. <br> **Answer: Area = 96 cm², Perimeter = 40 cm**" },
+    { id: 7, q: "What is the circumference of a circle with a radius of 10 cm? (Use 3.14 for &pi;)", a: "Formula: $C = 2\\pi r$. <br> $C = 2 \\times 3.14 \\times 10 = 62.8$. <br> **Answer: 62.8 cm**" },
+    { id: 8, q: "CONNECT: What is the area of a triangle with vertices at (0, 0), (6, 0), and (3, 4)?", a: "The base lies on the x-axis from 0 to 6, so the base is 6 units. The highest point is at y = 4, so the height is 4 units. <br> Formula: $A = \\frac{1}{2}bh = \\frac{1}{2}(6)(4) = 12$. <br> **Answer: 12 square units**" },
+    { id: 9, q: "The ratio of cats to dogs in a shelter is 5 to 3. If there are 15 dogs, how many cats are there?", a: "Set up a proportion: $\\frac{Cats}{Dogs} = \\frac{5}{3} = \\frac{x}{15}$. <br> Multiply the numerator and denominator by 5: $3 \\times 5 = 15$, so $5 \\times 5 = 25$. <br> **Answer: 25 cats**" },
+    { id: 10, q: "Convert 4.5 feet into inches.", a: "There are 12 inches in 1 foot. <br> $4.5 \\times 12 = 54$. <br> **Answer: 54 inches**" }
+];
+
+const container = document.getElementById('problems-container');
+
+problems.forEach(prob => {
+    const div = document.createElement('div');
+    div.className = 'problem-card';
+    div.innerHTML = `
+        <div class="question-text">Problem ${prob.id}: ${prob.q}</div>
+        <button onclick="toggleAns(${prob.id})">Show Answer & Explanation</button>
+        <div id="ans-${prob.id}" class="answer-box">${prob.a}</div>
+    `;
+    container.appendChild(div);
+});
+
+function toggleAns(id) {
+    const el = document.getElementById(`ans-${id}`);
+    el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+}
+</script>
+
+</body>
+</html>
