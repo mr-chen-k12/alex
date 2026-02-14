@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Similar Math Practice (Fixed Rendering)</title>
+    <title>30-Question Math Practice</title>
     
     <script>
       MathJax = {
@@ -11,7 +11,7 @@
           inlineMath: [['\\(', '\\)']]
         },
         startup: {
-          typeset: false // We will trigger it manually after JS runs
+          typeset: false // Triggered manually after JS runs
         }
       };
     </script>
@@ -19,10 +19,10 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 850px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
         h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
         .problem-card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .question-text { font-weight: bold; color: #1a5a96; margin-bottom: 15px; }
+        .question-text { font-weight: bold; color: #1a5a96; margin-bottom: 15px; font-size: 1.1em; }
         .answer-box { display: none; margin-top: 15px; padding: 15px; background-color: #eef9f1; border-left: 5px solid #4caf50; border-radius: 4px; }
         button { background-color: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background 0.3s; }
         button:hover { background-color: #2980b9; }
@@ -30,23 +30,43 @@
 </head>
 <body>
 
-<h1>Additional Practice Problems</h1>
+<h1>Comprehensive Math Review: 30 Questions</h1>
 
 <div id="problems-container"></div>
 
 <script>
-// Using \\( and \\) for inline math so it doesn't conflict with monetary $ symbols.
+// Array of 30 questions. Math is wrapped in \\( ... \\) for inline rendering.
 const problems = [
-    { id: 1, q: "If 3 pounds of apples cost $4.50, what is the cost of 5 pounds?", a: "First, find the unit rate: $4.50 &divide; 3 = $1.50 per pound. <br> Then, multiply by 5: $1.50 \\times 5 = $7.50. <br> **Answer: $7.50**" },
-    { id: 2, q: "Simplify: \\( 5\\frac{1}{4} - 2\\frac{5}{8} \\)", a: "Find a common denominator (8): \\( 5\\frac{2}{8} - 2\\frac{5}{8} \\). <br> Borrow from the whole number: \\( 4\\frac{10}{8} - 2\\frac{5}{8} = 2\\frac{5}{8} \\). <br> **Answer: \\( 2\\frac{5}{8} \\)**" },
-    { id: 3, q: "The basketball team won 75% of their 24 games. How many games did they win?", a: "Convert 75% to a fraction (\\( 3/4 \\)) or decimal (0.75). <br> \\( 24 \\times 0.75 = 18 \\). <br> **Answer: 18 games**" },
-    { id: 4, q: "What time is 3 and a half hours after 11:15 a.m.?", a: "Add 3 hours: 11:15 a.m. &rarr; 2:15 p.m. <br> Add 30 minutes: 2:15 p.m. + 30 mins = 2:45 p.m. <br> **Answer: 2:45 p.m.**" },
-    { id: 5, q: "Simplify: \\( \\frac{3}{4} \\times \\frac{8}{9} \\div \\frac{1}{2} \\)", a: "Change division to multiplication by the reciprocal: \\( \\frac{3}{4} \\times \\frac{8}{9} \\times \\frac{2}{1} \\). <br> Multiply numerators: \\( 3 \\times 8 \\times 2 = 48 \\). <br> Multiply denominators: \\( 4 \\times 9 \\times 1 = 36 \\). <br> Simplify: \\( \\frac{48}{36} = \\frac{4}{3} = 1\\frac{1}{3} \\). <br> **Answer: \\( 1\\frac{1}{3} \\)**" },
-    { id: 6, q: "What is the area and perimeter of a rectangle with a length of 12 cm and a width of 8 cm?", a: "Area = length \\( \\times \\) width = \\( 12 \\times 8 = 96 \\). <br> Perimeter = \\( 2(l + w) = 2(12 + 8) = 2(20) = 40 \\). <br> **Answer: Area = 96 cm&sup2;, Perimeter = 40 cm**" },
-    { id: 7, q: "What is the circumference of a circle with a radius of 10 cm? (Use 3.14 for &pi;)", a: "Formula: \\( C = 2\\pi r \\). <br> \\( C = 2 \\times 3.14 \\times 10 = 62.8 \\). <br> **Answer: 62.8 cm**" },
-    { id: 8, q: "CONNECT: What is the area of a triangle with vertices at (0, 0), (6, 0), and (3, 4)?", a: "The base lies on the x-axis from 0 to 6, so the base is 6 units. The highest point is at y = 4, so the height is 4 units. <br> Formula: \\( A = \\frac{1}{2}bh = \\frac{1}{2}(6)(4) = 12 \\). <br> **Answer: 12 square units**" },
-    { id: 9, q: "The ratio of cats to dogs in a shelter is 5 to 3. If there are 15 dogs, how many cats are there?", a: "Set up a proportion: \\( \\frac{Cats}{Dogs} = \\frac{5}{3} = \\frac{x}{15} \\). <br> Multiply the numerator and denominator by 5: \\( 3 \\times 5 = 15 \\), so \\( 5 \\times 5 = 25 \\). <br> **Answer: 25 cats**" },
-    { id: 10, q: "Convert 4.5 feet into inches.", a: "There are 12 inches in 1 foot. <br> \\( 4.5 \\times 12 = 54 \\). <br> **Answer: 54 inches**" }
+    { id: 1, q: "Simplify: \\( \\frac{3}{4} + \\frac{5}{8} \\)", a: "Find a common denominator (8): \\( \\frac{6}{8} + \\frac{5}{8} = \\frac{11}{8} \\). <br> **Answer: \\( 1\\frac{3}{8} \\)**" },
+    { id: 2, q: "Simplify: \\( 2\\frac{1}{2} \\times 1\\frac{1}{3} \\)", a: "Convert to improper fractions: \\( \\frac{5}{2} \\times \\frac{4}{3} = \\frac{20}{6} \\). Reduce to \\( \\frac{10}{3} \\). <br> **Answer: \\( 3\\frac{1}{3} \\)**" },
+    { id: 3, q: "Simplify: \\( 5 - 2\\frac{3}{4} \\)", a: "Borrow from the whole number: \\( 4\\frac{4}{4} - 2\\frac{3}{4} = 2\\frac{1}{4} \\). <br> **Answer: \\( 2\\frac{1}{4} \\)**" },
+    { id: 4, q: "Simplify: \\( \\frac{7}{8} \\div \\frac{1}{4} \\)", a: "Multiply by the reciprocal: \\( \\frac{7}{8} \\times \\frac{4}{1} = \\frac{28}{8} \\). Reduce by dividing by 4: \\( \\frac{7}{2} \\). <br> **Answer: \\( 3\\frac{1}{2} \\)**" },
+    { id: 5, q: "What is 60% of 150?", a: "Convert 60% to a decimal (0.60) or fraction (\\( 3/5 \\)). \\( 150 \\times 0.60 = 90 \\). <br> **Answer: 90**" },
+    { id: 6, q: "Convert 0.85 to a fraction in simplest form.", a: "\\( 0.85 = \\frac{85}{100} \\). Divide numerator and denominator by 5: \\( \\frac{17}{20} \\). <br> **Answer: \\( \\frac{17}{20} \\)**" },
+    { id: 7, q: "A shirt originally costs $45. It is on sale for 20% off. What is the sale price?", a: "Find the discount: \\( 45 \\times 0.20 = 9 \\). Subtract from original: \\( 45 - 9 = 36 \\). <br> **Answer: $36**" },
+    { id: 8, q: "If the sales tax rate is 8%, what is the tax on a $25.00 purchase?", a: "Convert 8% to a decimal (0.08). Multiply: \\( 25.00 \\times 0.08 = 2.00 \\). <br> **Answer: $2.00**" },
+    { id: 9, q: "The ratio of boys to girls in a class is 4 to 5. If there are 36 students in total, how many are boys?", a: "Total ratio parts = \\( 4 + 5 = 9 \\). One part = \\( 36 \\div 9 = 4 \\). Boys = \\( 4 \\times 4 = 16 \\). <br> **Answer: 16 boys**" },
+    { id: 10, q: "A car travels 240 miles in 4 hours. What is its average speed?", a: "Speed = Distance \\( \\div \\) Time. \\( 240 \\div 4 = 60 \\). <br> **Answer: 60 miles per hour**" },
+    { id: 11, q: "What is the unit price if 6 pens cost $2.40?", a: "\\( $2.40 \\div 6 = $0.40 \\). <br> **Answer: $0.40 per pen**" },
+    { id: 12, q: "On a map, 1 inch represents 50 miles. How many miles do 3.5 inches represent?", a: "Multiply: \\( 3.5 \\times 50 = 175 \\). <br> **Answer: 175 miles**" },
+    { id: 13, q: "Find the area of a triangle with a base of 10 cm and a height of 5 cm.", a: "Formula: \\( A = \\frac{1}{2}bh \\). \\( A = \\frac{1}{2}(10)(5) = 25 \\). <br> **Answer: 25 cm&sup2;**" },
+    { id: 14, q: "What is the circumference of a circle with a diameter of 12 inches? (Use 3.14 for &pi;)", a: "Formula: \\( C = \\pi d \\). \\( 3.14 \\times 12 = 37.68 \\). <br> **Answer: 37.68 inches**" },
+    { id: 15, q: "Find the area of a circle with a radius of 5 meters. (Use 3.14 for &pi;)", a: "Formula: \\( A = \\pi r^2 \\). \\( 3.14 \\times (5^2) = 3.14 \\times 25 = 78.5 \\). <br> **Answer: 78.5 m&sup2;**" },
+    { id: 16, q: "What is the perimeter of a rectangle measuring 15 ft by 7 ft?", a: "Formula: \\( P = 2(l + w) \\). \\( 2(15 + 7) = 2(22) = 44 \\). <br> **Answer: 44 ft**" },
+    { id: 17, q: "What is the volume of a rectangular prism with length 4 in, width 5 in, and height 6 in?", a: "Formula: \\( V = l \\times w \\times h \\). \\( 4 \\times 5 \\times 6 = 120 \\). <br> **Answer: 120 cubic inches**" },
+    { id: 18, q: "What time is 3 hours and 45 minutes after 9:30 a.m.?", a: "Add 3 hours to get 12:30 p.m. Add 45 minutes: 30 mins gets you to 1:00 p.m., leaving 15 mins. <br> **Answer: 1:15 p.m.**" },
+    { id: 19, q: "Convert 72 inches into yards.", a: "There are 36 inches in 1 yard. \\( 72 \\div 36 = 2 \\). <br> **Answer: 2 yards**" },
+    { id: 20, q: "How many quarts are in 3 gallons?", a: "There are 4 quarts in 1 gallon. \\( 3 \\times 4 = 12 \\). <br> **Answer: 12 quarts**" },
+    { id: 21, q: "Convert 2.5 liters to milliliters.", a: "There are 1000 mL in 1 L. \\( 2.5 \\times 1000 = 2500 \\). <br> **Answer: 2500 mL**" },
+    { id: 22, q: "On a coordinate plane, what is the distance between the points (2, 3) and (2, 8)?", a: "Since the x-coordinates are the same, subtract the y-coordinates: \\( 8 - 3 = 5 \\). <br> **Answer: 5 units**" },
+    { id: 23, q: "If the area of a square is 81 cm&sup2;, what is its perimeter?", a: "Side length = \\( \\sqrt{81} = 9 \\). Perimeter = \\( 4 \\times 9 = 36 \\). <br> **Answer: 36 cm**" },
+    { id: 24, q: "What is the prime factorization of 60?", a: "\\( 60 = 6 \\times 10 = (2 \\times 3) \\times (2 \\times 5) = 2^2 \\times 3 \\times 5 \\). <br> **Answer: \\( 2^2 \\cdot 3 \\cdot 5 \\)**" },
+    { id: 25, q: "Simplify using order of operations: \\( (4 + 5) \\times 3 - 7 \\)", a: "Parentheses first: \\( 9 \\times 3 - 7 \\). Multiplication next: \\( 27 - 7 \\). Subtraction last: \\( 20 \\). <br> **Answer: 20**" },
+    { id: 26, q: "Order from least to greatest: \\( \\frac{1}{3} \\), 0.3, 33%", a: "Convert to decimals: \\( 1/3 \\approx 0.333... \\), \\( 0.3 = 0.300 \\), \\( 33\\% = 0.330 \\). <br> **Answer: 0.3, 33%, \\( \\frac{1}{3} \\)**" },
+    { id: 27, q: "What is the Greatest Common Factor (GCF) of 24 and 36?", a: "Factors of 24: 1, 2, 3, 4, 6, 8, 12, 24. Factors of 36: 1, 2, 3, 4, 6, 9, 12, 18, 36. The largest shared factor is 12. <br> **Answer: 12**" },
+    { id: 28, q: "What is the Least Common Multiple (LCM) of 6 and 8?", a: "Multiples of 6: 6, 12, 18, 24, 30. Multiples of 8: 8, 16, 24, 32. The smallest shared multiple is 24. <br> **Answer: 24**" },
+    { id: 29, q: "Evaluate the expression \\( 2x + 5 \\) if \\( x = 4 \\).", a: "Substitute 4 for x: \\( 2(4) + 5 = 8 + 5 = 13 \\). <br> **Answer: 13**" },
+    { id: 30, q: "If you roll a standard 6-sided die, what is the probability of rolling a prime number?", a: "The prime numbers on a die are 2, 3, and 5 (three outcomes). Total outcomes = 6. Probability = \\( 3/6 = 1/2 \\). <br> **Answer: \\( \\frac{1}{2} \\)**" }
 ];
 
 const container = document.getElementById('problems-container');
