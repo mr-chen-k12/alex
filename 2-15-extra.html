@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Targeted Math Practice: 30 Questions</title>
+    
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['\\(', '\\)']]
+        },
+        startup: {
+          typeset: false // Triggered manually after JS runs
+        }
+      };
+    </script>
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 850px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
+        h2 { color: #1a5a96; margin-top: 30px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        .problem-card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .question-text { font-weight: bold; color: #333; margin-bottom: 15px; font-size: 1.1em; }
+        .answer-box { display: none; margin-top: 15px; padding: 15px; background-color: #eef9f1; border-left: 5px solid #4caf50; border-radius: 4px; }
+        button { background-color: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background 0.3s; }
+        button:hover { background-color: #2980b9; }
+    </style>
+</head>
+<body>
+
+<h1>Targeted Math Review</h1>
+
+<div id="problems-container"></div>
+
+<script>
+// Array of 30 questions grouped by the requested concepts.
+const problems = [
+    // Multiplying Mixed Numbers (Similar to Q2)
+    { id: 1, q: "Simplify: \\( 1\\frac{1}{4} \\times 2\\frac{2}{3} \\)", a: "Convert to improper fractions: \\( \\frac{5}{4} \\times \\frac{8}{3} = \\frac{40}{12} \\). Reduce by dividing by 4: \\( \\frac{10}{3} \\). <br> **Answer: \\( 3\\frac{1}{3} \\)**" },
+    { id: 2, q: "Simplify: \\( 3\\frac{1}{2} \\times 1\\frac{3}{7} \\)", a: "Convert to improper fractions: \\( \\frac{7}{2} \\times \\frac{10}{7} \\). The 7s cancel out. \\( \\frac{10}{2} = 5 \\). <br> **Answer: 5**" },
+    { id: 3, q: "Simplify: \\( 2\\frac{1}{5} \\times 1\\frac{1}{2} \\)", a: "Convert: \\( \\frac{11}{5} \\times \\frac{3}{2} = \\frac{33}{10} \\). <br> **Answer: \\( 3\\frac{3}{10} \\)**" },
+    { id: 4, q: "Simplify: \\( 4\\frac{2}{3} \\times 1\\frac{1}{7} \\)", a: "Convert: \\( \\frac{14}{3} \\times \\frac{8}{7} = \\frac{112}{21} \\). Divide by 7: \\( \\frac{16}{3} \\). <br> **Answer: \\( 5\\frac{1}{3} \\)**" },
+    { id: 5, q: "Simplify: \\( 1\\frac{3}{4} \\times 2\\frac{1}{2} \\)", a: "Convert: \\( \\frac{7}{4} \\times \\frac{5}{2} = \\frac{35}{8} \\). <br> **Answer: \\( 4\\frac{3}{8} \\)**" },
+
+    // Ratios and Proportions (Similar to Q9)
+    { id: 6, q: "The ratio of red to blue marbles in a bag is 2 to 3. If there are 40 marbles in total, how many are red?", a: "Total ratio parts = \\( 2 + 3 = 5 \\). One part = \\( 40 \\div 5 = 8 \\). Red marbles = \\( 2 \\times 8 = 16 \\). <br> **Answer: 16 red marbles**" },
+    { id: 7, q: "The ratio of cats to dogs at an animal shelter is 5 to 4. If there are 45 animals in total, how many are dogs?", a: "Total ratio parts = \\( 5 + 4 = 9 \\). One part = \\( 45 \\div 9 = 5 \\). Dogs = \\( 4 \\times 5 = 20 \\). <br> **Answer: 20 dogs**" },
+    { id: 8, q: "A recipe uses a ratio of flour to sugar of 3 to 1. If you make a large batch using 12 cups of ingredients total, how much is flour?", a: "Total parts = \\( 3 + 1 = 4 \\). One part = \\( 12 \\div 4 = 3 \\). Flour = \\( 3 \\times 3 = 9 \\). <br> **Answer: 9 cups of flour**" },
+    { id: 9, q: "The ratio of adults to children at a park is 3 to 8. If there are 110 people in total, how many are children?", a: "Total parts = \\( 3 + 8 = 11 \\). One part = \\( 110 \\div 11 = 10 \\). Children = \\( 8 \\times 10 = 80 \\). <br> **Answer: 80 children**" },
+    { id: 10, q: "The ratio of cars to trucks in a parking lot is 7 to 2. If there are 54 vehicles total, how many are cars?", a: "Total parts = \\( 7 + 2 = 9 \\). One part = \\( 54 \\div 9 = 6 \\). Cars = \\( 7 \\times 6 = 42 \\). <br> **Answer: 42 cars**" },
+
+    // Volume of Rectangular Prisms (Similar to Q17)
+    { id: 11, q: "What is the volume of a rectangular prism with length 5 in, width 3 in, and height 4 in?", a: "Formula: \\( V = l \\times w \\times h \\). \\( 5 \\times 3 \\times 4 = 60 \\). <br> **Answer: 60 cubic inches**" },
+    { id: 12, q: "What is the volume of a rectangular prism with length 10 cm, width 2 cm, and height 7 cm?", a: "\\( 10 \\times 2 \\times 7 = 140 \\). <br> **Answer: 140 cm&sup3;**" },
+    { id: 13, q: "Find the volume of a box that is 8 ft long, 5 ft wide, and 2 ft high.", a: "\\( 8 \\times 5 \\times 2 = 80 \\). <br> **Answer: 80 ft&sup3;**" },
+    { id: 14, q: "What is the volume of a cube with a side length of 6 meters?", a: "A cube has all equal sides: \\( 6 \\times 6 \\times 6 = 216 \\). <br> **Answer: 216 m&sup3;**" },
+    { id: 15, q: "A swimming pool is shaped like a rectangular prism. It is 12 m long, 4 m wide, and 3 m deep. What is its volume?", a: "\\( 12 \\times 4 \\times 3 = 144 \\). <br> **Answer: 144 m&sup3;**" },
+
+    // Area and Perimeter of Squares (Similar to Q23)
+    { id: 16, q: "If the area of a square is 25 cm&sup2;, what is its perimeter?", a: "Side length = \\( \\sqrt{25} = 5 \\). Perimeter = \\( 4 \\times 5 = 20 \\). <br> **Answer: 20 cm**" },
+    { id: 17, q: "If the area of a square is 144 m&sup2;, what is its perimeter?", a: "Side length = \\( \\sqrt{144} = 12 \\). Perimeter = \\( 4 \\times 12 = 48 \\). <br> **Answer: 48 m**" },
+    { id: 18, q: "If the area of a square is 49 in&sup2;, what is its perimeter?", a: "Side length = \\( \\sqrt{49} = 7 \\). Perimeter = \\( 4 \\times 7 = 28 \\). <br> **Answer: 28 in**" },
+    { id: 19, q: "If the perimeter of a square is 36 cm, what is its area?", a: "Side length = \\( 36 \\div 4 = 9 \\). Area = \\( 9 \\times 9 = 81 \\). <br> **Answer: 81 cm&sup2;**" },
+    { id: 20, q: "If the perimeter of a square is 60 ft, what is its area?", a: "Side length = \\( 60 \\div 4 = 15 \\). Area = \\( 15 \\times 15 = 225 \\). <br> **Answer: 225 ft&sup2;**" },
+
+    // Greatest Common Factor (Similar to Q27)
+    { id: 21, q: "What is the Greatest Common Factor (GCF) of 18 and 27?", a: "Factors of 18: 1, 2, 3, 6, 9, 18. Factors of 27: 1, 3, 9, 27. The largest shared factor is 9. <br> **Answer: 9**" },
+    { id: 22, q: "What is the GCF of 32 and 48?", a: "Factors of 32: 1, 2, 4, 8, 16, 32. Factors of 48: 1, 2, 3, 4, 6, 8, 12, 16, 24, 48. The largest shared factor is 16. <br> **Answer: 16**" },
+    { id: 23, q: "Find the Greatest Common Factor of 15 and 40.", a: "Factors of 15: 1, 3, 5, 15. Factors of 40: 1, 2, 4, 5, 8, 10, 20, 40. Largest shared is 5. <br> **Answer: 5**" },
+    { id: 24, q: "What is the GCF of 56 and 42?", a: "Factors of 42: 1, 2, 3, 6, 7, 14, 21, 42. Factors of 56 include 7 and 14. Largest shared is 14. <br> **Answer: 14**" },
+    { id: 25, q: "Find the GCF of 100 and 75.", a: "Factors of 75: 1, 3, 5, 15, 25, 75. Factors of 100 include 25. Largest shared is 25. <br> **Answer: 25**" },
+
+    // Basic Probability (Similar to Q30)
+    { id: 26, q: "If you roll a standard 6-sided die, what is the probability of rolling an even number?", a: "Even numbers: 2, 4, 6 (three outcomes). Total outcomes = 6. \\( 3/6 = 1/2 \\). <br> **Answer: \\( \\frac{1}{2} \\)**" },
+    { id: 27, q: "If you flip two fair coins, what is the probability of getting two heads?", a: "Outcomes: HH, HT, TH, TT. Two heads is one outcome out of four. <br> **Answer: \\( \\frac{1}{4} \\)**" },
+    { id: 28, q: "If you draw a card randomly from a standard 52-card deck, what is the probability of drawing a heart?", a: "There are 13 hearts in a deck of 52 cards. \\( 13/52 = 1/4 \\). <br> **Answer: \\( \\frac{1}{4} \\)**" },
+    { id: 29, q: "If you roll a standard 6-sided die, what is the probability of rolling a number greater than 4?", a: "Numbers greater than 4 are 5 and 6 (two outcomes). \\( 2/6 = 1/3 \\). <br> **Answer: \\( \\frac{1}{3} \\)**" },
+    { id: 30, q: "A bag contains 3 red marbles, 2 blue marbles, and 5 green marbles. What is the probability of randomly drawing a blue marble?", a: "Total marbles = \\( 3 + 2 + 5 = 10 \\). Blue marbles = 2. \\( 2/10 = 1/5 \\). <br> **Answer: \\( \\frac{1}{5} \\)**" }
+];
+
+const container = document.getElementById('problems-container');
+let currentTopic = "";
+
+// Load questions into the HTML
+problems.forEach((prob, index) => {
+    // Add headers to organize the sections based on the requested question types
+    if (index === 0) currentTopic = "Multiplying Mixed Numbers";
+    else if (index === 5) currentTopic = "Ratios and Proportions";
+    else if (index === 10) currentTopic = "Volume of Rectangular Prisms";
+    else if (index === 15) currentTopic = "Area and Perimeter of Squares";
+    else if (index === 20) currentTopic = "Greatest Common Factor (GCF)";
+    else if (index === 25) currentTopic = "Basic Probability";
+
+    if (index % 5 === 0) {
+        const header = document.createElement('h2');
+        header.textContent = currentTopic;
+        container.appendChild(header);
+    }
+
+    const div = document.createElement('div');
+    div.className = 'problem-card';
+    div.innerHTML = `
+        <div class="question-text">${prob.id}. ${prob.q}</div>
+        <button onclick="toggleAns(${prob.id})">Show Answer</button>
+        <div id="ans-${prob.id}" class="answer-box">${prob.a}</div>
+    `;
+    container.appendChild(div);
+});
+
+// Force MathJax to process the math
+window.onload = () => {
+    MathJax.typesetPromise().then(() => {
+        console.log("MathJax rendering complete.");
+    }).catch((err) => console.log("MathJax rendering failed: " + err.message));
+};
+
+function toggleAns(id) {
+    const el = document.getElementById(`ans-${id}`);
+    el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+}
+</script>
+
+</body>
+</html>
