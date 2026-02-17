@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice: Set 3 (30 Questions)</title>
+    
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['\\(', '\\)']]
+        },
+        startup: {
+          typeset: false // Triggered manually after JS runs
+        }
+      };
+    </script>
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 850px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
+        .problem-card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .question-text { font-weight: bold; color: #1a5a96; margin-bottom: 15px; font-size: 1.1em; }
+        .answer-box { display: none; margin-top: 15px; padding: 15px; background-color: #eef9f1; border-left: 5px solid #4caf50; border-radius: 4px; }
+        button { background-color: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background 0.3s; }
+        button:hover { background-color: #2980b9; }
+    </style>
+</head>
+<body>
+
+<h1>Math Practice: 30 New Questions</h1>
+
+<div id="problems-container"></div>
+
+<script>
+// Array of 30 questions. Math is wrapped in \\( ... \\) for inline rendering.
+const problems = [
+    { id: 1, q: "Evaluate the exponent: \\( 3^4 \\)", a: "\\( 3 \\times 3 \\times 3 \\times 3 = 81 \\). <br> **Answer: 81**" },
+    { id: 2, q: "Simplify: \\( 4\\frac{1}{5} + 2\\frac{2}{3} \\)", a: "Find a common denominator (15): \\( 4\\frac{3}{15} + 2\\frac{10}{15} = 6\\frac{13}{15} \\). <br> **Answer: \\( 6\\frac{13}{15} \\)**" },
+    { id: 3, q: "Simplify: \\( 7\\frac{1}{8} - 3\\frac{5}{8} \\)", a: "Borrow from the whole number: \\( 6\\frac{9}{8} - 3\\frac{5}{8} = 3\\frac{4}{8} \\). Reduce the fraction to \\( 1/2 \\). <br> **Answer: \\( 3\\frac{1}{2} \\)**" },
+    { id: 4, q: "Simplify: \\( \\frac{5}{6} \\times \\frac{9}{10} \\)", a: "Cross-cancel or multiply straight across: \\( \\frac{45}{60} \\). Divide both by 15. <br> **Answer: \\( \\frac{3}{4} \\)**" },
+    { id: 5, q: "Simplify: \\( 2\\frac{1}{4} \\div \\frac{3}{8} \\)", a: "Convert to improper: \\( \\frac{9}{4} \\div \\frac{3}{8} \\). Multiply by reciprocal: \\( \\frac{9}{4} \\times \\frac{8}{3} = \\frac{72}{12} = 6 \\). <br> **Answer: 6**" },
+    { id: 6, q: "Convert \\( \\frac{5}{8} \\) to a decimal and a percent.", a: "\\( 5 \\div 8 = 0.625 \\). Move decimal two places right for percent. <br> **Answer: 0.625 and 62.5%**" },
+    { id: 7, q: "What is 15% of 80?", a: "Multiply \\( 80 \\times 0.15 = 12 \\). <br> **Answer: 12**" },
+    { id: 8, q: "A $60 jacket is on sale for 25% off. What is the final price?", a: "Discount: \\( 60 \\times 0.25 = 15 \\). Final price: \\( 60 - 15 = 45 \\). <br> **Answer: $45**" },
+    { id: 9, q: "If 8 apples cost $3.20, how much do 5 apples cost?", a: "Unit price: \\( $3.20 \\div 8 = $0.40 \\). For 5 apples: \\( 5 \\times 0.40 = 2.00 \\). <br> **Answer: $2.00**" },
+    { id: 10, q: "Solve for x: \\( \\frac{x}{12} = \\frac{3}{4} \\)", a: "Cross multiply: \\( 4x = 36 \\). Divide by 4: \\( x = 9 \\). <br> **Answer: 9**" },
+    { id: 11, q: "Find the area of a trapezoid with bases of 6 cm and 10 cm, and a height of 4 cm.", a: "Formula: \\( A = \\frac{1}{2}h(b_1 + b_2) \\). \\( A = \\frac{1}{2}(4)(6 + 10) = 2(16) = 32 \\). <br> **Answer: 32 cm&sup2;**" },
+    { id: 12, q: "What is the perimeter of a regular hexagon with a side length of 7 cm?", a: "A regular hexagon has 6 equal sides. \\( 6 \\times 7 = 42 \\). <br> **Answer: 42 cm**" },
+    { id: 13, q: "Find the volume of a cylinder with a radius of 3 in and a height of 10 in. (Use 3.14 for &pi;)", a: "Formula: \\( V = \\pi r^2 h \\). \\( V = 3.14 \\times (3^2) \\times 10 = 3.14 \\times 9 \\times 10 = 282.6 \\). <br> **Answer: 282.6 cubic inches**" },
+    { id: 14, q: "What is the circumference of a circle with a radius of 15 m? (Use 3.14 for &pi;)", a: "Formula: \\( C = 2\\pi r \\). \\( C = 2 \\times 3.14 \\times 15 = 3.14 \\times 30 = 94.2 \\). <br> **Answer: 94.2 m**" },
+    { id: 15, q: "What is the supplementary angle to 47&deg;?", a: "Supplementary angles add up to 180&deg;. \\( 180 - 47 = 133 \\). <br> **Answer: 133&deg;**" },
+    { id: 16, q: "What is the complementary angle to 32&deg;?", a: "Complementary angles add up to 90&deg;. \\( 90 - 32 = 58 \\). <br> **Answer: 58&deg;**" },
+    { id: 17, q: "What is the sum of the interior angles of any triangle?", a: "**Answer: 180&deg;**" },
+    { id: 18, q: "Convert 4.5 pounds to ounces.", a: "There are 16 ounces in 1 pound. \\( 4.5 \\times 16 = 72 \\). <br> **Answer: 72 ounces**" },
+    { id: 19, q: "Convert 3.2 kilometers to meters.", a: "There are 1000 meters in 1 kilometer. \\( 3.2 \\times 1000 = 3200 \\). <br> **Answer: 3200 meters**" },
+    { id: 20, q: "A train leaves at 2:45 PM and arrives at 5:20 PM. How long is the trip?", a: "2:45 PM to 4:45 PM is 2 hours. 4:45 PM to 5:00 PM is 15 minutes. 5:00 PM to 5:20 PM is 20 minutes. Total: 2 hours + 35 minutes. <br> **Answer: 2 hours 35 minutes**" },
+    { id: 21, q: "Simplify using order of operations: \\( 5 + 2 \\times (8 - 3)^2 \\)", a: "Parentheses: \\( (5)^2 = 25 \\). Multiply: \\( 2 \\times 25 = 50 \\). Add: \\( 5 + 50 = 55 \\). <br> **Answer: 55**" },
+    { id: 22, q: "Simplify: \\( -12 + (-7) - (-15) \\)", a: "Adding a negative is subtracting: \\( -12 - 7 = -19 \\). Subtracting a negative is adding: \\( -19 + 15 = -4 \\). <br> **Answer: -4**" },
+    { id: 23, q: "Simplify: \\( (-4) \\times (-8) \\div (-2) \\)", a: "Multiply two negatives to get a positive: \\( 32 \\div (-2) \\). Divide positive by negative to get negative: \\( -16 \\). <br> **Answer: -16**" },
+    { id: 24, q: "Evaluate \\( 3x^2 - 2x \\) when \\( x = 3 \\).", a: "Substitute 3 for x: \\( 3(3^2) - 2(3) \\). Exponents first: \\( 3(9) - 6 \\). Multiply: \\( 27 - 6 = 21 \\). <br> **Answer: 21**" },
+    { id: 25, q: "What is the Greatest Common Factor (GCF) of 45 and 60?", a: "Factors of 45: 1, 3, 5, 9, 15, 45. Factors of 60: 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60. <br> **Answer: 15**" },
+    { id: 26, q: "What is the Least Common Multiple (LCM) of 12 and 15?", a: "Multiples of 12: 12, 24, 36, 48, 60... Multiples of 15: 15, 30, 45, 60... <br> **Answer: 60**" },
+    { id: 27, q: "Write 0.0045 in scientific notation.", a: "Move the decimal 3 places to the right to get a number between 1 and 10. <br> **Answer: \\( 4.5 \\times 10^{-3} \\)**" },
+    { id: 28, q: "Simplify: \\( \\sqrt{144} + \\sqrt{81} \\)", a: "\\( 12 + 9 = 21 \\). <br> **Answer: 21**" },
+    { id: 29, q: "What is the mean (average) of the following set of numbers: 2, 5, 5, 8, 10?", a: "Sum the numbers: \\( 2 + 5 + 5 + 8 + 10 = 30 \\). Divide by the count (5): \\( 30 \\div 5 = 6 \\). <br> **Answer: 6**" },
+    { id: 30, q: "If you flip a fair coin twice, what is the probability of getting heads both times?", a: "Probability of heads on one flip is \\( \\frac{1}{2} \\). Multiply the probabilities: \\( \\frac{1}{2} \\times \\frac{1}{2} = \\frac{1}{4} \\). <br> **Answer: \\( \\frac{1}{4} \\)**" }
+];
+
+const container = document.getElementById('problems-container');
+
+// Load questions into the HTML
+problems.forEach(prob => {
+    const div = document.createElement('div');
+    div.className = 'problem-card';
+    div.innerHTML = `
+        <div class="question-text">Problem ${prob.id}: ${prob.q}</div>
+        <button onclick="toggleAns(${prob.id})">Show Answer & Explanation</button>
+        <div id="ans-${prob.id}" class="answer-box">${prob.a}</div>
+    `;
+    container.appendChild(div);
+});
+
+// Force MathJax to process the math we just added to the page
+window.onload = () => {
+    MathJax.typesetPromise().then(() => {
+        console.log("MathJax rendering complete.");
+    }).catch((err) => console.log("MathJax rendering failed: " + err.message));
+};
+
+function toggleAns(id) {
+    const el = document.getElementById(`ans-${id}`);
+    el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+}
+</script>
+
+</body>
+</html>
