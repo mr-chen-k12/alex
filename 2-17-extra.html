@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Focused Practice</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #333;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .problem-card {
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .problem-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .section-title {
+            grid-column: 1 / -1;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-top: 20px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #007bff;
+            color: #007bff;
+        }
+        .answer-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #eee;
+        }
+        .answer-content {
+            display: none;
+            background-color: #e8f5e9;
+            padding: 10px;
+            border-left: 4px solid #4caf50;
+            margin-top: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div>Name: ____________________</div>
+        <div>Focused Review Worksheet</div>
+    </div>
+
+    <div class="grid-container">
+        
+        <div class="section-title">Word Problems: Finding the Difference</div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>1.</strong> The Great Pyramid of Giza was originally 481 feet tall. The Statue of Liberty is 305 feet tall. How many feet taller was the Great Pyramid? Explain how you found your answer.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(1)">Reveal Answer</button>
+                <div id="ans-1" class="answer-content">
+                    176 feet.<br>
+                    <em>Explanation:</em> Subtract the height of the Statue of Liberty from the Great Pyramid (\( 481 - 305 = 176 \)).
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>2.</strong> The Amazon River is about 4,000 miles long. The Mississippi River is about 2,340 miles long. How many miles longer is the Amazon River? Explain your thinking.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(2)">Reveal Answer</button>
+                <div id="ans-2" class="answer-content">
+                    1,660 miles.<br>
+                    <em>Explanation:</em> Subtract the length of the Mississippi River from the Amazon River (\( 4,000 - 2,340 = 1,660 \)).
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>3.</strong> A commercial airplane flies at an altitude of 35,000 feet. A small private plane flies at 12,500 feet. What is the difference in their altitudes? Explain how you found your answer.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(3)">Reveal Answer</button>
+                <div id="ans-3" class="answer-content">
+                    22,500 feet.<br>
+                    <em>Explanation:</em> Subtract the smaller altitude from the larger altitude (\( 35,000 - 12,500 = 22,500 \)).
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">Fractions, Percents & Conversions</div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>4.</strong><br>
+                <strong>a.</strong> 75 cents is what percent of a dollar?<br>
+                <strong>b.</strong> One quart is what percent of a half-gallon? (Hint: 1 half-gallon = 2 quarts)
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(4)">Reveal Answer</button>
+                <div id="ans-4" class="answer-content">a. 75%<br>b. 50%</div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>5.</strong><br>
+                <strong>a.</strong> 10 cents is what percent of a dollar?<br>
+                <strong>b.</strong> 6 months is what percent of a year?
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(5)">Reveal Answer</button>
+                <div id="ans-5" class="answer-content">a. 10%<br>b. 50%</div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>6.</strong><br>
+                <strong>a.</strong> A quarter (25 cents) is what percent of a dollar?<br>
+                <strong>b.</strong> 12 hours is what percent of a day?
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(6)">Reveal Answer</button>
+                <div id="ans-6" class="answer-content">a. 25%<br>b. 50%</div>
+            </div>
+        </div>
+
+        <div class="section-title">Writing Decimals in Words</div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>7.</strong> A large bottle of soda holds about 1.5 liters. Use words to write 1.5 L.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(7)">Reveal Answer</button>
+                <div id="ans-7" class="answer-content">One and five tenths of a liter</div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>8.</strong> A scientist measures out 0.75 liters of a liquid. Use words to write 0.75 L.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(8)">Reveal Answer</button>
+                <div id="ans-8" class="answer-content">Seventy-five hundredths of a liter</div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>9.</strong> A recipe calls for 0.1 liters of vanilla extract. Use words to write 0.1 L.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(9)">Reveal Answer</button>
+                <div id="ans-9" class="answer-content">One tenth of a liter</div>
+            </div>
+        </div>
+
+        <div class="section-title">Writing Numbers in Digits (Set 1)</div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>10.</strong> Use digits to write twelve million, six hundred fifty thousand.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(10)">Reveal Answer</button>
+                <div id="ans-10" class="answer-content">12,650,000</div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>11.</strong> Use digits to write three million, nine hundred thousand, two hundred.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(11)">Reveal Answer</button>
+                <div id="ans-11" class="answer-content">3,900,200</div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>12.</strong> Use digits to write forty-five million, one hundred eight thousand.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(12)">Reveal Answer</button>
+                <div id="ans-12" class="answer-content">45,108,000</div>
+            </div>
+        </div>
+
+        <div class="section-title">Division with Remainders</div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>13.</strong> Draw dots and make groups to show 22 divided by 5. Write the answer next to your drawing.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(13)">Reveal Answer</button>
+                <div id="ans-13" class="answer-content">
+                    Drawing should show 4 groups of 5 dots, with 2 dots left over.<br>
+                    Answer: 4 R 2
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>14.</strong> Draw dots and make groups to show 14 divided by 3. Write the answer next to your drawing.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(14)">Reveal Answer</button>
+                <div id="ans-14" class="answer-content">
+                    Drawing should show 4 groups of 3 dots, with 2 dots left over.<br>
+                    Answer: 4 R 2
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>15.</strong> Draw dots and make groups to show 27 divided by 6. Write the answer next to your drawing.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(15)">Reveal Answer</button>
+                <div id="ans-15" class="answer-content">
+                    Drawing should show 4 groups of 6 dots, with 3 dots left over.<br>
+                    Answer: 4 R 3
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">Division Word Problems</div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>16.</strong> Write and solve an equation for this problem:<br>
+                A baker made 72 muffins. She wants to put them into trays that hold 9 muffins each. How many trays will she need?
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(16)">Reveal Answer</button>
+                <div id="ans-16" class="answer-content">Equation: \( 72 \div 9 = t \)<br>Answer: 8 trays</div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>17.</strong> Write and solve an equation for this problem:<br>
+                A teacher has 45 markers to distribute equally among 5 tables. How many markers will each table get?
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(17)">Reveal Answer</button>
+                <div id="ans-17" class="answer-content">Equation: \( 45 \div 5 = m \)<br>Answer: 9 markers</div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>18.</strong> Write and solve an equation for this problem:<br>
+                A farmer collected 64 eggs. If he puts them into cartons that hold 8 eggs each, how many cartons will he fill?
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(18)">Reveal Answer</button>
+                <div id="ans-18" class="answer-content">Equation: \( 64 \div 8 = c \)<br>Answer: 8 cartons</div>
+            </div>
+        </div>
+
+        <div class="section-title">Writing Numbers in Digits (Set 2)</div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>19.</strong> Use digits to write one hundred million, five hundred thousand.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(19)">Reveal Answer</button>
+                <div id="ans-19" class="answer-content">100,500,000</div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>20.</strong> Use digits to write eight million, three hundred seventy-one thousand.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(20)">Reveal Answer</button>
+                <div id="ans-20" class="answer-content">8,371,000</div>
+            </div>
+        </div>
+
+        <div class="problem-card">
+            <div class="problem-text">
+                <strong>21.</strong> Use digits to write twenty million, four hundred six thousand.
+            </div>
+            <div class="answer-section">
+                <button onclick="toggleAnswer(21)">Reveal Answer</button>
+                <div id="ans-21" class="answer-content">20,406,000</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleAnswer(problemNumber) {
+            const answerDiv = document.getElementById('ans-' + problemNumber);
+            const button = answerDiv.previousElementSibling;
+            
+            if (answerDiv.style.display === 'none' || answerDiv.style.display === '') {
+                answerDiv.style.display = 'block';
+                button.textContent = 'Hide Answer';
+            } else {
+                answerDiv.style.display = 'none';
+                button.textContent = 'Reveal Answer';
+            }
+        }
+    </script>
+
+</body>
+</html>
