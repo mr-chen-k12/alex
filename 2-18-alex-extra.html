@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice: Multiple Choice Variations</title>
+    
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 40px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        .question-container {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid #3498db;
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .option-btn {
+            background-color: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #d5dbdb;
+            border-color: #95a5a6;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .option-btn.correct-choice {
+            background-color: #d4efdf;
+            border-color: #27ae60;
+            color: #1e8449;
+            font-weight: bold;
+        }
+        .option-btn.wrong-choice {
+            background-color: #f5b7b1;
+            border-color: #c0392b;
+            color: #922b21;
+        }
+        .feedback-section {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+        }
+        .feedback-status {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .status-correct { color: #27ae60; }
+        .status-wrong { color: #c0392b; }
+    </style>
+</head>
+<body>
+
+    <h1>Math Practice: Multiple Choice Variations</h1>
+
+    <h2>Variations of Problem 4 (Fraction Division)</h2>
+
+    <div class="question-container" id="q1">
+        <div class="question-text">1. Simplify: \(\frac{2}{3} \div \frac{8}{9}\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q1', this, false)">A) \(\frac{16}{27}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q1', this, false)">B) \(\frac{1}{4}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q1', this, true)">C) \(\frac{3}{4}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q1', this, false)">D) \(\frac{4}{3}\)</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Multiply by the reciprocal: \(\frac{2}{3} \times \frac{9}{8}\). Cross-simplify: 2 and 8 reduce to 1 and 4. 9 and 3 reduce to 3 and 1. Result: \(\frac{1}{1} \times \frac{3}{4} = \frac{3}{4}\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q2">
+        <div class="question-text">2. Simplify: \(\frac{3}{5} \div \frac{9}{10}\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q2', this, true)">A) \(\frac{2}{3}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q2', this, false)">B) \(\frac{27}{50}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q2', this, false)">C) \(\frac{3}{2}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q2', this, false)">D) \(\frac{1}{3}\)</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Multiply by the reciprocal: \(\frac{3}{5} \times \frac{10}{9}\). Cross-simplify: 3 and 9 reduce to 1 and 3. 10 and 5 reduce to 2 and 1. Result: \(\frac{1}{1} \times \frac{2}{3} = \frac{2}{3}\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q3">
+        <div class="question-text">3. Simplify: \(\frac{7}{8} \div \frac{14}{4}\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q3', this, false)">A) \(\frac{49}{16}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q3', this, true)">B) \(\frac{1}{4}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q3', this, false)">C) \(\frac{1}{2}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q3', this, false)">D) \(4\)</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Multiply by the reciprocal: \(\frac{7}{8} \times \frac{4}{14}\). Cross-simplify: 7 and 14 reduce to 1 and 2. 4 and 8 reduce to 1 and 2. Result: \(\frac{1}{2} \times \frac{1}{2} = \frac{1}{4}\).</div>
+        </div>
+    </div>
+
+    <h2>Variations of Problem 7 (Percentages)</h2>
+
+    <div class="question-container" id="q4">
+        <div class="question-text">4. What is 20% of 150?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q4', this, true)">A) 30</button>
+            <button class="option-btn" onclick="checkAnswer('q4', this, false)">B) 25</button>
+            <button class="option-btn" onclick="checkAnswer('q4', this, false)">C) 15</button>
+            <button class="option-btn" onclick="checkAnswer('q4', this, false)">D) 35</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Convert 20% to a decimal (0.20). Multiply: \(0.20 \times 150 = 30\). (Alternatively, 10% of 150 is 15, so 20% is \(15 \times 2 = 30\)).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q5">
+        <div class="question-text">5. What is 35% of 60?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q5', this, false)">A) 18</button>
+            <button class="option-btn" onclick="checkAnswer('q5', this, false)">B) 24</button>
+            <button class="option-btn" onclick="checkAnswer('q5', this, true)">C) 21</button>
+            <button class="option-btn" onclick="checkAnswer('q5', this, false)">D) 15</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Convert 35% to a decimal (0.35). Multiply: \(0.35 \times 60 = 21\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q6">
+        <div class="question-text">6. What is 5% of 240?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q6', this, false)">A) 24</button>
+            <button class="option-btn" onclick="checkAnswer('q6', this, true)">B) 12</button>
+            <button class="option-btn" onclick="checkAnswer('q6', this, false)">C) 10</button>
+            <button class="option-btn" onclick="checkAnswer('q6', this, false)">D) 15</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> 10% of 240 is 24. Since 5% is half of 10%, divide 24 by 2 to get 12.</div>
+        </div>
+    </div>
+
+    <h2>Variations of Problem 8 (Discounts)</h2>
+
+    <div class="question-container" id="q7">
+        <div class="question-text">7. An $80 pair of shoes is on sale for 30% off. What is the final price?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q7', this, false)">A) $24</button>
+            <button class="option-btn" onclick="checkAnswer('q7', this, false)">B) $50</button>
+            <button class="option-btn" onclick="checkAnswer('q7', this, true)">C) $56</button>
+            <button class="option-btn" onclick="checkAnswer('q7', this, false)">D) $64</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Find the discount: 30% of $80 is \(0.30 \times 80 = $24\). Subtract from original price: \($80 - $24 = $56\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q8">
+        <div class="question-text">8. A $120 phone is on sale for 15% off. What is the final price?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q8', this, true)">A) $102</button>
+            <button class="option-btn" onclick="checkAnswer('q8', this, false)">B) $105</button>
+            <button class="option-btn" onclick="checkAnswer('q8', this, false)">C) $18</button>
+            <button class="option-btn" onclick="checkAnswer('q8', this, false)">D) $115</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Find the discount: 15% of $120 is \(0.15 \times 120 = $18\). Subtract from original price: \($120 - $18 = $102\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q9">
+        <div class="question-text">9. A $45 shirt is on sale for 20% off. What is the final price?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q9', this, false)">A) $9</button>
+            <button class="option-btn" onclick="checkAnswer('q9', this, false)">B) $35</button>
+            <button class="option-btn" onclick="checkAnswer('q9', this, false)">C) $40</button>
+            <button class="option-btn" onclick="checkAnswer('q9', this, true)">D) $36</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Find the discount: 20% of $45 is \(0.20 \times 45 = $9\). Subtract from original price: \($45 - $9 = $36\).</div>
+        </div>
+    </div>
+
+    <h2>Variations of Problem 13 (Cylinder Volume: \(V = \pi r^2 h\))</h2>
+
+    <div class="question-container" id="q10">
+        <div class="question-text">10. Find the volume of a cylinder with a radius of 4 cm and a height of 5 cm. (Use 3.14 for \(\pi\))</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q10', this, false)">A) 62.8 cm³</button>
+            <button class="option-btn" onclick="checkAnswer('q10', this, true)">B) 251.2 cm³</button>
+            <button class="option-btn" onclick="checkAnswer('q10', this, false)">C) 125.6 cm³</button>
+            <button class="option-btn" onclick="checkAnswer('q10', this, false)">D) 80 cm³</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> \(V = 3.14 \times (4)^2 \times 5 = 3.14 \times 16 \times 5 = 3.14 \times 80 = 251.2\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q11">
+        <div class="question-text">11. Find the volume of a cylinder with a radius of 2 in and a height of 12 in. (Use 3.14 for \(\pi\))</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q11', this, false)">A) 75.36 in³</button>
+            <button class="option-btn" onclick="checkAnswer('q11', this, false)">B) 48 in³</button>
+            <button class="option-btn" onclick="checkAnswer('q11', this, true)">C) 150.72 in³</button>
+            <button class="option-btn" onclick="checkAnswer('q11', this, false)">D) 301.44 in³</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> \(V = 3.14 \times (2)^2 \times 12 = 3.14 \times 4 \times 12 = 3.14 \times 48 = 150.72\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q12">
+        <div class="question-text">12. Find the volume of a cylinder with a radius of 5 m and a height of 8 m. (Use 3.14 for \(\pi\))</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q12', this, true)">A) 628 m³</button>
+            <button class="option-btn" onclick="checkAnswer('q12', this, false)">B) 125.6 m³</button>
+            <button class="option-btn" onclick="checkAnswer('q12', this, false)">C) 200 m³</button>
+            <button class="option-btn" onclick="checkAnswer('q12', this, false)">D) 314 m³</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> \(V = 3.14 \times (5)^2 \times 8 = 3.14 \times 25 \times 8 = 3.14 \times 200 = 628\).</div>
+        </div>
+    </div>
+
+    <h2>Variations of Problem 18 (Pounds to Ounces)</h2>
+
+    <div class="question-container" id="q13">
+        <div class="question-text">13. Convert 3.5 pounds to ounces.</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q13', this, false)">A) 48 oz</button>
+            <button class="option-btn" onclick="checkAnswer('q13', this, true)">B) 56 oz</button>
+            <button class="option-btn" onclick="checkAnswer('q13', this, false)">C) 64 oz</button>
+            <button class="option-btn" onclick="checkAnswer('q13', this, false)">D) 42 oz</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> There are 16 ounces in 1 pound. Multiply: \(3.5 \times 16 = 56\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q14">
+        <div class="question-text">14. Convert 2.25 pounds to ounces.</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q14', this, true)">A) 36 oz</button>
+            <button class="option-btn" onclick="checkAnswer('q14', this, false)">B) 32 oz</button>
+            <button class="option-btn" onclick="checkAnswer('q14', this, false)">C) 40 oz</button>
+            <button class="option-btn" onclick="checkAnswer('q14', this, false)">D) 28 oz</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Multiply by 16: \(2.25 \times 16 = 36\). (2 lbs is 32 oz, and 0.25 lb is 4 oz. \(32 + 4 = 36\)).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q15">
+        <div class="question-text">15. Convert 5.5 pounds to ounces.</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q15', this, false)">A) 80 oz</button>
+            <button class="option-btn" onclick="checkAnswer('q15', this, false)">B) 96 oz</button>
+            <button class="option-btn" onclick="checkAnswer('q15', this, true)">C) 88 oz</button>
+            <button class="option-btn" onclick="checkAnswer('q15', this, false)">D) 72 oz</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Multiply by 16: \(5.5 \times 16 = 88\).</div>
+        </div>
+    </div>
+
+    <h2>Variations of Problem 20 (Elapsed Time)</h2>
+
+    <div class="question-container" id="q16">
+        <div class="question-text">16. A train leaves at 1:15 PM and arrives at 4:30 PM. How long is the trip?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q16', this, false)">A) 2 hours and 45 minutes</button>
+            <button class="option-btn" onclick="checkAnswer('q16', this, true)">B) 3 hours and 15 minutes</button>
+            <button class="option-btn" onclick="checkAnswer('q16', this, false)">C) 3 hours and 30 minutes</button>
+            <button class="option-btn" onclick="checkAnswer('q16', this, false)">D) 4 hours and 15 minutes</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> From 1:15 to 4:15 is exactly 3 hours. From 4:15 to 4:30 is 15 minutes. Total: 3 hours and 15 minutes.</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q17">
+        <div class="question-text">17. A train leaves at 8:40 AM and arrives at 11:10 AM. How long is the trip?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q17', this, false)">A) 2 hours and 20 minutes</button>
+            <button class="option-btn" onclick="checkAnswer('q17', this, false)">B) 3 hours and 30 minutes</button>
+            <button class="option-btn" onclick="checkAnswer('q17', this, true)">C) 2 hours and 30 minutes</button>
+            <button class="option-btn" onclick="checkAnswer('q17', this, false)">D) 2 hours and 50 minutes</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> 8:40 AM to 9:00 AM is 20 minutes. 9:00 AM to 11:00 AM is 2 hours. 11:00 AM to 11:10 AM is 10 minutes. Total: 2 hours + 30 minutes.</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q18">
+        <div class="question-text">18. A train leaves at 10:55 AM and arrives at 2:20 PM. How long is the trip?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q18', this, false)">A) 4 hours and 25 minutes</button>
+            <button class="option-btn" onclick="checkAnswer('q18', this, true)">B) 3 hours and 25 minutes</button>
+            <button class="option-btn" onclick="checkAnswer('q18', this, false)">C) 3 hours and 15 minutes</button>
+            <button class="option-btn" onclick="checkAnswer('q18', this, false)">D) 4 hours</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> 10:55 AM to 11:00 AM is 5 minutes. 11:00 AM to 2:00 PM is 3 hours. 2:00 PM to 2:20 PM is 20 minutes. Total: 3 hours and 25 minutes.</div>
+        </div>
+    </div>
+
+    <h2>Variations of Problem 24 (Evaluating Expressions)</h2>
+
+    <div class="question-container" id="q19">
+        <div class="question-text">19. Evaluate \(2x^2 + 4x\) when \(x = 4\).</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q19', this, false)">A) 40</button>
+            <button class="option-btn" onclick="checkAnswer('q19', this, false)">B) 32</button>
+            <button class="option-btn" onclick="checkAnswer('q19', this, true)">C) 48</button>
+            <button class="option-btn" onclick="checkAnswer('q19', this, false)">D) 64</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Substitute 4 for x: \(2(4)^2 + 4(4)\). Exponents first: \(4^2 = 16\). Multiply: \(2(16) + 16 = 32 + 16 = 48\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q20">
+        <div class="question-text">20. Evaluate \(5x^2 - 3x\) when \(x = 2\).</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q20', this, false)">A) 34</button>
+            <button class="option-btn" onclick="checkAnswer('q20', this, true)">C) 14</button>
+            <button class="option-btn" onclick="checkAnswer('q20', this, false)">B) 4</button>
+            <button class="option-btn" onclick="checkAnswer('q20', this, false)">D) 16</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Substitute 2 for x: \(5(2)^2 - 3(2)\). Exponents first: \(2^2 = 4\). Multiply: \(5(4) - 6 = 20 - 6 = 14\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q21">
+        <div class="question-text">21. Evaluate \(x^2 - 7x\) when \(x = 5\).</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q21', this, false)">A) 10</button>
+            <button class="option-btn" onclick="checkAnswer('q21', this, false)">B) -20</button>
+            <button class="option-btn" onclick="checkAnswer('q21', this, false)">C) 0</button>
+            <button class="option-btn" onclick="checkAnswer('q21', this, true)">D) -10</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Substitute 5 for x: \((5)^2 - 7(5)\). Exponents first: \(25\). Multiply: \(25 - 35 = -10\).</div>
+        </div>
+    </div>
+
+    <h2>Variations of Problem 26 (Least Common Multiple)</h2>
+
+    <div class="question-container" id="q22">
+        <div class="question-text">22. What is the Least Common Multiple (LCM) of 8 and 12?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q22', this, false)">A) 4</button>
+            <button class="option-btn" onclick="checkAnswer('q22', this, true)">B) 24</button>
+            <button class="option-btn" onclick="checkAnswer('q22', this, false)">C) 48</button>
+            <button class="option-btn" onclick="checkAnswer('q22', this, false)">D) 96</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Multiples of 12: 12, 24, 36... Since 8 goes evenly into 24 (\(8 \times 3 = 24\)), 24 is the LCM. (Note: 4 is the Greatest Common Factor, not the LCM).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q23">
+        <div class="question-text">23. What is the Least Common Multiple (LCM) of 14 and 21?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q23', this, false)">A) 7</button>
+            <button class="option-btn" onclick="checkAnswer('q23', this, false)">B) 28</button>
+            <button class="option-btn" onclick="checkAnswer('q23', this, true)">C) 42</button>
+            <button class="option-btn" onclick="checkAnswer('q23', this, false)">D) 84</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Multiples of 21: 21, 42, 63... Since 14 goes evenly into 42 (\(14 \times 3 = 42\)), 42 is the LCM.</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q24">
+        <div class="question-text">24. What is the Least Common Multiple (LCM) of 9 and 15?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q24', this, false)">A) 3</button>
+            <button class="option-btn" onclick="checkAnswer('q24', this, true)">B) 45</button>
+            <button class="option-btn" onclick="checkAnswer('q24', this, false)">C) 90</button>
+            <button class="option-btn" onclick="checkAnswer('q24', this, false)">D) 135</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Multiples of 15: 15, 30, 45, 60... Since 9 goes evenly into 45 (\(9 \times 5 = 45\)), 45 is the LCM.</div>
+        </div>
+    </div>
+
+    <h2>Variations of Problem 30 (Probability)</h2>
+
+    <div class="question-container" id="q25">
+        <div class="question-text">25. If you roll a fair 6-sided die, what is the probability of getting an even number?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q25', this, false)">A) \(\frac{1}{6}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q25', this, false)">B) \(\frac{1}{3}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q25', this, true)">C) \(\frac{1}{2}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q25', this, false)">D) \(\frac{2}{3}\)</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> The even numbers on a die are 2, 4, and 6. That is 3 successful outcomes out of 6 possible outcomes. \(\frac{3}{6}\) simplifies to \(\frac{1}{2}\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q26">
+        <div class="question-text">26. If you draw one card from a standard 52-card deck, what is the probability of drawing a heart?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q26', this, true)">A) \(\frac{1}{4}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q26', this, false)">B) \(\frac{1}{13}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q26', this, false)">C) \(\frac{1}{52}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q26', this, false)">D) \(\frac{1}{2}\)</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> There are 4 suits in a deck (Hearts, Diamonds, Clubs, Spades), all equal in number. Therefore, 13 out of 52 cards are hearts. \(\frac{13}{52}\) simplifies to \(\frac{1}{4}\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q27">
+        <div class="question-text">27. If you flip a fair coin 3 times, what is the probability of getting heads all three times?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q27', this, false)">A) \(\frac{1}{3}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q27', this, false)">B) \(\frac{1}{6}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q27', this, true)">C) \(\frac{1}{8}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q27', this, false)">D) \(\frac{3}{8}\)</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> The probability of heads on each flip is \(\frac{1}{2}\). Multiply the independent probabilities: \(\frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{8}\).</div>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(questionId, buttonElement, isCorrect) {
+            // Find the container for this specific question
+            const container = document.getElementById(questionId);
+            
+            // Disable all buttons in this question to prevent multiple guesses
+            const buttons = container.querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.disabled = true);
+            
+            // Highlight the clicked button based on right/wrong
+            if (isCorrect) {
+                buttonElement.classList.add('correct-choice');
+            } else {
+                buttonElement.classList.add('wrong-choice');
+                
+                // Find and highlight the correct one so the user knows what it was
+                buttons.forEach(btn => {
+                    // We check if the button's onclick attribute contains 'true'
+                    if(btn.getAttribute('onclick').includes('true')) {
+                        btn.classList.add('correct-choice');
+                    }
+                });
+            }
+            
+            // Show the feedback section
+            const feedbackSection = container.querySelector('.feedback-section');
+            const feedbackStatus = container.querySelector('.feedback-status');
+            
+            feedbackSection.style.display = 'block';
+            
+            if (isCorrect) {
+                feedbackStatus.textContent = '✅ Correct!';
+                feedbackStatus.className = 'feedback-status status-correct';
+            } else {
+                feedbackStatus.textContent = '❌ Incorrect.';
+                feedbackStatus.className = 'feedback-status status-wrong';
+            }
+        }
+    </script>
+
+</body>
+</html>
