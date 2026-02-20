@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice: Part 2</title>
+    
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #9b59b6;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #8e44ad;
+            margin-top: 40px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        .question-container {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid #9b59b6;
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .option-btn {
+            background-color: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #d5dbdb;
+            border-color: #95a5a6;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .option-btn.correct-choice {
+            background-color: #d4efdf;
+            border-color: #27ae60;
+            color: #1e8449;
+            font-weight: bold;
+        }
+        .option-btn.wrong-choice {
+            background-color: #f5b7b1;
+            border-color: #c0392b;
+            color: #922b21;
+        }
+        .feedback-section {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+        }
+        .feedback-status {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .status-correct { color: #27ae60; }
+        .status-wrong { color: #c0392b; }
+    </style>
+</head>
+<body>
+
+    <h1>Math Practice: Part 2</h1>
+
+    <h2>Variations: Exponents</h2>
+
+    <div class="question-container" id="q1">
+        <div class="question-text">1. Evaluate the exponent: \(2^5\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q1', this, false)">A) 10</button>
+            <button class="option-btn" onclick="checkAnswer('q1', this, false)">B) 16</button>
+            <button class="option-btn" onclick="checkAnswer('q1', this, true)">C) 32</button>
+            <button class="option-btn" onclick="checkAnswer('q1', this, false)">D) 64</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> \(2^5\) means multiplying 2 by itself 5 times: \(2 \times 2 \times 2 \times 2 \times 2 = 32\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q2">
+        <div class="question-text">2. Evaluate the exponent: \(4^3\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q2', this, true)">A) 64</button>
+            <button class="option-btn" onclick="checkAnswer('q2', this, false)">B) 12</button>
+            <button class="option-btn" onclick="checkAnswer('q2', this, false)">C) 16</button>
+            <button class="option-btn" onclick="checkAnswer('q2', this, false)">D) 256</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> \(4^3\) means multiplying 4 by itself 3 times: \(4 \times 4 \times 4\). First, \(4 \times 4 = 16\). Then, \(16 \times 4 = 64\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q3">
+        <div class="question-text">3. Evaluate the exponent: \(5^3\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q3', this, false)">A) 15</button>
+            <button class="option-btn" onclick="checkAnswer('q3', this, true)">B) 125</button>
+            <button class="option-btn" onclick="checkAnswer('q3', this, false)">C) 25</button>
+            <button class="option-btn" onclick="checkAnswer('q3', this, false)">D) 625</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> \(5^3\) means multiplying 5 by itself 3 times: \(5 \times 5 \times 5\). First, \(5 \times 5 = 25\). Then, \(25 \times 5 = 125\).</div>
+        </div>
+    </div>
+
+    <h2>Variations: Area of a Trapezoid (\(A = \frac{1}{2}(b_1 + b_2)h\))</h2>
+
+    <div class="question-container" id="q4">
+        <div class="question-text">4. Find the area of a trapezoid with bases of 5 cm and 9 cm, and a height of 4 cm.</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q4', this, true)">A) 28 cm²</button>
+            <button class="option-btn" onclick="checkAnswer('q4', this, false)">B) 56 cm²</button>
+            <button class="option-btn" onclick="checkAnswer('q4', this, false)">C) 180 cm²</button>
+            <button class="option-btn" onclick="checkAnswer('q4', this, false)">D) 14 cm²</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Add the bases: \(5 + 9 = 14\). Multiply by height: \(14 \times 4 = 56\). Divide by 2: \(56 \div 2 = 28\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q5">
+        <div class="question-text">5. Find the area of a trapezoid with bases of 8 in and 12 in, and a height of 5 in.</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q5', this, false)">A) 100 in²</button>
+            <button class="option-btn" onclick="checkAnswer('q5', this, false)">B) 25 in²</button>
+            <button class="option-btn" onclick="checkAnswer('q5', this, true)">C) 50 in²</button>
+            <button class="option-btn" onclick="checkAnswer('q5', this, false)">D) 480 in²</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Add the bases: \(8 + 12 = 20\). Multiply by height: \(20 \times 5 = 100\). Divide by 2: \(100 \div 2 = 50\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q6">
+        <div class="question-text">6. Find the area of a trapezoid with bases of 6 m and 8 m, and a height of 6 m.</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q6', this, false)">A) 20 m²</button>
+            <button class="option-btn" onclick="checkAnswer('q6', this, true)">B) 42 m²</button>
+            <button class="option-btn" onclick="checkAnswer('q6', this, false)">C) 84 m²</button>
+            <button class="option-btn" onclick="checkAnswer('q6', this, false)">D) 48 m²</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Add the bases: \(6 + 8 = 14\). Multiply by height: \(14 \times 6 = 84\). Divide by 2: \(84 \div 2 = 42\).</div>
+        </div>
+    </div>
+
+    <h2>Variations: Order of Operations (PEMDAS)</h2>
+
+    <div class="question-container" id="q7">
+        <div class="question-text">7. Simplify: \(4 + 3 \times (10 - 6)^2\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q7', this, false)">A) 112</button>
+            <button class="option-btn" onclick="checkAnswer('q7', this, false)">B) 100</button>
+            <button class="option-btn" onclick="checkAnswer('q7', this, true)">C) 52</button>
+            <button class="option-btn" onclick="checkAnswer('q7', this, false)">D) 196</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Parentheses: \(10 - 6 = 4\). Exponents: \(4^2 = 16\). Multiply: \(3 \times 16 = 48\). Add: \(4 + 48 = 52\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q8">
+        <div class="question-text">8. Simplify: \(10 - 2 \times (5 - 2)^2\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q8', this, false)">A) 72</button>
+            <button class="option-btn" onclick="checkAnswer('q8', this, true)">B) -8</button>
+            <button class="option-btn" onclick="checkAnswer('q8', this, false)">C) -26</button>
+            <button class="option-btn" onclick="checkAnswer('q8', this, false)">D) 16</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Parentheses: \(5 - 2 = 3\). Exponents: \(3^2 = 9\). Multiply: \(2 \times 9 = 18\). Subtract: \(10 - 18 = -8\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q9">
+        <div class="question-text">9. Simplify: \(12 + (8 \div 2) \times 3^2\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q9', this, true)">A) 48</button>
+            <button class="option-btn" onclick="checkAnswer('q9', this, false)">B) 144</button>
+            <button class="option-btn" onclick="checkAnswer('q9', this, false)">C) 36</button>
+            <button class="option-btn" onclick="checkAnswer('q9', this, false)">D) 60</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Parentheses: \(8 \div 2 = 4\). Exponents: \(3^2 = 9\). Multiply: \(4 \times 9 = 36\). Add: \(12 + 36 = 48\).</div>
+        </div>
+    </div>
+
+    <h2>Variations: Scientific Notation</h2>
+
+    <div class="question-container" id="q10">
+        <div class="question-text">10. Write 0.0072 in scientific notation.</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q10', this, false)">A) \(7.2 \times 10^{-2}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q10', this, true)">B) \(7.2 \times 10^{-3}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q10', this, false)">C) \(72 \times 10^{-4}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q10', this, false)">D) \(7.2 \times 10^3\)</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Move the decimal point 3 places to the right to get 7.2. Because the original number is less than 1, the exponent is negative 3: \(7.2 \times 10^{-3}\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q11">
+        <div class="question-text">11. Write 0.000045 in scientific notation.</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q11', this, false)">A) \(4.5 \times 10^{-4}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q11', this, false)">B) \(45 \times 10^{-6}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q11', this, true)">C) \(4.5 \times 10^{-5}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q11', this, false)">D) \(4.5 \times 10^5\)</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Move the decimal point 5 places to the right to get 4.5. The exponent is negative 5: \(4.5 \times 10^{-5}\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q12">
+        <div class="question-text">12. Write 0.081 in scientific notation.</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q12', this, true)">A) \(8.1 \times 10^{-2}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q12', this, false)">B) \(8.1 \times 10^{-3}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q12', this, false)">C) \(81 \times 10^{-3}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q12', this, false)">D) \(8.1 \times 10^2\)</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Move the decimal point 2 places to the right to get 8.1. The exponent is negative 2: \(8.1 \times 10^{-2}\).</div>
+        </div>
+    </div>
+
+    <h2>Variations: Square Roots</h2>
+
+    <div class="question-container" id="q13">
+        <div class="question-text">13. Simplify: \(\sqrt{64} + \sqrt{25}\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q13', this, false)">A) \(\sqrt{89}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q13', this, true)">B) 13</button>
+            <button class="option-btn" onclick="checkAnswer('q13', this, false)">C) 18</button>
+            <button class="option-btn" onclick="checkAnswer('q13', this, false)">D) 40</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Find the square roots first. \(\sqrt{64} = 8\) and \(\sqrt{25} = 5\). Add them together: \(8 + 5 = 13\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q14">
+        <div class="question-text">14. Simplify: \(\sqrt{121} - \sqrt{49}\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q14', this, true)">A) 4</button>
+            <button class="option-btn" onclick="checkAnswer('q14', this, false)">B) \(\sqrt{72}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q14', this, false)">C) 6</button>
+            <button class="option-btn" onclick="checkAnswer('q14', this, false)">D) 18</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Find the square roots first. \(\sqrt{121} = 11\) and \(\sqrt{49} = 7\). Subtract: \(11 - 7 = 4\).</div>
+        </div>
+    </div>
+
+    <div class="question-container" id="q15">
+        <div class="question-text">15. Simplify: \(\sqrt{100} + \sqrt{16}\)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q15', this, false)">A) 26</button>
+            <button class="option-btn" onclick="checkAnswer('q15', this, false)">B) \(\sqrt{116}\)</button>
+            <button class="option-btn" onclick="checkAnswer('q15', this, false)">C) 12</button>
+            <button class="option-btn" onclick="checkAnswer('q15', this, true)">D) 14</button>
+        </div>
+        <div class="feedback-section">
+            <div class="feedback-status"></div>
+            <div class="explanation"><strong>Explanation:</strong> Find the square roots first. \(\sqrt{100} = 10\) and \(\sqrt{16} = 4\). Add them together: \(10 + 4 = 14\).</div>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(questionId, buttonElement, isCorrect) {
+            // Find the container for this specific question
+            const container = document.getElementById(questionId);
+            
+            // Disable all buttons in this question to prevent multiple guesses
+            const buttons = container.querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.disabled = true);
+            
+            // Highlight the clicked button based on right/wrong
+            if (isCorrect) {
+                buttonElement.classList.add('correct-choice');
+            } else {
+                buttonElement.classList.add('wrong-choice');
+                
+                // Find and highlight the correct one
+                buttons.forEach(btn => {
+                    if(btn.getAttribute('onclick').includes('true')) {
+                        btn.classList.add('correct-choice');
+                    }
+                });
+            }
+            
+            // Show the feedback section
+            const feedbackSection = container.querySelector('.feedback-section');
+            const feedbackStatus = container.querySelector('.feedback-status');
+            
+            feedbackSection.style.display = 'block';
+            
+            if (isCorrect) {
+                feedbackStatus.textContent = '✅ Correct!';
+                feedbackStatus.className = 'feedback-status status-correct';
+            } else {
+                feedbackStatus.textContent = '❌ Incorrect.';
+                feedbackStatus.className = 'feedback-status status-wrong';
+            }
+        }
+    </script>
+
+</body>
+</html>
