@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Review Test 16 - Solutions</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .problem-container {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .question {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border-left: 5px solid #3498db;
+            border-radius: 4px;
+        }
+        .correct-answer {
+            font-weight: bold;
+            color: #27ae60;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        canvas {
+            display: block;
+            margin: 15px 0;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Review Test 16</h1>
+
+    <div class="problem-container">
+        <div class="question">
+            1. Figure ABCD is a rectangle. Segment AB is 6 cm long, Segment BC is 8 cm long, and Segment AC is 10 cm long. What is the area of triangle ABC?
+            <canvas id="q1Canvas" width="300" height="200"></canvas>
+        </div>
+        <button id="btn-exp1" onclick="toggleExplanation('exp1')">Show Answer & Explanation</button>
+        <div id="exp1" class="explanation">
+            <p><strong>Explanation:</strong> To find the area of triangle ABC, we use the formula for the area of a right triangle: \( \text{Area} = \frac{1}{2} \times \text{base} \times \text{height} \).</p>
+            <p>The base (BC) is 8 cm and the height (AB) is 6 cm. The diagonal AC (10 cm) is not needed to find the area.</p>
+            <p>\( \text{Area} = \frac{1}{2} \times 8 \times 6 = \frac{1}{2} \times 48 = 24 \)</p>
+            <p><em>(Note: The student originally wrote 6 cm², which was a calculation error from \( 8 \times 6 \div 2 \).)</em></p>
+            <div class="correct-answer">Answer: 24 cm²</div>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">
+            2. One third of the dozen months have exactly 30 days. How many of the months do not have exactly 30 days?
+        </div>
+        <button id="btn-exp2" onclick="toggleExplanation('exp2')">Show Answer & Explanation</button>
+        <div id="exp2" class="explanation">
+            <p><strong>Explanation:</strong> A dozen is equal to 12. We first find how many months have exactly 30 days by calculating one third of 12:</p>
+            <p>\( \frac{1}{3} \times 12 = 4 \text{ months} \)</p>
+            <p>To find the months that <em>do not</em> have exactly 30 days, we subtract that number from the total:</p>
+            <p>\( 12 - 4 = 8 \text{ months} \)</p>
+            <div class="correct-answer">Answer: 8 months</div>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">
+            3. True or false: Some triangles are quadrilaterals.
+        </div>
+        <button id="btn-exp3" onclick="toggleExplanation('exp3')">Show Answer & Explanation</button>
+        <div id="exp3" class="explanation">
+            <p><strong>Explanation:</strong> A triangle, by definition, is a polygon with exactly 3 sides. A quadrilateral is a polygon with exactly 4 sides. Therefore, a shape cannot be both at the same time.</p>
+            <div class="correct-answer">Answer: False</div>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">
+            4. Compare using >, <, or = : \( \frac{4}{5} \bigcirc 0.7 \)
+        </div>
+        <button id="btn-exp4" onclick="toggleExplanation('exp4')">Show Answer & Explanation</button>
+        <div id="exp4" class="explanation">
+            <p><strong>Explanation:</strong> First, convert the fraction to a decimal to easily compare the two values.</p>
+            <p>\( \frac{4}{5} = \frac{8}{10} = 0.8 \)</p>
+            <p>Since \( 0.8 \) is greater than \( 0.7 \), we use the greater-than sign.</p>
+            <div class="correct-answer">Answer: ></div>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">
+            5. \( 4 \div 0.4 \)
+        </div>
+        <button id="btn-exp5" onclick="toggleExplanation('exp5')">Show Answer & Explanation</button>
+        <div id="exp5" class="explanation">
+            <p><strong>Explanation:</strong> When dividing by a decimal, it's easiest to multiply both the dividend and the divisor by 10 to clear the decimal point.</p>
+            <p>\( 4 \div 0.4 \rightarrow 40 \div 4 \)</p>
+            <p>\( 40 \div 4 = 10 \)</p>
+            <div class="correct-answer">Answer: 10</div>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">
+            6. \( 4.5 \div 10^2 \)
+        </div>
+        <button id="btn-exp6" onclick="toggleExplanation('exp6')">Show Answer & Explanation</button>
+        <div id="exp6" class="explanation">
+            <p><strong>Explanation:</strong> First, evaluate the exponent: \( 10^2 = 100 \).</p>
+            <p>The problem is now \( 4.5 \div 100 \).</p>
+            <p>Dividing by 100 moves the decimal point two places to the left.</p>
+            <p>\( 4.5 \rightarrow 0.45 \rightarrow 0.045 \)</p>
+            <div class="correct-answer">Answer: 0.045</div>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">
+            7. \( 2.8 \div \sqrt{64} \)
+        </div>
+        <button id="btn-exp7" onclick="toggleExplanation('exp7')">Show Answer & Explanation</button>
+        <div id="exp7" class="explanation">
+            <p><strong>Explanation:</strong> First, solve the square root: \( \sqrt{64} = 8 \).</p>
+            <p>The problem is now \( 2.8 \div 8 \).</p>
+            <p>Using long division, 8 goes into 28 three times with a remainder of 4. Bring down a zero to make 40. 8 goes into 40 exactly 5 times. Keep the decimal in place.</p>
+            <p>\( 2.8 \div 8 = 0.35 \)</p>
+            <div class="correct-answer">Answer: 0.35</div>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">
+            8. \( 3 \div 2 \frac{2}{3} \)
+        </div>
+        <button id="btn-exp8" onclick="toggleExplanation('exp8')">Show Answer & Explanation</button>
+        <div id="exp8" class="explanation">
+            <p><strong>Explanation:</strong> First, convert the mixed number to an improper fraction:</p>
+            <p>\( 2 \frac{2}{3} = \frac{(2 \times 3) + 2}{3} = \frac{8}{3} \)</p>
+            <p>Now, dividing by a fraction is the same as multiplying by its reciprocal:</p>
+            <p>\( \frac{3}{1} \div \frac{8}{3} = \frac{3}{1} \times \frac{3}{8} = \frac{9}{8} \)</p>
+            <p>Convert back to a mixed number: \( \frac{9}{8} = 1 \frac{1}{8} \).</p>
+            <div class="correct-answer">Answer: \( 1 \frac{1}{8} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">
+            9. \( 2 \frac{1}{2} + 4 \frac{3}{4} \)
+        </div>
+        <button id="btn-exp9" onclick="toggleExplanation('exp9')">Show Answer & Explanation</button>
+        <div id="exp9" class="explanation">
+            <p><strong>Explanation:</strong> Find a common denominator for the fractions. The lowest common multiple of 2 and 4 is 4.</p>
+            <p>\( 2 \frac{1}{2} = 2 \frac{2}{4} \)</p>
+            <p>Add the whole numbers and the fractions together:</p>
+            <p>\( 2 \frac{2}{4} + 4 \frac{3}{4} = 6 \frac{5}{4} \)</p>
+            <p>The fraction \( \frac{5}{4} \) is an improper fraction, which is \( 1 \frac{1}{4} \). Add this back to the whole number:</p>
+            <p>\( 6 + 1 \frac{1}{4} = 7 \frac{1}{4} \)</p>
+            <div class="correct-answer">Answer: \( 7 \frac{1}{4} \)</div>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">
+            10. \( 4 \frac{1}{4} - 3 \frac{3}{4} \)
+        </div>
+        <button id="btn-exp10" onclick="toggleExplanation('exp10')">Show Answer & Explanation</button>
+        <div id="exp10" class="explanation">
+            <p><strong>Explanation:</strong> Because \( \frac{1}{4} \) is smaller than \( \frac{3}{4} \), we need to borrow 1 from the whole number 4.</p>
+            <p>\( 4 \frac{1}{4} = 3 + \frac{4}{4} + \frac{1}{4} = 3 \frac{5}{4} \)</p>
+            <p>Now we can subtract:</p>
+            <p>\( 3 \frac{5}{4} - 3 \frac{3}{4} \)</p>
+            <p>Subtract the whole numbers: \( 3 - 3 = 0 \)</p>
+            <p>Subtract the fractions: \( \frac{5}{4} - \frac{3}{4} = \frac{2}{4} \)</p>
+            <p>Simplify the fraction:</p>
+            <p>\( \frac{2}{4} = \frac{1}{2} \)</p>
+            <div class="correct-answer">Answer: \( \frac{1}{2} \)</div>
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle explanation visibility
+        function toggleExplanation(id) {
+            var exp = document.getElementById(id);
+            var btn = document.getElementById('btn-' + id);
+            
+            if (exp.style.display === 'none' || exp.style.display === '') {
+                exp.style.display = 'block';
+                btn.textContent = 'Hide Answer & Explanation';
+            } else {
+                exp.style.display = 'none';
+                btn.textContent = 'Show Answer & Explanation';
+            }
+        }
+
+        // Draw the diagram for Question 1 using Canvas
+        window.onload = function() {
+            var canvas = document.getElementById('q1Canvas');
+            if (canvas.getContext) {
+                var ctx = canvas.getContext('2d');
+                
+                // Set line styles
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#333';
+                
+                // Draw Rectangle
+                ctx.beginPath();
+                ctx.rect(50, 40, 160, 100);
+                ctx.stroke();
+
+                // Draw Diagonal AC
+                ctx.beginPath();
+                ctx.moveTo(50, 140); // Point C
+                ctx.lineTo(210, 40); // Point A
+                ctx.stroke();
+
+                // Draw Text Labels
+                ctx.font = '16px "Segoe UI", sans-serif';
+                ctx.fillStyle = '#333';
+                
+                // Vertex labels
+                ctx.fillText('A', 215, 35);
+                ctx.fillText('B', 215, 155);
+                ctx.fillText('C', 35, 155);
+                ctx.fillText('D', 35, 35);
+
+                // Side measurements
+                ctx.fillText('8 cm', 110, 160);
+                ctx.fillText('6 cm', 220, 95);
+            }
+        };
+    </script>
+</body>
+</html>
