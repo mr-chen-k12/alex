@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice - 30 Questions</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .problem-container {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .question {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border-left: 5px solid #3498db;
+            border-radius: 4px;
+        }
+        .correct-answer {
+            font-weight: bold;
+            color: #27ae60;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Math Practice Set</h1>
+    <h2>30 Questions</h2>
+
+    <div id="questions-container"></div>
+
+    <script>
+        // Array holding all 30 questions, explanations, and answers
+        const questionsData = [
+            // Round 1
+            {
+                q: "1. Figure PQRS is a rectangle. Segment PQ is 12 cm long and Segment QR is 5 cm long. A diagonal connects P and R. What is the area of triangle PQR?",
+                exp: "To find the area of triangle PQR, use the area formula for a right triangle: \\( \\text{Area} = \\frac{1}{2} \\times \\text{base} \\times \\text{height} \\). The base is 12 and the height is 5. \\( \\frac{1}{2} \\times 12 \\times 5 = 30 \\).",
+                ans: "30 cm²"
+            },
+            {
+                q: "2. One quarter of the 24 hours in a day are spent sleeping. How many hours are NOT spent sleeping?",
+                exp: "First, find one quarter of 24: \\( \\frac{1}{4} \\times 24 = 6 \\) hours sleeping. To find the hours not sleeping, subtract: \\( 24 - 6 = 18 \\) hours.",
+                ans: "18 hours"
+            },
+            {
+                q: "3. True or false: All squares are rectangles.",
+                exp: "A rectangle is a quadrilateral with four right angles. A square also has four right angles, meaning a square fits the exact definition of a rectangle (with the added rule of equal sides).",
+                ans: "True"
+            },
+            {
+                q: "4. Compare using >, <, or = : \\( \\frac{3}{4} \\bigcirc 0.8 \\)",
+                exp: "Convert the fraction to a decimal. \\( \\frac{3}{4} = 0.75 \\). Because 0.75 is less than 0.8, we use the less-than sign.",
+                ans: "<"
+            },
+            {
+                q: "5. \\( 6 \\div 0.3 \\)",
+                exp: "Multiply both numbers by 10 to clear the decimal. \\( 6 \\div 0.3 \\rightarrow 60 \\div 3 \\). Now, \\( 60 \\div 3 = 20 \\).",
+                ans: "20"
+            },
+            {
+                q: "6. \\( 7.2 \\div 10^3 \\)",
+                exp: "\\( 10^3 = 1000 \\). Dividing by 1000 moves the decimal point three places to the left. \\( 7.2 \\rightarrow 0.0072 \\).",
+                ans: "0.0072"
+            },
+            {
+                q: "7. \\( 4.5 \\div \\sqrt{81} \\)",
+                exp: "The square root of 81 is 9. The problem becomes \\( 4.5 \\div 9 \\). 9 goes into 45 five times, so it goes into 4.5 exactly 0.5 times.",
+                ans: "0.5"
+            },
+            {
+                q: "8. \\( 4 \\div 1 \\frac{1}{3} \\)",
+                exp: "Convert the mixed number to an improper fraction: \\( 1 \\frac{1}{3} = \\frac{4}{3} \\). Change division to multiplying by the reciprocal: \\( \\frac{4}{1} \\times \\frac{3}{4} = \\frac{12}{4} = 3 \\).",
+                ans: "3"
+            },
+            {
+                q: "9. \\( 3 \\frac{1}{4} + 2 \\frac{5}{8} \\)",
+                exp: "Find a common denominator, which is 8. \\( 3 \\frac{1}{4} = 3 \\frac{2}{8} \\). Add them: \\( 3 \\frac{2}{8} + 2 \\frac{5}{8} = 5 \\frac{7}{8} \\).",
+                ans: "\\( 5 \\frac{7}{8} \\)"
+            },
+            {
+                q: "10. \\( 5 \\frac{1}{3} - 2 \\frac{2}{3} \\)",
+                exp: "Because \\( \\frac{1}{3} \\) is less than \\( \\frac{2}{3} \\), borrow 1 from the 5. \\( 5 \\frac{1}{3} = 4 \\frac{4}{3} \\). Subtract: \\( 4 \\frac{4}{3} - 2 \\frac{2}{3} = 2 \\frac{2}{3} \\).",
+                ans: "\\( 2 \\frac{2}{3} \\)"
+            },
+            // Round 2
+            {
+                q: "11. A right triangle has a base of 14 inches and a height of 7 inches. What is the area?",
+                exp: "Use the formula \\( \\text{Area} = \\frac{1}{2} \\times \\text{base} \\times \\text{height} \\). \\( \\frac{1}{2} \\times 14 \\times 7 = 7 \\times 7 = 49 \\).",
+                ans: "49 in²"
+            },
+            {
+                q: "12. Two fifths of a collection of 50 coins are pennies. How many of the coins are NOT pennies?",
+                exp: "First, find two fifths of 50: \\( \\frac{2}{5} \\times 50 = 20 \\) pennies. Subtract from the total to find the non-pennies: \\( 50 - 20 = 30 \\) coins.",
+                ans: "30 coins"
+            },
+            {
+                q: "13. True or false: A circle is a polygon.",
+                exp: "A polygon is defined as a closed, two-dimensional shape formed entirely by straight line segments. A circle is curved, so it is not a polygon.",
+                ans: "False"
+            },
+            {
+                q: "14. Compare using >, <, or = : \\( \\frac{1}{2} \\bigcirc 0.45 \\)",
+                exp: "Convert the fraction to a decimal. \\( \\frac{1}{2} = 0.50 \\). 0.50 is greater than 0.45, so use the greater-than sign.",
+                ans: ">"
+            },
+            {
+                q: "15. \\( 12 \\div 0.4 \\)",
+                exp: "Multiply both by 10 to remove the decimal. \\( 120 \\div 4 = 30 \\).",
+                ans: "30"
+            },
+            {
+                q: "16. \\( 85.1 \\div 10^2 \\)",
+                exp: "\\( 10^2 = 100 \\). Dividing by 100 moves the decimal point two places to the left. \\( 85.1 \\rightarrow 0.851 \\).",
+                ans: "0.851"
+            },
+            {
+                q: "17. \\( 3.2 \\div \\sqrt{16} \\)",
+                exp: "The square root of 16 is 4. The problem becomes \\( 3.2 \\div 4 \\). 4 goes into 32 eight times, so it goes into 3.2 exactly 0.8 times.",
+                ans: "0.8"
+            },
+            {
+                q: "18. \\( 5 \\div 2 \\frac{1}{2} \\)",
+                exp: "Convert the mixed number to an improper fraction: \\( 2 \\frac{1}{2} = \\frac{5}{2} \\). Multiply by the reciprocal: \\( \\frac{5}{1} \\times \\frac{2}{5} = \\frac{10}{5} = 2 \\).",
+                ans: "2"
+            },
+            {
+                q: "19. \\( 1 \\frac{5}{6} + 3 \\frac{1}{3} \\)",
+                exp: "Find a common denominator (6). \\( 3 \\frac{1}{3} = 3 \\frac{2}{6} \\). Add them: \\( 1 \\frac{5}{6} + 3 \\frac{2}{6} = 4 \\frac{7}{6} \\). Convert the improper fraction: \\( 4 + 1 \\frac{1}{6} = 5 \\frac{1}{6} \\).",
+                ans: "\\( 5 \\frac{1}{6} \\)"
+            },
+            {
+                q: "20. \\( 7 \\frac{1}{5} - 4 \\frac{4}{5} \\)",
+                exp: "Borrow 1 from the 7. \\( 7 \\frac{1}{5} = 6 \\frac{6}{5} \\). Subtract: \\( 6 \\frac{6}{5} - 4 \\frac{4}{5} = 2 \\frac{2}{5} \\).",
+                ans: "\\( 2 \\frac{2}{5} \\)"
+            },
+            // Round 3
+            {
+                q: "21. A right triangle forms half of a square with side lengths of 8 cm. What is the area of the triangle?",
+                exp: "The base and height of the triangle are both 8. \\( \\text{Area} = \\frac{1}{2} \\times 8 \\times 8 = 32 \\).",
+                ans: "32 cm²"
+            },
+            {
+                q: "22. Three tenths of a 60-minute hour is spent watching commercials. How many minutes are NOT commercials?",
+                exp: "Find three tenths of 60: \\( \\frac{3}{10} \\times 60 = 18 \\) minutes. Subtract from the total: \\( 60 - 18 = 42 \\) minutes.",
+                ans: "42 minutes"
+            },
+            {
+                q: "23. True or false: Parallel lines intersect at exactly one point.",
+                exp: "By definition, parallel lines stay the same distance apart forever and never intersect.",
+                ans: "False"
+            },
+            {
+                q: "24. Compare using >, <, or = : \\( \\frac{5}{8} \\bigcirc 0.625 \\)",
+                exp: "Convert the fraction to a decimal. \\( 5 \\div 8 = 0.625 \\). The two values are exactly the same.",
+                ans: "="
+            },
+            {
+                q: "25. \\( 21 \\div 0.07 \\)",
+                exp: "Multiply both by 100 to clear the decimal point. \\( 2100 \\div 7 = 300 \\).",
+                ans: "300"
+            },
+            {
+                q: "26. \\( 0.4 \\div 10^1 \\)",
+                exp: "\\( 10^1 = 10 \\). Dividing by 10 moves the decimal point one place to the left. \\( 0.4 \\rightarrow 0.04 \\).",
+                ans: "0.04"
+            },
+            {
+                q: "27. \\( 5.4 \\div \\sqrt{81} \\)",
+                exp: "The square root of 81 is 9. The problem becomes \\( 5.4 \\div 9 \\). 9 goes into 54 six times, so it goes into 5.4 exactly 0.6 times.",
+                ans: "0.6"
+            },
+            {
+                q: "28. \\( 6 \\div 1 \\frac{1}{5} \\)",
+                exp: "Convert to an improper fraction: \\( 1 \\frac{1}{5} = \\frac{6}{5} \\). Multiply by the reciprocal: \\( \\frac{6}{1} \\times \\frac{5}{6} = \\frac{30}{6} = 5 \\).",
+                ans: "5"
+            },
+            {
+                q: "29. \\( 4 \\frac{2}{5} + 2 \\frac{7}{10} \\)",
+                exp: "Find a common denominator (10). \\( 4 \\frac{2}{5} = 4 \\frac{4}{10} \\). Add them: \\( 4 \\frac{4}{10} + 2 \\frac{7}{10} = 6 \\frac{11}{10} \\). Convert the improper fraction: \\( 6 + 1 \\frac{1}{10} = 7 \\frac{1}{10} \\).",
+                ans: "\\( 7 \\frac{1}{10} \\)"
+            },
+            {
+                q: "30. \\( 9 \\frac{1}{8} - 3 \\frac{5}{8} \\)",
+                exp: "Borrow 1 from the 9. \\( 9 \\frac{1}{8} = 8 \\frac{9}{8} \\). Subtract: \\( 8 \\frac{9}{8} - 3 \\frac{5}{8} = 5 \\frac{4}{8} \\). Simplify the fraction to \\( 5 \\frac{1}{2} \\).",
+                ans: "\\( 5 \\frac{1}{2} \\)"
+            }
+        ];
+
+        // Function to toggle explanation visibility
+        function toggleExplanation(id) {
+            var exp = document.getElementById('exp' + id);
+            var btn = document.getElementById('btn' + id);
+            
+            if (exp.style.display === 'none' || exp.style.display === '') {
+                exp.style.display = 'block';
+                btn.textContent = 'Hide Answer & Explanation';
+            } else {
+                exp.style.display = 'none';
+                btn.textContent = 'Show Answer & Explanation';
+            }
+        }
+
+        // Dynamically create the HTML for all 30 questions
+        const container = document.getElementById('questions-container');
+        
+        questionsData.forEach((item, index) => {
+            const qNum = index + 1;
+            
+            const problemDiv = document.createElement('div');
+            problemDiv.className = 'problem-container';
+            
+            problemDiv.innerHTML = `
+                <div class="question">${item.q}</div>
+                <button id="btn${qNum}" onclick="toggleExplanation(${qNum})">Show Answer & Explanation</button>
+                <div id="exp${qNum}" class="explanation">
+                    <p><strong>Explanation:</strong> ${item.exp}</p>
+                    <div class="correct-answer">Answer: ${item.ans}</div>
+                </div>
+            `;
+            
+            container.appendChild(problemDiv);
+        });
+
+        // Inform MathJax to re-process the newly injected equations
+        window.addEventListener('load', function () {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        });
+    </script>
+</body>
+</html>
