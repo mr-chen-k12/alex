@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice - Set 2</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .problem-container {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .question {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border-left: 5px solid #3498db;
+            border-radius: 4px;
+        }
+        .correct-answer {
+            font-weight: bold;
+            color: #27ae60;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Math Practice Set 2</h1>
+    <h2>30 New Questions</h2>
+
+    <div id="questions-container"></div>
+
+    <script>
+        // Array holding all 30 questions, explanations, and answers
+        const questionsData = [
+            // Round 1
+            {
+                q: "1. Figure EFGH is a rectangle. Segment EF is 10 cm long and Segment FG is 4 cm long. What is the area of triangle EFG?",
+                exp: "Use the formula for the area of a right triangle: \\( \\text{Area} = \\frac{1}{2} \\times \\text{base} \\times \\text{height} \\). The base is 10 and the height is 4. \\( \\frac{1}{2} \\times 10 \\times 4 = 20 \\).",
+                ans: "20 cm²"
+            },
+            {
+                q: "2. One fifth of a class of 40 students take the bus to school. How many students do NOT take the bus?",
+                exp: "First, find one fifth of 40: \\( \\frac{1}{5} \\times 40 = 8 \\) students. To find the students who do not take the bus, subtract from the total: \\( 40 - 8 = 32 \\) students.",
+                ans: "32 students"
+            },
+            {
+                q: "3. True or false: An equilateral triangle can also be a right triangle.",
+                exp: "An equilateral triangle has three equal angles of 60 degrees each. A right triangle must have one 90-degree angle. Therefore, a triangle cannot be both.",
+                ans: "False"
+            },
+            {
+                q: "4. Compare using >, <, or = : \\( \\frac{2}{5} \\bigcirc 0.5 \\)",
+                exp: "Convert the fraction to a decimal. \\( \\frac{2}{5} = \\frac{4}{10} = 0.4 \\). Because 0.4 is less than 0.5, we use the less-than sign.",
+                ans: "<"
+            },
+            {
+                q: "5. \\( 8 \\div 0.2 \\)",
+                exp: "Multiply both the dividend and divisor by 10 to clear the decimal. \\( 8 \\div 0.2 \\rightarrow 80 \\div 2 \\). Now, \\( 80 \\div 2 = 40 \\).",
+                ans: "40"
+            },
+            {
+                q: "6. \\( 5.6 \\div 10^2 \\)",
+                exp: "\\( 10^2 = 100 \\). Dividing by 100 moves the decimal point two places to the left. \\( 5.6 \\rightarrow 0.056 \\).",
+                ans: "0.056"
+            },
+            {
+                q: "7. \\( 3.6 \\div \\sqrt{36} \\)",
+                exp: "The square root of 36 is 6. The problem becomes \\( 3.6 \\div 6 \\). 6 goes into 36 six times, so it goes into 3.6 exactly 0.6 times.",
+                ans: "0.6"
+            },
+            {
+                q: "8. \\( 5 \\div 1 \\frac{1}{4} \\)",
+                exp: "Convert the mixed number to an improper fraction: \\( 1 \\frac{1}{4} = \\frac{5}{4} \\). Change division to multiplying by the reciprocal: \\( \\frac{5}{1} \\times \\frac{4}{5} = \\frac{20}{5} = 4 \\).",
+                ans: "4"
+            },
+            {
+                q: "9. \\( 1 \\frac{1}{2} + 2 \\frac{2}{3} \\)",
+                exp: "Find a common denominator, which is 6. \\( 1 \\frac{1}{2} = 1 \\frac{3}{6} \\) and \\( 2 \\frac{2}{3} = 2 \\frac{4}{6} \\). Add them: \\( 1 \\frac{3}{6} + 2 \\frac{4}{6} = 3 \\frac{7}{6} \\). Convert the improper fraction: \\( 3 + 1 \\frac{1}{6} = 4 \\frac{1}{6} \\).",
+                ans: "\\( 4 \\frac{1}{6} \\)"
+            },
+            {
+                q: "10. \\( 5 \\frac{1}{3} - 2 \\frac{2}{3} \\)",
+                exp: "Because \\( \\frac{1}{3} \\) is less than \\( \\frac{2}{3} \\), borrow 1 from the 5. \\( 5 \\frac{1}{3} = 4 \\frac{4}{3} \\). Subtract: \\( 4 \\frac{4}{3} - 2 \\frac{2}{3} = 2 \\frac{2}{3} \\).",
+                ans: "\\( 2 \\frac{2}{3} \\)"
+            },
+            // Round 2
+            {
+                q: "11. A right triangle has a base of 16 meters and a height of 5 meters. What is the area?",
+                exp: "Use the formula \\( \\text{Area} = \\frac{1}{2} \\times \\text{base} \\times \\text{height} \\). \\( \\frac{1}{2} \\times 16 \\times 5 = 8 \\times 5 = 40 \\).",
+                ans: "40 m²"
+            },
+            {
+                q: "12. Three eighths of a basket of 64 apples are red. How many apples are NOT red?",
+                exp: "First, find three eighths of 64: \\( \\frac{3}{8} \\times 64 = 24 \\) red apples. Subtract from the total to find the non-red apples: \\( 64 - 24 = 40 \\) apples.",
+                ans: "40 apples"
+            },
+            {
+                q: "13. True or false: All rhombuses are squares.",
+                exp: "A square must have four equal sides AND four right angles. A rhombus has four equal sides, but it does not need to have right angles. Therefore, not all rhombuses are squares.",
+                ans: "False"
+            },
+            {
+                q: "14. Compare using >, <, or = : \\( \\frac{7}{10} \\bigcirc 0.65 \\)",
+                exp: "Convert the fraction to a decimal. \\( \\frac{7}{10} = 0.70 \\). 0.70 is greater than 0.65, so use the greater-than sign.",
+                ans: ">"
+            },
+            {
+                q: "15. \\( 15 \\div 0.5 \\)",
+                exp: "Multiply both by 10 to remove the decimal. \\( 150 \\div 5 = 30 \\).",
+                ans: "30"
+            },
+            {
+                q: "16. \\( 92.4 \\div 10^3 \\)",
+                exp: "\\( 10^3 = 1000 \\). Dividing by 1000 moves the decimal point three places to the left. \\( 92.4 \\rightarrow 0.0924 \\).",
+                ans: "0.0924"
+            },
+            {
+                q: "17. \\( 4.9 \\div \\sqrt{49} \\)",
+                exp: "The square root of 49 is 7. The problem becomes \\( 4.9 \\div 7 \\). 7 goes into 49 seven times, so it goes into 4.9 exactly 0.7 times.",
+                ans: "0.7"
+            },
+            {
+                q: "18. \\( 7 \\div 2 \\frac{1}{3} \\)",
+                exp: "Convert the mixed number to an improper fraction: \\( 2 \\frac{1}{3} = \\frac{7}{3} \\). Multiply by the reciprocal: \\( \\frac{7}{1} \\times \\frac{3}{7} = \\frac{21}{7} = 3 \\).",
+                ans: "3"
+            },
+            {
+                q: "19. \\( 3 \\frac{3}{4} + 1 \\frac{1}{2} \\)",
+                exp: "Find a common denominator (4). \\( 1 \\frac{1}{2} = 1 \\frac{2}{4} \\). Add them: \\( 3 \\frac{3}{4} + 1 \\frac{2}{4} = 4 \\frac{5}{4} \\). Convert the improper fraction: \\( 4 + 1 \\frac{1}{4} = 5 \\frac{1}{4} \\).",
+                ans: "\\( 5 \\frac{1}{4} \\)"
+            },
+            {
+                q: "20. \\( 8 \\frac{1}{4} - 3 \\frac{3}{4} \\)",
+                exp: "Borrow 1 from the 8. \\( 8 \\frac{1}{4} = 7 \\frac{5}{4} \\). Subtract: \\( 7 \\frac{5}{4} - 3 \\frac{3}{4} = 4 \\frac{2}{4} \\). Simplify the fraction to \\( 4 \\frac{1}{2} \\).",
+                ans: "\\( 4 \\frac{1}{2} \\)"
+            },
+            // Round 3
+            {
+                q: "21. Figure WXYZ is a rectangle. Segment WX is 20 in long and XY is 6 in long. What is the area of triangle WXY?",
+                exp: "The base is 20 and the height is 6. \\( \\text{Area} = \\frac{1}{2} \\times 20 \\times 6 = 10 \\times 6 = 60 \\).",
+                ans: "60 in²"
+            },
+            {
+                q: "22. Two thirds of a dealership's 36 cars are sedans. How many cars are NOT sedans?",
+                exp: "Find two thirds of 36: \\( \\frac{2}{3} \\times 36 = 24 \\) sedans. Subtract from the total: \\( 36 - 24 = 12 \\) cars.",
+                ans: "12 cars"
+            },
+            {
+                q: "23. True or false: A trapezoid is a quadrilateral.",
+                exp: "A quadrilateral is any polygon with exactly four sides. A trapezoid has four sides, making it a quadrilateral.",
+                ans: "True"
+            },
+            {
+                q: "24. Compare using >, <, or = : \\( \\frac{1}{4} \\bigcirc 0.25 \\)",
+                exp: "Convert the fraction to a decimal. \\( 1 \\div 4 = 0.25 \\). The two values are exactly equal.",
+                ans: "="
+            },
+            {
+                q: "25. \\( 9 \\div 0.03 \\)",
+                exp: "Multiply both by 100 to clear the decimal point. \\( 900 \\div 3 = 300 \\).",
+                ans: "300"
+            },
+            {
+                q: "26. \\( 0.8 \\div 10^1 \\)",
+                exp: "\\( 10^1 = 10 \\). Dividing by 10 moves the decimal point one place to the left. \\( 0.8 \\rightarrow 0.08 \\).",
+                ans: "0.08"
+            },
+            {
+                q: "27. \\( 1.2 \\div \\sqrt{144} \\)",
+                exp: "The square root of 144 is 12. The problem becomes \\( 1.2 \\div 12 \\). 12 goes into 12 one time, so it goes into 1.2 exactly 0.1 times.",
+                ans: "0.1"
+            },
+            {
+                q: "28. \\( 10 \\div 3 \\frac{1}{3} \\)",
+                exp: "Convert to an improper fraction: \\( 3 \\frac{1}{3} = \\frac{10}{3} \\). Multiply by the reciprocal: \\( \\frac{10}{1} \\times \\frac{3}{10} = \\frac{30}{10} = 3 \\).",
+                ans: "3"
+            },
+            {
+                q: "29. \\( 2 \\frac{4}{5} + 3 \\frac{1}{2} \\)",
+                exp: "Find a common denominator (10). \\( 2 \\frac{4}{5} = 2 \\frac{8}{10} \\) and \\( 3 \\frac{1}{2} = 3 \\frac{5}{10} \\). Add them: \\( 2 \\frac{8}{10} + 3 \\frac{5}{10} = 5 \\frac{13}{10} \\). Convert the improper fraction: \\( 5 + 1 \\frac{3}{10} = 6 \\frac{3}{10} \\).",
+                ans: "\\( 6 \\frac{3}{10} \\)"
+            },
+            {
+                q: "30. \\( 6 \\frac{2}{5} - 4 \\frac{4}{5} \\)",
+                exp: "Borrow 1 from the 6. \\( 6 \\frac{2}{5} = 5 \\frac{7}{5} \\). Subtract: \\( 5 \\frac{7}{5} - 4 \\frac{4}{5} = 1 \\frac{3}{5} \\).",
+                ans: "\\( 1 \\frac{3}{5} \\)"
+            }
+        ];
+
+        // Function to toggle explanation visibility
+        function toggleExplanation(id) {
+            var exp = document.getElementById('exp' + id);
+            var btn = document.getElementById('btn' + id);
+            
+            if (exp.style.display === 'none' || exp.style.display === '') {
+                exp.style.display = 'block';
+                btn.textContent = 'Hide Answer & Explanation';
+            } else {
+                exp.style.display = 'none';
+                btn.textContent = 'Show Answer & Explanation';
+            }
+        }
+
+        // Dynamically create the HTML for all 30 questions
+        const container = document.getElementById('questions-container');
+        
+        questionsData.forEach((item, index) => {
+            const qNum = index + 1;
+            
+            const problemDiv = document.createElement('div');
+            problemDiv.className = 'problem-container';
+            
+            problemDiv.innerHTML = `
+                <div class="question">${item.q}</div>
+                <button id="btn${qNum}" onclick="toggleExplanation(${qNum})">Show Answer & Explanation</button>
+                <div id="exp${qNum}" class="explanation">
+                    <p><strong>Explanation:</strong> ${item.exp}</p>
+                    <div class="correct-answer">Answer: ${item.ans}</div>
+                </div>
+            `;
+            
+            container.appendChild(problemDiv);
+        });
+
+        // Inform MathJax to re-process the newly injected equations
+        window.addEventListener('load', function () {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        });
+    </script>
+</body>
+</html>
