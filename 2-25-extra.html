@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Math Quiz</title>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px; /* Space for fixed scoreboard */
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        #scoreboard-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .topic-header {
+            background-color: #ecf0f1;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-top: 40px;
+            border-left: 5px solid #3498db;
+            color: #2980b9;
+        }
+        .question-card {
+            background-color: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .question-text {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .choices-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .choice-btn {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .choice-btn:hover:not(:disabled) {
+            background-color: #e2e6ea;
+            border-color: #dae0e5;
+        }
+        .choice-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+        .choice-btn.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+            font-weight: bold;
+        }
+        .choice-btn.wrong {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+            text-decoration: line-through;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        .feedback {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .feedback.correct { color: #28a745; }
+        .feedback.wrong { color: #dc3545; }
+        
+        @media (max-width: 600px) {
+            .choices-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scoreboard-container">
+        Score: <span id="score">0</span> / 15
+    </div>
+
+    <h1>Math Skill Builder</h1>
+    <p style="text-align:center;">Test your knowledge on Proportions, Mixed Numbers, Decimals, Volume, and Elapsed Time.</p>
+
+    <div id="quiz-container"></div>
+
+    <script>
+        const quizData = [
+            // Proportions (Based on Problem 9)
+            {
+                topic: "Proportions & Cross Products",
+                question: "1. Do the ratios $\\frac{4}{7}$ and $\\frac{12}{21}$ form a proportion?",
+                choices: [
+                    { text: "Yes", correct: true },
+                    { text: "No", correct: false }
+                ],
+                explanation: "Using cross products: $4 \\times 21 = 84$ and $7 \\times 12 = 84$. Since $84 = 84$, they form a proportion."
+            },
+            {
+                topic: "Proportions & Cross Products",
+                question: "2. Do the ratios $\\frac{3}{8}$ and $\\frac{5}{12}$ form a proportion?",
+                choices: [
+                    { text: "Yes", correct: false },
+                    { text: "No", correct: true }
+                ],
+                explanation: "Using cross products: $3 \\times 12 = 36$ and $8 \\times 5 = 40$. Since 36 is not equal to 40, they do not form a proportion."
+            },
+            {
+                topic: "Proportions & Cross Products",
+                question: "3. Use cross products to find the missing term: $\\frac{6}{9} = \\frac{x}{15}$",
+                choices: [
+                    { text: "10", correct: true },
+                    { text: "12", correct: false },
+                    { text: "8", correct: false },
+                    { text: "11", correct: false }
+                ],
+                explanation: "Cross multiply: $9x = 6 \\times 15$. So, $9x = 90$. Dividing both sides by 9 gives $x = 10$."
+            },
+
+            // Mixed Numbers (Based on Problem 15)
+            {
+                topic: "Equations with Mixed Numbers",
+                question: "4. Find the unknown number: $1\\frac{1}{3} + x = 4\\frac{1}{6}$",
+                choices: [
+                    { text: "$2\\frac{5}{6}$", correct: true },
+                    { text: "$3\\frac{1}{3}$", correct: false },
+                    { text: "$2\\frac{1}{2}$", correct: false },
+                    { text: "$3\\frac{5}{6}$", correct: false }
+                ],
+                explanation: "Subtract $1\\frac{1}{3}$ from $4\\frac{1}{6}$. Find a common denominator (6). $4\\frac{1}{6} - 1\\frac{2}{6}$. Borrow 1 from the 4: $3\\frac{7}{6} - 1\\frac{2}{6} = 2\\frac{5}{6}$."
+            },
+            {
+                topic: "Equations with Mixed Numbers",
+                question: "5. Find the unknown number: $y - 2\\frac{3}{4} = 5\\frac{1}{2}$",
+                choices: [
+                    { text: "$7\\frac{1}{4}$", correct: false },
+                    { text: "$8\\frac{1}{4}$", correct: true },
+                    { text: "$8\\frac{1}{2}$", correct: false },
+                    { text: "$2\\frac{3}{4}$", correct: false }
+                ],
+                explanation: "Add $2\\frac{3}{4}$ to $5\\frac{1}{2}$. Common denominator is 4. $5\\frac{2}{4} + 2\\frac{3}{4} = 7\\frac{5}{4}$. Since $\\frac{5}{4} = 1\\frac{1}{4}$, the sum is $7 + 1\\frac{1}{4} = 8\\frac{1}{4}$."
+            },
+            {
+                topic: "Equations with Mixed Numbers",
+                question: "6. Find the unknown number: $3\\frac{2}{5} + z = 7\\frac{1}{10}$",
+                choices: [
+                    { text: "$4\\frac{1}{5}$", correct: false },
+                    { text: "$3\\frac{7}{10}$", correct: true },
+                    { text: "$4\\frac{3}{10}$", correct: false },
+                    { text: "$3\\frac{9}{10}$", correct: false }
+                ],
+                explanation: "Subtract $3\\frac{2}{5}$ from $7\\frac{1}{10}$. Common denominator is 10. $7\\frac{1}{10} - 3\\frac{4}{10}$. Borrow 1: $6\\frac{11}{10} - 3\\frac{4}{10} = 3\\frac{7}{10}$."
+            },
+
+            // Multiplying Decimals (Based on Problem 13)
+            {
+                topic: "Multiplying Decimals",
+                question: "7. Evaluate: $(4.5)(2.2)$",
+                choices: [
+                    { text: "9.9", correct: true },
+                    { text: "9.09", correct: false },
+                    { text: "9.25", correct: false },
+                    { text: "8.9", correct: false }
+                ],
+                explanation: "Multiply as whole numbers: $45 \\times 22 = 990$. There are 2 total decimal places in the factors (one in 4.5, one in 2.2), so move the decimal 2 places to the left: 9.90 or 9.9."
+            },
+            {
+                topic: "Multiplying Decimals",
+                question: "8. Evaluate: $(7.15)(0.8)$",
+                choices: [
+                    { text: "57.2", correct: false },
+                    { text: "0.572", correct: false },
+                    { text: "5.72", correct: true },
+                    { text: "5.62", correct: false }
+                ],
+                explanation: "Multiply $715 \\times 8 = 5720$. There are 3 total decimal places in the factors (two in 7.15, one in 0.8), so move the decimal 3 places to the left: 5.720 or 5.72."
+            },
+            {
+                topic: "Multiplying Decimals",
+                question: "9. Evaluate: $(3.05)(1.4)$",
+                choices: [
+                    { text: "42.7", correct: false },
+                    { text: "4.27", correct: true },
+                    { text: "4.15", correct: false },
+                    { text: "3.19", correct: false }
+                ],
+                explanation: "Multiply $305 \\times 14 = 4270$. There are 3 total decimal places in the factors. Move the decimal 3 places to the left: 4.270 or 4.27."
+            },
+
+            // Volume & Packing (Based on Problem 26)
+            {
+                topic: "Volume & Packing 3D Objects",
+                question: "10. How many 1-foot cube boxes can fit inside a shipping crate that is 6 ft long, 3 ft wide, and 2 ft tall?",
+                choices: [
+                    { text: "11 boxes", correct: false },
+                    { text: "36 boxes", correct: true },
+                    { text: "18 boxes", correct: false },
+                    { text: "24 boxes", correct: false }
+                ],
+                explanation: "The volume of the larger crate is length $\\times$ width $\\times$ height. $6 \\times 3 \\times 2 = 36$ cubic feet. Since each small box is 1 cubic foot, 36 boxes will fit."
+            },
+            {
+                topic: "Volume & Packing 3D Objects",
+                question: "11. How many 1-meter cube boxes can fit on just the **bottom layer** of a container that is 8 m long, 5 m wide, and 4 m tall?",
+                choices: [
+                    { text: "40 boxes", correct: true },
+                    { text: "160 boxes", correct: false },
+                    { text: "32 boxes", correct: false },
+                    { text: "20 boxes", correct: false }
+                ],
+                explanation: "The bottom layer only depends on the length and width (the area of the base). $8 \\times 5 = 40$ boxes will fit on the bottom layer."
+            },
+            {
+                topic: "Volume & Packing 3D Objects",
+                question: "12. A storage unit is 10 ft long, 10 ft wide, and 8 ft tall. If you pack it full of boxes measuring 1 ft by 1 ft by 1 ft, how many boxes do you have?",
+                choices: [
+                    { text: "800 boxes", correct: true },
+                    { text: "100 boxes", correct: false },
+                    { text: "28 boxes", correct: false },
+                    { text: "80 boxes", correct: false }
+                ],
+                explanation: "Calculate total volume: $10 \\times 10 \\times 8 = 800$ cubic feet. Therefore, it holds 800 small boxes."
+            },
+
+            // Elapsed Time (Based on Problem 24)
+            {
+                topic: "Elapsed Time",
+                question: "13. A movie starts at 7:15 p.m. and ends at 9:05 p.m. How long is the movie?",
+                choices: [
+                    { text: "2 hours 10 minutes", correct: false },
+                    { text: "1 hour 50 minutes", correct: true },
+                    { text: "1 hour 45 minutes", correct: false },
+                    { text: "2 hours 5 minutes", correct: false }
+                ],
+                explanation: "From 7:15 p.m. to 8:00 p.m. is 45 minutes. From 8:00 p.m. to 9:00 p.m. is 1 hour. From 9:00 p.m. to 9:05 p.m. is 5 minutes. Total: 1 hour + 45 min + 5 min = 1 hour 50 minutes."
+            },
+            {
+                topic: "Elapsed Time",
+                question: "14. Sarah began her homework at 4:45 p.m. and finished at 5:30 p.m. How long did it take her?",
+                choices: [
+                    { text: "45 minutes", correct: true },
+                    { text: "30 minutes", correct: false },
+                    { text: "1 hour 15 minutes", correct: false },
+                    { text: "55 minutes", correct: false }
+                ],
+                explanation: "From 4:45 p.m. to 5:00 p.m. is 15 minutes. From 5:00 p.m. to 5:30 p.m. is 30 minutes. $15 + 30 = 45$ minutes."
+            },
+            {
+                topic: "Elapsed Time",
+                question: "15. A train departs at 10:35 a.m. and arrives at its destination at 1:12 p.m. What is the total travel time?",
+                choices: [
+                    { text: "2 hours 37 minutes", correct: true },
+                    { text: "3 hours 23 minutes", correct: false },
+                    { text: "2 hours 23 minutes", correct: false },
+                    { text: "3 hours 37 minutes", correct: false }
+                ],
+                explanation: "From 10:35 a.m. to 11:00 a.m. is 25 minutes. From 11:00 a.m. to 1:00 p.m. is 2 hours. From 1:00 p.m. to 1:12 p.m. is 12 minutes. Total: 2 hours + 25 min + 12 min = 2 hours 37 minutes."
+            }
+        ];
+
+        let currentScore = 0;
+        let answeredQuestions = 0;
+        const container = document.getElementById('quiz-container');
+
+        let currentTopic = "";
+
+        quizData.forEach((qData, qIndex) => {
+            // Add topic header if it changes
+            if (qData.topic !== currentTopic) {
+                const header = document.createElement('h2');
+                header.className = 'topic-header';
+                header.innerHTML = qData.topic;
+                container.appendChild(header);
+                currentTopic = qData.topic;
+            }
+
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `q-card-${qIndex}`;
+
+            let choicesHTML = '';
+            qData.choices.forEach((choice, cIndex) => {
+                choicesHTML += `<button class="choice-btn" id="btn-${qIndex}-${cIndex}" onclick="checkAnswer(${qIndex}, ${cIndex}, ${choice.correct})">${choice.text}</button>`;
+            });
+
+            card.innerHTML = `
+                <div class="question-text">${qData.question}</div>
+                <div class="choices-grid">
+                    ${choicesHTML}
+                </div>
+                <div class="explanation" id="exp-${qIndex}">
+                    <div class="feedback" id="feedback-${qIndex}"></div>
+                    <b>Explanation:</b> ${qData.explanation}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        function checkAnswer(qIndex, cIndex, isCorrect) {
+            const card = document.getElementById(`q-card-${qIndex}`);
+            const buttons = card.querySelectorAll('.choice-btn');
+            const explanation = document.getElementById(`exp-${qIndex}`);
+            const feedback = document.getElementById(`feedback-${qIndex}`);
+
+            // Disable all buttons in this question
+            buttons.forEach((btn, index) => {
+                btn.disabled = true;
+                // Highlight the correct answer regardless of what user picked
+                if (quizData[qIndex].choices[index].correct) {
+                    btn.classList.add('correct');
+                }
+            });
+
+            // Handle user's specific choice
+            const clickedBtn = document.getElementById(`btn-${qIndex}-${cIndex}`);
+            if (isCorrect) {
+                currentScore++;
+                feedback.innerHTML = "✅ Correct!";
+                feedback.className = "feedback correct";
+            } else {
+                clickedBtn.classList.add('wrong');
+                feedback.innerHTML = "❌ Incorrect.";
+                feedback.className = "feedback wrong";
+            }
+
+            // Update Scoreboard
+            document.getElementById('score').innerText = currentScore;
+            
+            // Show explanation
+            explanation.style.display = "block";
+            
+            // Re-render MathJax inside the newly shown explanation just in case
+            if (window.MathJax) {
+                MathJax.typesetPromise([explanation]);
+            }
+        }
+    </script>
+</body>
+</html>
