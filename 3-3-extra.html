@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice Quiz</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 40px;
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 5px;
+        }
+        .question-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .option-btn {
+            background-color: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover {
+            background-color: #e0e6ed;
+            border-color: #95a5a6;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+        .feedback-section {
+            display: none;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .correct-feedback {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+            color: #155724;
+        }
+        .incorrect-feedback {
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+            color: #721c24;
+        }
+        .btn-correct {
+            background-color: #28a745 !important;
+            color: white;
+            border-color: #1e7e34 !important;
+        }
+        .btn-incorrect {
+            background-color: #dc3545 !important;
+            color: white;
+            border-color: #bd2130 !important;
+        }
+        .explanation-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Interactive Math Mastery Quiz</h1>
+
+    <h2>Part 1: Finding Percentages</h2>
+
+    <div class="question-card">
+        <div class="question-text"><strong>1.1</strong> Sarah answered 15 out of 25 questions correctly on her test. What percent of the questions did she get correct?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-1')">A) 50%</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb1-1')">B) 60%</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-1')">C) 75%</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-1')">D) 80%</button>
+        </div>
+        <div id="fb1-1" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            Write the ratio as a fraction: \( \frac{15}{25} \). To find the percent, multiply the numerator and denominator by 4 to get a denominator of 100. \( \frac{15 \times 4}{25 \times 4} = \frac{60}{100} \), which is 60%.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>1.2</strong> A baker sold 30 out of 40 loaves of bread. What percentage of the bread was sold?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-2')">A) 70%</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb1-2')">B) 75%</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-2')">C) 80%</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-2')">D) 85%</button>
+        </div>
+        <div id="fb1-2" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            The fraction is \( \frac{30}{40} \). Simplify this to \( \frac{3}{4} \). We know that \( \frac{1}{4} \) is 25%, so \( \frac{3}{4} \) is \( 3 \times 25\% = 75\% \).
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>1.3</strong> In a class of 50 students, 12 are left-handed. What percent of the class is left-handed?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-3')">A) 12%</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb1-3')">B) 24%</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-3')">C) 36%</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-3')">D) 48%</button>
+        </div>
+        <div id="fb1-3" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            The fraction is \( \frac{12}{50} \). To make the denominator 100, multiply the top and bottom by 2. \( \frac{12 \times 2}{50 \times 2} = \frac{24}{100} \), which is 24%.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>1.4</strong> A basketball team won 18 out of their 20 games. What is their winning percentage?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-4')">A) 80%</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-4')">B) 85%</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb1-4')">C) 90%</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-4')">D) 95%</button>
+        </div>
+        <div id="fb1-4" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            The fraction is \( \frac{18}{20} \). Multiply the top and bottom by 5 to get a denominator of 100. \( \frac{18 \times 5}{20 \times 5} = \frac{90}{100} \), which is 90%.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>1.5</strong> If 8 out of 32 apples in a basket are red, what percent of the apples are red?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-5')">A) 20%</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb1-5')">B) 25%</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-5')">C) 30%</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb1-5')">D) 32%</button>
+        </div>
+        <div id="fb1-5" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            The fraction is \( \frac{8}{32} \). Divide the top and bottom by 8 to simplify the fraction to \( \frac{1}{4} \). \( \frac{1}{4} \) is equivalent to 25%.
+        </div>
+    </div>
+
+    <h2>Part 2: Order of Operations</h2>
+
+    <div class="question-card">
+        <div class="question-text"><strong>2.1</strong> Evaluate: \( 8 + 12 \div 4 \times 2 \)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-1')">A) 10</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb2-1')">B) 14</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-1')">C) 20</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-1')">D) 11</button>
+        </div>
+        <div id="fb2-1" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            According to PEMDAS/BODMAS, perform multiplication and division from left to right before addition.<br>
+            First: \( 12 \div 4 = 3 \)<br>
+            Second: \( 3 \times 2 = 6 \)<br>
+            Third: \( 8 + 6 = 14 \)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>2.2</strong> Evaluate: \( 15 - 3 \times 4 + 2 \)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb2-2')">A) 5</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-2')">B) 50</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-2')">C) 1</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-2')">D) 9</button>
+        </div>
+        <div id="fb2-2" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            Multiply first, then add/subtract from left to right.<br>
+            First: \( 3 \times 4 = 12 \)<br>
+            Second: \( 15 - 12 = 3 \)<br>
+            Third: \( 3 + 2 = 5 \)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>2.3</strong> Evaluate: \( 20 \div 5 \times 2 + 3 \)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-3')">A) 5</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb2-3')">B) 11</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-3')">C) 4</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-3')">D) 8</button>
+        </div>
+        <div id="fb2-3" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            Perform division and multiplication from left to right.<br>
+            First: \( 20 \div 5 = 4 \)<br>
+            Second: \( 4 \times 2 = 8 \)<br>
+            Third: \( 8 + 3 = 11 \)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>2.4</strong> Evaluate: \( 5 \times 4 - 8 \div 2 \)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-4')">A) 6</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb2-4')">B) 16</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-4')">C) 12</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-4')">D) 18</button>
+        </div>
+        <div id="fb2-4" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            Perform multiplication and division before subtraction.<br>
+            First: \( 5 \times 4 = 20 \)<br>
+            Second: \( 8 \div 2 = 4 \)<br>
+            Third: \( 20 - 4 = 16 \)
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>2.5</strong> Evaluate: \( 10 + 6 \div 2 - 4 \)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-5')">A) 4</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb2-5')">B) 9</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-5')">C) 13</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb2-5')">D) 8</button>
+        </div>
+        <div id="fb2-5" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            Divide first, then add and subtract from left to right.<br>
+            First: \( 6 \div 2 = 3 \)<br>
+            Second: \( 10 + 3 = 13 \)<br>
+            Third: \( 13 - 4 = 9 \)
+        </div>
+    </div>
+
+    <h2>Part 3: Word Problems with Fractions</h2>
+
+    <div class="question-card">
+        <div class="question-text"><strong>3.1</strong> Mark bought 3 dozen eggs and used \( \frac{1}{4} \) of them to bake cakes. How many eggs are left?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-1')">A) 9</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-1')">B) 18</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb3-1')">C) 27</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-1')">D) 36</button>
+        </div>
+        <div id="fb3-1" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            First, find the total number of eggs: 3 dozen = \( 3 \times 12 = 36 \) eggs.<br>
+            He used \( \frac{1}{4} \), so he has \( \frac{3}{4} \) left.<br>
+            Calculate \( \frac{3}{4} \) of 36: \( 36 \div 4 = 9 \), and \( 9 \times 3 = 27 \) eggs left.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>3.2</strong> A florist has 4 dozen roses. If \( \frac{5}{8} \) of them are red, how many are NOT red?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb3-2')">A) 18</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-2')">B) 30</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-2')">C) 15</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-2')">D) 24</button>
+        </div>
+        <div id="fb3-2" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            Total roses: 4 dozen = \( 4 \times 12 = 48 \).<br>
+            If \( \frac{5}{8} \) are red, then \( \frac{3}{8} \) are NOT red (\( 1 - \frac{5}{8} \)).<br>
+            Calculate \( \frac{3}{8} \) of 48: \( 48 \div 8 = 6 \), and \( 6 \times 3 = 18 \) roses are not red.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>3.3</strong> Jenna made 60 cookies. She gave \( \frac{2}{5} \) of them to her friends. How many cookies does she have left?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-3')">A) 24</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-3')">B) 30</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb3-3')">C) 36</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-3')">D) 40</button>
+        </div>
+        <div id="fb3-3" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            If she gave away \( \frac{2}{5} \), she kept \( \frac{3}{5} \).<br>
+            Calculate \( \frac{3}{5} \) of 60: \( 60 \div 5 = 12 \), and \( 12 \times 3 = 36 \) cookies left.<br>
+            (Alternatively: \( \frac{2}{5} \) of 60 = 24. \( 60 - 24 = 36 \)).
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>3.4</strong> A bookstore had 2 dozen copies of a new book. They sold \( \frac{2}{3} \) of them on the first day. How many copies are left?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb3-4')">A) 8</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-4')">B) 16</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-4')">C) 12</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-4')">D) 4</button>
+        </div>
+        <div id="fb3-4" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            Total books: 2 dozen = \( 2 \times 12 = 24 \).<br>
+            If they sold \( \frac{2}{3} \), they have \( \frac{1}{3} \) left.<br>
+            Calculate \( \frac{1}{3} \) of 24: \( 24 \div 3 = 8 \) books left.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>3.5</strong> Paul has 100 marbles. He loses \( \frac{3}{10} \) of them. How many marbles does he have remaining?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-5')">A) 30</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb3-5')">B) 70</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-5')">C) 60</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb3-5')">D) 40</button>
+        </div>
+        <div id="fb3-5" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            If he lost \( \frac{3}{10} \), he kept \( \frac{7}{10} \).<br>
+            Calculate \( \frac{7}{10} \) of 100: \( 100 \div 10 = 10 \), and \( 10 \times 7 = 70 \) marbles remaining.
+        </div>
+    </div>
+
+    <h2>Part 4: Supplementary Angles & Ratios</h2>
+
+    <div class="question-card">
+        <div class="question-text"><strong>4.1</strong> Angles A and B are supplementary. If \( m\angle A = 70^\circ \), what is \( m\angle B \)?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-1')">A) 20°</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-1')">B) 70°</button>
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb4-1')">C) 110°</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-1')">D) 90°</button>
+        </div>
+        <div id="fb4-1" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            Supplementary angles add up to 180°. <br>
+            \( m\angle B = 180^\circ - 70^\circ = 110^\circ \).
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>4.2</strong> Angles X and Y are supplementary. If \( m\angle X = 60^\circ \), what is the ratio of \( m\angle X \) to \( m\angle Y \) in simplest form?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb4-2')">A) 1:2</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-2')">B) 1:3</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-2')">C) 2:1</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-2')">D) 3:1</button>
+        </div>
+        <div id="fb4-2" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            First, find \( m\angle Y \): \( 180^\circ - 60^\circ = 120^\circ \).<br>
+            The ratio of X to Y is 60 to 120. Simplify by dividing both by 60 to get 1:2.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>4.3</strong> Two supplementary angles have a ratio of 1:5. What is the measure of the smaller angle?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb4-3')">A) 30°</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-3')">B) 45°</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-3')">C) 60°</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-3')">D) 150°</button>
+        </div>
+        <div id="fb4-3" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            Let the angles be \( 1x \) and \( 5x \). Since they are supplementary: \( 1x + 5x = 180^\circ \).<br>
+            \( 6x = 180^\circ \)<br>
+            \( x = 30^\circ \). The smaller angle is 30°.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>4.4</strong> Angles P and Q are supplementary. \( m\angle P \) is \( 135^\circ \). What is the ratio of \( m\angle Q \) to \( m\angle P \)?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb4-4')">A) 1:3</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-4')">B) 3:1</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-4')">C) 1:4</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-4')">D) 4:1</button>
+        </div>
+        <div id="fb4-4" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            First, find \( m\angle Q \): \( 180^\circ - 135^\circ = 45^\circ \).<br>
+            The ratio of Q to P is 45 to 135. Both divide evenly by 45. <br>
+            \( 45 \div 45 = 1 \) and \( 135 \div 45 = 3 \). The ratio is 1:3.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text"><strong>4.5</strong> If angle M is \( 150^\circ \) and angle N is its supplement, what is the difference between them (\( m\angle M - m\angle N \))?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer(this, true, 'fb4-5')">A) 120°</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-5')">B) 100°</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-5')">C) 90°</button>
+            <button class="option-btn" onclick="checkAnswer(this, false, 'fb4-5')">D) 150°</button>
+        </div>
+        <div id="fb4-5" class="feedback-section">
+            <div class="explanation-title">Explanation:</div>
+            First, find \( m\angle N \): \( 180^\circ - 150^\circ = 30^\circ \).<br>
+            Subtract N from M: \( 150^\circ - 30^\circ = 120^\circ \).
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(buttonElement, isCorrect, feedbackId) {
+            // Find the parent grid container
+            const optionsGrid = buttonElement.parentElement;
+            
+            // Disable all buttons in this specific question
+            const allButtons = optionsGrid.querySelectorAll('.option-btn');
+            allButtons.forEach(btn => {
+                btn.disabled = true;
+            });
+
+            // Highlight the clicked button
+            if (isCorrect) {
+                buttonElement.classList.add('btn-correct');
+            } else {
+                buttonElement.classList.add('btn-incorrect');
+                
+                // Optionally, find and highlight the correct answer too
+                allButtons.forEach(btn => {
+                    if(btn.getAttribute('onclick').includes('true')) {
+                        btn.classList.add('btn-correct');
+                    }
+                });
+            }
+
+            // Show the feedback/explanation section
+            const feedbackSection = document.getElementById(feedbackId);
+            feedbackSection.style.display = 'block';
+            
+            // Add styling to feedback box based on correct/incorrect
+            if (isCorrect) {
+                feedbackSection.classList.add('correct-feedback');
+                feedbackSection.innerHTML = "<div style='font-weight:bold; margin-bottom:10px;'>✅ Correct!</div>" + feedbackSection.innerHTML;
+            } else {
+                feedbackSection.classList.add('incorrect-feedback');
+                feedbackSection.innerHTML = "<div style='font-weight:bold; margin-bottom:10px;'>❌ Incorrect.</div>" + feedbackSection.innerHTML;
+            }
+            
+            // Tell MathJax to re-render any equations that might have just become visible
+            if (window.MathJax) {
+                MathJax.typesetPromise([feedbackSection]);
+            }
+        }
+    </script>
+</body>
+</html>
