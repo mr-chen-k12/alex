@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice Quiz</title>
+    
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 15px;
+            background-color: #f0f4f8;
+        }
+        h1 {
+            text-align: center;
+            color: #0056b3;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+        .q-container {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .q-text {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        @media (min-width: 600px) {
+            .options-grid { grid-template-columns: 1fr 1fr; }
+        }
+        .opt-btn {
+            background-color: #e9ecef;
+            color: #333;
+            border: 2px solid #ced4da;
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .opt-btn:hover { background-color: #dee2e6; }
+        .opt-btn.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        .opt-btn.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        .opt-btn:disabled { cursor: not-allowed; }
+        
+        .feedback-box {
+            display: none;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+        .feedback-box.show-correct {
+            display: block;
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+        }
+        .feedback-box.show-incorrect {
+            display: block;
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+        }
+        .feedback-status { font-weight: bold; margin-bottom: 8px; font-size: 1.1em; }
+        .show-correct .feedback-status { color: #155724; }
+        .show-incorrect .feedback-status { color: #721c24; }
+    </style>
+</head>
+<body>
+
+    <h1>Extra Practice Quiz</h1>
+    <p style="text-align: center; color: #555;">Select an answer for each question to see if you are right, along with a step-by-step explanation!</p>
+
+    <h2>Part 1: Circumference & Diameter</h2>
+
+    <div class="q-container">
+        <div class="q-text">1. A circle has a radius of 5 cm. What is the circumference? (Use 3.14 for \(\pi\))</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) 15.7 cm</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">B) 31.4 cm</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 78.5 cm</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 10 cm</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> First, find the diameter. Diameter is twice the radius: \(d = 2 \times 5 = 10\text{ cm}\).<br>
+                Then, multiply the diameter by \(\pi\): \(C = 10 \times 3.14 = 31.4\text{ cm}\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">2. A circle has a radius of 10 meters. What is the circumference? (Use 3.14 for \(\pi\))</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">A) 62.8 m</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">B) 314 m</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 31.4 m</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 20 m</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> The diameter is twice the radius: \(d = 2 \times 10 = 20\text{ m}\).<br>
+                The circumference is: \(C = 20 \times 3.14 = 62.8\text{ m}\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">3. If a circle has a radius of 3 inches, what is its diameter?</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) 1.5 in</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">B) 9 in</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">C) 6 in</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 18.84 in</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> The diameter is simply twice the length of the radius. \(d = 2 \times 3\text{ in} = 6\text{ in}\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">4. A circle has a radius of 6 feet. What is the circumference? (Use 3.14 for \(\pi\))</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) 18.84 ft</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">B) 113.04 ft</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 12 ft</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">D) 37.68 ft</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> The diameter is \(2 \times 6 = 12\text{ ft}\).<br>
+                The circumference is: \(C = 12 \times 3.14 = 37.68\text{ ft}\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">5. A coin has a radius of 2 mm. What is the circumference? (Use 3.14 for \(\pi\))</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) 6.28 mm</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">B) 12.56 mm</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 25.12 mm</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 4 mm</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> The diameter is \(2 \times 2 = 4\text{ mm}\).<br>
+                The circumference is: \(C = 4 \times 3.14 = 12.56\text{ mm}\).
+            </div>
+        </div>
+    </div>
+
+    <h2>Part 2: Area of a Circle</h2>
+
+    <div class="q-container">
+        <div class="q-text">6. A circle has a radius of 5 cm. What is the area? (Use 3.14 for \(\pi\))</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) 31.4 sq cm</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">B) 15.7 sq cm</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">C) 78.5 sq cm</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 100 sq cm</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> The formula for area is \(A = \pi \times r^2\).<br>
+                Square the radius first: \(5^2 = 25\).<br>
+                Then multiply by \(\pi\): \(25 \times 3.14 = 78.5\text{ sq cm}\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">7. A circle has a radius of 10 meters. What is the area? (Use 3.14 for \(\pi\))</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">A) 314 sq m</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">B) 62.8 sq m</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 100 sq m</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 31.4 sq m</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> \(A = \pi \times r^2\).<br>
+                Square the radius: \(10 \times 10 = 100\).<br>
+                Multiply by \(\pi\): \(100 \times 3.14 = 314\text{ sq m}\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">8. A plate has a radius of 3 inches. What is the area? (Use 3.14 for \(\pi\))</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) 18.84 sq in</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">B) 28.26 sq in</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 9 sq in</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 56.52 sq in</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> \(A = \pi \times r^2\).<br>
+                Square the radius: \(3^2 = 9\).<br>
+                Multiply by \(\pi\): \(9 \times 3.14 = 28.26\text{ sq in}\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">9. A button has a radius of 2 mm. What is the area? (Use 3.14 for \(\pi\))</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">A) 12.56 sq mm</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">B) 6.28 sq mm</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 4 sq mm</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 25.12 sq mm</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> \(A = \pi \times r^2\).<br>
+                Square the radius: \(2^2 = 4\).<br>
+                Multiply by \(\pi\): \(4 \times 3.14 = 12.56\text{ sq mm}\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">10. A rug has a radius of 6 feet. What is the area? (Use 3.14 for \(\pi\))</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) 37.68 sq ft</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">B) 36 sq ft</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">C) 113.04 sq ft</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 75.36 sq ft</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> \(A = \pi \times r^2\).<br>
+                Square the radius: \(6^2 = 36\).<br>
+                Multiply by \(\pi\): \(36 \times 3.14 = 113.04\text{ sq ft}\).
+            </div>
+        </div>
+    </div>
+
+    <h2>Part 3: Converting & Multiplying</h2>
+
+    <div class="q-container">
+        <div class="q-text">11. Write \(\frac{1}{4}\) as a decimal, and multiply it by 0.8. What is the product?</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) 0.02</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">B) 0.2</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 2.0</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 0.25</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> First, convert the fraction: \(\frac{1}{4} = 0.25\).<br>
+                Next, multiply: \(0.25 \times 0.8 = 0.200\), which simplifies to \(0.2\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">12. Write \(\frac{1}{2}\) as a decimal, and multiply it by 1.4. What is the product?</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">A) 0.7</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">B) 0.07</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 7.0</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 1.9</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> Convert the fraction: \(\frac{1}{2} = 0.5\).<br>
+                Multiply: \(0.5 \times 1.4 = 0.70\), which is \(0.7\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">13. Write \(\frac{4}{5}\) as a decimal, and multiply it by 0.5. What is the product?</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) 0.04</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">B) 4.0</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 0.45</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">D) 0.4</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> Convert the fraction: \(\frac{4}{5} = \frac{8}{10} = 0.8\).<br>
+                Multiply: \(0.8 \times 0.5 = 0.40\), which is \(0.4\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">14. Write \(\frac{3}{4}\) as a decimal, and multiply it by 1.2. What is the product?</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">A) 0.9</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">B) 0.09</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 0.8</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 1.95</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> Convert the fraction: \(\frac{3}{4} = 0.75\).<br>
+                Multiply: \(0.75 \times 1.2 = 0.900\), which is \(0.9\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">15. Write \(\frac{1}{5}\) as a decimal, and multiply it by 0.3. What is the product?</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) 0.6</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">B) 0.06</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 0.15</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 1.5</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> Convert the fraction: \(\frac{1}{5} = 0.2\).<br>
+                Multiply: \(0.2 \times 0.3 = 0.06\). (Remember to count two decimal places total).
+            </div>
+        </div>
+    </div>
+
+    <h2>Part 4: Dividing by Mixed Numbers</h2>
+
+    <div class="q-container">
+        <div class="q-text">16. Divide: \(4 \div 1\frac{1}{3}\)</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) \(\frac{16}{3}\)</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">B) 3</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 4</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) \(5\frac{1}{3}\)</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> First, convert the mixed number to an improper fraction: \(1\frac{1}{3} = \frac{4}{3}\).<br>
+                Next, multiply by the reciprocal: \(4 \times \frac{3}{4}\).<br>
+                \(\frac{4}{1} \times \frac{3}{4} = \frac{12}{4} = 3\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">17. Divide: \(5 \div 2\frac{1}{2}\)</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) \(12\frac{1}{2}\)</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">B) \(\frac{5}{2}\)</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">C) 2</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) \(2\frac{1}{2}\)</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> Convert to an improper fraction: \(2\frac{1}{2} = \frac{5}{2}\).<br>
+                Multiply by the reciprocal: \(5 \times \frac{2}{5}\).<br>
+                \(\frac{5}{1} \times \frac{2}{5} = \frac{10}{5} = 2\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">18. Divide: \(2 \div 3\frac{1}{3}\)</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) \(\frac{5}{3}\)</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">B) \(\frac{3}{5}\)</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 6</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) \(\frac{20}{3}\)</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> Convert to an improper fraction: \(3\frac{1}{3} = \frac{10}{3}\).<br>
+                Multiply by the reciprocal: \(2 \times \frac{3}{10}\).<br>
+                \(\frac{2}{1} \times \frac{3}{10} = \frac{6}{10}\), which simplifies to \(\frac{3}{5}\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">19. Divide: \(6 \div 1\frac{1}{2}\)</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">A) 9</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">B) 3</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) 12</button>
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">D) 4</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> Convert to an improper fraction: \(1\frac{1}{2} = \frac{3}{2}\).<br>
+                Multiply by the reciprocal: \(6 \times \frac{2}{3}\).<br>
+                \(\frac{6}{1} \times \frac{2}{3} = \frac{12}{3} = 4\).
+            </div>
+        </div>
+    </div>
+
+    <div class="q-container">
+        <div class="q-text">20. Divide: \(3 \div 4\frac{1}{2}\)</div>
+        <div class="options-grid">
+            <button class="opt-btn" data-correct="true" onclick="checkAnswer(this)">A) \(\frac{2}{3}\)</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">B) \(\frac{3}{2}\)</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">C) \(\frac{27}{2}\)</button>
+            <button class="opt-btn" data-correct="false" onclick="checkAnswer(this)">D) 6</button>
+        </div>
+        <div class="feedback-box">
+            <div class="feedback-status"></div>
+            <div class="feedback-exp">
+                <strong>Explanation:</strong> Convert to an improper fraction: \(4\frac{1}{2} = \frac{9}{2}\).<br>
+                Multiply by the reciprocal: \(3 \times \frac{2}{9}\).<br>
+                \(\frac{3}{1} \times \frac{2}{9} = \frac{6}{9}\), which simplifies to \(\frac{2}{3}\).
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(btn) {
+            // Find the container for this specific question
+            const container = btn.closest('.q-container');
+            const feedbackBox = container.querySelector('.feedback-box');
+            const feedbackStatus = container.querySelector('.feedback-status');
+            const isCorrect = btn.getAttribute('data-correct') === 'true';
+
+            // Reset all buttons in this container to default state
+            const allBtns = container.querySelectorAll('.opt-btn');
+            allBtns.forEach(b => {
+                b.classList.remove('correct', 'incorrect');
+            });
+
+            // Apply correct styling based on the answer
+            if (isCorrect) {
+                btn.classList.add('correct');
+                feedbackBox.className = 'feedback-box show-correct';
+                feedbackStatus.textContent = 'Correct!';
+                
+                // Optional: Disable all buttons after getting it right
+                allBtns.forEach(b => b.disabled = true);
+            } else {
+                btn.classList.add('incorrect');
+                feedbackBox.className = 'feedback-box show-incorrect';
+                feedbackStatus.textContent = 'Not quite! Try again or read the explanation below.';
+            }
+        }
+    </script>
+
+</body>
+</html>
