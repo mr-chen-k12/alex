@@ -1,86 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Problem Set Solutions</title>
+    <title>Saxon Math Course 1 - Written Practice</title>
     
     <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']]
-            }
+        MathJax = {
+            tex: { inlineMath: [['\\(', '\\)']] }
         };
     </script>
-
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
             color: #333;
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
         }
         h1 {
             text-align: center;
-            color: #2c3e50;
+            color: #0056b3;
+            font-size: 1.5em;
         }
-        .problem-card {
+        .problem-container {
             background-color: #fff;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 15px;
             margin-bottom: 20px;
-            padding: 20px;
-            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-        .problem-number {
-            font-weight: bold;
-            font-size: 1.2em;
-            color: #2980b9;
-            margin-bottom: 10px;
-        }
-        .question {
+        .problem-statement {
             font-size: 1.1em;
             margin-bottom: 15px;
         }
-        .toggle-btn {
-            background-color: #3498db;
+        .btn-toggle {
+            background-color: #0056b3;
             color: white;
             border: none;
             padding: 10px 15px;
-            font-size: 1em;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            font-size: 1em;
+            margin-bottom: 10px;
+            width: 100%; /* Makes button easier to tap on mobile */
+            transition: background-color 0.3s;
         }
-        .toggle-btn:hover {
-            background-color: #2980b9;
+        .btn-toggle:hover {
+            background-color: #004494;
         }
-        .solution {
+        .answer-section {
             display: none;
-            margin-top: 15px;
+            background-color: #eef7e6;
+            border-left: 4px solid #5cb85c;
             padding: 15px;
-            background-color: #e8f6f3;
-            border-left: 4px solid #1abc9c;
-            border-radius: 4px;
+            margin-top: 10px;
+            border-radius: 0 4px 4px 0;
         }
-        .math-block {
-            margin: 10px 0;
-            font-size: 1.1em;
+        .answer-section strong {
+            color: #2d6a2d;
         }
-        canvas {
+        /* Diagram Styles */
+        .diagram {
             display: block;
-            margin: 10px 0;
-            background: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            margin: 15px auto;
+            max-width: 100%;
+            height: auto;
         }
-        .note {
-            font-size: 0.9em;
-            color: #7f8c8d;
-            font-style: italic;
+        .pictograph-table {
+            border-collapse: collapse;
+            margin: 15px 0;
+            width: 100%;
+        }
+        .pictograph-table th, .pictograph-table td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: left;
+        }
+        .book-icon {
+            display: inline-block;
+            width: 16px;
+            height: 20px;
+            background-color: #aed6f1;
+            border: 1px solid #2874a6;
+            margin-right: 4px;
+        }
+        .book-icon.half {
+            width: 8px;
+            border-right: none;
         }
     </style>
 </head>
+<body>
+
+    <h1>Written Practice - Lesson 89</h1>
+    <p style="text-align: center; font-size: 0.9em; color: #555;">Tap the "Review Answer" button below each question to see the solution.</p>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>1.</strong> What is the difference when the product of \(\frac{1}{2}\) and \(\frac{1}{2}\) is subtracted from the sum of \(\frac{1}{4}\) and \(\frac{1}{4}\)?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> \(\frac{1}{4}\)</p>
+            <p><strong>Explanation:</strong> 
+                First, find the product of \(\frac{1}{2}\) and \(\frac{1}{2}\): \(\frac{1}{2} \times \frac{1}{2} = \frac{1}{4}\).<br>
+                Next, find the sum of \(\frac{1}{4}\) and \(\frac{1}{4}\): \(\frac{1}{4} + \frac{1}{4} = \frac{2}{4} = \frac{1}{2}\).<br>
+                Finally, subtract the product from the sum: \(\frac{1}{2} - \frac{1}{4} = \frac{2}{4} - \frac{1}{4} = \frac{1}{4}\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>2.</strong> A dairy cow can give 4 gallons of milk per day. How many cups of milk is that (1 gallon = 4 quarts; 1 quart = 4 cups)?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> 64 cups</p>
+            <p><strong>Explanation:</strong> 
+                First, convert gallons to quarts: \(4 \text{ gallons} \times 4 \text{ quarts/gallon} = 16 \text{ quarts}\).<br>
+                Then, convert quarts to cups: \(16 \text{ quarts} \times 4 \text{ cups/quart} = 64 \text{ cups}\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>3.</strong> The recipe called for \(\frac{3}{4}\) cup of sugar. If the recipe is doubled, how much sugar should be used?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> \(1\frac{1}{2}\) cups</p>
+            <p><strong>Explanation:</strong> 
+                Multiply the amount of sugar by 2: \(\frac{3}{4} \times 2 = \frac{6}{4}\).<br>
+                Simplify the fraction: \(\frac{6}{4} = \frac{3}{2}\), which equals \(1\frac{1}{2}\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>*4.</strong> Draw a ratio box for this problem. Then solve the problem using a proportion.<br>
+            The recipe called for sugar and flour in the ratio of 2 to 9. If the chef used 18 pounds of flour, how many pounds of sugar were needed?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> 4 pounds of sugar</p>
+            <p><strong>Explanation:</strong> 
+                Set up the proportion based on the ratio \(\frac{\text{Sugar}}{\text{Flour}} = \frac{2}{9}\).<br>
+                \(\frac{2}{9} = \frac{x}{18}\).<br>
+                Cross multiply: \(9x = 2 \times 18 \Rightarrow 9x = 36 \Rightarrow x = 4\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>*5.</strong> Which of these numbers is greater than 6 but less than 7?<br>
+            A. \(\sqrt{6.5}\) &nbsp;&nbsp;&nbsp; B. \(\sqrt{67}\) &nbsp;&nbsp;&nbsp; C. \(\sqrt{45}\) &nbsp;&nbsp;&nbsp; D. \(\sqrt{76}\)
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> C. \(\sqrt{45}\)</p>
+            <p><strong>Explanation:</strong> 
+                Square the numbers 6 and 7 to find the range: \(6^2 = 36\) and \(7^2 = 49\).<br>
+                We are looking for a square root whose radicand (the number inside) is between 36 and 49.<br>
+                Only 45 falls between 36 and 49, so \(\sqrt{45}\) is between 6 and 7.
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>*6.</strong> Express the unknown factor as a mixed number: \(7n = 30\)
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> \(4\frac{2}{7}\)</p>
+            <p><strong>Explanation:</strong> 
+                Divide both sides by 7: \(n = \frac{30}{7}\).<br>
+                Convert to a mixed number: 7 goes into 30 four times with a remainder of 2, so \(n = 4\frac{2}{7}\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>7.</strong> Amanda used a compass to draw a circle with a radius of 4 inches.<br>
+            <strong>a.</strong> What is the diameter of the circle?<br>
+            <strong>b.</strong> What is the circumference of the circle? (Use \(3.14\) for \(\pi\)).
+            
+            <svg class="diagram" width="120" height="120" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" stroke="black" stroke-width="1.5" fill="none" />
+                <circle cx="60" cy="60" r="2" fill="black" />
+                <line x1="60" y1="60" x2="110" y2="60" stroke="black" stroke-width="1.5" />
+                <text x="75" y="50" font-size="12">4 in.</text>
+            </svg>
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> a. 8 in. &nbsp;&nbsp; b. 25.12 in.</p>
+            <p><strong>Explanation:</strong><br>
+                <strong>a.</strong> The diameter is twice the radius: \(d = 2 \times 4 = 8\) inches.<br>
+                <strong>b.</strong> The circumference formula is \(C = \pi \times d\). Using 3.14 for \(\pi\): \(C \approx 3.14 \times 8 = 25.12\) inches.
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>*8.</strong> In problem <strong>7</strong> what is the area of the circle Amanda drew?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> 50.24 sq. in.</p>
+            <p><strong>Explanation:</strong> 
+                The area formula for a circle is \(A = \pi \times r^2\).<br>
+                \(A \approx 3.14 \times (4)^2 = 3.14 \times 16 = 50.24\) square inches.
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>*9.</strong> What is the area of the triangle at right?
+            
+            <svg class="diagram" width="140" height="100" viewBox="0 0 140 100">
+                <polygon points="10,80 130,80 90,20" stroke="black" stroke-width="1.5" fill="none" />
+                <line x1="90" y1="20" x2="90" y2="80" stroke="black" stroke-width="1" stroke-dasharray="4,4" />
+                <polyline points="90,75 95,75 95,80" stroke="black" stroke-width="1" fill="none" />
+                <text x="60" y="95" font-size="12">8 in.</text>
+                <text x="95" y="55" font-size="12">5 in.</text>
+                <text x="40" y="45" font-size="12">6 in.</text>
+            </svg>
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> 20 sq. in.</p>
+            <p><strong>Explanation:</strong> 
+                The area of a triangle is \(A = \frac{1}{2} \times \text{base} \times \text{height}\).<br>
+                The base is 8 in. and the height (perpendicular to the base) is 5 in.<br>
+                \(A = \frac{1}{2} \times 8 \times 5 = 4 \times 5 = 20\) square inches.
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>*10.</strong> <br>
+            <strong>a.</strong> What is the area of this parallelogram?<br>
+            <strong>b.</strong> What is the perimeter of this parallelogram?
+            
+            <svg class="diagram" width="160" height="90" viewBox="0 0 160 90">
+                <polygon points="40,20 150,20 120,70 10,70" stroke="black" stroke-width="1.5" fill="none" />
+                <line x1="120" y1="20" x2="120" y2="70" stroke="black" stroke-width="1" stroke-dasharray="4,4" />
+                <polyline points="115,70 115,65 120,65" stroke="black" stroke-width="1" fill="none" />
+                <text x="60" y="85" font-size="12">8 in.</text>
+                <text x="125" y="50" font-size="12">5 in.</text>
+                <text x="10" y="40" font-size="12">6 in.</text>
+            </svg>
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> a. 40 sq. in. &nbsp;&nbsp; b. 28 in.</p>
+            <p><strong>Explanation:</strong><br>
+                <strong>a.</strong> Area of a parallelogram is \(A = \text{base} \times \text{height}\). \(A = 8 \times 5 = 40\) sq in.<br>
+                <strong>b.</strong> Perimeter is the total distance around the outside. \(P = 8 + 6 + 8 + 6 = 28\) in.
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>11.</strong> Write 0.5 as a fraction and subtract it from \(3\frac{1}{4}\). What is the difference?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> \(2\frac{3}{4}\)</p>
+            <p><strong>Explanation:</strong> 
+                Convert 0.5 to a fraction: \(\frac{1}{2}\).<br>
+                Find a common denominator to subtract: \(\frac{1}{2} = \frac{2}{4}\).<br>
+                Subtract from \(3\frac{1}{4}\): \(3\frac{1}{4} - \frac{2}{4}\). Borrow 1 from the 3: \(2\frac{5}{4} - \frac{2}{4} = 2\frac{3}{4}\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>12.</strong> Write \(\frac{3}{4}\) as a decimal, and multiply it by 0.6. What is the product?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> 0.45</p>
+            <p><strong>Explanation:</strong> 
+                Convert the fraction: \(\frac{3}{4} = 0.75\).<br>
+                Multiply: \(0.75 \times 0.6 = 0.450 = 0.45\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>*13.</strong> Analyze: \(2 \times 15 + 2 \times 12\)
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> 54</p>
+            <p><strong>Explanation:</strong> 
+                Use order of operations (multiply before adding):<br>
+                \((2 \times 15) + (2 \times 12) = 30 + 24 = 54\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>*14.</strong> Analyze: \(\sqrt{900}\)
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> 30</p>
+            <p><strong>Explanation:</strong> 
+                Since \(30 \times 30 = 900\), the square root of 900 is 30.
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>15.</strong> \(\$6 \div 8\)
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> $0.75</p>
+            <p><strong>Explanation:</strong> 
+                \(6 \div 8 = \frac{6}{8} = \frac{3}{4}\). As money, 3 quarters of a dollar is $0.75.
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>16.</strong> \(1\frac{3}{5} \times 10 \times \frac{1}{4}\)
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> 4</p>
+            <p><strong>Explanation:</strong> 
+                Convert the mixed number to an improper fraction: \(\frac{8}{5} \times \frac{10}{1} \times \frac{1}{4}\).<br>
+                Multiply numerators and denominators: \(\frac{8 \times 10 \times 1}{5 \times 1 \times 4} = \frac{80}{20} = 4\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>17.</strong> \(37\frac{1}{2} \div 100\)
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> \(0.375\) or \(\frac{3}{8}\)</p>
+            <p><strong>Explanation:</strong> 
+                As a decimal: \(37.5 \div 100 = 0.375\).<br>
+                As fractions: \(\frac{75}{2} \div \frac{100}{1} = \frac{75}{2} \times \frac{1}{100} = \frac{75}{200} = \frac{3}{8}\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>18.</strong> \(3 \div 7\frac{1}{2}\)
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> \(\frac{2}{5}\)</p>
+            <p><strong>Explanation:</strong> 
+                Convert the mixed number to an improper fraction: \(3 \div \frac{15}{2}\).<br>
+                Multiply by the reciprocal: \(3 \times \frac{2}{15} = \frac{6}{15}\).<br>
+                Simplify: divide top and bottom by 3 to get \(\frac{2}{5}\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>19.</strong> What is the place value of the 7 in 987,654.321?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> Thousands</p>
+            <p><strong>Explanation:</strong> 
+                Looking left from the decimal point: 4 is ones, 5 is tens, 6 is hundreds, and 7 is in the thousands place.
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>20.</strong> Write the decimal number five hundred ten and five hundredths.
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> 510.05</p>
+            <p><strong>Explanation:</strong> 
+                "Five hundred ten" is 510. The "and" represents the decimal point. "Five hundredths" means the digit 5 is in the second decimal place: .05.
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>21.</strong> \(30 + 60 + m = 180\)
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> \(m = 90\)</p>
+            <p><strong>Explanation:</strong> 
+                Combine like terms: \(90 + m = 180\).<br>
+                Subtract 90 from both sides: \(m = 180 - 90 = 90\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>22.</strong> Analyze: Half of the students are girls. Half of the girls have brown hair. Half of the brown-haired girls wear their hair long. Of the 32 students, how many are girls with long, brown hair?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> 4</p>
+            <p><strong>Explanation:</strong> 
+                Start with 32 students.<br>
+                Girls: \(\frac{1}{2}\) of 32 = 16.<br>
+                Brown hair: \(\frac{1}{2}\) of 16 = 8.<br>
+                Long brown hair: \(\frac{1}{2}\) of 8 = 4.
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>Refer to the pictograph below to answer problems 23-25.</strong>
+            <br><br>
+            <strong>Books Read This Year</strong>
+            <table class="pictograph-table">
+                <tr>
+                    <td width="30%"><strong>Johnny</strong></td>
+                    <td>
+                        <span class="book-icon"></span>
+                        <span class="book-icon"></span>
+                        <span class="book-icon"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Mary</strong></td>
+                    <td>
+                        <span class="book-icon"></span>
+                        <span class="book-icon"></span>
+                        <span class="book-icon"></span>
+                        <span class="book-icon"></span>
+                        <span class="book-icon"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Pat</strong></td>
+                    <td>
+                        <span class="book-icon"></span>
+                        <span class="book-icon"></span>
+                        <span class="book-icon"></span>
+                        <span class="book-icon half"></span>
+                    </td>
+                </tr>
+            </table>
+            <p style="text-align:center; font-size:0.9em;"><span class="book-icon" style="vertical-align: middle;"></span> represents 4 books.</p>
+        </div>
+        
+        <div style="margin-top: 15px;">
+            <strong>23.</strong> How many books has Johnny read?
+            <br>
+            <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer 23</button>
+            <div class="answer-section">
+                <p><strong>Answer:</strong> 12</p>
+                <p><strong>Explanation:</strong> Johnny has 3 book symbols. Each represents 4 books. \(3 \times 4 = 12\).</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 15px;">
+            <strong>24.</strong> Mary has read how many more books than Pat?
+            <br>
+            <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer 24</button>
+            <div class="answer-section">
+                <p><strong>Answer:</strong> 6</p>
+                <p><strong>Explanation:</strong> 
+                    Mary has 5 symbols = \(5 \times 4 = 20\) books.<br>
+                    Pat has 3.5 symbols = \(3.5 \times 4 = 14\) books.<br>
+                    Difference: \(20 - 14 = 6\) books.
+                </p>
+            </div>
+        </div>
+
+        <div style="margin-top: 15px;">
+            <strong>25.</strong> Formulate a question that relates to this graph and answer the question.
+            <br>
+            <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer 25</button>
+            <div class="answer-section">
+                <p><strong>Answer:</strong> (Answers will vary) Example: "How many books did the three students read altogether?"</p>
+                <p><strong>Explanation:</strong> Answer to the example question: Johnny (12) + Mary (20) + Pat (14) = 46 total books.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>*26.</strong> Analyze: Solve this proportion: \(\frac{12}{8} = \frac{21}{m}\)
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> \(m = 14\)</p>
+            <p><strong>Explanation:</strong> 
+                Use cross-multiplication: \(12 \times m = 8 \times 21\).<br>
+                \(12m = 168\).<br>
+                Divide by 12: \(m = \frac{168}{12} = 14\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>27.</strong> The face of this spinner is divided into 12 congruent regions. If the spinner is spun once, what is the probability that it will stop on a 3? Express the probability ratio as a fraction and as a decimal number rounded to the nearest hundredth.
+            
+            <svg class="diagram" width="120" height="120" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="50" stroke="black" stroke-width="1.5" fill="none"/>
+                <line x1="60" y1="10" x2="60" y2="110" stroke="black" stroke-width="1"/>
+                <line x1="10" y1="60" x2="110" y2="60" stroke="black" stroke-width="1"/>
+                <line x1="24.6" y1="24.6" x2="95.4" y2="95.4" stroke="black" stroke-width="1"/>
+                <line x1="24.6" y1="95.4" x2="95.4" y2="24.6" stroke="black" stroke-width="1"/>
+                <line x1="34" y1="16.7" x2="86" y2="103.3" stroke="black" stroke-width="1"/>
+                <line x1="16.7" y1="34" x2="103.3" y2="86" stroke="black" stroke-width="1"/>
+                <text x="65" y="28" font-size="10">1</text>
+                <text x="80" y="38" font-size="10">2</text>
+                <text x="92" y="55" font-size="10">5</text>
+                <text x="92" y="75" font-size="10">1</text>
+                <text x="80" y="90" font-size="10">3</text>
+                <text x="65" y="100" font-size="10">2</text>
+                <text x="48" y="100" font-size="10">1</text>
+                <text x="32" y="90" font-size="10">4</text>
+                <text x="22" y="75" font-size="10">2</text>
+                <text x="22" y="55" font-size="10">1</text>
+                <text x="32" y="38" font-size="10">3</text>
+                <text x="48" y="28" font-size="10">4</text>
+                <polygon points="60,60 85,60 80,55 80,65 85,60" fill="black" transform="rotate(-15 60 60)"/>
+            </svg>
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> Fraction: \(\frac{1}{6}\) &nbsp;&nbsp; Decimal: \(0.17\)</p>
+            <p><strong>Explanation:</strong> 
+                Counting the regions, there are two spaces labeled "3" out of 12 total spaces.<br>
+                Probability = \(\frac{\text{favorable outcomes}}{\text{total outcomes}} = \frac{2}{12}\), which simplifies to \(\frac{1}{6}\).<br>
+                To convert to a decimal, divide 1 by 6: \(1 \div 6 \approx 0.1666...\). Rounding to the nearest hundredth gives \(0.17\).
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>28.</strong> Conclude: If two angles are complementary, and if one angle is acute, then the other angle is what kind of angle?<br>
+            A. acute &nbsp;&nbsp;&nbsp; B. right &nbsp;&nbsp;&nbsp; C. obtuse
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> A. acute</p>
+            <p><strong>Explanation:</strong> 
+                Complementary angles sum to \(90^\circ\). An acute angle is strictly greater than \(0^\circ\) and strictly less than \(90^\circ\).<br>
+                If one angle is acute (say, \(30^\circ\)), the other must be \(90^\circ - 30^\circ = 60^\circ\), which is also strictly less than \(90^\circ\). Therefore, it must also be an acute angle.
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>*29.</strong> Simplify:<br>
+            <strong>a.</strong> \(100\text{ cm} + 100\text{ cm}\) (Write the answer in meters.)<br>
+            <strong>b.</strong> \(\frac{(5\text{ in.})(8\text{ in.})}{2}\)
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> a. 2 meters &nbsp;&nbsp; b. 20 sq. in.</p>
+            <p><strong>Explanation:</strong><br>
+                <strong>a.</strong> \(100\text{ cm} + 100\text{ cm} = 200\text{ cm}\). Since there are 100 cm in a meter, \(200\text{ cm} = 2\text{ meters}\).<br>
+                <strong>b.</strong> Multiply the numerator first: \(5\text{ in.} \times 8\text{ in.} = 40\text{ sq. in.}\) Then divide by 2: \(\frac{40}{2} = 20\text{ sq. in.}\)
+            </p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-statement">
+            <strong>30.</strong> If each small block has a volume of 1 cubic inch, then what is the volume of this cube?
+            
+            <svg class="diagram" width="100" height="110" viewBox="0 0 100 110">
+                <polygon points="30,50 70,50 70,90 30,90" fill="#d4e6f1" stroke="black" stroke-width="1"/>
+                <line x1="43.3" y1="50" x2="43.3" y2="90" stroke="black" stroke-width="1"/>
+                <line x1="56.6" y1="50" x2="56.6" y2="90" stroke="black" stroke-width="1"/>
+                <line x1="30" y1="63.3" x2="70" y2="63.3" stroke="black" stroke-width="1"/>
+                <line x1="30" y1="76.6" x2="70" y2="76.6" stroke="black" stroke-width="1"/>
+                <polygon points="30,50 50,30 90,30 70,50" fill="#aed6f1" stroke="black" stroke-width="1"/>
+                <line x1="36.6" y1="43.3" x2="76.6" y2="43.3" stroke="black" stroke-width="1"/>
+                <line x1="43.3" y1="36.6" x2="83.3" y2="36.6" stroke="black" stroke-width="1"/>
+                <line x1="43.3" y1="50" x2="63.3" y2="30" stroke="black" stroke-width="1"/>
+                <line x1="56.6" y1="50" x2="76.6" y2="30" stroke="black" stroke-width="1"/>
+                <polygon points="70,50 90,30 90,70 70,90" fill="#85c1e9" stroke="black" stroke-width="1"/>
+                <line x1="70" y1="63.3" x2="90" y2="43.3" stroke="black" stroke-width="1"/>
+                <line x1="70" y1="76.6" x2="90" y2="56.6" stroke="black" stroke-width="1"/>
+                <line x1="76.6" y1="43.3" x2="76.6" y2="83.3" stroke="black" stroke-width="1"/>
+                <line x1="83.3" y1="36.6" x2="83.3" y2="76.6" stroke="black" stroke-width="1"/>
+            </svg>
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer(this)">Review Answer</button>
+        <div class="answer-section">
+            <p><strong>Answer:</strong> 27 cubic inches</p>
+            <p><strong>Explanation:</strong> 
+                The larger cube is made of small blocks arranged in a \(3 \times 3 \times 3\) grid.<br>
+                Total number of blocks = \(3 \text{ (length)} \times 3 \text{ (width)} \times 3 \text{ (height)} = 27\) blocks.<br>
+                If each block is 1 cubic inch, the total volume is 27 cubic inches.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(btn) {
+            var answerDiv = btn.nextElementSibling;
+            if (answerDiv.style.display === "none" || answerDiv.style.display === "") {
+                answerDiv.style.display = "block";
+                btn.textContent = "Hide Answer";
+            } else {
+                answerDiv.style.display = "none";
+                btn.textContent = "Review Answer";
+            }
+        }
+    </script>
+
+</body>
+</html>
