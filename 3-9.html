@@ -3,396 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Practice Math Problems and Solutions</title>
+    <title>Saxon Math Course 1 - Lesson 63 Polygons</title>
+    
     <script>
       MathJax = {
         tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']]
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
         }
       };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
+            line-height: 1.6;
             color: #333;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
-            line-height: 1.6;
+            background-color: #f9f9f9;
         }
-        h1 {
-            text-align: center;
+        h1, h2, h3 {
             color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        .section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 30px;
         }
         .problem-container {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: box-shadow 0.3s ease;
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
         }
-        .problem-container:hover {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        .problem-container:last-child {
+            border-bottom: none;
         }
         .question {
             font-size: 1.1em;
-            font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+        }
+        .question-number {
+            font-weight: bold;
+            color: #e74c3c;
+            margin-right: 5px;
         }
         .toggle-btn {
             background-color: #3498db;
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
+            padding: 8px 15px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.95em;
-            transition: background-color 0.3s;
+            font-size: 0.9em;
+            transition: background 0.3s;
         }
         .toggle-btn:hover {
             background-color: #2980b9;
         }
-        .answer-section {
-            margin-top: 15px;
-            padding: 15px;
-            background-color: #e8f4f8;
-            border-left: 4px solid #3498db;
-            border-radius: 0 5px 5px 0;
+        .answer-block {
             display: none;
+            background-color: #e8f6f3;
+            border-left: 4px solid #1abc9c;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 0 4px 4px 0;
         }
-        .answer-section.visible {
+        .diagram {
             display: block;
+            margin: 15px 0;
+            max-width: 100%;
         }
-        .answer-title {
-            font-weight: bold;
-            color: #27ae60;
-            margin-bottom: 5px;
-        }
-        .explanation {
-            font-size: 0.95em;
+        .hint {
+            font-style: italic;
+            color: #7f8c8d;
         }
     </style>
 </head>
 <body>
 
-    <h1>Practice Math Problem Solutions</h1>
+    <h1>Saxon Math Course 1 - Lesson 63: Polygons</h1>
 
-    <div class="problem-container">
-        <div class="question">1. Twelve inches equals 1 foot. A wooden board that is 60 inches long is how many feet long?</div>
-        <button class="toggle-btn" onclick="toggleAnswer(1)">Show Answer & Explanation</button>
-        <div id="answer-1" class="answer-section">
-            <div class="answer-title">Answer: 5 feet</div>
-            <div class="explanation">To convert inches to feet, divide the total number of inches by 12. <br> $60 \div 12 = 5$.</div>
-        </div>
-    </div>
+    <div class="section">
+        <h2>Written Practice</h2>
 
-    <div class="problem-container">
-        <div class="question">2. Write four multiplication/division facts using the numbers 4, 8, and 32.</div>
-        <button class="toggle-btn" onclick="toggleAnswer(2)">Show Answer & Explanation</button>
-        <div id="answer-2" class="answer-section">
-            <div class="answer-title">Answer: $4 \times 8 = 32$, $8 \times 4 = 32$, $32 \div 8 = 4$, $32 \div 4 = 8$</div>
-            <div class="explanation">These make up the "fact family" for these three numbers, showing the inverse relationship between multiplication and division.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">3. Marcus had five quarters, four dimes, and twelve pennies. How much money did he have in all?</div>
-        <button class="toggle-btn" onclick="toggleAnswer(3)">Show Answer & Explanation</button>
-        <div id="answer-3" class="answer-section">
-            <div class="answer-title">Answer: $1.77</div>
-            <div class="explanation">
-                Calculate the value of each coin type, then sum them up:<br>
-                Quarters: $5 \times \$0.25 = \$1.25$<br>
-                Dimes: $4 \times \$0.10 = \$0.40$<br>
-                Pennies: $12 \times \$0.01 = \$0.12$<br>
-                Total: $\$1.25 + \$0.40 + \$0.12 = \$1.77$
+        <div class="problem-container">
+            <div class="question">
+                <span class="question-number">1.</span> Three feet equals 1 yard. A car that is 15 feet long is how many yards long?
+            </div>
+            <button class="toggle-btn" onclick="toggleAnswer('ans-1')">Show Answer & Explanation</button>
+            <div id="ans-1" class="answer-block">
+                <strong>Answer:</strong> 5 yards<br><br>
+                <strong>Explanation:</strong> Divide the length in feet by 3, since 3 feet = 1 yard: $15 \div 3 = 5$.
             </div>
         </div>
-    </div>
 
-    <div class="problem-container">
-        <div class="question">4. What is the sum of the even numbers that are greater than 20 but less than 30?</div>
-        <button class="toggle-btn" onclick="toggleAnswer(4)">Show Answer & Explanation</button>
-        <div id="answer-4" class="answer-section">
-            <div class="answer-title">Answer: 100</div>
-            <div class="explanation">
-                First, identify the even numbers between 20 and 30: 22, 24, 26, and 28.<br>
-                Then, find their sum: $22 + 24 + 26 + 28 = 100$.
+        <div class="problem-container">
+            <div class="question">
+                <span class="question-number">6.</span> Erin opened a 1-gallon bottle of milk and began filling glasses. Each glass held 1 cup of milk. Two cups equals a pint. Two pints equals a quart. Four quarts equals a gallon. How many glasses could Erin fill?
+            </div>
+            <button class="toggle-btn" onclick="toggleAnswer('ans-6')">Show Answer & Explanation</button>
+            <div id="ans-6" class="answer-block">
+                <strong>Answer:</strong> 16 glasses<br><br>
+                <strong>Explanation:</strong> $1 \text{ gallon} = 4 \text{ quarts} = 8 \text{ pints} = 16 \text{ cups}$. Since each glass is 1 cup, she can fill 16 glasses.
             </div>
         </div>
-    </div>
 
-    <div class="problem-container">
-        <div class="question">5. Estimate the sum of 823 and 481 by rounding the numbers to the nearest hundred and then adding.</div>
-        <button class="toggle-btn" onclick="toggleAnswer(5)">Show Answer & Explanation</button>
-        <div id="answer-5" class="answer-section">
-            <div class="answer-title">Answer: 1300</div>
-            <div class="explanation">
-                Round 823 to the nearest hundred: 800.<br>
-                Round 481 to the nearest hundred: 500.<br>
-                Add the rounded numbers: $800 + 500 = 1300$.
+        <div class="problem-container">
+            <div class="question">
+                <span class="question-number">7.</span> To what mixed number is the arrow pointing?
+                <svg width="300" height="60" viewBox="0 0 300 60" class="diagram">
+                    <line x1="20" y1="30" x2="280" y2="30" stroke="#000" stroke-width="2"/>
+                    <line x1="20" y1="20" x2="20" y2="40" stroke="#000" stroke-width="2"/>
+                    <text x="20" y="55" text-anchor="middle">6</text>
+                    <line x1="280" y1="20" x2="280" y2="40" stroke="#000" stroke-width="2"/>
+                    <text x="280" y="55" text-anchor="middle">7</text>
+                    <line x1="150" y1="25" x2="150" y2="35" stroke="#000" stroke-width="1"/>
+                    <polygon points="150,30 145,15 155,15" fill="#e74c3c" />
+                </svg>
+            </div>
+            <button class="toggle-btn" onclick="toggleAnswer('ans-7')">Show Answer & Explanation</button>
+            <div id="ans-7" class="answer-block">
+                <strong>Answer:</strong> $6 \frac{1}{2}$<br><br>
+                <strong>Explanation:</strong> The arrow points to the midpoint between 6 and 7 on the number line, which is exactly $6 \frac{1}{2}$.
             </div>
         </div>
-    </div>
 
-    <div class="problem-container">
-        <div class="question">6. David opened a 1-gallon jug of apple cider and began filling pint glasses. Two cups equals a pint. Two pints equals a quart. Four quarts equals a gallon. How many pint glasses could David fill?</div>
-        <button class="toggle-btn" onclick="toggleAnswer(6)">Show Answer & Explanation</button>
-        <div id="answer-6" class="answer-section">
-            <div class="answer-title">Answer: 8 pint glasses</div>
-            <div class="explanation">
-                Work backwards to find out how many pints are in a gallon:<br>
-                1 gallon = 4 quarts.<br>
-                4 quarts = $4 \times 2 = 8$ pints.<br>
-                Since 1 glass holds 1 pint, he can fill 8 glasses.
+        <div class="problem-container">
+            <div class="question">
+                <span class="question-number">11.</span> (a) What is the name of this polygon?<br>
+                (b) Each side is the same length. What is the perimeter of this polygon?
+                <svg width="300" height="150" viewBox="0 0 300 150" class="diagram">
+                    <polygon points="150,20 185,40 185,80 150,100 115,80 115,40" fill="none" stroke="#2c3e50" stroke-width="2"/>
+                    <line x1="115" y1="120" x2="215" y2="120" stroke="#000" stroke-width="2"/>
+                    <line x1="115" y1="115" x2="115" y2="125" stroke="#000" stroke-width="2"/>
+                    <text x="115" y="140" text-anchor="middle">0</text>
+                    <line x1="150" y1="115" x2="150" y2="125" stroke="#000" stroke-width="2"/>
+                    <text x="150" y="140" text-anchor="middle">1</text>
+                    <line x1="185" y1="115" x2="185" y2="125" stroke="#000" stroke-width="2"/>
+                    <text x="185" y="140" text-anchor="middle">2</text>
+                    <line x1="215" y1="115" x2="215" y2="125" stroke="#000" stroke-width="2"/>
+                    <text x="215" y="140" text-anchor="middle">3</text>
+                    <text x="90" y="140" text-anchor="middle">cm</text>
+                    <line x1="115" y1="100" x2="115" y2="115" stroke="#e74c3c" stroke-width="1" stroke-dasharray="3"/>
+                    <line x1="150" y1="100" x2="150" y2="115" stroke="#e74c3c" stroke-width="1" stroke-dasharray="3"/>
+                </svg>
+            </div>
+            <button class="toggle-btn" onclick="toggleAnswer('ans-11')">Show Answer & Explanation</button>
+            <div id="ans-11" class="answer-block">
+                <strong>Answer:</strong> (a) Hexagon, (b) $6\text{ cm}$<br><br>
+                <strong>Explanation:</strong> The polygon has 6 sides, making it a hexagon. Checking the ruler graphic, one side lines up perfectly between the 0 and 1 cm marks, meaning each side is $1\text{ cm}$ long. $1\text{ cm} \times 6\text{ sides} = 6\text{ cm}$.
             </div>
         </div>
-    </div>
 
-    <div class="problem-container">
-        <div class="question">7. To what mixed number is the arrow pointing? (Imagine a number line showing an arrow at the 3rd tick mark out of 4 between 8 and 9).</div>
-        <button class="toggle-btn" onclick="toggleAnswer(7)">Show Answer & Explanation</button>
-        <div id="answer-7" class="answer-section">
-            <div class="answer-title">Answer: $8 \frac{3}{4}$</div>
-            <div class="explanation">The space between 8 and 9 is divided into 4 equal segments, meaning each mark represents one-fourth ($\frac{1}{4}$). The arrow points to the third mark past 8, which is $8 \frac{3}{4}$.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">8. The pizza was cut into 8 equal slices. Three of the slices were eaten. What fraction of the pizza was left?</div>
-        <button class="toggle-btn" onclick="toggleAnswer(8)">Show Answer & Explanation</button>
-        <div id="answer-8" class="answer-section">
-            <div class="answer-title">Answer: $\frac{5}{8}$</div>
-            <div class="explanation">Subtract the eaten pieces from the total pieces: $8 - 3 = 5$. There are 5 pieces left out of the original 8, making the fraction $\frac{5}{8}$.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">9. The product of 5 and 4 is how much greater than the sum of 5 and 4?</div>
-        <button class="toggle-btn" onclick="toggleAnswer(9)">Show Answer & Explanation</button>
-        <div id="answer-9" class="answer-section">
-            <div class="answer-title">Answer: 11</div>
-            <div class="explanation">
-                Calculate the product: $5 \times 4 = 20$.<br>
-                Calculate the sum: $5 + 4 = 9$.<br>
-                Find the difference: $20 - 9 = 11$.
+        <div class="problem-container">
+            <div class="question">
+                <span class="question-number">23.</span> Divide: $6\overline{)34}$
+            </div>
+            <button class="toggle-btn" onclick="toggleAnswer('ans-23')">Show Answer & Explanation</button>
+            <div id="ans-23" class="answer-block">
+                <strong>Answer:</strong> $5 \text{ R } 4$ (or $5\frac{2}{3}$)<br><br>
+                <strong>Explanation:</strong> The problem asks to divide 34 by 6. 6 goes into 34 five times ($6 \times 5 = 30$). Subtracting 30 from 34 leaves a remainder of 4.
             </div>
         </div>
-    </div>
 
-    <div class="problem-container">
-        <div class="question">10. What is the sum of $8^2$ and $\sqrt{16}$?</div>
-        <button class="toggle-btn" onclick="toggleAnswer(10)">Show Answer & Explanation</button>
-        <div id="answer-10" class="answer-section">
-            <div class="answer-title">Answer: 68</div>
-            <div class="explanation">
-                Calculate eight squared: $8^2 = 64$.<br>
-                Calculate the square root of sixteen: $\sqrt{16} = 4$.<br>
-                Add them together: $64 + 4 = 68$.
+        <div class="problem-container">
+            <div class="question">
+                <span class="question-number">24.</span> Divide: $8\overline{)62}$
+            </div>
+            <button class="toggle-btn" onclick="toggleAnswer('ans-24')">Show Answer & Explanation</button>
+            <div id="ans-24" class="answer-block">
+                <strong>Answer:</strong> $7 \text{ R } 6$ (or $7\frac{3}{4}$)<br><br>
+                <strong>Explanation:</strong> The problem asks to divide 62 by 8. 8 goes into 62 seven times ($8 \times 7 = 56$). Subtracting 56 from 62 leaves a remainder of 6.
             </div>
         </div>
-    </div>
 
-    <div class="problem-container">
-        <div class="question">11. (a) What is the name of a regular polygon with 5 sides? (b) If each side is 2 cm long, what is the perimeter of this polygon?</div>
-        <button class="toggle-btn" onclick="toggleAnswer(11)">Show Answer & Explanation</button>
-        <div id="answer-11" class="answer-section">
-            <div class="answer-title">Answer: (a) Pentagon (b) 10 cm</div>
-            <div class="explanation">
-                (a) A polygon with 5 sides is called a pentagon.<br>
-                (b) Since all 5 sides are the same length, the perimeter is $5 \times 2\text{ cm} = 10\text{ cm}$.
+        <div class="problem-container">
+            <div class="question">
+                <span class="question-number">28.</span> Which of these numbers is a factor of 10?<br>
+                A. 3 &nbsp;&nbsp;&nbsp; B. 5 &nbsp;&nbsp;&nbsp; C. 15 &nbsp;&nbsp;&nbsp; D. 40
+            </div>
+            <button class="toggle-btn" onclick="toggleAnswer('ans-28')">Show Answer & Explanation</button>
+            <div id="ans-28" class="answer-block">
+                <strong>Answer:</strong> B. 5<br><br>
+                <strong>Explanation:</strong> A factor is a number that divides evenly into another number without a remainder. $10 \div 5 = 2$. None of the other options divide evenly into 10.
             </div>
         </div>
-    </div>
 
-    <div class="problem-container">
-        <div class="question">12. Maria could sort 45 apples in 9 minutes. At that rate, how many apples could she sort in 1 minute?</div>
-        <button class="toggle-btn" onclick="toggleAnswer(12)">Show Answer & Explanation</button>
-        <div id="answer-12" class="answer-section">
-            <div class="answer-title">Answer: 5 apples</div>
-            <div class="explanation">Divide the total number of apples by the total number of minutes to find the unit rate: $45 \div 9 = 5$.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">13. Leo could build 12 widgets in 1 minute. At that rate, how many widgets could he build in 4 minutes?</div>
-        <button class="toggle-btn" onclick="toggleAnswer(13)">Show Answer & Explanation</button>
-        <div id="answer-13" class="answer-section">
-            <div class="answer-title">Answer: 48 widgets</div>
-            <div class="explanation">Multiply the rate per minute by the number of minutes: $12 \times 4 = 48$.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">14. $\$50.00 - D = \$3.75$</div>
-        <button class="toggle-btn" onclick="toggleAnswer(14)">Show Answer & Explanation</button>
-        <div id="answer-14" class="answer-section">
-            <div class="answer-title">Answer: $D = \$46.25$</div>
-            <div class="explanation">To isolate $D$, subtract the result from the total: $\$50.00 - \$3.75 = \$46.25$.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">15. $4 \times N = 10 + \sqrt{36}$</div>
-        <button class="toggle-btn" onclick="toggleAnswer(15)">Show Answer & Explanation</button>
-        <div id="answer-15" class="answer-section">
-            <div class="answer-title">Answer: $N = 4$</div>
-            <div class="explanation">
-                First, evaluate the square root: $\sqrt{36} = 6$.<br>
-                Substitute back into the equation: $4 \times N = 10 + 6$.<br>
-                Simplify: $4 \times N = 16$.<br>
-                Divide both sides by 4: $N = 4$.
+        <div class="problem-container">
+            <div class="question">
+                <span class="question-number">29.</span> (a) What fraction of the large square is shaded?<br>
+                (b) What percent of the large square is not shaded?
+                <svg width="150" height="150" viewBox="0 0 100 100" class="diagram">
+                    <rect x="0" y="0" width="100" height="100" fill="none" stroke="#2c3e50" stroke-width="2"/>
+                    <g stroke="#bdc3c7" stroke-width="1">
+                        <line x1="10" y1="0" x2="10" y2="100" />
+                        <line x1="20" y1="0" x2="20" y2="100" />
+                        <line x1="30" y1="0" x2="30" y2="100" />
+                        <line x1="40" y1="0" x2="40" y2="100" />
+                        <line x1="50" y1="0" x2="50" y2="100" />
+                        <line x1="60" y1="0" x2="60" y2="100" />
+                        <line x1="70" y1="0" x2="70" y2="100" />
+                        <line x1="80" y1="0" x2="80" y2="100" />
+                        <line x1="90" y1="0" x2="90" y2="100" />
+                        
+                        <line x1="0" y1="10" x2="100" y2="10" />
+                        <line x1="0" y1="20" x2="100" y2="20" />
+                        <line x1="0" y1="30" x2="100" y2="30" />
+                        <line x1="0" y1="40" x2="100" y2="40" />
+                        <line x1="0" y1="50" x2="100" y2="50" />
+                        <line x1="0" y1="60" x2="100" y2="60" />
+                        <line x1="0" y1="70" x2="100" y2="70" />
+                        <line x1="0" y1="80" x2="100" y2="80" />
+                        <line x1="0" y1="90" x2="100" y2="90" />
+                    </g>
+                </svg>
+            </div>
+            <button class="toggle-btn" onclick="toggleAnswer('ans-29')">Show Answer & Explanation</button>
+            <div id="ans-29" class="answer-block">
+                <strong>Answer:</strong> (a) $0$, (b) $100\%$<br><br>
+                <strong>Explanation:</strong> There are 100 small squares making up the grid. Because exactly 0 of them are shaded, $0$ is the fraction shaded, and $100\%$ of the square remains unshaded.
             </div>
         </div>
-    </div>
 
-    <div class="problem-container">
-        <div class="question">16. $7 \times 3 \times 100$</div>
-        <button class="toggle-btn" onclick="toggleAnswer(16)">Show Answer & Explanation</button>
-        <div id="answer-16" class="answer-section">
-            <div class="answer-title">Answer: 2100</div>
-            <div class="explanation">Multiply left to right: $7 \times 3 = 21$. Then multiply by 100: $21 \times 100 = 2100$.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">17. $4^3$</div>
-        <button class="toggle-btn" onclick="toggleAnswer(17)">Show Answer & Explanation</button>
-        <div id="answer-17" class="answer-section">
-            <div class="answer-title">Answer: 64</div>
-            <div class="explanation">An exponent of 3 means multiplying the base number by itself three times: $4 \times 4 \times 4 = 64$.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">18. $4.2 + 1.35$</div>
-        <button class="toggle-btn" onclick="toggleAnswer(18)">Show Answer & Explanation</button>
-        <div id="answer-18" class="answer-section">
-            <div class="answer-title">Answer: 5.55</div>
-            <div class="explanation">Align the decimal points by adding a zero to 4.2 to make it 4.20. Then add: $4.20 + 1.35 = 5.55$.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">19. $2.85 - 0.3$</div>
-        <button class="toggle-btn" onclick="toggleAnswer(19)">Show Answer & Explanation</button>
-        <div id="answer-19" class="answer-section">
-            <div class="answer-title">Answer: 2.55</div>
-            <div class="explanation">Align the decimal points by adding a zero to 0.3 to make it 0.30. Then subtract: $2.85 - 0.30 = 2.55$.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">20. $\$5.00 - (\$1.25 + \$2.50)$</div>
-        <button class="toggle-btn" onclick="toggleAnswer(20)">Show Answer & Explanation</button>
-        <div id="answer-20" class="answer-section">
-            <div class="answer-title">Answer: $1.25</div>
-            <div class="explanation">
-                Following order of operations, solve parentheses first: $\$1.25 + \$2.50 = \$3.75$.<br>
-                Subtract that sum from five dollars: $\$5.00 - \$3.75 = \$1.25$.
-            </div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">21. $428 \times 6$</div>
-        <button class="toggle-btn" onclick="toggleAnswer(21)">Show Answer & Explanation</button>
-        <div id="answer-21" class="answer-section">
-            <div class="answer-title">Answer: 2568</div>
-            <div class="explanation">Multiply: $428 \times 6 = 2568$.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">22. $\$8.40 \times 5$</div>
-        <button class="toggle-btn" onclick="toggleAnswer(22)">Show Answer & Explanation</button>
-        <div id="answer-22" class="answer-section">
-            <div class="answer-title">Answer: $42.00</div>
-            <div class="explanation">Multiply the values ignoring the decimal first ($840 \times 5 = 4200$), then place the decimal two spots from the right: $\$42.00$.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">23. $45 \div 7$  (From long division symbol $7\overline{)45}$)</div>
-        <button class="toggle-btn" onclick="toggleAnswer(23)">Show Answer & Explanation</button>
-        <div id="answer-23" class="answer-section">
-            <div class="answer-title">Answer: 6 R 3 (or $6 \frac{3}{7}$)</div>
-            <div class="explanation">7 goes into 45 six times ($7 \times 6 = 42$). Subtracting 42 from 45 leaves a remainder of 3.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">24. $75 \div 9$ (From long division symbol $9\overline{)75}$)</div>
-        <button class="toggle-btn" onclick="toggleAnswer(24)">Show Answer & Explanation</button>
-        <div id="answer-24" class="answer-section">
-            <div class="answer-title">Answer: 8 R 3 (or $8 \frac{1}{3}$)</div>
-            <div class="explanation">9 goes into 75 eight times ($9 \times 8 = 72$). Subtracting 72 from 75 leaves a remainder of 3. (As a fraction, $\frac{3}{9}$ simplifies to $\frac{1}{3}$).</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">25. $38 \div 6$ (From long division symbol $6\overline{)38}$)</div>
-        <button class="toggle-btn" onclick="toggleAnswer(25)">Show Answer & Explanation</button>
-        <div id="answer-25" class="answer-section">
-            <div class="answer-title">Answer: 6 R 2 (or $6 \frac{1}{3}$)</div>
-            <div class="explanation">6 goes into 38 six times ($6 \times 6 = 36$). Subtracting 36 from 38 leaves a remainder of 2. (As a fraction, $\frac{2}{6}$ simplifies to $\frac{1}{3}$).</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">26. $\frac{72}{8}$</div>
-        <button class="toggle-btn" onclick="toggleAnswer(26)">Show Answer & Explanation</button>
-        <div id="answer-26" class="answer-section">
-            <div class="answer-title">Answer: 9</div>
-            <div class="explanation">A fraction bar represents division. $72 \div 8 = 9$.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">27. If 75% of the marbles in a jar are blue, what percent of the marbles are not blue?</div>
-        <button class="toggle-btn" onclick="toggleAnswer(27)">Show Answer & Explanation</button>
-        <div id="answer-27" class="answer-section">
-            <div class="answer-title">Answer: 25%</div>
-            <div class="explanation">The total amount is always 100%. Subtract the percentage of blue marbles to find the remaining percent: $100\% - 75\% = 25\%$.</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">28. Which of these numbers is a factor of 12? <br> A. 5 &nbsp;&nbsp; B. 7 &nbsp;&nbsp; C. 24 &nbsp;&nbsp; D. 4</div>
-        <button class="toggle-btn" onclick="toggleAnswer(28)">Show Answer & Explanation</button>
-        <div id="answer-28" class="answer-section">
-            <div class="answer-title">Answer: D. 4</div>
-            <div class="explanation">A factor is a number that divides evenly into another number without a remainder. 4 divides evenly into 12 ($12 \div 4 = 3$). *Note: 24 is a multiple, not a factor.*</div>
-        </div>
-    </div>
-
-    <div class="problem-container">
-        <div class="question">29. Imagine a 10x10 square grid. 4 full columns of the grid are shaded. (a) What fraction of the large square is shaded? (b) What percent of the large square is not shaded?</div>
-        <button class="toggle-btn" onclick="toggleAnswer(29)">Show Answer & Explanation</button>
-        <div id="answer-29" class="answer-section">
-            <div class="answer-title">Answer: (a) $\frac{2}{5}$ (b) 60%</div>
-            <div class="explanation">
-                (a) The grid has 100 small squares. 4 full columns are shaded, meaning 40 squares are shaded. The fraction is $\frac{40}{100}$, which simplifies to $\frac{4}{10}$, and further simplifies to $\frac{2}{5}$.<br>
-                (b) If 40 out of 100 squares (40%) are shaded, then the unshaded portion is $100\% - 40\% = 60\%$.
-            </div>
-        </div>
     </div>
 
     <script>
-        // JavaScript function to toggle the visibility of the answers
-        function toggleAnswer(questionNumber) {
-            var answerDiv = document.getElementById('answer-' + questionNumber);
-            if (answerDiv.classList.contains('visible')) {
-                answerDiv.classList.remove('visible');
+        // JavaScript to handle toggling the answer display
+        function toggleAnswer(id) {
+            var answerBlock = document.getElementById(id);
+            if (answerBlock.style.display === "block") {
+                answerBlock.style.display = "none";
             } else {
-                answerDiv.classList.add('visible');
+                answerBlock.style.display = "block";
             }
         }
     </script>
-
 </body>
 </html>
