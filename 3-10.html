@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Problem Set</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .problem-container {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .problem-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #34495e;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .btn-toggle {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+        .btn-toggle:hover {
+            background-color: #2980b9;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+        }
+        .answer {
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Math Problem Set & Solutions</h1>
+
+    <div class="problem-container">
+        <div class="problem-title">Problem 1</div>
+        <div class="problem-statement">
+            Solve the following quadratic equation for \( x \):
+            $$ 2x^2 - 4x - 6 = 0 $$
+        </div>
+        <button class="btn-toggle" onclick="toggleExplanation('exp1', this)">Show Answer & Explanation</button>
+        
+        <div id="exp1" class="explanation">
+            <div class="answer">Answer: \( x = 3 \) or \( x = -1 \)</div>
+            <strong>Explanation:</strong>
+            <p>First, we can simplify the equation by dividing the entire equation by 2:</p>
+            $$ x^2 - 2x - 3 = 0 $$
+            <p>Next, we factor the quadratic equation. We need two numbers that multiply to \(-3\) and add up to \(-2\). Those numbers are \(-3\) and \(1\).</p>
+            $$ (x - 3)(x + 1) = 0 $$
+            <p>Setting each factor to zero gives us our solutions:</p>
+            $$ x - 3 = 0 \implies x = 3 $$
+            $$ x + 1 = 0 \implies x = -1 $$
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-title">Problem 2</div>
+        <div class="problem-statement">
+            Evaluate the following indefinite integral:
+            $$ \int x \cos(x) \, dx $$
+        </div>
+        <button class="btn-toggle" onclick="toggleExplanation('exp2', this)">Show Answer & Explanation</button>
+        
+        <div id="exp2" class="explanation">
+            <div class="answer">Answer: \( x \sin(x) + \cos(x) + C \)</div>
+            <strong>Explanation:</strong>
+            <p>We use integration by parts, where the formula is \( \int u \, dv = uv - \int v \, du \).</p>
+            <p>Let:</p>
+            <ul>
+                <li>\( u = x \implies du = dx \)</li>
+                <li>\( dv = \cos(x) \, dx \implies v = \sin(x) \)</li>
+            </ul>
+            <p>Substitute these into the formula:</p>
+            $$ \int x \cos(x) \, dx = x \sin(x) - \int \sin(x) \, dx $$
+            <p>Now, integrate \( \sin(x) \):</p>
+            $$ \int \sin(x) \, dx = -\cos(x) $$
+            <p>Putting it all together and adding the constant of integration \( C \):</p>
+            $$ x \sin(x) - (-\cos(x)) + C = x \sin(x) + \cos(x) + C $$
+        </div>
+    </div>
+
+    <script>
+        function toggleExplanation(expId, btn) {
+            var expDiv = document.getElementById(expId);
+            if (expDiv.style.display === "none" || expDiv.style.display === "") {
+                expDiv.style.display = "block";
+                btn.textContent = "Hide Answer & Explanation";
+                
+                // Tell MathJax to re-render in case it missed equations in hidden divs
+                if (window.MathJax) {
+                    MathJax.typesetPromise([expDiv]);
+                }
+            } else {
+                expDiv.style.display = "none";
+                btn.textContent = "Show Answer & Explanation";
+            }
+        }
+    </script>
+</body>
+</html>
