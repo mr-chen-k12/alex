@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Problem Set</title>
-    
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
+    <title>Math Problem Solutions</title>
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+            background-color: #f4f7f6;
             color: #333;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f9f9f9;
+            line-height: 1.6;
         }
         h1 {
             text-align: center;
@@ -29,108 +34,350 @@
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .problem-title {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #34495e;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
+        .problem-text {
+            font-size: 1.1em;
             margin-bottom: 15px;
         }
-        .btn-toggle {
+        .toggle-btn {
             background-color: #3498db;
-            color: #fff;
+            color: white;
             border: none;
             padding: 10px 15px;
             font-size: 1em;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 15px;
+            transition: background-color 0.3s ease;
         }
-        .btn-toggle:hover {
+        .toggle-btn:hover {
             background-color: #2980b9;
         }
-        .explanation {
+        .solution {
             display: none;
             margin-top: 15px;
-            padding: 15px;
-            background-color: #e8f4f8;
-            border-left: 4px solid #3498db;
-            border-radius: 4px;
+            padding-top: 15px;
+            border-top: 2px dashed #ecf0f1;
         }
         .answer {
             font-weight: bold;
             color: #27ae60;
-            margin-bottom: 10px;
+        }
+        .explanation {
+            margin-top: 10px;
+            color: #555;
+        }
+        svg {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Math Problem Set & Solutions</h1>
+    <h1>Math Practice Solutions</h1>
 
     <div class="problem-container">
-        <div class="problem-title">Problem 1</div>
-        <div class="problem-statement">
-            Solve the following quadratic equation for \( x \):
-            $$ 2x^2 - 4x - 6 = 0 $$
-        </div>
-        <button class="btn-toggle" onclick="toggleExplanation('exp1', this)">Show Answer & Explanation</button>
-        
-        <div id="exp1" class="explanation">
-            <div class="answer">Answer: \( x = 3 \) or \( x = -1 \)</div>
-            <strong>Explanation:</strong>
-            <p>First, we can simplify the equation by dividing the entire equation by 2:</p>
-            $$ x^2 - 2x - 3 = 0 $$
-            <p>Next, we factor the quadratic equation. We need two numbers that multiply to \(-3\) and add up to \(-2\). Those numbers are \(-3\) and \(1\).</p>
-            $$ (x - 3)(x + 1) = 0 $$
-            <p>Setting each factor to zero gives us our solutions:</p>
-            $$ x - 3 = 0 \implies x = 3 $$
-            $$ x + 1 = 0 \implies x = -1 $$
+        <div class="problem-text"><strong>1.</strong> What is the ratio of prime numbers to composite numbers in this list? <br> 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol1')">Show Answer & Explanation</button>
+        <div id="sol1" class="solution">
+            <p class="answer">Answer: 1 to 2 (or 1:2)</p>
+            <p class="explanation"><strong>Explanation:</strong> First, identify the prime numbers: 11, 13, 17, and 19 (there are 4). The remaining numbers are composite: 10, 12, 14, 15, 16, 18, 20, and 21 (there are 8). The ratio of prime to composite is 4 to 8. Simplifying this ratio by dividing both sides by 4 gives 1 to 2.</p>
         </div>
     </div>
 
     <div class="problem-container">
-        <div class="problem-title">Problem 2</div>
-        <div class="problem-statement">
-            Evaluate the following indefinite integral:
-            $$ \int x \cos(x) \, dx $$
+        <div class="problem-text"><strong>2.</strong> Sunrise was at 6:15 a.m. and sunset was at 5:45 p.m. How many hours and minutes were there from sunrise to sunset?</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol2')">Show Answer & Explanation</button>
+        <div id="sol2" class="solution">
+            <p class="answer">Answer: 11 hours and 30 minutes</p>
+            <p class="explanation"><strong>Explanation:</strong> From 6:15 a.m. to 12:00 p.m. is 5 hours and 45 minutes. From 12:00 p.m. to 5:45 p.m. is 5 hours and 45 minutes. Adding them together: 5 hours + 5 hours = 10 hours, and 45 mins + 45 mins = 90 mins (which is 1 hour and 30 minutes). Total: 11 hours and 30 minutes.</p>
         </div>
-        <button class="btn-toggle" onclick="toggleExplanation('exp2', this)">Show Answer & Explanation</button>
-        
-        <div id="exp2" class="explanation">
-            <div class="answer">Answer: \( x \sin(x) + \cos(x) + C \)</div>
-            <strong>Explanation:</strong>
-            <p>We use integration by parts, where the formula is \( \int u \, dv = uv - \int v \, du \).</p>
-            <p>Let:</p>
-            <ul>
-                <li>\( u = x \implies du = dx \)</li>
-                <li>\( dv = \cos(x) \, dx \implies v = \sin(x) \)</li>
-            </ul>
-            <p>Substitute these into the formula:</p>
-            $$ \int x \cos(x) \, dx = x \sin(x) - \int \sin(x) \, dx $$
-            <p>Now, integrate \( \sin(x) \):</p>
-            $$ \int \sin(x) \, dx = -\cos(x) $$
-            <p>Putting it all together and adding the constant of integration \( C \):</p>
-            $$ x \sin(x) - (-\cos(x)) + C = x \sin(x) + \cos(x) + C $$
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>3.</strong> When the good news was announced many leaped for joy and others just smiled. The ratio of leapers to smilers was 3 to 2. If 12 leaped for joy, how many just smiled?</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol3')">Show Answer & Explanation</button>
+        <div id="sol3" class="solution">
+            <p class="answer">Answer: 8 smiled</p>
+            <p class="explanation"><strong>Explanation:</strong> Set up a proportion where Leapers/Smilers = 3/2. We know Leapers = 12. So, $\frac{3}{2} = \frac{12}{x}$. Cross-multiply: $3x = 24$. Divide by 3 to get $x = 8$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>4.</strong> A rectangular prism has how many more faces than a triangular prism?</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol4')">Show Answer & Explanation</button>
+        <div id="sol4" class="solution">
+            <p class="answer">Answer: 1 more face</p>
+            <p class="explanation"><strong>Explanation:</strong> A rectangular prism has 6 faces (top, bottom, and 4 sides). A triangular prism has 5 faces (2 triangular bases and 3 rectangular sides). The difference is $6 - 5 = 1$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>5.</strong> Write the formula for the area of a parallelogram as given in this lesson. Then substitute 15 cm for the base and 4 cm for the height. Solve the equation to find the area of the parallelogram.</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol5')">Show Answer & Explanation</button>
+        <div id="sol5" class="solution">
+            <p class="answer">Answer: $A = bh$; Area = 60 sq cm</p>
+            <p class="explanation"><strong>Explanation:</strong> The formula is $A = b \times h$. Substitute the values: $A = 15 \times 4$. Multiply to get 60 square centimeters.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>6.</strong> How many degrees does the minute hand of a clock turn in 45 minutes?</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol6')">Show Answer & Explanation</button>
+        <div id="sol6" class="solution">
+            <p class="answer">Answer: 270°</p>
+            <p class="explanation"><strong>Explanation:</strong> A full circle is 360°. There are 60 minutes in an hour, so the minute hand turns 360/60 = 6° per minute. For 45 minutes, $45 \times 6^\circ = 270^\circ$. Alternatively, 45 minutes is $\frac{3}{4}$ of an hour, and $\frac{3}{4}$ of 360° is 270°.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>7.</strong> A pyramid with a triangular base is shown. <br>a. How many faces does it have? <br>b. How many edges does it have? <br>c. How many vertices does it have?</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol7')">Show Answer & Explanation</button>
+        <div id="sol7" class="solution">
+            <p class="answer">Answer: a. 4, b. 6, c. 4</p>
+            <p class="explanation"><strong>Explanation:</strong> A triangular pyramid (tetrahedron) has 1 triangular base and 3 triangular sides, making 4 faces total. It has 3 edges along the base and 3 edges connecting the base to the top point, totaling 6 edges. It has 3 corners on the base and 1 at the top, totaling 4 vertices.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>8.</strong> For the given parallelogram (sides 10 in, 12 in, height 9 in):<br>a. What is the perimeter of this parallelogram? <br>b. What is the area of this parallelogram?</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol8')">Show Answer & Explanation</button>
+        <div id="sol8" class="solution">
+            <p class="answer">Answer: a. 44 in, b. 108 sq in</p>
+            <p class="explanation"><strong>Explanation:</strong><br>a. Perimeter is the distance around the outside. $P = 2 \times (10 + 12) = 2 \times 22 = 44$ inches.<br>b. Area is base $\times$ height. The base is 12 and the perpendicular height is 9. $A = 12 \times 9 = 108$ square inches.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>9.</strong> a. Write $\frac{7}{20}$ as a decimal number. <br>b. Write $\frac{7}{20}$ as a percent.</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol9')">Show Answer & Explanation</button>
+        <div id="sol9" class="solution">
+            <p class="answer">Answer: a. 0.35, b. 35%</p>
+            <p class="explanation"><strong>Explanation:</strong> Convert the fraction to have a denominator of 100 by multiplying numerator and denominator by 5. $\frac{7 \times 5}{20 \times 5} = \frac{35}{100}$. As a decimal, this is 0.35. As a percent, it is 35%.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>10.</strong> The distance between bases in a softball diamond is 60 feet. What is the shortest distance a player could run to score a home run?</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol10')">Show Answer & Explanation</button>
+        <div id="sol10" class="solution">
+            <p class="answer">Answer: 240 feet</p>
+            <p class="explanation"><strong>Explanation:</strong> A home run requires rounding all 4 bases. $4 \text{ bases} \times 60 \text{ feet per base} = 240 \text{ feet}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>11.</strong> Solve: $6 \frac{2}{3} + 1 \frac{3}{4}$</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol11')">Show Answer & Explanation</button>
+        <div id="sol11" class="solution">
+            <p class="answer">Answer: $8 \frac{5}{12}$</p>
+            <p class="explanation"><strong>Explanation:</strong> Find a common denominator, which is 12. <br>$6 \frac{8}{12} + 1 \frac{9}{12} = 7 \frac{17}{12}$. <br>Since $\frac{17}{12}$ is an improper fraction ($1 \frac{5}{12}$), add the 1 to the 7: $7 + 1 \frac{5}{12} = 8 \frac{5}{12}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>12.</strong> Solve: $5 - 1 \frac{2}{5}$</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol12')">Show Answer & Explanation</button>
+        <div id="sol12" class="solution">
+            <p class="answer">Answer: $3 \frac{3}{5}$</p>
+            <p class="explanation"><strong>Explanation:</strong> Borrow 1 from the 5 and write it as a fraction $\frac{5}{5}$. This makes the problem $4 \frac{5}{5} - 1 \frac{2}{5}$. <br>Subtract the whole numbers: $4 - 1 = 3$. <br>Subtract the fractions: $\frac{5}{5} - \frac{2}{5} = \frac{3}{5}$. Result is $3 \frac{3}{5}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>13.</strong> Solve: $4 \frac{1}{4} - 3 \frac{5}{8}$</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol13')">Show Answer & Explanation</button>
+        <div id="sol13" class="solution">
+            <p class="answer">Answer: $\frac{5}{8}$</p>
+            <p class="explanation"><strong>Explanation:</strong> Find a common denominator: 8. <br>$4 \frac{2}{8} - 3 \frac{5}{8}$. We need to borrow because 2 < 5. <br>Borrow 1 from the 4: $3 \frac{10}{8} - 3 \frac{5}{8}$. Subtracting leaves $\frac{5}{8}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>14.</strong> Solve: $3 \times 3 \frac{3}{4} \times 2 \frac{2}{3}$</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol14')">Show Answer & Explanation</button>
+        <div id="sol14" class="solution">
+            <p class="answer">Answer: 30</p>
+            <p class="explanation"><strong>Explanation:</strong> Convert to improper fractions: $\frac{3}{1} \times \frac{15}{4} \times \frac{8}{3}$. <br>Cancel the 3 in the numerator and denominator. Also, divide 8 by 4 to get 2. <br>The expression simplifies to $1 \times 15 \times 2 = 30$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>15.</strong> Solve: $6 \frac{2}{3} \div 100$</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol15')">Show Answer & Explanation</button>
+        <div id="sol15" class="solution">
+            <p class="answer">Answer: $\frac{1}{15}$</p>
+            <p class="explanation"><strong>Explanation:</strong> Convert to improper fractions: $\frac{20}{3} \div \frac{100}{1}$. <br>Multiply by the reciprocal: $\frac{20}{3} \times \frac{1}{100}$. <br>Simplify by dividing 20 and 100 by 20: $\frac{1}{3} \times \frac{1}{5} = \frac{1}{15}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>16.</strong> Solve: $2 \frac{1}{2} \div 3 \frac{3}{4}$</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol16')">Show Answer & Explanation</button>
+        <div id="sol16" class="solution">
+            <p class="answer">Answer: $\frac{2}{3}$</p>
+            <p class="explanation"><strong>Explanation:</strong> Convert to improper fractions: $\frac{5}{2} \div \frac{15}{4}$. <br>Multiply by reciprocal: $\frac{5}{2} \times \frac{4}{15}$. <br>Cross-simplify: 5 and 15 simplify to 1 and 3. 4 and 2 simplify to 2 and 1. <br>Result: $\frac{1}{1} \times \frac{2}{3} = \frac{2}{3}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>17.</strong> Compare: $\frac{9}{20} \bigcirc 50\%$</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol17')">Show Answer & Explanation</button>
+        <div id="sol17" class="solution">
+            <p class="answer">Answer: $\frac{9}{20} < 50\%$</p>
+            <p class="explanation"><strong>Explanation:</strong> Convert $\frac{9}{20}$ to a percent by multiplying by 5/5 to get $\frac{45}{100}$, which is 45%. Since 45% is less than 50%, the correct symbol is $<$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>18.</strong> For the group of 10 circles with 3 shaded: <br>a. What fraction of this group is shaded? <br>b. What percent of this group is shaded?</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol18')">Show Answer & Explanation</button>
+        <div id="sol18" class="solution">
+            <p class="answer">Answer: a. $\frac{3}{10}$, b. 30%</p>
+            <p class="explanation"><strong>Explanation:</strong> There are 3 shaded circles out of a total of 10. The fraction is $\frac{3}{10}$. To convert to a percent, multiply by 10/10 to get $\frac{30}{100} = 30\%$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>19.</strong> If $\frac{5}{6}$ of the 300 seeds sprouted, how many seeds did not sprout?</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol19')">Show Answer & Explanation</button>
+        <div id="sol19" class="solution">
+            <p class="answer">Answer: 50 seeds</p>
+            <p class="explanation"><strong>Explanation:</strong> If $\frac{5}{6}$ sprouted, then $\frac{1}{6}$ did not sprout. Multiply $\frac{1}{6} \times 300 = \frac{300}{6} = 50$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>20.</strong> Solve: $6y = 10$</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol20')">Show Answer & Explanation</button>
+        <div id="sol20" class="solution">
+            <p class="answer">Answer: $y = 1 \frac{2}{3}$</p>
+            <p class="explanation"><strong>Explanation:</strong> Divide both sides by 6 to isolate y: $y = \frac{10}{6}$. Reduce the fraction by dividing by 2 to get $\frac{5}{3}$. Write as a mixed number: $1 \frac{2}{3}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>21.</strong> Solve: $\frac{w}{20} = \frac{12}{15}$</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol21')">Show Answer & Explanation</button>
+        <div id="sol21" class="solution">
+            <p class="answer">Answer: $w = 16$</p>
+            <p class="explanation"><strong>Explanation:</strong> You can simplify $\frac{12}{15}$ to $\frac{4}{5}$. So, $\frac{w}{20} = \frac{4}{5}$. Multiply both sides by 20. $w = \frac{4}{5} \times 20 = 16$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>22.</strong> What is the area of this triangle? (Base = 6 ft, Height = 4 ft)</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol22')">Show Answer & Explanation</button>
+        <div id="sol22" class="solution">
+            <p class="answer">Answer: 12 sq ft</p>
+            <p class="explanation"><strong>Explanation:</strong> Formula for the area of a triangle is $A = \frac{1}{2}bh$. $A = \frac{1}{2}(6)(4) = \frac{1}{2}(24) = 12$ square feet.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>23.</strong> The illustration shows a cube with edges 1 foot long (thus edges are 12 inches long). What is the volume of the cube in cubic inches?</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol23')">Show Answer & Explanation</button>
+        <div id="sol23" class="solution">
+            <p class="answer">Answer: 1728 cubic inches</p>
+            <p class="explanation"><strong>Explanation:</strong> The volume of a cube is $s \times s \times s$. Using inches, $12 \times 12 \times 12 = 144 \times 12 = 1728$ cubic inches.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>24.</strong> Write the prime factorization of 225 using exponents.</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol24')">Show Answer & Explanation</button>
+        <div id="sol24" class="solution">
+            <p class="answer">Answer: $3^2 \times 5^2$</p>
+            <p class="explanation"><strong>Explanation:</strong> Break down 225. It ends in 5, so $225 \div 5 = 45$. Then $45 \div 5 = 9$. Then $9 = 3 \times 3$. The prime factors are 3, 3, 5, 5. Written with exponents: $3^2 \times 5^2$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>25.</strong> The length of segment AC is 56 mm. The length of segment BC is 26 mm. How long is segment AB?</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol25')">Show Answer & Explanation</button>
+        <div id="sol25" class="solution">
+            <p class="answer">Answer: 30 mm</p>
+            <p class="explanation"><strong>Explanation:</strong> Since B is between A and C, $AB + BC = AC$. Therefore, $AB = AC - BC$. $56 \text{ mm} - 26 \text{ mm} = 30 \text{ mm}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>26.</strong> On a number line, $\sqrt{60}$ is between which two consecutive whole numbers?</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol26')">Show Answer & Explanation</button>
+        <div id="sol26" class="solution">
+            <p class="answer">Answer: Between 7 and 8</p>
+            <p class="explanation"><strong>Explanation:</strong> Find the perfect squares closest to 60. $7^2 = 49$ and $8^2 = 64$. Since 60 is between 49 and 64, $\sqrt{60}$ must be between 7 and 8.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>27.</strong> Which whole number equals $\sqrt{225}$?</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol27')">Show Answer & Explanation</button>
+        <div id="sol27" class="solution">
+            <p class="answer">Answer: 15</p>
+            <p class="explanation"><strong>Explanation:</strong> We found the prime factorization of 225 in question 24: $3^2 \times 5^2$. Taking the square root gives $3 \times 5 = 15$. Also, $15 \times 15 = 225$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>28.</strong> A square has vertices at the coordinates $(2, 0), (0, -2), (-2, 0)$, and $(0, 2)$. Graph the points on graph paper, and draw segments from point to point in the order given. To complete the square, draw a fourth segment from $(0, 2)$ to $(2, 0)$.</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol28')">Show Answer & Explanation</button>
+        <div id="sol28" class="solution">
+            <p class="answer">Answer: (See Graph Below)</p>
+            <p class="explanation"><strong>Explanation:</strong> The points form a square rotated 45 degrees, centered at the origin $(0,0)$. Below is an SVG representation of the coordinates graphed on a plane.</p>
+            <svg width="240" height="240" viewBox="-4 -4 8 8" xmlns="http://www.w3.org/2000/svg" style="transform: scale(1, -1);">
+                <line x1="-4" y1="0" x2="4" y2="0" stroke="black" stroke-width="0.05" />
+                <line x1="0" y1="-4" x2="0" y2="4" stroke="black" stroke-width="0.05" />
+                <g stroke="#ccc" stroke-width="0.02">
+                    <line x1="-4" y1="1" x2="4" y2="1"/> <line x1="-4" y1="2" x2="4" y2="2"/> <line x1="-4" y1="3" x2="4" y2="3"/>
+                    <line x1="-4" y1="-1" x2="4" y2="-1"/> <line x1="-4" y1="-2" x2="4" y2="-2"/> <line x1="-4" y1="-3" x2="4" y2="-3"/>
+                    <line x1="1" y1="-4" x2="1" y2="4"/> <line x1="2" y1="-4" x2="2" y2="4"/> <line x1="3" y1="-4" x2="3" y2="4"/>
+                    <line x1="-1" y1="-4" x2="-1" y2="4"/> <line x1="-2" y1="-4" x2="-2" y2="4"/> <line x1="-3" y1="-4" x2="-3" y2="4"/>
+                </g>
+                <polygon points="2,0 0,-2 -2,0 0,2" fill="#3498db" stroke="#2980b9" stroke-width="0.05" opacity="0.6"/>
+                <circle cx="2" cy="0" r="0.15" fill="#e74c3c"/>
+                <circle cx="0" cy="-2" r="0.15" fill="#e74c3c"/>
+                <circle cx="-2" cy="0" r="0.15" fill="#e74c3c"/>
+                <circle cx="0" cy="2" r="0.15" fill="#e74c3c"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>29.</strong> The square in problem 28 encloses some whole squares and some half squares on the graph paper.<br>a. How many whole squares are enclosed by the square? <br>b. How many half squares are enclosed by the square?<br>c. Counting two half squares as a whole square, calculate the area of the entire square.</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol29')">Show Answer & Explanation</button>
+        <div id="sol29" class="solution">
+            <p class="answer">Answer: a. 4, b. 8, c. 8 square units</p>
+            <p class="explanation"><strong>Explanation:</strong> Looking at the grid inside the plotted square, in each quadrant, there is exactly 1 whole 1x1 grid square touching the origin. Above/beside these, the boundary cuts diagonally through the grid, creating 2 half-squares per quadrant. <br>a. $1 \times 4 \text{ quadrants} = 4 \text{ whole squares}$.<br>b. $2 \times 4 \text{ quadrants} = 8 \text{ half squares}$.<br>c. $4 \text{ whole} + (8 \text{ halves} \times \frac{1}{2}) = 4 + 4 = 8 \text{ square units}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>30.</strong> John will toss a coin three times. What is the probability that the coin will land heads up all three times? Express the probability ratio as a fraction and as a decimal.</div>
+        <button class="toggle-btn" onclick="toggleSolution('sol30')">Show Answer & Explanation</button>
+        <div id="sol30" class="solution">
+            <p class="answer">Answer: $\frac{1}{8}$ or 0.125</p>
+            <p class="explanation"><strong>Explanation:</strong> The probability of getting heads on a single toss is $\frac{1}{2}$. Since the tosses are independent events, multiply the probabilities together: $\frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{8}$. To get a decimal, divide 1 by 8 to get 0.125.</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="problem-text"><strong>Real-World Connection:</strong> The square practice field where Raul plays baseball has an area of 820 square yards. Before practice, Raul runs once around the bases to warm up.<br>a. Estimate the distance Raul runs to warm up. Explain how you made your estimate.<br>b. Next week, Raul has to run around the bases twice to warm up for practice. If he practices 3 days next week, estimate the total distance he will run to warm up.</div>
+        <button class="toggle-btn" onclick="toggleSolution('solRW')">Show Answer & Explanation</button>
+        <div id="solRW" class="solution">
+            <p class="answer">Answer: a. ~120 yards, b. ~720 yards</p>
+            <p class="explanation"><strong>Explanation:</strong><br>a. The area is 820 sq yards. Since it's a square, Area = side $\times$ side. The perfect square closest to 820 is 900 ($30 \times 30 = 900$). So we can estimate one side to be roughly 30 yards. Running around all four bases is the perimeter: $4 \times 30 = 120$ yards.<br>b. Running twice around is $2 \times 120 = 240$ yards per day. For 3 days of practice, $240 \times 3 = 720$ yards total.</p>
         </div>
     </div>
 
     <script>
-        function toggleExplanation(expId, btn) {
-            var expDiv = document.getElementById(expId);
-            if (expDiv.style.display === "none" || expDiv.style.display === "") {
-                expDiv.style.display = "block";
-                btn.textContent = "Hide Answer & Explanation";
-                
-                // Tell MathJax to re-render in case it missed equations in hidden divs
-                if (window.MathJax) {
-                    MathJax.typesetPromise([expDiv]);
-                }
+        function toggleSolution(id) {
+            var element = document.getElementById(id);
+            if (element.style.display === "none" || element.style.display === "") {
+                element.style.display = "block";
             } else {
-                expDiv.style.display = "none";
-                btn.textContent = "Show Answer & Explanation";
+                element.style.display = "none";
             }
         }
     </script>
