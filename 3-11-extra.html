@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Practice Quiz</title>
+
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$']],
+      displayMath: [['$$', '$$']]
+    }
+  };
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: #333;
+    line-height: 1.6;
+    background-color: #f4f7f6;
+  }
+  h1 {
+    text-align: center;
+    color: #2c3e50;
+  }
+  h2 {
+    color: #34495e;
+    border-bottom: 2px solid #bdc3c7;
+    padding-bottom: 10px;
+    margin-top: 40px;
+  }
+  .question-container {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  .question-text {
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-bottom: 15px;
+  }
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  .option-btn {
+    background-color: #ecf0f1;
+    border: 2px solid #bdc3c7;
+    color: #2c3e50;
+    padding: 12px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 6px;
+    text-align: left;
+    transition: all 0.2s;
+  }
+  .option-btn:hover {
+    background-color: #e0e6ed;
+    border-color: #95a5a6;
+  }
+  .feedback {
+    display: none;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 15px;
+    font-size: 1.05em;
+  }
+  .feedback.correct {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+  }
+  .feedback.incorrect {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+  }
+  .status-text {
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+    font-size: 1.1em;
+  }
+</style>
+
+<script>
+  function checkAnswer(questionId, isCorrect, btnElement) {
+    // Hide all other feedbacks in this question if any are open
+    const container = btnElement.closest('.question-container');
+    const feedbackDiv = container.querySelector('.feedback');
+    const statusText = container.querySelector('.status-text');
+    
+    // Reset classes
+    feedbackDiv.className = 'feedback';
+    
+    if (isCorrect) {
+      feedbackDiv.classList.add('correct');
+      statusText.innerText = "Correct! Great job.";
+    } else {
+      feedbackDiv.classList.add('incorrect');
+      statusText.innerText = "Incorrect. Let's look at the steps.";
+    }
+    
+    // Show the feedback div
+    feedbackDiv.style.display = 'block';
+  }
+</script>
+</head>
+<body>
+
+  <h1>Extra Practice Problems</h1>
+
+  <h2>Skill: Order of Operations (Like Question 6)</h2>
+
+  <div class="question-container">
+    <div class="question-text">1. Simplify: $3 \cdot 2^2 - \sqrt{16} + (4 - 2)^3$</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="checkAnswer('q6_1', false, this)">A) $12$</button>
+      <button class="option-btn" onclick="checkAnswer('q6_1', true, this)">B) $16$</button>
+      <button class="option-btn" onclick="checkAnswer('q6_1', false, this)">C) $20$</button>
+      <button class="option-btn" onclick="checkAnswer('q6_1', false, this)">D) $10$</button>
+    </div>
+    <div class="feedback">
+      <span class="status-text"></span>
+      <strong>Explanation:</strong> Apply PEMDAS.<br>
+      1. Parentheses: $(4 - 2) = 2$. Equation: $3 \cdot 2^2 - \sqrt{16} + 2^3$<br>
+      2. Exponents/Roots: $2^2 = 4$, $\sqrt{16} = 4$, $2^3 = 8$. Equation: $3 \cdot 4 - 4 + 8$<br>
+      3. Multiply: $3 \cdot 4 = 12$. Equation: $12 - 4 + 8$<br>
+      4. Add/Subtract (left to right): $12 - 4 = 8$, then $8 + 8 = 16$.
+    </div>
+  </div>
+
+  <div class="question-container">
+    <div class="question-text">2. Simplify: $4 \cdot 1^3 + \sqrt{25} - (5 - 3)^2$</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="checkAnswer('q6_2', true, this)">A) $5$</button>
+      <button class="option-btn" onclick="checkAnswer('q6_2', false, this)">B) $9$</button>
+      <button class="option-btn" onclick="checkAnswer('q6_2', false, this)">C) $1$</button>
+      <button class="option-btn" onclick="checkAnswer('q6_2', false, this)">D) $7$</button>
+    </div>
+    <div class="feedback">
+      <span class="status-text"></span>
+      <strong>Explanation:</strong> Apply PEMDAS.<br>
+      1. Parentheses: $(5 - 3) = 2$. Equation: $4 \cdot 1^3 + \sqrt{25} - 2^2$<br>
+      2. Exponents/Roots: $1^3 = 1$, $\sqrt{25} = 5$, $2^2 = 4$. Equation: $4 \cdot 1 + 5 - 4$<br>
+      3. Multiply: $4 \cdot 1 = 4$. Equation: $4 + 5 - 4$<br>
+      4. Add/Subtract: $4 + 5 = 9$, then $9 - 4 = 5$.
+    </div>
+  </div>
+
+  <div class="question-container">
+    <div class="question-text">3. Simplify: $5 \cdot 2^2 - \sqrt{36} + (6 - 5)^4$</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="checkAnswer('q6_3', false, this)">A) $14$</button>
+      <button class="option-btn" onclick="checkAnswer('q6_3', false, this)">B) $16$</button>
+      <button class="option-btn" onclick="checkAnswer('q6_3', true, this)">C) $15$</button>
+      <button class="option-btn" onclick="checkAnswer('q6_3', false, this)">D) $21$</button>
+    </div>
+    <div class="feedback">
+      <span class="status-text"></span>
+      <strong>Explanation:</strong> Apply PEMDAS.<br>
+      1. Parentheses: $(6 - 5) = 1$. Equation: $5 \cdot 2^2 - \sqrt{36} + 1^4$<br>
+      2. Exponents/Roots: $2^2 = 4$, $\sqrt{36} = 6$, $1^4 = 1$. Equation: $5 \cdot 4 - 6 + 1$<br>
+      3. Multiply: $5 \cdot 4 = 20$. Equation: $20 - 6 + 1$<br>
+      4. Add/Subtract: $20 - 6 = 14$, then $14 + 1 = 15$.
+    </div>
+  </div>
+
+
+  <h2>Skill: Adding Mixed Numbers (Like Question 12)</h2>
+
+  <div class="question-container">
+    <div class="question-text">4. Simplify: $5 \frac{3}{4} + 2 \frac{1}{2}$</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="checkAnswer('q12_1', false, this)">A) $7 \frac{4}{6}$</button>
+      <button class="option-btn" onclick="checkAnswer('q12_1', true, this)">B) $8 \frac{1}{4}$</button>
+      <button class="option-btn" onclick="checkAnswer('q12_1', false, this)">C) $7 \frac{1}{4}$</button>
+      <button class="option-btn" onclick="checkAnswer('q12_1', false, this)">D) $8 \frac{1}{2}$</button>
+    </div>
+    <div class="feedback">
+      <span class="status-text"></span>
+      <strong>Explanation:</strong> First, find a common denominator for the fractions, which is 4. <br>
+      Convert $\frac{1}{2}$ to $\frac{2}{4}$. <br>
+      Add the fractions: $\frac{3}{4} + \frac{2}{4} = \frac{5}{4}$.<br>
+      Add the whole numbers: $5 + 2 = 7$.<br>
+      Combine: $7 \frac{5}{4}$. Since $\frac{5}{4} = 1 \frac{1}{4}$, add the 1 to 7 to get $8 \frac{1}{4}$.
+    </div>
+  </div>
+
+  <div class="question-container">
+    <div class="question-text">5. Simplify: $8 \frac{2}{3} + 4 \frac{5}{6}$</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="checkAnswer('q12_2', false, this)">A) $12 \frac{7}{9}$</button>
+      <button class="option-btn" onclick="checkAnswer('q12_2', false, this)">B) $13 \frac{1}{3}$</button>
+      <button class="option-btn" onclick="checkAnswer('q12_2', true, this)">C) $13 \frac{1}{2}$</button>
+      <button class="option-btn" onclick="checkAnswer('q12_2', false, this)">D) $12 \frac{1}{6}$</button>
+    </div>
+    <div class="feedback">
+      <span class="status-text"></span>
+      <strong>Explanation:</strong> Find a common denominator, which is 6.<br>
+      Convert $\frac{2}{3}$ to $\frac{4}{6}$.<br>
+      Add the fractions: $\frac{4}{6} + \frac{5}{6} = \frac{9}{6}$.<br>
+      Add the whole numbers: $8 + 4 = 12$.<br>
+      Combine: $12 \frac{9}{6}$. Simplify the improper fraction: $\frac{9}{6} = 1 \frac{3}{6} = 1 \frac{1}{2}$. Add 1 to 12 to get $13 \frac{1}{2}$.
+    </div>
+  </div>
+
+  <div class="question-container">
+    <div class="question-text">6. Simplify: $7 \frac{4}{5} + 3 \frac{3}{10}$</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="checkAnswer('q12_3', true, this)">A) $11 \frac{1}{10}$</button>
+      <button class="option-btn" onclick="checkAnswer('q12_3', false, this)">B) $10 \frac{7}{15}$</button>
+      <button class="option-btn" onclick="checkAnswer('q12_3', false, this)">C) $10 \frac{1}{10}$</button>
+      <button class="option-btn" onclick="checkAnswer('q12_3', false, this)">D) $11 \frac{3}{10}$</button>
+    </div>
+    <div class="feedback">
+      <span class="status-text"></span>
+      <strong>Explanation:</strong> Find a common denominator, which is 10.<br>
+      Convert $\frac{4}{5}$ to $\frac{8}{10}$.<br>
+      Add the fractions: $\frac{8}{10} + \frac{3}{10} = \frac{11}{10}$.<br>
+      Add the whole numbers: $7 + 3 = 10$.<br>
+      Combine: $10 \frac{11}{10}$. Since $\frac{11}{10} = 1 \frac{1}{10}$, add 1 to 10 to get $11 \frac{1}{10}$.
+    </div>
+  </div>
+
+
+  <h2>Skill: Properties of 3D Figures (Like Question 24)</h2>
+
+  <div class="question-container">
+    <div class="question-text">7. How many vertices (corners) does a rectangular prism have?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="checkAnswer('q24_1', false, this)">A) 6</button>
+      <button class="option-btn" onclick="checkAnswer('q24_1', true, this)">B) 8</button>
+      <button class="option-btn" onclick="checkAnswer('q24_1', false, this)">C) 10</button>
+      <button class="option-btn" onclick="checkAnswer('q24_1', false, this)">D) 12</button>
+    </div>
+    <div class="feedback">
+      <span class="status-text"></span>
+      <strong>Explanation:</strong> A rectangular prism (like a standard box) has 4 corners on the top face and 4 corners on the bottom face, giving a total of 8 vertices.
+    </div>
+  </div>
+
+  <div class="question-container">
+    <div class="question-text">8. How many faces does a cube have?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="checkAnswer('q24_2', false, this)">A) 4</button>
+      <button class="option-btn" onclick="checkAnswer('q24_2', true, this)">B) 6</button>
+      <button class="option-btn" onclick="checkAnswer('q24_2', false, this)">C) 8</button>
+      <button class="option-btn" onclick="checkAnswer('q24_2', false, this)">D) 12</button>
+    </div>
+    <div class="feedback">
+      <span class="status-text"></span>
+      <strong>Explanation:</strong> A cube is a special type of rectangular prism where all sides are equal. Like standard dice, it has 6 flat faces.
+    </div>
+  </div>
+
+  <div class="question-container">
+    <div class="question-text">9. If a 3D shape has 6 rectangular faces, how many edges does it have?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="checkAnswer('q24_3', false, this)">A) 6</button>
+      <button class="option-btn" onclick="checkAnswer('q24_3', false, this)">B) 8</button>
+      <button class="option-btn" onclick="checkAnswer('q24_3', false, this)">C) 10</button>
+      <button class="option-btn" onclick="checkAnswer('q24_3', true, this)">D) 12</button>
+    </div>
+    <div class="feedback">
+      <span class="status-text"></span>
+      <strong>Explanation:</strong> A shape with 6 rectangular faces is a rectangular prism. It has 4 edges around the top base, 4 around the bottom base, and 4 vertical edges connecting the bases, totaling 12 edges.
+    </div>
+  </div>
+
+
+  <h2>Skill: Area of Rectangles with Fractions (Like Question 27)</h2>
+
+  <div class="question-container">
+    <div class="question-text">10. What is the area of a rectangle with a length of $\frac{2}{3}\text{ in.}$ and a width of $\frac{1}{2}\text{ in.}$?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="checkAnswer('q27_1', false, this)">A) $\frac{3}{5}\text{ sq in.}$</button>
+      <button class="option-btn" onclick="checkAnswer('q27_1', false, this)">B) $\frac{1}{6}\text{ sq in.}$</button>
+      <button class="option-btn" onclick="checkAnswer('q27_1', true, this)">C) $\frac{1}{3}\text{ sq in.}$</button>
+      <button class="option-btn" onclick="checkAnswer('q27_1', false, this)">D) $1 \frac{1}{6}\text{ sq in.}$</button>
+    </div>
+    <div class="feedback">
+      <span class="status-text"></span>
+      <strong>Explanation:</strong> The formula for the area of a rectangle is length $\times$ width. <br>
+      $A = \frac{2}{3} \times \frac{1}{2}$. Multiply straight across to get $\frac{2}{6}$. <br>
+      Reduce the fraction by dividing top and bottom by 2: $\frac{1}{3}\text{ sq in.}$
+    </div>
+  </div>
+
+  <div class="question-container">
+    <div class="question-text">11. What is the area of a rectangle with a length of $1 \frac{1}{2}\text{ in.}$ and a width of $\frac{3}{4}\text{ in.}$?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="checkAnswer('q27_2', false, this)">A) $\frac{3}{8}\text{ sq in.}$</button>
+      <button class="option-btn" onclick="checkAnswer('q27_2', true, this)">B) $1 \frac{1}{8}\text{ sq in.}$</button>
+      <button class="option-btn" onclick="checkAnswer('q27_2', false, this)">C) $2 \frac{1}{4}\text{ sq in.}$</button>
+      <button class="option-btn" onclick="checkAnswer('q27_2', false, this)">D) $\frac{9}{4}\text{ sq in.}$</button>
+    </div>
+    <div class="feedback">
+      <span class="status-text"></span>
+      <strong>Explanation:</strong> First, convert the mixed number to an improper fraction: $1 \frac{1}{2} = \frac{3}{2}$. <br>
+      Multiply length by width: $\frac{3}{2} \times \frac{3}{4} = \frac{9}{8}$.<br>
+      Convert back to a mixed number: $\frac{9}{8} = 1 \frac{1}{8}\text{ sq in.}$
+    </div>
+  </div>
+
+  <div class="question-container">
+    <div class="question-text">12. What is the area of a rectangle with a length of $\frac{5}{8}\text{ in.}$ and a width of $2\text{ in.}$?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="checkAnswer('q27_3', true, this)">A) $1 \frac{1}{4}\text{ sq in.}$</button>
+      <button class="option-btn" onclick="checkAnswer('q27_3', false, this)">B) $\frac{7}{8}\text{ sq in.}$</button>
+      <button class="option-btn" onclick="checkAnswer('q27_3', false, this)">C) $2 \frac{5}{8}\text{ sq in.}$</button>
+      <button class="option-btn" onclick="checkAnswer('q27_3', false, this)">D) $\frac{5}{16}\text{ sq in.}$</button>
+    </div>
+    <div class="feedback">
+      <span class="status-text"></span>
+      <strong>Explanation:</strong> Write the whole number as a fraction: $2 = \frac{2}{1}$.<br>
+      Multiply length by width: $\frac{5}{8} \times \frac{2}{1} = \frac{10}{8}$.<br>
+      Reduce the fraction: $\frac{5}{4}$.<br>
+      Convert to a mixed number: $\frac{5}{4} = 1 \frac{1}{4}\text{ sq in.}$
+    </div>
+  </div>
+
+</body>
+</html>
