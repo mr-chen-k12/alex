@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Targeted Practice Quiz</title>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9fafb;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+            color: #2563eb;
+        }
+        .concept-group {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .concept-title {
+            color: #1e40af;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        .question-block:last-child {
+            border-bottom: none;
+        }
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .option-btn {
+            background-color: #f3f4f6;
+            border: 1px solid #d1d5db;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .option-btn:hover {
+            background-color: #e5e7eb;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .option-btn.correct {
+            background-color: #def7ec;
+            border-color: #31c48d;
+            color: #046c4e;
+        }
+        .option-btn.wrong {
+            background-color: #fde8e8;
+            border-color: #f8b4b4;
+            color: #9b1c1c;
+        }
+        .feedback-box {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .feedback-box.show {
+            display: block;
+        }
+        .feedback-correct {
+            background-color: #def7ec;
+            border-left: 4px solid #31c48d;
+        }
+        .feedback-wrong {
+            background-color: #fde8e8;
+            border-left: 4px solid #f98080;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Targeted Practice Quiz</h1>
+    <p style="text-align: center; margin-bottom: 30px;">Practice makes progress! Answer the questions below to strengthen the concepts you missed.</p>
+
+    <div id="quiz-container"></div>
+
+    <script>
+        const quizData = [
+            {
+                concept: "Concept from Q27: Probability & Complements",
+                questions: [
+                    {
+                        q: "What is the probability of rolling a 5 on a standard 6-sided number cube?",
+                        options: ["$1/2$", "$1/5$", "$1/6$", "$5/6$"],
+                        ans: 2,
+                        exp: "There is only one '5' on a standard 6-sided die, and 6 possible outcomes in total. Therefore, the probability is $1/6$."
+                    },
+                    {
+                        q: "What is the probability of rolling a number greater than 4 on a standard number cube?",
+                        options: ["$1/6$", "$1/3$", "$1/2$", "$2/3$"],
+                        ans: 1,
+                        exp: "The numbers greater than 4 are 5 and 6 (two outcomes). $2/6$ simplifies to $1/3$."
+                    },
+                    {
+                        q: "If the probability of it raining tomorrow is 30%, what is the probability of the complement (it NOT raining)?",
+                        options: ["30%", "60%", "70%", "100%"],
+                        ans: 2,
+                        exp: "An event and its complement must add up to 100%. $100\\% - 30\\% = 70\\%$."
+                    }
+                ]
+            },
+            {
+                concept: "Concept from Q30: Fraction Sequences",
+                questions: [
+                    {
+                        q: "Find the rule for this sequence: $1/12, 1/6, 1/4, 1/3, \\dots$",
+                        options: ["Add $1/12$", "Add $1/6$", "Multiply by 2", "Add $1/4$"],
+                        ans: 0,
+                        exp: "Find a common denominator (12). The sequence is $1/12, 2/12, 3/12, 4/12$. The rule is clearly adding $1/12$."
+                    },
+                    {
+                        q: "What is the next number in this sequence: $1/10, 1/5, 3/10, 2/5, \\dots$",
+                        options: ["$1/2$", "$7/10$", "$3/5$", "$9/10$"],
+                        ans: 0,
+                        exp: "Convert to tenths: $1/10, 2/10, 3/10, 4/10$. The rule is adding $1/10$. The next number is $5/10$, which simplifies to $1/2$."
+                    },
+                    {
+                        q: "Find the rule for this sequence: $1/8, 3/8, 5/8, 7/8, \\dots$",
+                        options: ["Add $1/8$", "Add $1/4$", "Add $1/2$", "Multiply by 3"],
+                        ans: 1,
+                        exp: "The sequence adds $2/8$ each time. Simplified, $2/8$ is $1/4$."
+                    }
+                ]
+            },
+            {
+                concept: "Concept from Q25: Estimating Square Roots",
+                questions: [
+                    {
+                        q: "Between which two integers does $\\sqrt{15}$ lie on a number line?",
+                        options: ["2 and 3", "3 and 4", "4 and 5", "14 and 16"],
+                        ans: 1,
+                        exp: "Perfect squares: $\\sqrt{9} = 3$ and $\\sqrt{16} = 4$. Since 15 is between 9 and 16, $\\sqrt{15}$ is between 3 and 4."
+                    },
+                    {
+                        q: "Which integer is $\\sqrt{24}$ closest to?",
+                        options: ["4", "5", "6", "12"],
+                        ans: 1,
+                        exp: "$\\sqrt{25} = 5$. Since 24 is very close to 25, $\\sqrt{24}$ is approximately 4.89, which is closest to 5."
+                    },
+                    {
+                        q: "Between which two integers does $\\sqrt{40}$ lie?",
+                        options: ["5 and 6", "6 and 7", "7 and 8", "19 and 21"],
+                        ans: 1,
+                        exp: "Perfect squares: $\\sqrt{36} = 6$ and $\\sqrt{49} = 7$. 40 is between 36 and 49, so the root is between 6 and 7."
+                    }
+                ]
+            },
+            {
+                concept: "Concept from Q20: Prime Factorization with Exponents",
+                questions: [
+                    {
+                        q: "What is the prime factorization of 120 using exponents?",
+                        options: ["$2^2 \\cdot 3 \\cdot 10$", "$2^3 \\cdot 3 \\cdot 5$", "$2^2 \\cdot 5 \\cdot 6$", "$2 \\cdot 3^2 \\cdot 5$"],
+                        ans: 1,
+                        exp: "$120 = 12 \\times 10 = (4 \\times 3) \\times (2 \\times 5) = (2 \\times 2 \\times 3) \\times (2 \\times 5) = 2^3 \\cdot 3 \\cdot 5$."
+                    },
+                    {
+                        q: "What is the prime factorization of 50?",
+                        options: ["$2 \\cdot 5^2$", "$2^2 \\cdot 5$", "$5 \\cdot 10$", "$2 \\cdot 25$"],
+                        ans: 0,
+                        exp: "$50 = 2 \\times 25$. 25 breaks down to $5 \\times 5$. So, $2 \\cdot 5^2$."
+                    },
+                    {
+                        q: "What is the prime factorization of 36?",
+                        options: ["$2 \\cdot 3^3$", "$6^2$", "$2^2 \\cdot 3^2$", "$4 \\cdot 9$"],
+                        ans: 2,
+                        exp: "$36 = 4 \\times 9 = (2 \\times 2) \\times (3 \\times 3) = 2^2 \\cdot 3^2$."
+                    }
+                ]
+            },
+            {
+                concept: "Concept from Q16: Fraction of a Number as a Mixed Number",
+                questions: [
+                    {
+                        q: "What mixed number is $5/8$ of 100?",
+                        options: ["$60 \\frac{1}{2}$", "$62 \\frac{1}{2}$", "$65 \\frac{1}{4}$", "$12 \\frac{1}{2}$"],
+                        ans: 1,
+                        exp: "$(5/8) \\times 100 = 500/8$. Simplify by dividing by 4: $125/2$. As a mixed number: $62 \\frac{1}{2}$."
+                    },
+                    {
+                        q: "What mixed number is $1/6$ of 100?",
+                        options: ["$16 \\frac{2}{3}$", "$16 \\frac{1}{6}$", "$15 \\frac{1}{3}$", "$33 \\frac{1}{3}$"],
+                        ans: 0,
+                        exp: "$(1/6) \\times 100 = 100/6$. Simplify: $50/3$. As a mixed number: $16 \\frac{2}{3}$."
+                    },
+                    {
+                        q: "What mixed number is $2/3$ of 100?",
+                        options: ["$33 \\frac{1}{3}$", "$66 \\frac{1}{3}$", "$66 \\frac{2}{3}$", "$99 \\frac{1}{3}$"],
+                        ans: 2,
+                        exp: "$(2/3) \\times 100 = 200/3$. $200 \\div 3 = 66$ with a remainder of 2. So, $66 \\frac{2}{3}$."
+                    }
+                ]
+            },
+            {
+                concept: "Concept from Q13: Solving Equations with Mixed Numbers",
+                questions: [
+                    {
+                        q: "Find the unknown number: $x + 1 \\frac{1}{2} = 3 \\frac{1}{4}$",
+                        options: ["$1 \\frac{3}{4}$", "$2 \\frac{1}{4}$", "$1 \\frac{1}{4}$", "$4 \\frac{3}{4}$"],
+                        ans: 0,
+                        exp: "$x = 3 \\frac{1}{4} - 1 \\frac{1}{2}$. Convert to improper: $13/4 - 3/2 = 13/4 - 6/4 = 7/4 = 1 \\frac{3}{4}$."
+                    },
+                    {
+                        q: "Find the unknown number: $y + 2 \\frac{2}{3} = 5 \\frac{1}{6}$",
+                        options: ["$2 \\frac{1}{2}$", "$3 \\frac{1}{2}$", "$2 \\frac{1}{6}$", "$7 \\frac{5}{6}$"],
+                        ans: 0,
+                        exp: "$y = 5 \\frac{1}{6} - 2 \\frac{2}{3} = 31/6 - 8/3 = 31/6 - 16/6 = 15/6$. Simplify to $5/2 = 2 \\frac{1}{2}$."
+                    },
+                    {
+                        q: "Find the unknown number: $m + 3 \\frac{1}{4} = 6 \\frac{1}{8}$",
+                        options: ["$2 \\frac{3}{4}$", "$3 \\frac{1}{8}$", "$2 \\frac{7}{8}$", "$3 \\frac{7}{8}$"],
+                        ans: 2,
+                        exp: "$m = 6 \\frac{1}{8} - 3 \\frac{1}{4} = 49/8 - 13/4 = 49/8 - 26/8 = 23/8 = 2 \\frac{7}{8}$."
+                    }
+                ]
+            },
+            {
+                concept: "Concept from Q10: Multiplying Square Roots",
+                questions: [
+                    {
+                        q: "Evaluate: $\\sqrt{16} \\cdot \\sqrt{25}$",
+                        options: ["18", "20", "41", "400"],
+                        ans: 1,
+                        exp: "$\\sqrt{16} = 4$ and $\\sqrt{25} = 5$. Multiply them: $4 \\times 5 = 20$."
+                    },
+                    {
+                        q: "Evaluate: $\\sqrt{4} \\cdot \\sqrt{81}$",
+                        options: ["18", "22", "36", "85"],
+                        ans: 0,
+                        exp: "$\\sqrt{4} = 2$ and $\\sqrt{81} = 9$. Multiply them: $2 \\times 9 = 18$."
+                    },
+                    {
+                        q: "Evaluate: $\\sqrt{36} \\cdot \\sqrt{49}$",
+                        options: ["42", "67", "85", "1764"],
+                        ans: 0,
+                        exp: "$\\sqrt{36} = 6$ and $\\sqrt{49} = 7$. Multiply them: $6 \\times 7 = 42$."
+                    }
+                ]
+            },
+            {
+                concept: "Concept from Q8: Cubing Decimals",
+                questions: [
+                    {
+                        q: "Evaluate: $(0.2)^3$",
+                        options: ["$0.6$", "$0.08$", "$0.008$", "$0.0008$"],
+                        ans: 2,
+                        exp: "$0.2 \\times 0.2 \\times 0.2$. $2^3 = 8$, and there are 3 decimal places in total, so $0.008$."
+                    },
+                    {
+                        q: "Evaluate: $(0.4)^3$",
+                        options: ["$1.2$", "$0.16$", "$0.064$", "$0.64$"],
+                        ans: 2,
+                        exp: "$0.4 \\times 0.4 \\times 0.4$. $4^3 = 64$. Move the decimal 3 places left: $0.064$."
+                    },
+                    {
+                        q: "Evaluate: $(0.1)^4$",
+                        options: ["$0.4$", "$0.01$", "$0.001$", "$0.0001$"],
+                        ans: 3,
+                        exp: "$0.1 \\times 0.1 \\times 0.1 \\times 0.1 = 0.0001$ (four decimal places)."
+                    }
+                ]
+            },
+            {
+                concept: "Concept from Q3: Averages and Sums",
+                questions: [
+                    {
+                        q: "If the sum of 5 numbers is 125, what is their average?",
+                        options: ["20", "25", "30", "625"],
+                        ans: 1,
+                        exp: "Average = Sum $\\div$ Number of items. $125 \\div 5 = 25$."
+                    },
+                    {
+                        q: "If the sum of 3 numbers is 87, what is their average?",
+                        options: ["27", "28", "29", "30"],
+                        ans: 2,
+                        exp: "$87 \\div 3 = 29$."
+                    },
+                    {
+                        q: "If the sum of 6 numbers is 240, what is their average?",
+                        options: ["40", "60", "80", "1440"],
+                        ans: 0,
+                        exp: "$240 \\div 6 = 40$."
+                    }
+                ]
+            },
+            {
+                concept: "Concept from Q5: Fractions to Percents",
+                questions: [
+                    {
+                        q: "Write $7/20$ as a percent.",
+                        options: ["7%", "14%", "35%", "70%"],
+                        ans: 2,
+                        exp: "Multiply the top and bottom by 5 to get a denominator of 100. $(7 \\times 5) / (20 \\times 5) = 35/100 = 35\\%$."
+                    },
+                    {
+                        q: "Write $3/50$ as a percent.",
+                        options: ["3%", "6%", "30%", "60%"],
+                        ans: 1,
+                        exp: "Multiply top and bottom by 2. $(3 \\times 2) / (50 \\times 2) = 6/100 = 6\\%$."
+                    },
+                    {
+                        q: "Write $11/25$ as a percent.",
+                        options: ["11%", "22%", "44%", "55%"],
+                        ans: 2,
+                        exp: "Multiply top and bottom by 4. $(11 \\times 4) / (25 \\times 4) = 44/100 = 44\\%$."
+                    }
+                ]
+            },
+            {
+                concept: "Concept from Q2: Independent Probability",
+                questions: [
+                    {
+                        q: "If you randomly guess on two True/False questions, what is the probability you get both correct?",
+                        options: ["$1/2$", "$1/4$", "$1/8$", "$1/16$"],
+                        ans: 1,
+                        exp: "Probability of 1 correct guess is $1/2$. For both: $1/2 \\times 1/2 = 1/4$."
+                    },
+                    {
+                        q: "What is the probability of flipping a coin and getting 'Heads' three times in a row?",
+                        options: ["$1/3$", "$1/6$", "$1/8$", "$3/8$"],
+                        ans: 2,
+                        exp: "$1/2 \\times 1/2 \\times 1/2 = 1/8$."
+                    },
+                    {
+                        q: "You randomly guess on a multiple-choice question (A, B, C, D) and a True/False question. Probability of getting both right?",
+                        options: ["$1/4$", "$1/6$", "$1/8$", "$1/16$"],
+                        ans: 2,
+                        exp: "MC probability = $1/4$. T/F probability = $1/2$. Combined: $1/4 \\times 1/2 = 1/8$."
+                    }
+                ]
+            },
+            {
+                concept: "Concept from Q12: Ratios from Word Problems",
+                questions: [
+                    {
+                        q: "15 members of a 20-person club voted yes. What is the ratio of 'no' votes to 'yes' votes?",
+                        options: ["1 to 3", "3 to 1", "1 to 4", "3 to 4"],
+                        ans: 0,
+                        exp: "Total = 20, Yes = 15, so No = 5. Ratio of No to Yes is $5:15$. Divide both by 5 to get $1:3$."
+                    },
+                    {
+                        q: "There are 8 boys in a class of 20 students. What is the ratio of girls to boys?",
+                        options: ["2 to 3", "3 to 2", "2 to 5", "3 to 5"],
+                        ans: 1,
+                        exp: "Total = 20, Boys = 8, so Girls = 12. Ratio of Girls to Boys is $12:8$. Divide by 4 to get $3:2$."
+                    },
+                    {
+                        q: "An animal shelter has 18 pets total. 12 are cats, and the rest are dogs. What is the ratio of dogs to cats?",
+                        options: ["1 to 2", "2 to 1", "1 to 3", "2 to 3"],
+                        ans: 0,
+                        exp: "Total = 18, Cats = 12, so Dogs = 6. Ratio of Dogs to Cats is $6:12$. Divide by 6 to get $1:2$."
+                    }
+                ]
+            }
+        ];
+
+        const container = document.getElementById('quiz-container');
+
+        quizData.forEach((section, sIndex) => {
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'concept-group';
+            
+            const title = document.createElement('h2');
+            title.className = 'concept-title';
+            title.textContent = section.concept;
+            sectionDiv.appendChild(title);
+
+            section.questions.forEach((q, qIndex) => {
+                const qBlock = document.createElement('div');
+                qBlock.className = 'question-block';
+
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.innerHTML = `${qIndex + 1}. ${q.q}`;
+                qBlock.appendChild(qText);
+
+                const optionsGrid = document.createElement('div');
+                optionsGrid.className = 'options-grid';
+
+                const feedbackBox = document.createElement('div');
+                feedbackBox.className = 'feedback-box';
+                feedbackBox.id = `feedback-${sIndex}-${qIndex}`;
+
+                q.options.forEach((opt, oIndex) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerHTML = opt;
+                    
+                    btn.onclick = function() {
+                        // Disable all buttons in this grid
+                        const allBtns = optionsGrid.querySelectorAll('.option-btn');
+                        allBtns.forEach(b => b.disabled = true);
+
+                        // Check answer
+                        const isCorrect = (oIndex === q.ans);
+                        
+                        if(isCorrect) {
+                            btn.classList.add('correct');
+                            feedbackBox.classList.add('show', 'feedback-correct');
+                            feedbackBox.innerHTML = `<strong>Correct!</strong> <br>${q.exp}`;
+                        } else {
+                            btn.classList.add('wrong');
+                            // Highlight the correct one
+                            allBtns[q.ans].classList.add('correct');
+                            feedbackBox.classList.add('show', 'feedback-wrong');
+                            feedbackBox.innerHTML = `<strong>Incorrect.</strong> <br>${q.exp}`;
+                        }
+                        
+                        // Tell MathJax to render math in the newly visible feedback
+                        if (window.MathJax) {
+                            MathJax.typesetPromise([feedbackBox]).catch(function (err) {
+                                console.log('MathJax rendering error: ' + err.message);
+                            });
+                        }
+                    };
+                    optionsGrid.appendChild(btn);
+                });
+
+                qBlock.appendChild(optionsGrid);
+                qBlock.appendChild(feedbackBox);
+                sectionDiv.appendChild(qBlock);
+            });
+
+            container.appendChild(sectionDiv);
+        });
+
+        // Trigger MathJax to process the initially injected questions once the window loads
+        window.onload = () => {
+            if (window.MathJax) {
+                MathJax.typesetPromise().catch(function (err) {
+                    console.log('MathJax initial rendering error: ' + err.message);
+                });
+            }
+        };
+    </script>
+</body>
+</html>
