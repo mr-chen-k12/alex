@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice Problems</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            background-color: #f4f7f6;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .section {
+            background-color: #fff;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .problem-container {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        .problem-container:last-child {
+            border-bottom: none;
+        }
+        .question {
+            font-weight: 500;
+            font-size: 1.05em;
+        }
+        .sub-question {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        .btn-toggle {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+        .btn-toggle:hover {
+            background-color: #2980b9;
+        }
+        .answer-box {
+            display: none;
+            margin-top: 15px;
+            padding: 15px 20px;
+            background-color: #e8f6f3;
+            border-left: 4px solid #1abc9c;
+            border-radius: 4px;
+        }
+        .stem-leaf {
+            font-family: monospace;
+            white-space: pre;
+            background: #fff;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: inline-block;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function toggleAnswer(id) {
+            var element = document.getElementById(id);
+            var button = document.getElementById('btn-' + id);
+            if (element.style.display === "none" || element.style.display === "") {
+                element.style.display = "block";
+                button.textContent = "Hide Answer & Explanation";
+            } else {
+                element.style.display = "none";
+                button.textContent = "Show Answer & Explanation";
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Math Course Practice Problems</h1>
+
+    <div class="section">
+        <h2>Lesson Practice</h2>
+        
+        <div class="problem-container">
+            <div class="question">a. One side of an equilateral triangle measures 15 cm. What is the perimeter of the triangle?</div>
+            <button id="btn-lp-a" class="btn-toggle" onclick="toggleAnswer('lp-a')">Show Answer & Explanation</button>
+            <div id="lp-a" class="answer-box">
+                <strong>Answer:</strong> 45 cm<br>
+                <strong>Explanation:</strong> An equilateral triangle has three sides of equal length. To find the perimeter, multiply the side length by 3. \( 15 \text{ cm} \times 3 = 45 \text{ cm} \).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">b. Verify: "An equilateral triangle is also an acute triangle." True or false?</div>
+            <button id="btn-lp-b" class="btn-toggle" onclick="toggleAnswer('lp-b')">Show Answer & Explanation</button>
+            <div id="lp-b" class="answer-box">
+                <strong>Answer:</strong> True<br>
+                <strong>Explanation:</strong> All three angles in an equilateral triangle are exactly 60°. Since 60° is less than 90°, all the angles are acute, making it an acute triangle.
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">c. Verify: "All acute triangles are equilateral triangles." True or false?</div>
+            <button id="btn-lp-c" class="btn-toggle" onclick="toggleAnswer('lp-c')">Show Answer & Explanation</button>
+            <div id="lp-c" class="answer-box">
+                <strong>Answer:</strong> False<br>
+                <strong>Explanation:</strong> An acute triangle just needs all its angles to be less than 90°. For example, a triangle with angles 50°, 60°, and 70° is acute, but its sides are not equal, so it is not equilateral.
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">d. Two sides of a triangle measure 3 inches and 4 inches. If the perimeter is 10 inches, what type of triangle is it?</div>
+            <button id="btn-lp-d" class="btn-toggle" onclick="toggleAnswer('lp-d')">Show Answer & Explanation</button>
+            <div id="lp-d" class="answer-box">
+                <strong>Answer:</strong> Isosceles triangle<br>
+                <strong>Explanation:</strong> The sum of the two known sides is \(3 + 4 = 7\) inches. Since the perimeter is 10 inches, the third side must be \(10 - 7 = 3\) inches. The triangle has sides of 3, 3, and 4 inches. Because two sides are equal, it is an isosceles triangle.
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">e. Verify: "Every right triangle is a scalene triangle." True or false?</div>
+            <button id="btn-lp-e" class="btn-toggle" onclick="toggleAnswer('lp-e')">Show Answer & Explanation</button>
+            <div id="lp-e" class="answer-box">
+                <strong>Answer:</strong> False<br>
+                <strong>Explanation:</strong> A right triangle can also be an isosceles triangle. For example, a right triangle with angles 45°, 45°, and 90° has two equal sides. Therefore, not every right triangle is scalene (all sides different).
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Written Practice</h2>
+
+        <div class="problem-container">
+            <div class="question">1. The ratio of the length to the width of the rectangular lot was 5 to 2. If the lot was 60 ft wide, how long was the lot?</div>
+            <button id="btn-wp-1" class="btn-toggle" onclick="toggleAnswer('wp-1')">Show Answer & Explanation</button>
+            <div id="wp-1" class="answer-box">
+                <strong>Answer:</strong> 150 ft<br>
+                <strong>Explanation:</strong> Set up a proportion: \(\frac{\text{Length}}{\text{Width}} = \frac{5}{2}\). Since Width = 60, we have \(\frac{L}{60} = \frac{5}{2}\). Cross multiply: \(2L = 300\). Divide by 2: \(L = 150\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">2. Mitch does not know the correct answer to two multiple-choice questions. The choices are A, B, C, and D. If Mitch just guesses, what is the probability that Mitch will guess both answers correctly?</div>
+            <button id="btn-wp-2" class="btn-toggle" onclick="toggleAnswer('wp-2')">Show Answer & Explanation</button>
+            <div id="wp-2" class="answer-box">
+                <strong>Answer:</strong> \(\frac{1}{16}\)<br>
+                <strong>Explanation:</strong> The probability of guessing one question correctly is \(\frac{1}{4}\). The events are independent, so multiply the probabilities: \(\frac{1}{4} \times \frac{1}{4} = \frac{1}{16}\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">3. If the sum of four numbers is 144, what is the average of the four numbers?</div>
+            <button id="btn-wp-3" class="btn-toggle" onclick="toggleAnswer('wp-3')">Show Answer & Explanation</button>
+            <div id="wp-3" class="answer-box">
+                <strong>Answer:</strong> 36<br>
+                <strong>Explanation:</strong> Average is calculated by dividing the sum of the numbers by the quantity of numbers. \(144 \div 4 = 36\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">4. The rectangular prism shown below is constructed of 1-cubic-centimeter blocks. What is the volume of the prism?</div>
+            <button id="btn-wp-4" class="btn-toggle" onclick="toggleAnswer('wp-4')">Show Answer & Explanation</button>
+            <div id="wp-4" class="answer-box">
+                <strong>Answer:</strong> 36 cm³<br>
+                <strong>Explanation:</strong> By counting the blocks in the image, the prism is 4 blocks wide, 3 blocks deep, and 3 blocks high. Volume = length × width × height = \(4 \times 3 \times 3 = 36\) blocks. Since each block is 1 cm³, the volume is 36 cm³.
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">5. Write \(\frac{9}{25}\) as a decimal number and as a percent.</div>
+            <button id="btn-wp-5" class="btn-toggle" onclick="toggleAnswer('wp-5')">Show Answer & Explanation</button>
+            <div id="wp-5" class="answer-box">
+                <strong>Answer:</strong> 0.36 and 36%<br>
+                <strong>Explanation:</strong> Multiply the numerator and denominator by 4 to get a denominator of 100. \(\frac{9 \times 4}{25 \times 4} = \frac{36}{100}\). As a decimal, this is \(0.36\). As a percent, it is \(36\%\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">6. Write \(3 \frac{1}{5}\) as a decimal number and add it to 3.5. What is the sum?</div>
+            <button id="btn-wp-6" class="btn-toggle" onclick="toggleAnswer('wp-6')">Show Answer & Explanation</button>
+            <div id="wp-6" class="answer-box">
+                <strong>Answer:</strong> 6.7<br>
+                <strong>Explanation:</strong> First, convert \(3 \frac{1}{5}\) to a decimal. \(\frac{1}{5} = 0.2\), so \(3 \frac{1}{5} = 3.2\). Then add: \(3.2 + 3.5 = 6.7\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">7. What number is 45% of 80?</div>
+            <button id="btn-wp-7" class="btn-toggle" onclick="toggleAnswer('wp-7')">Show Answer & Explanation</button>
+            <div id="wp-7" class="answer-box">
+                <strong>Answer:</strong> 36<br>
+                <strong>Explanation:</strong> Convert 45% to a decimal (0.45) and multiply by 80. \(0.45 \times 80 = 36\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">8. \((0.3)^3\)</div>
+            <button id="btn-wp-8" class="btn-toggle" onclick="toggleAnswer('wp-8')">Show Answer & Explanation</button>
+            <div id="wp-8" class="answer-box">
+                <strong>Answer:</strong> 0.027<br>
+                <strong>Explanation:</strong> \((0.3) \times (0.3) \times (0.3) = 0.09 \times 0.3 = 0.027\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">9. \((2 \frac{1}{2})^2\)</div>
+            <button id="btn-wp-9" class="btn-toggle" onclick="toggleAnswer('wp-9')">Show Answer & Explanation</button>
+            <div id="wp-9" class="answer-box">
+                <strong>Answer:</strong> \(6 \frac{1}{4}\) or 6.25<br>
+                <strong>Explanation:</strong> Convert to an improper fraction: \(\frac{5}{2}\). Square it: \((\frac{5}{2})^2 = \frac{25}{4}\). Convert back to a mixed number: \(6 \frac{1}{4}\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">10. \(\sqrt{9} \cdot \sqrt{100}\)</div>
+            <button id="btn-wp-10" class="btn-toggle" onclick="toggleAnswer('wp-10')">Show Answer & Explanation</button>
+            <div id="wp-10" class="answer-box">
+                <strong>Answer:</strong> 30<br>
+                <strong>Explanation:</strong> Evaluate the square roots first: \(\sqrt{9} = 3\) and \(\sqrt{100} = 10\). Then multiply: \(3 \times 10 = 30\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">11. Twenty of the two dozen members voted yes. What fraction of the members voted yes?</div>
+            <button id="btn-wp-11" class="btn-toggle" onclick="toggleAnswer('wp-11')">Show Answer & Explanation</button>
+            <div id="wp-11" class="answer-box">
+                <strong>Answer:</strong> \(\frac{5}{6}\)<br>
+                <strong>Explanation:</strong> Two dozen equals \(2 \times 12 = 24\) total members. 20 voted yes. The fraction is \(\frac{20}{24}\). Divide top and bottom by 4 to simplify: \(\frac{5}{6}\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">12. If the rest of the members in problem 11 voted no, then what was the ratio of "no" votes to "yes" votes?</div>
+            <button id="btn-wp-12" class="btn-toggle" onclick="toggleAnswer('wp-12')">Show Answer & Explanation</button>
+            <div id="wp-12" class="answer-box">
+                <strong>Answer:</strong> 1 to 5 (or 1:5)<br>
+                <strong>Explanation:</strong> Total members = 24. Yes votes = 20. No votes = \(24 - 20 = 4\). The ratio of no to yes is \(4:20\). Simplify by dividing by 4 to get \(1:5\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">13. Find the unknown number: \(w + 4 \frac{3}{4} = 9 \frac{1}{3}\)</div>
+            <button id="btn-wp-13" class="btn-toggle" onclick="toggleAnswer('wp-13')">Show Answer & Explanation</button>
+            <div id="wp-13" class="answer-box">
+                <strong>Answer:</strong> \(4 \frac{7}{12}\)<br>
+                <strong>Explanation:</strong> Subtract \(4 \frac{3}{4}\) from both sides: \(w = 9 \frac{1}{3} - 4 \frac{3}{4}\). Convert to improper fractions: \(\frac{28}{3} - \frac{19}{4}\). Find a common denominator (12): \(\frac{112}{12} - \frac{57}{12} = \frac{55}{12}\). Convert back to a mixed number: \(4 \frac{7}{12}\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">14. Find the unknown number: \(\frac{6}{5} = \frac{m}{30}\)</div>
+            <button id="btn-wp-14" class="btn-toggle" onclick="toggleAnswer('wp-14')">Show Answer & Explanation</button>
+            <div id="wp-14" class="answer-box">
+                <strong>Answer:</strong> 36<br>
+                <strong>Explanation:</strong> Cross multiply: \(5m = 6 \times 30 \rightarrow 5m = 180\). Divide by 5: \(m = 36\). (Alternatively, note that the denominator is multiplied by 6 (\(5 \times 6 = 30\)), so multiply the numerator by 6: \(6 \times 6 = 36\)).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">15. In what type of triangle are all three sides the same length?</div>
+            <button id="btn-wp-15" class="btn-toggle" onclick="toggleAnswer('wp-15')">Show Answer & Explanation</button>
+            <div id="wp-15" class="answer-box">
+                <strong>Answer:</strong> Equilateral triangle<br>
+                <strong>Explanation:</strong> By definition, a triangle with all three sides of equal length is an equilateral triangle.
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">16. What mixed number is \(\frac{3}{8}\) of 100?</div>
+            <button id="btn-wp-16" class="btn-toggle" onclick="toggleAnswer('wp-16')">Show Answer & Explanation</button>
+            <div id="wp-16" class="answer-box">
+                <strong>Answer:</strong> \(37 \frac{1}{2}\)<br>
+                <strong>Explanation:</strong> Multiply \(\frac{3}{8}\) by 100: \(\frac{3}{8} \times \frac{100}{1} = \frac{300}{8}\). Simplify the fraction: \(\frac{75}{2}\). Convert to a mixed number: \(37 \frac{1}{2}\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">17. Analyze: \(10 + 6^2 \div 3 - \sqrt{9} \times 3\)</div>
+            <button id="btn-wp-17" class="btn-toggle" onclick="toggleAnswer('wp-17')">Show Answer & Explanation</button>
+            <div id="wp-17" class="answer-box">
+                <strong>Answer:</strong> 13<br>
+                <strong>Explanation:</strong> Use order of operations (PEMDAS).<br>
+                Exponents and Roots: \(6^2 = 36\), \(\sqrt{9} = 3\). The expression is now \(10 + 36 \div 3 - 3 \times 3\).<br>
+                Multiplication and Division (left to right): \(36 \div 3 = 12\), and \(3 \times 3 = 9\). Expression is now \(10 + 12 - 9\).<br>
+                Addition and Subtraction (left to right): \(10 + 12 = 22\), and \(22 - 9 = 13\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">18. A triangular prism has how many faces?</div>
+            <button id="btn-wp-18" class="btn-toggle" onclick="toggleAnswer('wp-18')">Show Answer & Explanation</button>
+            <div id="wp-18" class="answer-box">
+                <strong>Answer:</strong> 5 faces<br>
+                <strong>Explanation:</strong> A triangular prism has 2 triangular bases and 3 rectangular sides connecting the corresponding sides of the bases. \(2 + 3 = 5\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">19. How many quarts of milk is \(2 \frac{1}{2}\) gallons of milk?</div>
+            <button id="btn-wp-19" class="btn-toggle" onclick="toggleAnswer('wp-19')">Show Answer & Explanation</button>
+            <div id="wp-19" class="answer-box">
+                <strong>Answer:</strong> 10 quarts<br>
+                <strong>Explanation:</strong> There are 4 quarts in 1 gallon. Multiply \(2.5\) gallons by 4. \(2.5 \times 4 = 10\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">20. Use a factor tree to find the prime factors of 800. Then write the prime factorization of 800 using exponents.</div>
+            <button id="btn-wp-20" class="btn-toggle" onclick="toggleAnswer('wp-20')">Show Answer & Explanation</button>
+            <div id="wp-20" class="answer-box">
+                <strong>Answer:</strong> \(2^5 \times 5^2\)<br>
+                <strong>Explanation:</strong> Break down 800:<br>
+                800 = 8 × 100<br>
+                8 = 2 × 2 × 2 (\(2^3\))<br>
+                100 = 10 × 10 = (2 × 5) × (2 × 5) = \(2^2 \times 5^2\)<br>
+                Combine them: \(2^3 \times 2^2 \times 5^2 = 2^5 \times 5^2\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">21. Round the decimal number one hundred twenty-five thousandths to the nearest tenth.</div>
+            <button id="btn-wp-21" class="btn-toggle" onclick="toggleAnswer('wp-21')">Show Answer & Explanation</button>
+            <div id="wp-21" class="answer-box">
+                <strong>Answer:</strong> 0.1<br>
+                <strong>Explanation:</strong> "One hundred twenty-five thousandths" is written as 0.125. The digit in the tenths place is 1. The digit to its right (hundredths) is 2, which is less than 5, so we round down (keep the 1 the same). The answer is 0.1.
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">22. \(0.08n = \$1.20\)</div>
+            <button id="btn-wp-22" class="btn-toggle" onclick="toggleAnswer('wp-22')">Show Answer & Explanation</button>
+            <div id="wp-22" class="answer-box">
+                <strong>Answer:</strong> \(n = 15\)<br>
+                <strong>Explanation:</strong> Divide both sides by 0.08: \(n = \frac{1.20}{0.08}\). To simplify, multiply top and bottom by 100: \(n = \frac{120}{8} = 15\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">23. The diagonal segment through this rectangle divides the rectangle into two congruent right triangles. What is the area of one of the triangles? (Rectangle dimensions: 26 mm by 18 mm)</div>
+            <button id="btn-wp-23" class="btn-toggle" onclick="toggleAnswer('wp-23')">Show Answer & Explanation</button>
+            <div id="wp-23" class="answer-box">
+                <strong>Answer:</strong> 234 mm²<br>
+                <strong>Explanation:</strong> The area of the entire rectangle is \(26 \times 18 = 468 \text{ mm}^2\). Since the diagonal divides it into two congruent triangles, the area of one triangle is half the rectangle's area: \(468 \div 2 = 234 \text{ mm}^2\). Alternatively, use the triangle area formula: \(A = \frac{1}{2}bh = \frac{1}{2}(26)(18) = 13 \times 18 = 234 \text{ mm}^2\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">24. Write \(\frac{17}{20}\) as a percent.</div>
+            <button id="btn-wp-24" class="btn-toggle" onclick="toggleAnswer('wp-24')">Show Answer & Explanation</button>
+            <div id="wp-24" class="answer-box">
+                <strong>Answer:</strong> 85%<br>
+                <strong>Explanation:</strong> Multiply the numerator and denominator by 5 to get a denominator of 100. \(\frac{17 \times 5}{20 \times 5} = \frac{85}{100}\), which is 85%.
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">25. On this number line the arrow could be pointing to which of the following? (Arrow is located slightly before 1.5, between 1 and 2)<br>
+            A) \(\sqrt{1}\)<br>
+            B) \(\sqrt{2}\)<br>
+            C) \(\sqrt{3}\)<br>
+            D) \(\sqrt{4}\)</div>
+            <button id="btn-wp-25" class="btn-toggle" onclick="toggleAnswer('wp-25')">Show Answer & Explanation</button>
+            <div id="wp-25" class="answer-box">
+                <strong>Answer:</strong> B) \(\sqrt{2}\)<br>
+                <strong>Explanation:</strong> \(\sqrt{1} = 1\) and \(\sqrt{4} = 2\). The arrow is between 1 and 2, but closer to 1 (approximately 1.4). \(\sqrt{2}\) is roughly 1.414, and \(\sqrt{3}\) is roughly 1.732. The visual position best matches \(\sqrt{2}\).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">26. Write this number in standard notation: \((7 \times 10^9) + (2 \times 10^8) + (5 \times 10^7)\)</div>
+            <button id="btn-wp-26" class="btn-toggle" onclick="toggleAnswer('wp-26')">Show Answer & Explanation</button>
+            <div id="wp-26" class="answer-box">
+                <strong>Answer:</strong> 7,250,000,000<br>
+                <strong>Explanation:</strong> Expand each term: \(7,000,000,000 + 200,000,000 + 50,000,000\). Adding them together places the 7 in the billions place, 2 in the hundred-millions place, and 5 in the ten-millions place.
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">27. <br>
+                <div class="sub-question">a. What is the probability of rolling a 6 with a single roll of a number cube?</div>
+                <div class="sub-question">b. What is the probability of rolling a number less than 6 with a single roll of a number cube?</div>
+                <div class="sub-question">c. Name the event and its complement. Then describe the relationship between the two probabilities.</div>
+            </div>
+            <button id="btn-wp-27" class="btn-toggle" onclick="toggleAnswer('wp-27')">Show Answer & Explanation</button>
+            <div id="wp-27" class="answer-box">
+                <strong>Answer & Explanation:</strong><br>
+                <strong>a.</strong> \(\frac{1}{6}\). There is only one '6' on a standard 6-sided die.<br>
+                <strong>b.</strong> \(\frac{5}{6}\). The numbers less than 6 are 1, 2, 3, 4, and 5 (five possible outcomes).<br>
+                <strong>c.</strong> The event is "rolling a 6". Its complement is "not rolling a 6" (or rolling a number less than 6). The relationship is that the sum of the probabilities of an event and its complement is always 1 (\(\frac{1}{6} + \frac{5}{6} = 1\)).
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">28. The coordinates of the four vertices of a quadrilateral are \((-3, -2), (0, 2), (3, 2),\) and \((5, -2)\). What is the name for this type of quadrilateral?</div>
+            <button id="btn-wp-28" class="btn-toggle" onclick="toggleAnswer('wp-28')">Show Answer & Explanation</button>
+            <div id="wp-28" class="answer-box">
+                <strong>Answer:</strong> Trapezoid<br>
+                <strong>Explanation:</strong> The points \((0, 2)\) and \((3, 2)\) form a horizontal line segment (y=2). The points \((-3, -2)\) and \((5, -2)\) form another horizontal line segment (y=-2). Because these two sides are parallel, and the other two sides are not parallel, the shape is a trapezoid.
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">29. The formula for the area of a triangle is \(A = \frac{bh}{2}\). If the base measures 20 cm and the height measures 15 cm, then what is the area of the triangle? Explain your thinking.</div>
+            <button id="btn-wp-29" class="btn-toggle" onclick="toggleAnswer('wp-29')">Show Answer & Explanation</button>
+            <div id="wp-29" class="answer-box">
+                <strong>Answer:</strong> 150 cm²<br>
+                <strong>Explanation:</strong> Substitute the given values into the formula. \(A = \frac{20 \times 15}{2}\). First, multiply the base and height: \(20 \times 15 = 300\). Then, divide by 2: \(300 \div 2 = 150\). The area is 150 square centimeters.
+            </div>
+        </div>
+
+        <div class="problem-container">
+            <div class="question">30. Write the rule for this sequence. Then write the next four numbers.<br>
+            \(\frac{1}{16}, \frac{1}{8}, \frac{3}{16}, \frac{1}{4}, \frac{5}{16}, \frac{3}{8}, \ldots\)</div>
+            <button id="btn-wp-30" class="btn-toggle" onclick="toggleAnswer('wp-30')">Show Answer & Explanation</button>
+            <div id="wp-30" class="answer-box">
+                <strong>Answer:</strong> Rule: Add \(\frac{1}{16}\). Next four numbers: \(\frac{7}{16}, \frac{1}{2}, \frac{9}{16}, \frac{5}{8}\)<br>
+                <strong>Explanation:</strong> To see the pattern, convert all fractions to have a common denominator of 16. The sequence becomes: \(\frac{1}{16}, \frac{2}{16}, \frac{3}{16}, \frac{4}{16}, \frac{5}{16}, \frac{6}{16}\). The rule is clearly adding \(\frac{1}{16}\) each time. The next four unsimplified fractions are \(\frac{7}{16}, \frac{8}{16}, \frac{9}{16}, \frac{10}{16}\). Simplifying these gives \(\frac{7}{16}, \frac{1}{2}, \frac{9}{16}, \frac{5}{8}\).
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Real-World Connection</h2>
+        
+        <div class="problem-container">
+            <div class="question">A teacher emptied a 1.5 oz snack-sized box of raisins into a dish. The teacher then asked for volunteers to estimate the number of raisins in the dish. Twelve volunteers gave the following estimates:<br>
+            84, 100, 50, 75, 66, 75, 70, 90, 85, 77, 91, 80.<br><br>
+            <div class="sub-question">a. Which type of display—a circle graph or a stem-and-leaf plot—is the most appropriate way to display this data? Draw your display and justify your choice.</div>
+            <div class="sub-question">b. The dish contained exactly 85 raisins. How many volunteers made a reasonable estimate? Give a reason to support your answer. (Hint: You might think of how far off an estimate is in terms of a percent of 85.)</div>
+            </div>
+            
+            <button id="btn-rwc" class="btn-toggle" onclick="toggleAnswer('rwc')">Show Answer & Explanation</button>
+            <div id="rwc" class="answer-box">
+                <strong>Answer a:</strong> Stem-and-leaf plot.<br>
+                <strong>Justification:</strong> A stem-and-leaf plot is appropriate for organizing numerical data ranges and showing the distribution/frequency of values, preserving the exact numbers. A circle graph (pie chart) is used to show parts of a whole (percentages/proportions), which doesn't fit this list of raw estimates.<br>
+                <strong>Display (Stem-and-Leaf Plot):</strong>
+                <div class="stem-leaf">
+ Stem | Leaf
+   5 | 0
+   6 | 6
+   7 | 0 5 5 7
+   8 | 0 4 5
+   9 | 0 1
+  10 | 0
+
+Key: 8|4 = 84
+                </div>
+                <br><br>
+                <strong>Answer b:</strong> (Answers may vary based on defined "reasonable"). If we define "reasonable" as within 10% of the actual amount (85), then 6 volunteers made reasonable estimates.<br>
+                <strong>Explanation:</strong> 10% of 85 is 8.5. An estimate within 10% would be between \(85 - 8.5\) and \(85 + 8.5\), which is a range of 76.5 to 93.5. Looking at the data, the estimates falling into this range are: 84, 77, 90, 85, 91, and 80. That is a total of 6 estimates.
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
