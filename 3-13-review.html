@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Concept Review: 50 Question Challenge</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+    /* Clean, naked theme */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #ffffff;
+        color: #333333;
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #app {
+        width: 100%;
+        max-width: 700px;
+        position: relative;
+    }
+    
+    /* Scoreboard */
+    .scoreboard {
+        margin-bottom: 40px;
+        padding: 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        background-color: #fafafa;
+    }
+    .scoreboard h2 { margin-top: 0; text-align: center; font-size: 1.2rem; color: #555; }
+    
+    .progress-track {
+        height: 8px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        margin: 40px 0 10px 0;
+        position: relative;
+    }
+    
+    #marker {
+        position: absolute;
+        top: -25px;
+        left: 0%; /* Starts at 0 */
+        transform: translateX(-50%);
+        transition: left 0.4s ease-out;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .triangle-down {
+        width: 0; 
+        height: 0; 
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+        border-top: 16px solid #ff4757;
+    }
+    
+    .status-labels {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        color: #888;
+        font-size: 0.9rem;
+    }
+
+    /* Quiz Area */
+    .question-box {
+        font-size: 1.3rem;
+        margin-bottom: 25px;
+        line-height: 1.5;
+    }
+    .options-box {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .option {
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 1.1rem;
+        background: #fff;
+    }
+    .option:hover { background-color: #f1f2f6; border-color: #a4b0be; }
+    .option input { display: none; }
+    
+    .btn {
+        margin-top: 30px;
+        padding: 12px 24px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: white;
+        background-color: #2ed573;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+        width: 100%;
+    }
+    .btn:hover { background-color: #26b360; }
+    .btn:disabled { background-color: #ccc; cursor: not-allowed; }
+
+    /* Bottom Right Tracker */
+    .bottom-right-tracker {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: white;
+        padding: 15px 20px;
+        border: 2px solid #ff4757;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        font-weight: bold;
+        font-size: 1rem;
+        color: #ff4757;
+    }
+
+    /* Review Area */
+    #review-area { display: none; margin-top: 40px; }
+    .review-item {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border-left: 5px solid;
+        background: #fafafa;
+    }
+    .review-item.wrong { border-left-color: #ff4757; }
+    .review-item.correct { border-left-color: #2ed573; }
+    .review-item p { margin: 5px 0; }
+    
+</style>
+</head>
+<body>
+
+<div id="app">
+    <div class="scoreboard" id="scoreboard">
+        <h2>Progress Tracker</h2>
+        <div class="progress-track">
+            <div id="marker">
+                <div class="triangle-down"></div>
+            </div>
+        </div>
+        <div class="status-labels">
+            <span>Trying</span>
+            <span>Good Job</span>
+            <span>Lits 🔥</span>
+        </div>
+    </div>
+
+    <div id="quiz-area">
+        <div id="progress-text" style="color:#888; font-weight:bold; margin-bottom:10px;">Question 1 of 50</div>
+        <div class="question-box" id="question-text">Loading...</div>
+        <div class="options-box" id="options-container"></div>
+        <button class="btn" id="submit-btn" onclick="submitAnswer()">Submit Answer</button>
+    </div>
+
+    <div id="review-area">
+        <h2>Complete Review</h2>
+        <p>Here is a breakdown of your missing work and the correct solutions.</p>
+        <div id="review-list"></div>
+        <button class="btn" onclick="location.reload()">Try Again</button>
+    </div>
+</div>
+
+<div class="bottom-right-tracker" id="missed-tracker">
+    Missed (Should have gotten correct): 0
+</div>
+
+<script>
+// The 50 Questions covering Fractions, Ratios, Mixed Numbers, Decimals, Square Roots, and Geometry
+const questions = [
+    { q: "What is \\(\\frac{2}{3}\\) of 12?", o: ["8", "6", "4", "9"], a: 0 },
+    { q: "If \\(\\frac{3}{4}\\) of 280 students went to school, how many students did NOT go?", o: ["210", "70", "140", "100"], a: 1 },
+    { q: "The ratio of roses to daisies is 5 to 4. If there are 20 roses, how many daisies are there?", o: ["25", "16", "24", "15"], a: 1 },
+    { q: "Find the sum: \\(\\frac{2}{3} + \\frac{5}{6}\\)", o: ["\\(1\\frac{1}{2}\\)", "\\(1\\frac{1}{6}\\)", "\\(\\frac{7}{9}\\)", "\\(1\\frac{1}{3}\\)"], a: 0 },
+    { q: "Subtract with regrouping: \\(2\\frac{1}{4} - 1\\frac{1}{2}\\)", o: ["\\(\\frac{1}{4}\\)", "\\(\\frac{3}{4}\\)", "\\(1\\frac{1}{4}\\)", "\\(1\\frac{3}{4}\\)"], a: 1 },
+    { q: "Multiply: \\(5\\frac{1}{3} \\times 2\\frac{3}{4}\\)", o: ["\\(10\\frac{3}{12}\\)", "\\(12\\frac{2}{3}\\)", "\\(14\\frac{2}{3}\\)", "\\(15\\frac{1}{3}\\)"], a: 2 },
+    { q: "Divide: \\(3 \\div 1\\frac{1}{5}\\)", o: ["\\(2\\frac{1}{2}\\)", "\\(3\\frac{1}{5}\\)", "\\(1\\frac{4}{5}\\)", "\\(2\\frac{1}{4}\\)"], a: 0 },
+    { q: "Write 65% as a reduced fraction.", o: ["\\(\\frac{13}{20}\\)", "\\(\\frac{65}{100}\\)", "\\(\\frac{3}{5}\\)", "\\(\\frac{1}{2}\\)"], a: 0 },
+    { q: "Add: \\(0.5 + 0.4\\)", o: ["0.09", "0.9", "9.0", "0.1"], a: 1 },
+    { q: "Subtract: \\(8 - 1.75\\)", o: ["6.25", "7.25", "9.75", "6.75"], a: 0 },
+    { q: "Multiply: \\(0.2 \\times 0.9\\)", o: ["1.8", "0.018", "0.18", "18"], a: 2 },
+    { q: "Multiply: \\(5.65 \\times 100\\)", o: ["56.5", "0.0565", "5650", "565"], a: 3 },
+    { q: "Divide: \\(17.89 \\div 10\\)", o: ["1.789", "178.9", "0.1789", "1789"], a: 0 },
+    { q: "Divide: \\(28 \\div 0.7\\)", o: ["4", "0.4", "40", "400"], a: 2 },
+    { q: "Find the square root: \\(\\sqrt{36}\\)", o: ["5", "6", "18", "7"], a: 1 },
+    { q: "Between which two numbers is \\(\\sqrt{30}\\)?", o: ["4 and 5", "6 and 7", "5 and 6", "29 and 31"], a: 2 },
+    { q: "Between which two numbers is \\(\\sqrt{99}\\)?", o: ["8 and 9", "9 and 10", "10 and 11", "98 and 100"], a: 1 },
+    { q: "Solve for n: \\(5n = 12\\)", o: ["2.4", "2.5", "1.4", "60"], a: 0 },
+    { q: "Area of a triangle with base 4 in and height 3 in?", o: ["12 sq in", "7 sq in", "6 sq in", "14 sq in"], a: 2 },
+    { q: "Find the circumference of a circle with a radius of 10mm. (Use 3.14 for \\(\\pi\\))", o: ["31.4 mm", "62.8 mm", "314 mm", "100 mm"], a: 1 },
+    { q: "Find the area of a circle with a radius of 10mm. (Use 3.14 for \\(\\pi\\))", o: ["31.4 sq mm", "62.8 sq mm", "314 sq mm", "100 sq mm"], a: 2 },
+    { q: "How many faces does a cube have?", o: ["4", "6", "8", "12"], a: 1 },
+    { q: "Find the volume of a rectangular prism: Length=20mm, Width=3mm, Height=4mm", o: ["240 mm\\(^3\\)", "60 mm\\(^3\\)", "27 mm\\(^3\\)", "120 mm\\(^3\\)"], a: 0 },
+    { q: "What is the coordinate of the origin?", o: ["(1, 1)", "(0, 1)", "(0, 0)", "(1, 0)"], a: 2 },
+    { q: "If the first 3 vertices of a parallelogram are (0,0), (3,4), and (-2,4), what is the 4th vertex?", o: ["(-5,0)", "(5,0)", "(0,4)", "(-2,0)"], a: 0 },
+    { q: "What is \\(\\frac{1}{3}\\) of 18?", o: ["6", "3", "9", "54"], a: 0 },
+    { q: "Ratio of red to blue marbles is 2:3. If there are 12 blue marbles, how many red?", o: ["6", "8", "10", "18"], a: 1 },
+    { q: "Add: \\(1\\frac{1}{4} + 2\\frac{1}{4}\\)", o: ["\\(3\\frac{1}{4}\\)", "\\(3\\frac{1}{2}\\)", "\\(4\\frac{1}{2}\\)", "3"], a: 1 },
+    { q: "Subtract: \\(5 - 1\\frac{3}{4}\\)", o: ["\\(3\\frac{1}{4}\\)", "\\(4\\frac{1}{4}\\)", "\\(4\\frac{3}{4}\\)", "\\(3\\frac{3}{4}\\)"], a: 0 },
+    { q: "Multiply: \\(2\\frac{1}{2} \\times 1\\frac{1}{5}\\)", o: ["3", "2", "\\(3\\frac{1}{2}\\)", "\\(2\\frac{1}{10}\\)"], a: 0 },
+    { q: "Divide: \\(4 \\div 1\\frac{1}{3}\\)", o: ["3", "4", "5", "\\(5\\frac{1}{3}\\)"], a: 0 },
+    { q: "Write 8% as a decimal.", o: ["0.8", "0.08", "8.0", "0.008"], a: 1 },
+    { q: "Add: \\(1.25 + 2.5\\)", o: ["3.75", "1.50", "4.0", "3.25"], a: 0 },
+    { q: "Subtract: \\(10.5 - 2.25\\)", o: ["8.25", "8.75", "8.0", "7.75"], a: 0 },
+    { q: "Multiply: \\(0.15 \\times 0.15\\)", o: ["0.225", "0.0225", "2.25", "22.5"], a: 1 },
+    { q: "Divide: \\(50.1 \\div 100\\)", o: ["0.501", "5.01", "501", "0.0501"], a: 0 },
+    { q: "Divide: \\(0.26 \\div 4\\)", o: ["0.65", "0.065", "6.5", "0.0065"], a: 1 },
+    { q: "Find the square root: \\(\\sqrt{16}\\)", o: ["2", "4", "8", "32"], a: 1 },
+    { q: "Between which two numbers is \\(\\sqrt{50}\\)?", o: ["6 and 7", "7 and 8", "5 and 6", "49 and 51"], a: 1 },
+    { q: "Solve for x: \\(4x = 24\\)", o: ["6", "8", "5", "20"], a: 0 },
+    { q: "Area of a triangle: base=10, height=5.", o: ["50", "25", "15", "100"], a: 1 },
+    { q: "Perimeter of a triangle with sides 6, 8, 10.", o: ["48", "24", "14", "20"], a: 1 },
+    { q: "Radius is 5. What is the diameter?", o: ["2.5", "10", "25", "15"], a: 1 },
+    { q: "Volume of a cube with 3mm sides.", o: ["9 mm\\(^3\\)", "27 mm\\(^3\\)", "18 mm\\(^3\\)", "6 mm\\(^3\\)"], a: 1 },
+    { q: "X-Axis is...", o: ["Vertical", "Diagonal", "Horizontal", "Circular"], a: 2 },
+    { q: "Y-Axis is...", o: ["Vertical", "Horizontal", "Diagonal", "Curved"], a: 0 },
+    { q: "Negative numbers move... (x, y)", o: ["Right or Up", "Left or Down", "Right or Down", "Left or Up"], a: 1 },
+    { q: "Positive numbers move... (x,y)", o: ["Right or Up", "Left or Down", "Left or Up", "Right or Down"], a: 0 },
+    { q: "To divide mixed numbers, you change division to multiplication and...", o: ["Flip the first fraction", "Keep both the same", "Flip the second fraction", "Flip both fractions"], a: 2 },
+    { q: "What is the first step in adding mixed numbers?", o: ["Add numerators", "Reduce", "Add whole numbers", "Make sure there are common denominators"], a: 3 }
+];
+
+let currentQuestion = 0;
+let missedCount = 0;
+let score = 0;
+let selectedOption = null;
+let userAnswers = []; // Store answers for the review section
+
+const questionText = document.getElementById('question-text');
+const optionsContainer = document.getElementById('options-container');
+const submitBtn = document.getElementById('submit-btn');
+const marker = document.getElementById('marker');
+const progressText = document.getElementById('progress-text');
+const missedTracker = document.getElementById('missed-tracker');
+const quizArea = document.getElementById('quiz-area');
+const reviewArea = document.getElementById('review-area');
+const reviewList = document.getElementById('review-list');
+const scoreboard = document.getElementById('scoreboard');
+
+function loadQuestion() {
+    selectedOption = null;
+    submitBtn.disabled = true;
+    
+    const q = questions[currentQuestion];
+    progressText.innerText = `Question ${currentQuestion + 1} of 50`;
+    questionText.innerHTML = q.q;
+    
+    optionsContainer.innerHTML = '';
+    q.o.forEach((opt, index) => {
+        const div = document.createElement('div');
+        div.className = 'option';
+        div.innerHTML = opt;
+        div.onclick = () => selectOption(index, div);
+        optionsContainer.appendChild(div);
+    });
+
+    // Tell MathJax to re-render the newly injected math symbols
+    if (window.MathJax) {
+        MathJax.typesetPromise([questionText, optionsContainer]).catch((err) => console.log(err));
+    }
+}
+
+function selectOption(index, element) {
+    selectedOption = index;
+    submitBtn.disabled = false;
+    
+    // Clear styling from all options
+    document.querySelectorAll('.option').forEach(el => {
+        el.style.backgroundColor = '#fff';
+        el.style.borderColor = '#e0e0e0';
+    });
+    
+    // Highlight selected
+    element.style.backgroundColor = '#e1f5fe';
+    element.style.borderColor = '#03a9f4';
+}
+
+function submitAnswer() {
+    const q = questions[currentQuestion];
+    const isCorrect = (selectedOption === q.a);
+    
+    userAnswers.push({
+        question: q.q,
+        userPick: q.o[selectedOption],
+        correctPick: q.o[q.a],
+        isCorrect: isCorrect
+    });
+
+    if (isCorrect) {
+        score++;
+    } else {
+        missedCount++;
+        missedTracker.innerText = `Missed (Should have gotten correct): ${missedCount}`;
+    }
+
+    // Update Triangle Marker ("Trying" -> "Good Job" -> "Lits")
+    // Logic: Triangle position based on questions completed (0 to 100%)
+    const percentComplete = ((currentQuestion + 1) / questions.length) * 100;
+    marker.style.left = `${percentComplete}%`;
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+    } else {
+        showReview();
+    }
+}
+
+function showReview() {
+    quizArea.style.display = 'none';
+    scoreboard.style.display = 'none';
+    reviewArea.style.display = 'block';
+    
+    reviewList.innerHTML = '';
+    
+    userAnswers.forEach((ans, i) => {
+        if (!ans.isCorrect) {
+            const div = document.createElement('div');
+            div.className = 'review-item wrong';
+            div.innerHTML = `
+                <p><strong>Question ${i+1}:</strong> ${ans.question}</p>
+                <p style="color:#ff4757;">Your Answer: ${ans.userPick}</p>
+                <p style="color:#2ed573;"><strong>Correct Answer: ${ans.correctPick}</strong></p>
+            `;
+            reviewList.appendChild(div);
+        }
+    });
+
+    if (missedCount === 0) {
+        reviewList.innerHTML = `<div class="review-item correct"><p><strong>Perfect Score! You are LITS! 🔥</strong> No missing work to review.</p></div>`;
+    }
+
+    if (window.MathJax) {
+        MathJax.typesetPromise([reviewList]).catch((err) => console.log(err));
+    }
+}
+
+// Initialize first question
+loadQuestion();
+</script>
+</body>
+</html>
