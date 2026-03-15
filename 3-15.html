@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Concept Review: Set 3</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+    /* Clean, naked theme */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #ffffff;
+        color: #333333;
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #app {
+        width: 100%;
+        max-width: 700px;
+        position: relative;
+    }
+    
+    /* Scoreboard */
+    .scoreboard {
+        margin-bottom: 40px;
+        padding: 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        background-color: #fafafa;
+    }
+    .scoreboard h2 { margin-top: 0; text-align: center; font-size: 1.2rem; color: #555; }
+    
+    .progress-track {
+        height: 8px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        margin: 40px 0 10px 0;
+        position: relative;
+    }
+    
+    #marker {
+        position: absolute;
+        top: -25px;
+        left: 0%; /* Starts at 0 */
+        transform: translateX(-50%);
+        transition: left 0.4s ease-out;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .triangle-down {
+        width: 0; 
+        height: 0; 
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+        border-top: 16px solid #ff4757;
+    }
+    
+    .status-labels {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        color: #888;
+        font-size: 0.9rem;
+    }
+
+    /* Quiz Area */
+    .question-box {
+        font-size: 1.3rem;
+        margin-bottom: 25px;
+        line-height: 1.5;
+    }
+    .options-box {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .option {
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 1.1rem;
+        background: #fff;
+    }
+    .option:hover { background-color: #f1f2f6; border-color: #a4b0be; }
+    .option input { display: none; }
+    
+    .btn {
+        margin-top: 30px;
+        padding: 12px 24px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: white;
+        background-color: #2ed573;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+        width: 100%;
+    }
+    .btn:hover { background-color: #26b360; }
+    .btn:disabled { background-color: #ccc; cursor: not-allowed; }
+
+    /* Bottom Right Tracker */
+    .bottom-right-tracker {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: white;
+        padding: 15px 20px;
+        border: 2px solid #ff4757;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        font-weight: bold;
+        font-size: 1rem;
+        color: #ff4757;
+    }
+
+    /* Review Area */
+    #review-area { display: none; margin-top: 40px; }
+    .review-item {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border-left: 5px solid;
+        background: #fafafa;
+    }
+    .review-item.wrong { border-left-color: #ff4757; }
+    .review-item.correct { border-left-color: #2ed573; }
+    .review-item p { margin: 5px 0; }
+    
+</style>
+</head>
+<body>
+
+<div id="app">
+    <div class="scoreboard" id="scoreboard">
+        <h2>Progress Tracker</h2>
+        <div class="progress-track">
+            <div id="marker">
+                <div class="triangle-down"></div>
+            </div>
+        </div>
+        <div class="status-labels">
+            <span>Trying</span>
+            <span>Good Job</span>
+            <span>Lits 🔥</span>
+        </div>
+    </div>
+
+    <div id="quiz-area">
+        <div id="progress-text" style="color:#888; font-weight:bold; margin-bottom:10px;">Question 1 of 50</div>
+        <div class="question-box" id="question-text">Loading...</div>
+        <div class="options-box" id="options-container"></div>
+        <button class="btn" id="submit-btn" onclick="submitAnswer()">Submit Answer</button>
+    </div>
+
+    <div id="review-area">
+        <h2>Complete Review</h2>
+        <p>Here is a breakdown of your missing work and the correct solutions.</p>
+        <div id="review-list"></div>
+        <button class="btn" onclick="location.reload()">Try Again</button>
+    </div>
+</div>
+
+<div class="bottom-right-tracker" id="missed-tracker">
+    Missed (Should have gotten correct): 0
+</div>
+
+<script>
+// The 50 New Questions (Set 3)
+const questions = [
+    { q: "What is \\(\\frac{2}{5}\\) of 30?", o: ["12", "15", "6", "10"], a: 0 },
+    { q: "If \\(\\frac{1}{3}\\) of 60 students walk to school, how many students do NOT walk?", o: ["20", "40", "30", "50"], a: 1 },
+    { q: "The ratio of boys to girls in a class is 4:5. If there are 20 girls, how many boys are there?", o: ["16", "25", "12", "24"], a: 0 },
+    { q: "Find the sum: \\(\\frac{1}{6} + \\frac{2}{3}\\)", o: ["\\(\\frac{5}{6}\\)", "\\(\\frac{3}{9}\\)", "\\(\\frac{1}{2}\\)", "\\(1\\frac{1}{6}\\)"], a: 0 },
+    { q: "Subtract with regrouping: \\(4\\frac{1}{3} - 2\\frac{2}{3}\\)", o: ["\\(1\\frac{2}{3}\\)", "\\(2\\frac{1}{3}\\)", "\\(1\\frac{1}{3}\\)", "\\(2\\)"], a: 0 },
+    { q: "Multiply: \\(2\\frac{1}{4} \\times 1\\frac{1}{3}\\)", o: ["3", "\\(2\\frac{1}{12}\\)", "\\(3\\frac{1}{3}\\)", "4"], a: 0 },
+    { q: "Divide: \\(6 \\div 1\\frac{1}{2}\\)", o: ["4", "3", "9", "5"], a: 0 },
+    { q: "Write 40% as a reduced fraction.", o: ["\\(\\frac{2}{5}\\)", "\\(\\frac{4}{10}\\)", "\\(\\frac{1}{4}\\)", "\\(\\frac{40}{100}\\)"], a: 0 },
+    { q: "Add: \\(0.35 + 0.4\\)", o: ["0.39", "0.75", "7.5", "0.075"], a: 1 },
+    { q: "Subtract: \\(12 - 5.5\\)", o: ["6.5", "7.5", "6.0", "7.0"], a: 0 },
+    { q: "Multiply: \\(0.3 \\times 0.8\\)", o: ["2.4", "0.24", "0.024", "24"], a: 1 },
+    { q: "Multiply: \\(7.14 \\times 1000\\)", o: ["714", "71.4", "7140", "0.00714"], a: 2 },
+    { q: "Divide: \\(82.4 \\div 10\\)", o: ["8.24", "0.824", "824", "82.40"], a: 0 },
+    { q: "Divide: \\(42 \\div 0.6\\)", o: ["7", "0.7", "70", "700"], a: 2 },
+    { q: "Find the square root: \\(\\sqrt{100}\\)", o: ["10", "50", "100", "5"], a: 0 },
+    { q: "Between which two numbers is \\(\\sqrt{20}\\)?", o: ["3 and 4", "4 and 5", "5 and 6", "19 and 21"], a: 1 },
+    { q: "Between which two numbers is \\(\\sqrt{60}\\)?", o: ["6 and 7", "7 and 8", "8 and 9", "59 and 61"], a: 1 },
+    { q: "Solve for z: \\(8z = 56\\)", o: ["6", "7", "8", "9"], a: 1 },
+    { q: "Area of a triangle with base 8 cm and height 5 cm?", o: ["40 sq cm", "20 sq cm", "13 sq cm", "26 sq cm"], a: 1 },
+    { q: "Find the circumference of a circle with a radius of 2m. (Use 3.14 for \\(\\pi\\))", o: ["6.28 m", "12.56 m", "3.14 m", "4 m"], a: 1 },
+    { q: "Find the area of a circle with a radius of 2m. (Use 3.14 for \\(\\pi\\))", o: ["12.56 sq m", "6.28 sq m", "3.14 sq m", "8 sq m"], a: 0 },
+    { q: "How many vertices (corners) does a cube have?", o: ["6", "8", "12", "16"], a: 1 },
+    { q: "Find the volume of a rectangular prism: Length=5cm, Width=6cm, Height=2cm", o: ["60 cm\\(^3\\)", "30 cm\\(^3\\)", "13 cm\\(^3\\)", "120 cm\\(^3\\)"], a: 0 },
+    { q: "In the ordered pair (5, -2), which number is the x-coordinate?", o: ["-2", "5", "Both", "Neither"], a: 1 },
+    { q: "What quadrant is the point (-3, -4) located in?", o: ["Quadrant I", "Quadrant II", "Quadrant III", "Quadrant IV"], a: 2 },
+    { q: "What is \\(\\frac{3}{4}\\) of 16?", o: ["12", "8", "4", "24"], a: 0 },
+    { q: "The ratio of cars to trucks is 5:2. If there are 14 trucks, how many cars?", o: ["35", "10", "25", "45"], a: 0 },
+    { q: "Add: \\(1\\frac{3}{5} + 2\\frac{4}{5}\\)", o: ["\\(3\\frac{7}{5}\\)", "\\(4\\frac{2}{5}\\)", "\\(4\\frac{1}{5}\\)", "\\(3\\frac{2}{5}\\)"], a: 1 },
+    { q: "Subtract: \\(6 - 3\\frac{1}{4}\\)", o: ["\\(3\\frac{3}{4}\\)", "\\(2\\frac{3}{4}\\)", "\\(3\\frac{1}{4}\\)", "\\(2\\frac{1}{4}\\)"], a: 1 },
+    { q: "Multiply: \\(1\\frac{1}{2} \\times 4\\)", o: ["6", "4.5", "5", "8"], a: 0 },
+    { q: "Divide: \\(8 \\div \\frac{1}{4}\\)", o: ["2", "12", "32", "4"], a: 2 },
+    { q: "Write 5% as a decimal.", o: ["0.5", "0.05", "5.0", "0.005"], a: 1 },
+    { q: "Add: \\(2.05 + 1.6\\)", o: ["3.11", "2.21", "3.65", "4.65"], a: 2 },
+    { q: "Subtract: \\(7.2 - 3.8\\)", o: ["3.4", "4.4", "3.6", "4.6"], a: 0 },
+    { q: "Multiply: \\(0.5 \\times 0.5\\)", o: ["2.5", "0.25", "0.025", "1.0"], a: 1 },
+    { q: "Divide: \\(34.7 \\div 100\\)", o: ["0.347", "3.47", "347", "3470"], a: 0 },
+    { q: "Divide: \\(0.36 \\div 6\\)", o: ["0.6", "0.06", "6", "0.006"], a: 1 },
+    { q: "Find the square root: \\(\\sqrt{144}\\)", o: ["12", "14", "72", "10"], a: 0 },
+    { q: "Between which two numbers is \\(\\sqrt{75}\\)?", o: ["7 and 8", "8 and 9", "9 and 10", "74 and 76"], a: 1 },
+    { q: "Solve for a: \\(12a = 48\\)", o: ["4", "6", "3", "5"], a: 0 },
+    { q: "Area of a rectangle: base=8, height=7.", o: ["56", "30", "15", "64"], a: 0 },
+    { q: "Perimeter of a rectangle: base=8, height=7.", o: ["56", "30", "15", "64"], a: 1 },
+    { q: "Diameter is 20. What is the radius?", o: ["40", "10", "5", "100"], a: 1 },
+    { q: "Volume of a cube with 5cm sides.", o: ["25 cm\\(^3\\)", "125 cm\\(^3\\)", "15 cm\\(^3\\)", "150 cm\\(^3\\)"], a: 1 },
+    { q: "The point (6, 0) lies on which axis?", o: ["X-Axis", "Y-Axis", "Z-Axis", "None"], a: 0 },
+    { q: "The point (0, -3) lies on which axis?", o: ["X-Axis", "Y-Axis", "Z-Axis", "None"], a: 1 },
+    { q: "A positive x-coordinate means you move...", o: ["Left", "Right", "Up", "Down"], a: 1 },
+    { q: "A negative y-coordinate means you move...", o: ["Left", "Right", "Up", "Down"], a: 3 },
+    { q: "When adding decimals, what is the most important step?", o: ["Line up the decimal points", "Add from left to right", "Ignore the decimals", "Count the decimal places"], a: 0 },
+    { q: "When subtracting fractions with like denominators, what do you do?", o: ["Subtract the numerators, keep the denominator", "Subtract numerators and denominators", "Add the numerators", "Find a common denominator"], a: 0 }
+];
+
+let currentQuestion = 0;
+let missedCount = 0;
+let score = 0;
+let selectedOption = null;
+let userAnswers = []; // Store answers for the review section
+
+const questionText = document.getElementById('question-text');
+const optionsContainer = document.getElementById('options-container');
+const submitBtn = document.getElementById('submit-btn');
+const marker = document.getElementById('marker');
+const progressText = document.getElementById('progress-text');
+const missedTracker = document.getElementById('missed-tracker');
+const quizArea = document.getElementById('quiz-area');
+const reviewArea = document.getElementById('review-area');
+const reviewList = document.getElementById('review-list');
+const scoreboard = document.getElementById('scoreboard');
+
+function loadQuestion() {
+    selectedOption = null;
+    submitBtn.disabled = true;
+    
+    const q = questions[currentQuestion];
+    progressText.innerText = `Question ${currentQuestion + 1} of 50`;
+    questionText.innerHTML = q.q;
+    
+    optionsContainer.innerHTML = '';
+    q.o.forEach((opt, index) => {
+        const div = document.createElement('div');
+        div.className = 'option';
+        div.innerHTML = opt;
+        div.onclick = () => selectOption(index, div);
+        optionsContainer.appendChild(div);
+    });
+
+    // Tell MathJax to re-render the newly injected math symbols
+    if (window.MathJax) {
+        MathJax.typesetPromise([questionText, optionsContainer]).catch((err) => console.log(err));
+    }
+}
+
+function selectOption(index, element) {
+    selectedOption = index;
+    submitBtn.disabled = false;
+    
+    // Clear styling from all options
+    document.querySelectorAll('.option').forEach(el => {
+        el.style.backgroundColor = '#fff';
+        el.style.borderColor = '#e0e0e0';
+    });
+    
+    // Highlight selected
+    element.style.backgroundColor = '#e1f5fe';
+    element.style.borderColor = '#03a9f4';
+}
+
+function submitAnswer() {
+    const q = questions[currentQuestion];
+    const isCorrect = (selectedOption === q.a);
+    
+    userAnswers.push({
+        question: q.q,
+        userPick: q.o[selectedOption],
+        correctPick: q.o[q.a],
+        isCorrect: isCorrect
+    });
+
+    if (isCorrect) {
+        score++;
+    } else {
+        missedCount++;
+        missedTracker.innerText = `Missed (Should have gotten correct): ${missedCount}`;
+    }
+
+    // Update Triangle Marker ("Trying" -> "Good Job" -> "Lits")
+    const percentComplete = ((currentQuestion + 1) / questions.length) * 100;
+    marker.style.left = `${percentComplete}%`;
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+    } else {
+        showReview();
+    }
+}
+
+function showReview() {
+    quizArea.style.display = 'none';
+    scoreboard.style.display = 'none';
+    reviewArea.style.display = 'block';
+    
+    reviewList.innerHTML = '';
+    
+    userAnswers.forEach((ans, i) => {
+        if (!ans.isCorrect) {
+            const div = document.createElement('div');
+            div.className = 'review-item wrong';
+            div.innerHTML = `
+                <p><strong>Question ${i+1}:</strong> ${ans.question}</p>
+                <p style="color:#ff4757;">Your Answer: ${ans.userPick}</p>
+                <p style="color:#2ed573;"><strong>Correct Answer: ${ans.correctPick}</strong></p>
+            `;
+            reviewList.appendChild(div);
+        }
+    });
+
+    if (missedCount === 0) {
+        reviewList.innerHTML = `<div class="review-item correct"><p><strong>Perfect Score! You are LITS! 🔥</strong> No missing work to review.</p></div>`;
+    }
+
+    if (window.MathJax) {
+        MathJax.typesetPromise([reviewList]).catch((err) => console.log(err));
+    }
+}
+
+// Initialize first question
+loadQuestion();
+</script>
+</body>
+</html>
