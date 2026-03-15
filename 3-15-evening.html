@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Math Concept Mini-Review: 5 Questions</title>
+<title>Math Concept Review: 50 Questions (Includes Conversions)</title>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>
@@ -155,7 +155,7 @@
     </div>
 
     <div id="quiz-area">
-        <div id="progress-text" style="color:#888; font-weight:bold; margin-bottom:10px;">Question 1 of 5</div>
+        <div id="progress-text" style="color:#888; font-weight:bold; margin-bottom:10px;">Question 1 of 50</div>
         <div class="question-box" id="question-text">Loading...</div>
         <div class="options-box" id="options-container"></div>
         <button class="btn" id="submit-btn" onclick="submitAnswer()">Submit Answer</button>
@@ -174,13 +174,71 @@
 </div>
 
 <script>
-// The 5 New Questions (Including Percent/Fraction/Decimal conversions)
+// The 50 Questions (Featuring Conversions!)
 const questions = [
-    { q: "Write 45% as a reduced fraction.", o: ["\\(\\frac{9}{20}\\)", "\\(\\frac{45}{100}\\)", "\\(\\frac{4}{5}\\)", "\\(\\frac{9}{10}\\)"], a: 0 },
-    { q: "Convert \\(\\frac{3}{8}\\) to a decimal.", o: ["0.38", "0.375", "3.8", "0.125"], a: 1 },
-    { q: "Write 0.07 as a percent.", o: ["70%", "0.7%", "7%", "700%"], a: 2 },
-    { q: "Add: \\(1\\frac{2}{3} + 2\\frac{1}{6}\\)", o: ["\\(3\\frac{3}{9}\\)", "\\(3\\frac{5}{6}\\)", "\\(4\\frac{1}{6}\\)", "\\(3\\frac{1}{2}\\)"], a: 1 },
-    { q: "Find the area of a triangle with a base of 12 cm and a height of 7 cm.", o: ["84 sq cm", "42 sq cm", "19 sq cm", "24 sq cm"], a: 1 }
+    // Percent / Fraction / Decimal Conversions
+    { q: "Write 25% as a reduced fraction.", o: ["\\(\\frac{1}{25}\\)", "\\(\\frac{1}{4}\\)", "\\(\\frac{2}{5}\\)", "\\(\\frac{1}{5}\\)"], a: 1 },
+    { q: "Convert \\(\\frac{3}{5}\\) to a decimal.", o: ["0.35", "3.5", "0.6", "0.06"], a: 2 },
+    { q: "Write 0.15 as a percent.", o: ["1.5%", "150%", "0.15%", "15%"], a: 3 },
+    { q: "Convert \\(\\frac{5}{8}\\) to a decimal.", o: ["0.625", "0.58", "5.8", "0.85"], a: 0 },
+    { q: "Write 120% as a decimal.", o: ["12.0", "0.12", "1.2", "120.0"], a: 2 },
+    { q: "Write 0.04 as a reduced fraction.", o: ["\\(\\frac{1}{4}\\)", "\\(\\frac{4}{10}\\)", "\\(\\frac{1}{25}\\)", "\\(\\frac{2}{5}\\)"], a: 2 },
+    { q: "Convert \\(\\frac{7}{10}\\) to a percent.", o: ["7%", "70%", "0.7%", "700%"], a: 1 },
+    { q: "Write 8.5% as a decimal.", o: ["0.85", "8.5", "85.0", "0.085"], a: 3 },
+    { q: "Write \\(\\frac{3}{4}\\) as a percent.", o: ["34%", "43%", "75%", "0.75%"], a: 2 },
+    { q: "Write 2.5 as a mixed number.", o: ["\\(2\\frac{1}{5}\\)", "\\(2\\frac{1}{2}\\)", "\\(5\\frac{1}{2}\\)", "\\(2\\frac{5}{100}\\)"], a: 1 },
+    
+    // Fractions & Mixed Numbers
+    { q: "Add: \\(\\frac{1}{5} + \\frac{3}{10}\\)", o: ["\\(\\frac{4}{15}\\)", "\\(\\frac{1}{2}\\)", "\\(\\frac{4}{10}\\)", "\\(\\frac{2}{5}\\)"], a: 1 },
+    { q: "Subtract: \\(\\frac{5}{6} - \\frac{1}{3}\\)", o: ["\\(\\frac{4}{3}\\)", "\\(\\frac{1}{2}\\)", "\\(\\frac{1}{6}\\)", "\\(\\frac{2}{3}\\)"], a: 1 },
+    { q: "Multiply: \\(\\frac{3}{4} \\times \\frac{2}{3}\\)", o: ["\\(\\frac{5}{7}\\)", "\\(\\frac{1}{2}\\)", "\\(\\frac{6}{12}\\)", "Both 1/2 and 6/12 are correct"], a: 3 },
+    { q: "Divide: \\(\\frac{7}{8} \\div \\frac{1}{4}\\)", o: ["\\(3\\frac{1}{2}\\)", "\\(\\frac{7}{32}\\)", "\\(2\\frac{1}{4}\\)", "\\(3\\frac{1}{4}\\)"], a: 0 },
+    { q: "Add: \\(2\\frac{1}{4} + 1\\frac{5}{8}\\)", o: ["\\(3\\frac{7}{8}\\)", "\\(3\\frac{6}{12}\\)", "\\(4\\frac{1}{8}\\)", "\\(3\\frac{3}{4}\\)"], a: 0 },
+    { q: "Subtract with regrouping: \\(4\\frac{1}{3} - 2\\frac{2}{3}\\)", o: ["\\(2\\frac{1}{3}\\)", "\\(1\\frac{2}{3}\\)", "\\(2\\frac{2}{3}\\)", "\\(1\\frac{1}{3}\\)"], a: 1 },
+    { q: "Multiply: \\(1\\frac{1}{2} \\times 3\\frac{1}{3}\\)", o: ["4", "\\(4\\frac{1}{6}\\)", "5", "\\(3\\frac{1}{6}\\)"], a: 2 },
+    { q: "Divide: \\(5 \\div 1\\frac{1}{4}\\)", o: ["\\(6\\frac{1}{4}\\)", "4", "3", "\\(5\\frac{1}{4}\\)"], a: 1 },
+    { q: "What is \\(\\frac{2}{7}\\) of 28?", o: ["8", "14", "4", "6"], a: 0 },
+    { q: "If \\(\\frac{3}{8}\\) of 40 students wear glasses, how many do NOT wear glasses?", o: ["15", "25", "20", "30"], a: 1 },
+    
+    // Ratios & Proportions
+    { q: "The ratio of apples to oranges is 3:5. If there are 15 apples, how many oranges?", o: ["20", "25", "30", "15"], a: 1 },
+    { q: "The ratio of boys to girls is 4:3. If there are 21 girls, how many boys?", o: ["28", "16", "24", "32"], a: 0 },
+    { q: "Solve for x: \\(\\frac{2}{5} = \\frac{x}{20}\\)", o: ["4", "10", "8", "6"], a: 2 },
+    { q: "Solve for y: \\(\\frac{3}{4} = \\frac{15}{y}\\)", o: ["16", "24", "20", "12"], a: 2 },
+    
+    // Decimals
+    { q: "Add: \\(3.45 + 1.6\\)", o: ["5.05", "4.05", "3.61", "5.15"], a: 0 },
+    { q: "Subtract: \\(15.2 - 4.85\\)", o: ["11.35", "10.35", "11.65", "10.65"], a: 1 },
+    { q: "Multiply: \\(1.2 \\times 0.4\\)", o: ["4.8", "0.048", "0.48", "48"], a: 2 },
+    { q: "Multiply: \\(0.05 \\times 100\\)", o: ["0.5", "50", "0.005", "5"], a: 3 },
+    { q: "Divide: \\(12.6 \\div 3\\)", o: ["4.2", "42", "0.42", "4.02"], a: 0 },
+    { q: "Divide: \\(4.5 \\div 0.09\\)", o: ["5", "50", "0.5", "500"], a: 1 },
+    { q: "Divide: \\(35.8 \\div 1000\\)", o: ["0.358", "3.58", "0.0358", "0.00358"], a: 2 },
+    { q: "Add: \\(0.004 + 0.02\\)", o: ["0.006", "0.024", "0.06", "0.204"], a: 1 },
+    
+    // Square Roots & Algebra
+    { q: "Find the square root: \\(\\sqrt{49}\\)", o: ["6", "8", "7", "14"], a: 2 },
+    { q: "Find the square root: \\(\\sqrt{121}\\)", o: ["11", "12", "13", "10"], a: 0 },
+    { q: "Between which two numbers is \\(\\sqrt{27}\\)?", o: ["4 and 5", "5 and 6", "26 and 28", "6 and 7"], a: 1 },
+    { q: "Between which two numbers is \\(\\sqrt{90}\\)?", o: ["8 and 9", "9 and 10", "89 and 91", "10 and 11"], a: 1 },
+    { q: "Solve for m: \\(7m = 42\\)", o: ["6", "7", "8", "5"], a: 0 },
+    { q: "Solve for k: \\(\\frac{k}{4} = 9\\)", o: ["13", "5", "36", "32"], a: 2 },
+    { q: "Solve for x: \\(2x + 5 = 15\\)", o: ["10", "5", "4", "20"], a: 1 },
+    { q: "Solve for y: \\(3y - 2 = 10\\)", o: ["4", "3", "12", "6"], a: 0 },
+    
+    // Geometry
+    { q: "Find the area of a triangle with a base of 9 in and height of 4 in.", o: ["36 sq in", "18 sq in", "13 sq in", "26 sq in"], a: 1 },
+    { q: "Find the perimeter of a rectangle with length 10 cm and width 4 cm.", o: ["40 cm", "14 cm", "28 cm", "24 cm"], a: 2 },
+    { q: "Find the circumference of a circle with a diameter of 10 mm. (Use 3.14 for \\(\\pi\\))", o: ["31.4 mm", "15.7 mm", "314 mm", "62.8 mm"], a: 0 },
+    { q: "Find the area of a circle with a radius of 3 m. (Use 3.14 for \\(\\pi\\))", o: ["18.84 sq m", "28.26 sq m", "9.42 sq m", "88.74 sq m"], a: 1 },
+    { q: "Find the volume of a rectangular prism: Length=3, Width=4, Height=5", o: ["12", "60", "20", "120"], a: 1 },
+    { q: "How many faces does a rectangular prism have?", o: ["4", "6", "8", "12"], a: 1 },
+    { q: "If the radius is 8, what is the diameter?", o: ["4", "16", "64", "24"], a: 1 },
+    
+    // Coordinate Plane
+    { q: "In the ordered pair (-4, 7), which is the y-coordinate?", o: ["-4", "7", "Both", "Neither"], a: 1 },
+    { q: "Which quadrant is the point (2, -5) located in?", o: ["Quadrant I", "Quadrant II", "Quadrant III", "Quadrant IV"], a: 3 },
+    { q: "Starting at the origin, moving 3 units left and 2 units up puts you at...", o: ["(3, 2)", "(-3, 2)", "(3, -2)", "(-3, -2)"], a: 1 }
 ];
 
 let currentQuestion = 0;
@@ -205,7 +263,7 @@ function loadQuestion() {
     submitBtn.disabled = true;
     
     const q = questions[currentQuestion];
-    progressText.innerText = `Question ${currentQuestion + 1} of 5`;
+    progressText.innerText = `Question ${currentQuestion + 1} of 50`;
     questionText.innerHTML = q.q;
     
     optionsContainer.innerHTML = '';
