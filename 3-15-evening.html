@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Concept Mini-Review: 5 Questions</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+    /* Clean, naked theme */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #ffffff;
+        color: #333333;
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #app {
+        width: 100%;
+        max-width: 700px;
+        position: relative;
+    }
+    
+    /* Scoreboard */
+    .scoreboard {
+        margin-bottom: 40px;
+        padding: 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        background-color: #fafafa;
+    }
+    .scoreboard h2 { margin-top: 0; text-align: center; font-size: 1.2rem; color: #555; }
+    
+    .progress-track {
+        height: 8px;
+        background: #e0e0e0;
+        border-radius: 4px;
+        margin: 40px 0 10px 0;
+        position: relative;
+    }
+    
+    #marker {
+        position: absolute;
+        top: -25px;
+        left: 0%; /* Starts at 0 */
+        transform: translateX(-50%);
+        transition: left 0.4s ease-out;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .triangle-down {
+        width: 0; 
+        height: 0; 
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+        border-top: 16px solid #ff4757;
+    }
+    
+    .status-labels {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        color: #888;
+        font-size: 0.9rem;
+    }
+
+    /* Quiz Area */
+    .question-box {
+        font-size: 1.3rem;
+        margin-bottom: 25px;
+        line-height: 1.5;
+    }
+    .options-box {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .option {
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 1.1rem;
+        background: #fff;
+    }
+    .option:hover { background-color: #f1f2f6; border-color: #a4b0be; }
+    .option input { display: none; }
+    
+    .btn {
+        margin-top: 30px;
+        padding: 12px 24px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: white;
+        background-color: #2ed573;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+        width: 100%;
+    }
+    .btn:hover { background-color: #26b360; }
+    .btn:disabled { background-color: #ccc; cursor: not-allowed; }
+
+    /* Bottom Right Tracker */
+    .bottom-right-tracker {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: white;
+        padding: 15px 20px;
+        border: 2px solid #ff4757;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        font-weight: bold;
+        font-size: 1rem;
+        color: #ff4757;
+    }
+
+    /* Review Area */
+    #review-area { display: none; margin-top: 40px; }
+    .review-item {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border-left: 5px solid;
+        background: #fafafa;
+    }
+    .review-item.wrong { border-left-color: #ff4757; }
+    .review-item.correct { border-left-color: #2ed573; }
+    .review-item p { margin: 5px 0; }
+    
+</style>
+</head>
+<body>
+
+<div id="app">
+    <div class="scoreboard" id="scoreboard">
+        <h2>Progress Tracker</h2>
+        <div class="progress-track">
+            <div id="marker">
+                <div class="triangle-down"></div>
+            </div>
+        </div>
+        <div class="status-labels">
+            <span>Trying</span>
+            <span>Good Job</span>
+            <span>Lits 🔥</span>
+        </div>
+    </div>
+
+    <div id="quiz-area">
+        <div id="progress-text" style="color:#888; font-weight:bold; margin-bottom:10px;">Question 1 of 5</div>
+        <div class="question-box" id="question-text">Loading...</div>
+        <div class="options-box" id="options-container"></div>
+        <button class="btn" id="submit-btn" onclick="submitAnswer()">Submit Answer</button>
+    </div>
+
+    <div id="review-area">
+        <h2>Complete Review</h2>
+        <p>Here is a breakdown of your missing work and the correct solutions.</p>
+        <div id="review-list"></div>
+        <button class="btn" onclick="location.reload()">Try Again</button>
+    </div>
+</div>
+
+<div class="bottom-right-tracker" id="missed-tracker">
+    Missed (Should have gotten correct): 0
+</div>
+
+<script>
+// The 5 New Questions (Including Percent/Fraction/Decimal conversions)
+const questions = [
+    { q: "Write 45% as a reduced fraction.", o: ["\\(\\frac{9}{20}\\)", "\\(\\frac{45}{100}\\)", "\\(\\frac{4}{5}\\)", "\\(\\frac{9}{10}\\)"], a: 0 },
+    { q: "Convert \\(\\frac{3}{8}\\) to a decimal.", o: ["0.38", "0.375", "3.8", "0.125"], a: 1 },
+    { q: "Write 0.07 as a percent.", o: ["70%", "0.7%", "7%", "700%"], a: 2 },
+    { q: "Add: \\(1\\frac{2}{3} + 2\\frac{1}{6}\\)", o: ["\\(3\\frac{3}{9}\\)", "\\(3\\frac{5}{6}\\)", "\\(4\\frac{1}{6}\\)", "\\(3\\frac{1}{2}\\)"], a: 1 },
+    { q: "Find the area of a triangle with a base of 12 cm and a height of 7 cm.", o: ["84 sq cm", "42 sq cm", "19 sq cm", "24 sq cm"], a: 1 }
+];
+
+let currentQuestion = 0;
+let missedCount = 0;
+let score = 0;
+let selectedOption = null;
+let userAnswers = []; // Store answers for the review section
+
+const questionText = document.getElementById('question-text');
+const optionsContainer = document.getElementById('options-container');
+const submitBtn = document.getElementById('submit-btn');
+const marker = document.getElementById('marker');
+const progressText = document.getElementById('progress-text');
+const missedTracker = document.getElementById('missed-tracker');
+const quizArea = document.getElementById('quiz-area');
+const reviewArea = document.getElementById('review-area');
+const reviewList = document.getElementById('review-list');
+const scoreboard = document.getElementById('scoreboard');
+
+function loadQuestion() {
+    selectedOption = null;
+    submitBtn.disabled = true;
+    
+    const q = questions[currentQuestion];
+    progressText.innerText = `Question ${currentQuestion + 1} of 5`;
+    questionText.innerHTML = q.q;
+    
+    optionsContainer.innerHTML = '';
+    q.o.forEach((opt, index) => {
+        const div = document.createElement('div');
+        div.className = 'option';
+        div.innerHTML = opt;
+        div.onclick = () => selectOption(index, div);
+        optionsContainer.appendChild(div);
+    });
+
+    // Tell MathJax to re-render the newly injected math symbols
+    if (window.MathJax) {
+        MathJax.typesetPromise([questionText, optionsContainer]).catch((err) => console.log(err));
+    }
+}
+
+function selectOption(index, element) {
+    selectedOption = index;
+    submitBtn.disabled = false;
+    
+    // Clear styling from all options
+    document.querySelectorAll('.option').forEach(el => {
+        el.style.backgroundColor = '#fff';
+        el.style.borderColor = '#e0e0e0';
+    });
+    
+    // Highlight selected
+    element.style.backgroundColor = '#e1f5fe';
+    element.style.borderColor = '#03a9f4';
+}
+
+function submitAnswer() {
+    const q = questions[currentQuestion];
+    const isCorrect = (selectedOption === q.a);
+    
+    userAnswers.push({
+        question: q.q,
+        userPick: q.o[selectedOption],
+        correctPick: q.o[q.a],
+        isCorrect: isCorrect
+    });
+
+    if (isCorrect) {
+        score++;
+    } else {
+        missedCount++;
+        missedTracker.innerText = `Missed (Should have gotten correct): ${missedCount}`;
+    }
+
+    // Update Triangle Marker ("Trying" -> "Good Job" -> "Lits")
+    const percentComplete = ((currentQuestion + 1) / questions.length) * 100;
+    marker.style.left = `${percentComplete}%`;
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+    } else {
+        showReview();
+    }
+}
+
+function showReview() {
+    quizArea.style.display = 'none';
+    scoreboard.style.display = 'none';
+    reviewArea.style.display = 'block';
+    
+    reviewList.innerHTML = '';
+    
+    userAnswers.forEach((ans, i) => {
+        if (!ans.isCorrect) {
+            const div = document.createElement('div');
+            div.className = 'review-item wrong';
+            div.innerHTML = `
+                <p><strong>Question ${i+1}:</strong> ${ans.question}</p>
+                <p style="color:#ff4757;">Your Answer: ${ans.userPick}</p>
+                <p style="color:#2ed573;"><strong>Correct Answer: ${ans.correctPick}</strong></p>
+            `;
+            reviewList.appendChild(div);
+        }
+    });
+
+    if (missedCount === 0) {
+        reviewList.innerHTML = `<div class="review-item correct"><p><strong>Perfect Score! You are LITS! 🔥</strong> No missing work to review.</p></div>`;
+    }
+
+    if (window.MathJax) {
+        MathJax.typesetPromise([reviewList]).catch((err) => console.log(err));
+    }
+}
+
+// Initialize first question
+loadQuestion();
+</script>
+</body>
+</html>
