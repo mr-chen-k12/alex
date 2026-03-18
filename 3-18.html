@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saxon Math Course 1 - Practice Problems</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; color: #333; }
+        h1 { text-align: center; color: #2c3e50; }
+        .problem-container { border-bottom: 1px solid #ddd; padding: 20px 0; margin-bottom: 10px; }
+        .problem-number { font-weight: bold; margin-right: 10px; font-size: 1.1em; color: #0056b3; }
+        .question { font-size: 1.05em; margin-bottom: 15px; }
+        .btn { background-color: #0056b3; color: white; border: none; padding: 8px 16px; cursor: pointer; border-radius: 4px; font-size: 0.9em; transition: background 0.2s; }
+        .btn:hover { background-color: #004494; }
+        .answer-box { display: none; margin-top: 15px; padding: 15px; border-left: 4px solid #28a745; background-color: #f8fff9; border-radius: 0 4px 4px 0; }
+        .answer-title { font-weight: bold; color: #28a745; margin-bottom: 5px; }
+        table.math-table { border-collapse: collapse; margin: 10px 0; }
+        table.math-table th, table.math-table td { border: 1px solid #333; padding: 5px 15px; text-align: center; }
+        svg { border: 1px solid #ccc; background-color: #fff; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>Saxon Math Course 1 - Written Practice</h1>
+
+    <div id="problems-wrapper">
+        </div>
+
+    <script>
+        const problems = [
+            {
+                num: "e.",
+                text: "The chemist mixed a solution that weighed 2 pounds per quart. Create a table of ordered pairs for this function for 1, 2, 3, and 4 quarts. Then graph the points on a coordinate plane, using the horizontal axis for quarts and the vertical axis for pounds. Would it be appropriate to draw a ray through the points? Why or why not?",
+                ans: `
+                    <p><strong>Table:</strong></p>
+                    <table class="math-table">
+                        <tr><th>Quarts (x)</th><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+                        <tr><th>Pounds (y)</th><td>2</td><td>4</td><td>6</td><td>8</td></tr>
+                    </table>
+                    <p><strong>Graph:</strong></p>
+                    <svg width="250" height="250" viewBox="0 -20 120 120">
+                        <line x1="10" y1="100" x2="110" y2="100" stroke="black" stroke-width="1"/>
+                        <line x1="10" y1="100" x2="10" y2="10" stroke="black" stroke-width="1"/>
+                        <circle cx="30" cy="80" r="2" fill="red"/>
+                        <circle cx="50" cy="60" r="2" fill="red"/>
+                        <circle cx="70" cy="40" r="2" fill="red"/>
+                        <circle cx="90" cy="20" r="2" fill="red"/>
+                        <line x1="10" y1="100" x2="100" y2="10" stroke="blue" stroke-dasharray="4" stroke-width="1"/>
+                        <text x="50" y="115" font-size="8">Quarts</text>
+                        <text x="-5" y="50" font-size="8" transform="rotate(-90, -5, 50)">Pounds</text>
+                    </svg>
+                    <p><strong>Explanation:</strong> Yes, it is appropriate to draw a ray starting from the origin through the points because you can have continuous fractional amounts of the solution (e.g., 1.5 quarts), and the weight would increase proportionally at a constant rate.</p>
+                `
+            },
+            {
+                num: "1.",
+                text: "When the sum of 2.0 and 2.0 is subtracted from the product of 2.0 and 2.0, what is the difference?",
+                ans: "<strong>Answer:</strong> 0<br><br><strong>Explanation:</strong> Sum = \(2.0 + 2.0 = 4.0\). Product = \(2.0 \\times 2.0 = 4.0\). Difference = \(4.0 - 4.0 = 0\)."
+            },
+            {
+                num: "2.",
+                text: "A 4.2-kilogram object weighs the same as how many objects that each weigh 0.42 kilogram?",
+                ans: "<strong>Answer:</strong> 10<br><br><strong>Explanation:</strong> Divide the total weight by the weight per object: \(4.2 \\div 0.42 = 10\)."
+            },
+            {
+                num: "3.",
+                text: "If the average of 8 numbers is 12, what is the sum of the 8 numbers?",
+                ans: "<strong>Answer:</strong> 96<br><br><strong>Explanation:</strong> Average = Sum / Count. Therefore, Sum = Average &times; Count. \(12 \\times 8 = 96\)."
+            },
+            {
+                num: "4.",
+                text: "What is the name of a quadrilateral that has one pair of sides that are parallel and one pair of sides that are not parallel?",
+                ans: "<strong>Answer:</strong> Trapezoid<br><br><strong>Explanation:</strong> By definition, a trapezoid is a quadrilateral with exactly one pair of parallel sides."
+            },
+            {
+                num: "5.",
+                text: "a. Write 0.15 as a percent.<br>b. Write 1.5 as a percent.",
+                ans: "<strong>Answer:</strong> a. 15% <br> b. 150%<br><br><strong>Explanation:</strong> To convert a decimal to a percent, multiply by 100 and add the percent sign."
+            },
+            {
+                num: "6.",
+                text: "Write \\(\\frac{5}{6}\\) as a percent.",
+                ans: "<strong>Answer:</strong> \(83\\frac{1}{3}\\%\)<br><br><strong>Explanation:</strong> Divide 5 by 6 to get \(0.8333...\\) Multiply by 100 to get \(83.333...\\%\), which is exactly \(83\\frac{1}{3}\\%\)."
+            },
+            {
+                num: "7.",
+                text: "Three of the numbers below are equivalent. Which one is not equivalent to the others?<br>A 1 &nbsp;&nbsp;&nbsp; B 100% &nbsp;&nbsp;&nbsp; C 0.1 &nbsp;&nbsp;&nbsp; D \\(\\frac{100}{100}\\)",
+                ans: "<strong>Answer:</strong> C 0.1<br><br><strong>Explanation:</strong> 1 = 100% = 100/100. Option C (0.1) equals 10%, which is not equivalent."
+            },
+            {
+                num: "8.",
+                text: "\\(11^3\\)",
+                ans: "<strong>Answer:</strong> 1331<br><br><strong>Explanation:</strong> \(11 \\times 11 \\times 11 = 121 \\times 11 = 1331\)."
+            },
+            {
+                num: "9.",
+                text: "How much is \\(\\frac{5}{6}\\) of 360?",
+                ans: "<strong>Answer:</strong> 300<br><br><strong>Explanation:</strong> First divide 360 by 6 to get 60. Then multiply by 5 to get \(60 \\times 5 = 300\)."
+            },
+            {
+                num: "10.",
+                text: "Between which two consecutive whole numbers is \\(\\sqrt{89}\\)?",
+                ans: "<strong>Answer:</strong> Between 9 and 10<br><br><strong>Explanation:</strong> The perfect square just below 89 is 81 (\(9^2\)) and the perfect square just above 89 is 100 (\(10^2\)). Therefore, \\(\\sqrt{89}\\) lies between 9 and 10."
+            },
+            {
+                num: "11.",
+                text: "Silvester ran around the field, turning at each of the three backstops. What was the average number of degrees he turned at each of the three corners?",
+                ans: "<strong>Answer:</strong> \(120^\\circ\)<br><br><strong>Explanation:</strong> Running completely around a convex polygon (like a triangle field) and returning to the original direction means completing a full \(360^\\circ\) turn through exterior angles. Since there are 3 corners, the average exterior turn is \(360^\\circ \\div 3 = 120^\\circ\)."
+            },
+            {
+                num: "12.",
+                text: "Find the missing number in this function table.<br> x: 4, 7, 13, 15 <br> 2x - 1: 7, 13, __, 29",
+                ans: "<strong>Answer:</strong> 25<br><br><strong>Explanation:</strong> Substitute \(x = 13\) into the function \(2x - 1\). That gives \(2(13) - 1 = 26 - 1 = 25\)."
+            },
+            {
+                num: "13.",
+                text: "Factor and reduce: \\(\\frac{(45)(54)}{81}\\)",
+                ans: "<strong>Answer:</strong> 30<br><br><strong>Explanation:</strong> Break the numbers into factors. 81 is \(9 \\times 9\). 45 is \(9 \\times 5\), and 54 is \(9 \\times 6\). So, \\(\\frac{(9 \\times 5)(9 \\times 6)}{9 \\times 9}\\). The 9s cancel out, leaving \(5 \\times 6 = 30\)."
+            },
+            {
+                num: "14.",
+                text: "\\(\\frac{30}{0.08}\\)",
+                ans: "<strong>Answer:</strong> 375<br><br><strong>Explanation:</strong> Multiply the numerator and denominator by 100 to remove the decimal: \(3000 \\div 8 = 375\)."
+            },
+            {
+                num: "15.",
+                text: "\\(16\\frac{2}{3} \\div 100\\)",
+                ans: "<strong>Answer:</strong> \\(\\frac{1}{6}\\)<br><br><strong>Explanation:</strong> Convert to an improper fraction: \\(\\frac{50}{3}\\). Then divide by 100 (which is multiplying by \\(\\frac{1}{100}\\)): \\(\\frac{50}{3} \\times \\frac{1}{100} = \\frac{50}{300} = \\frac{1}{6}\\)."
+            },
+            {
+                num: "16.",
+                text: "\\(2\\frac{1}{2} + 3\\frac{1}{3} + 4\\frac{1}{6}\\)",
+                ans: "<strong>Answer:</strong> 10<br><br><strong>Explanation:</strong> Find a common denominator, which is 6. The fractions become \\(\\frac{3}{6} + \\frac{2}{6} + \\frac{1}{6} = \\frac{6}{6} = 1\\). Sum the whole numbers: \(2 + 3 + 4 = 9\). Total = \(9 + 1 = 10\)."
+            },
+            {
+                num: "17.",
+                text: "\\(100 \\times 5\\frac{1}{3} \\times \\frac{3}{8}\\)",
+                ans: "<strong>Answer:</strong> 200<br><br><strong>Explanation:</strong> Convert to improper fractions: \(100 \\times \\frac{16}{3} \\times \\frac{3}{8}\). The 3s cancel out. \\(16 \\div 8 = 2\). The equation simplifies to \(100 \\times 2 = 200\)."
+            },
+            {
+                num: "18.",
+                text: "\\(\\frac{2}{5}\\) of $12.00",
+                ans: "<strong>Answer:</strong> $4.80<br><br><strong>Explanation:</strong> First divide by 5: \($12.00 \\div 5 = $2.40\). Then multiply by 2: \($2.40 \\times 2 = $4.80\)."
+            },
+            {
+                num: "19.",
+                text: "\\(0.12 \\times \\$6.50\\)",
+                ans: "<strong>Answer:</strong> $0.78<br><br><strong>Explanation:</strong> \(12 \\times 65 = 780\). Place the decimal 4 spots to the left (two for 0.12, two for 6.50): \(0.7800 = \\$0.78\)."
+            },
+            {
+                num: "20.",
+                text: "\\(5.3 - 3\\frac{3}{4}\\) (decimal answer)",
+                ans: "<strong>Answer:</strong> 1.55<br><br><strong>Explanation:</strong> Convert fraction to a decimal: \\(3\\frac{3}{4} = 3.75\\). Subtract: \(5.30 - 3.75 = 1.55\)."
+            },
+            {
+                num: "21.",
+                text: "What is the ratio of the number of cents in a dime to the number of cents in a quarter?",
+                ans: "<strong>Answer:</strong> 2:5 or \\(\\frac{2}{5}\\)<br><br><strong>Explanation:</strong> A dime has 10 cents and a quarter has 25 cents. Ratio = 10:25. Divide both by 5 to reduce to 2:5."
+            },
+            {
+                num: "22.",
+                text: "\\(4n = 6 \\cdot 14\\)",
+                ans: "<strong>Answer:</strong> 21<br><br><strong>Explanation:</strong> Multiply the right side: \(6 \\times 14 = 84\). Equation is \(4n = 84\). Divide by 4: \(n = 21\)."
+            },
+            {
+                num: "23.",
+                text: "\\(0.3n = 12\\)",
+                ans: "<strong>Answer:</strong> 40<br><br><strong>Explanation:</strong> Divide 12 by 0.3. This is the same as \(120 \\div 3\), which equals 40."
+            },
+            {
+                num: "24.",
+                text: "Draw a segment \\(1\\frac{3}{4}\\) inches long. Label the endpoints R and T. Label the midpoint S. What are the lengths of RS and ST?",
+                ans: `
+                    <strong>Answer:</strong> Lengths are \\(\\frac{7}{8}\\) inch each.
+                    <br><br><strong>Explanation:</strong>
+                    <svg width="300" height="60" viewBox="0 0 300 60">
+                        <line x1="20" y1="30" x2="280" y2="30" stroke="black" stroke-width="2"/>
+                        <circle cx="20" cy="30" r="3" fill="black"/>
+                        <circle cx="150" cy="30" r="3" fill="black"/>
+                        <circle cx="280" cy="30" r="3" fill="black"/>
+                        <text x="15" y="20" font-weight="bold">R</text>
+                        <text x="145" y="20" font-weight="bold">S</text>
+                        <text x="275" y="20" font-weight="bold">T</text>
+                        <text x="120" y="50" font-size="12">Total: 1 3/4 inches</text>
+                    </svg><br>
+                    The total length is \\(1\\frac{3}{4}\\) which equals \\(\\frac{7}{4}\\) inches. The midpoint divides it in half. \\(\\frac{7}{4} \\div 2 = \\frac{7}{4} \\times \\frac{1}{2} = \\frac{7}{8}\\).
+                `
+            },
+            {
+                num: "25.",
+                text: "Solve this proportion: \\(\\frac{6}{9} = \\frac{36}{w}\\)",
+                ans: "<strong>Answer:</strong> 54<br><br><strong>Explanation:</strong> Using cross multiplication: \(6w = 9 \\times 36\). \(6w = 324\). \(w = 324 \\div 6 = 54\)."
+            },
+            {
+                num: "26.",
+                text: "Multiply 4 hours by 6 dollars per hour: \\(\\frac{4 \\text{ hours}}{1} \\times \\frac{6 \\text{ dollars}}{1 \\text{ hour}}\\)",
+                ans: "<strong>Answer:</strong> 24 dollars<br><br><strong>Explanation:</strong> Multiply the numerators. The 'hours' units cancel out. \(4 \\times 6 = 24\)."
+            },
+            {
+                num: "27.",
+                text: "The coordinates of the vertices of a parallelogram are (0, 0), (6, 0), (4, 4), and (-2, 4). What is the area of the parallelogram?",
+                ans: "<strong>Answer:</strong> 24 square units<br><br><strong>Explanation:</strong> Area of a parallelogram is Base &times; Height. The base is the segment from (0,0) to (6,0), which has a length of 6. The perpendicular height from the y-coordinates 0 to 4 is 4. Area = \(6 \\times 4 = 24\)."
+            },
+            {
+                num: "28.",
+                text: "The saying \"A pint's a pound the world around\" refers to the fact that a pint of water weighs about one pound. About how many pounds does a gallon of water weigh?",
+                ans: "<strong>Answer:</strong> 8 pounds<br><br><strong>Explanation:</strong> There are 2 pints in a quart, and 4 quarts in a gallon. Therefore, there are \(2 \\times 4 = 8\) pints in a gallon. If 1 pint = 1 pound, then 8 pints = 8 pounds."
+            },
+            {
+                num: "29.",
+                text: "\\(3^2 + 2^3 - \\sqrt{4} \\times 5 + 6^2 \\div \\sqrt{16}\\)",
+                ans: "<strong>Answer:</strong> 16<br><br><strong>Explanation:</strong> Use Order of Operations (PEMDAS):<br> Exponents/Roots: \(9 + 8 - 2 \\times 5 + 36 \\div 4\)<br> Multiplication/Division: \(9 + 8 - 10 + 9\)<br> Addition/Subtraction: \(17 - 10 + 9 = 7 + 9 = 16\)."
+            },
+            {
+                num: "30.",
+                text: "What is the probability of rolling a prime number with one roll of a number cube? Express the ratio as a fraction and as a decimal.",
+                ans: "<strong>Answer:</strong> Fraction: \\(\\frac{1}{2}\\), Decimal: 0.5<br><br><strong>Explanation:</strong> A standard number cube has faces 1, 2, 3, 4, 5, 6. The prime numbers are 2, 3, and 5. There are 3 prime numbers out of 6 possible outcomes. Probability = \\(\\frac{3}{6} = \\frac{1}{2} = 0.5\\)."
+            }
+        ];
+
+        const wrapper = document.getElementById('problems-wrapper');
+        
+        problems.forEach((prob, index) => {
+            const problemHtml = `
+                <div class="problem-container">
+                    <div class="question">
+                        <span class="problem-number">${prob.num}</span> 
+                        ${prob.text}
+                    </div>
+                    <button class="btn" onclick="toggleAnswer('ans_${index}')">Review Answer</button>
+                    <div id="ans_${index}" class="answer-box">
+                        <div class="answer-title">Answer & Explanation:</div>
+                        ${prob.ans}
+                    </div>
+                </div>
+            `;
+            wrapper.innerHTML += problemHtml;
+        });
+
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.style.display === "block") {
+                el.style.display = "none";
+            } else {
+                el.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
