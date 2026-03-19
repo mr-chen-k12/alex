@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Concept Practice Exam</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            padding-top: 80px; /* Space for the fixed scoreboard */
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 40px;
+        }
+        /* Scoreboard Styles */
+        #scoreboard {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        .question-block {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin: 8px 0;
+        }
+        label {
+            cursor: pointer;
+            padding: 5px;
+            display: inline-block;
+            width: 100%;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
+        .correct {
+            color: #27ae60;
+        }
+        .incorrect {
+            color: #c0392b;
+        }
+        .diagram-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #e8f6f3;
+            border-radius: 8px;
+            border: 2px dashed #1abc9c;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scoreboard">
+        Score: <span id="current-score">0</span> / 15
+    </div>
+
+    <div class="container">
+        <h1>Concept Review Exam</h1>
+        <p>Select the best answer for each question. Your score will update automatically at the top of the screen!</p>
+
+        <div id="exam-content"></div>
+    </div>
+
+    <script>
+        const questions = [
+            // Concept 4: Number Lines & Integers
+            { section: "Concept 1: Number Lines (Based on Q4)" },
+            { id: 1, text: "An arrow points 4 ticks to the left of 0 on a number line where each tick is 1 unit. What number does it point to?", options: ["A) 4", "B) -4", "C) 0", "D) -3"], answer: 1 },
+            { id: 2, text: "If you start at -2 on a number line and move 5 spaces to the right, where do you end up?", options: ["A) -7", "B) 3", "C) -3", "D) 7"], answer: 1 },
+            { id: 3, text: "Which of these numbers is furthest to the left on a standard number line?", options: ["A) -5", "B) -8", "C) 2", "D) 0"], answer: 1 },
+
+            // Concept 6: Measuring & Conversion (cm to mm)
+            { section: "Concept 2: Measurement & Conversions (Based on Q6)" },
+            { id: 4, text: "A pencil is 12 cm long. How many millimeters is that?", options: ["A) 1.2 mm", "B) 12 mm", "C) 120 mm", "D) 1200 mm"], answer: 2 },
+            { id: 5, text: "If a string is 85 mm long, how long is it in centimeters?", options: ["A) 8.5 cm", "B) 85 cm", "C) 0.85 cm", "D) 850 cm"], answer: 0 },
+            { id: 6, text: "How many millimeters are in half a centimeter (0.5 cm)?", options: ["A) 50 mm", "B) 10 mm", "C) 5 mm", "D) 0.5 mm"], answer: 2 },
+
+            // Concept 16: Decimal Addition
+            { section: "Concept 3: Adding Decimals (Based on Q16)" },
+            { id: 7, text: "Add: 12.5 + 3.42", options: ["A) 15.92", "B) 4.67", "C) 15.47", "D) 16.02"], answer: 0 },
+            { id: 8, text: "Find the sum: 0.8 + 14.55 + 6.0", options: ["A) 20.63", "B) 21.35", "C) 21.80", "D) 15.43"], answer: 1 },
+            { id: 9, text: "What is 104.2 + 27.9?", options: ["A) 131.1", "B) 132.1", "C) 132.9", "D) 122.1"], answer: 1 },
+
+            // Concept 17: Long Division
+            { section: "Concept 4: Long Division (Based on Q17)" },
+            { id: 10, text: "Divide: 432 / 6", options: ["A) 72", "B) 62", "C) 74", "D) 68"], answer: 0 },
+            { id: 11, text: "What is 315 / 5?", options: ["A) 53", "B) 65", "C) 63", "D) 61"], answer: 2 },
+            { id: 12, text: "Calculate: 819 / 9", options: ["A) 89", "B) 91", "C) 90", "D) 99"], answer: 1 },
+
+            // Diagram + Concept 11: Average Speed
+            { section: "Concept 5: Average Speed (Based on Q11)" },
+            { isDiagram: true },
+            { id: 13, text: "A train travels 240 miles in 4 hours. What is its average speed?", options: ["A) 50 mph", "B) 60 mph", "C) 70 mph", "D) 80 mph"], answer: 1 },
+            { id: 14, text: "If a cyclist rides 45 miles in 3 hours, how many miles per hour did they ride?", options: ["A) 12 mph", "B) 15 mph", "C) 18 mph", "D) 20 mph"], answer: 1 },
+            { id: 15, text: "A plane flies 1,200 miles in 2 hours. What is its average speed?", options: ["A) 500 mph", "B) 600 mph", "C) 700 mph", "D) 800 mph"], answer: 1 }
+        ];
+
+        const examContent = document.getElementById('exam-content');
+        let score = 0;
+        let answeredQuestions = new Set();
+
+        // Diagram SVG to be inserted before Concept 11 questions
+        const diagramHTML = `
+            <div class="diagram-container">
+                <h3>Understanding Average Speed</h3>
+                <p><strong>Average Speed = Total Distance &divide; Total Time</strong></p>
+                <svg width="400" height="150" viewBox="0 0 400 150">
+                    <line x1="20" y1="100" x2="380" y2="100" stroke="#7f8c8d" stroke-width="4" stroke-dasharray="10,5"/>
+                    <line x1="20" y1="120" x2="20" y2="130" stroke="black" stroke-width="2"/>
+                    <line x1="380" y1="120" x2="380" y2="130" stroke="black" stroke-width="2"/>
+                    <line x1="20" y1="125" x2="380" y2="125" stroke="black" stroke-width="2"/>
+                    <text x="160" y="145" font-family="sans-serif" font-weight="bold">Distance (e.g., 150 miles)</text>
+                    <rect x="50" y="70" width="60" height="25" fill="#e74c3c" rx="5"/>
+                    <rect x="65" y="55" width="30" height="15" fill="#c0392b" rx="3"/>
+                    <circle cx="65" cy="95" r="8" fill="#2c3e50"/>
+                    <circle cx="95" cy="95" r="8" fill="#2c3e50"/>
+                    <line x1="30" y1="80" x2="45" y2="80" stroke="black" stroke-width="2"/>
+                    <line x1="20" y1="85" x2="45" y2="85" stroke="black" stroke-width="2"/>
+                    <circle cx="200" cy="40" r="20" fill="white" stroke="#34495e" stroke-width="3"/>
+                    <line x1="200" y1="40" x2="200" y2="25" stroke="black" stroke-width="2"/>
+                    <line x1="200" y1="40" x2="210" y2="45" stroke="black" stroke-width="2"/>
+                    <text x="230" y="45" font-family="sans-serif" font-weight="bold">Time (e.g., 3 hours)</text>
+                    
+                    <text x="50" y="20" font-family="sans-serif" fill="#2980b9" font-weight="bold">Speed = 150 miles &divide; 3 hours = 50 mph</text>
+                </svg>
+            </div>
+        `;
+
+        questions.forEach((q, index) => {
+            if (q.section) {
+                const header = document.createElement('h2');
+                header.className = 'section-title';
+                header.textContent = q.section;
+                examContent.appendChild(header);
+            } else if (q.isDiagram) {
+                examContent.insertAdjacentHTML('beforeend', diagramHTML);
+            } else {
+                const qBlock = document.createElement('div');
+                qBlock.className = 'question-block';
+                qBlock.id = `question-${q.id}`;
+
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.textContent = `${q.id}. ${q.text}`;
+                qBlock.appendChild(qText);
+
+                const optionsList = document.createElement('ul');
+                optionsList.className = 'options';
+
+                q.options.forEach((opt, optIndex) => {
+                    const li = document.createElement('li');
+                    const label = document.createElement('label');
+                    const radio = document.createElement('input');
+                    
+                    radio.type = 'radio';
+                    radio.name = `q${q.id}`;
+                    radio.value = optIndex;
+                    
+                    radio.addEventListener('change', () => handleAnswer(q.id, optIndex, q.answer, qBlock));
+
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(' ' + opt));
+                    li.appendChild(label);
+                    optionsList.appendChild(li);
+                });
+
+                qBlock.appendChild(optionsList);
+
+                const feedback = document.createElement('div');
+                feedback.className = 'feedback';
+                feedback.id = `feedback-${q.id}`;
+                qBlock.appendChild(feedback);
+
+                examContent.appendChild(qBlock);
+            }
+        });
+
+        function handleAnswer(questionId, selectedIndex, correctIndex, blockElement) {
+            // Prevent scoring multiple times for the same question
+            if (answeredQuestions.has(questionId)) return;
+            
+            const feedbackEl = document.getElementById(`feedback-${questionId}`);
+            feedbackEl.style.display = 'block';
+
+            // Disable all radio buttons in this block
+            const radios = blockElement.querySelectorAll('input[type="radio"]');
+            radios.forEach(r => r.disabled = true);
+
+            if (selectedIndex === correctIndex) {
+                feedbackEl.textContent = "Correct!";
+                feedbackEl.className = "feedback correct";
+                score++;
+                document.getElementById('current-score').textContent = score;
+            } else {
+                const correctLetter = String.fromCharCode(65 + correctIndex);
+                feedbackEl.textContent = `Incorrect. The correct answer was ${correctLetter}.`;
+                feedbackEl.className = "feedback incorrect";
+            }
+
+            answeredQuestions.add(questionId);
+        }
+    </script>
+</body>
+</html>
