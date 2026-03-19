@@ -3,61 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Concept Practice Exam</title>
+    <title>Math Concept Exam</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-            padding-top: 80px; /* Space for the fixed scoreboard */
-        }
-        .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            background-color: #f4f7f6;
         }
-        h1 {
-            text-align: center;
+        h1, h2 {
             color: #2c3e50;
-            margin-bottom: 30px;
         }
-        .section-title {
-            background-color: #3498db;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            margin-top: 40px;
-        }
-        /* Scoreboard Styles */
         #scoreboard {
-            position: fixed;
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
             background-color: #2c3e50;
-            color: #ecf0f1;
+            color: white;
+            padding: 15px;
+            border-radius: 0 0 8px 8px;
             text-align: center;
-            padding: 15px 0;
             font-size: 1.5em;
             font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             z-index: 1000;
+            margin-bottom: 30px;
         }
-        .question-block {
-            margin: 20px 0;
-            padding: 15px;
+        .concept-section {
+            background: #fff;
             border: 1px solid #ddd;
             border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .concept-title {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #0d6efd;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 6px;
             background-color: #fafafa;
+            border-left: 4px solid #ccc;
         }
         .question-text {
             font-size: 1.1em;
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 10px;
         }
         .options {
@@ -65,13 +64,35 @@
             padding: 0;
         }
         .options li {
-            margin: 8px 0;
+            margin-bottom: 8px;
         }
         label {
             cursor: pointer;
             padding: 5px;
+            border-radius: 4px;
             display: inline-block;
             width: 100%;
+        }
+        label:hover {
+            background-color: #e9ecef;
+        }
+        .submit-btn {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+        .submit-btn:hover {
+            background-color: #0b5ed7;
+        }
+        .submit-btn:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
         }
         .feedback {
             margin-top: 10px;
@@ -79,172 +100,379 @@
             display: none;
         }
         .correct {
-            color: #27ae60;
+            color: #198754;
         }
         .incorrect {
-            color: #c0392b;
+            color: #dc3545;
         }
-        .diagram-container {
+        .canvas-container {
             text-align: center;
-            margin: 30px 0;
-            padding: 20px;
-            background-color: #e8f6f3;
+            margin: 20px 0;
+            background: #fff;
+            padding: 15px;
+            border: 1px dashed #aaa;
             border-radius: 8px;
-            border: 2px dashed #1abc9c;
         }
     </style>
 </head>
 <body>
 
     <div id="scoreboard">
-        Score: <span id="current-score">0</span> / 15
+        Score: <span id="score">0</span> / 15
     </div>
 
-    <div class="container">
-        <h1>Concept Review Exam</h1>
-        <p>Select the best answer for each question. Your score will update automatically at the top of the screen!</p>
+    <h1>Math Concepts Practice Exam</h1>
+    <p>Test your knowledge on the concepts covered in questions 4, 6, 16, 17, and 11. Select an answer for each question and click "Submit Answer" to see if you got it right!</p>
 
-        <div id="exam-content"></div>
+    <div class="concept-section">
+        <h2 class="concept-title">Concept 4: Comparing Fractions and Decimals</h2>
+        
+        <div class="question-block" id="qb1">
+            <div class="question-text">1. Compare: \(\frac{3}{4} \bigcirc 0.80\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q1" value="A"> A) \(>\)</label></li>
+                <li><label><input type="radio" name="q1" value="B"> B) \(<\)</label></li>
+                <li><label><input type="radio" name="q1" value="C"> C) \(=\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(1, 'B')">Submit Answer</button>
+            <div class="feedback" id="feedback1"></div>
+        </div>
+
+        <div class="question-block" id="qb2">
+            <div class="question-text">2. Compare: \(\frac{7}{8} \bigcirc 0.875\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q2" value="A"> A) \(>\)</label></li>
+                <li><label><input type="radio" name="q2" value="B"> B) \(<\)</label></li>
+                <li><label><input type="radio" name="q2" value="C"> C) \(=\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(2, 'C')">Submit Answer</button>
+            <div class="feedback" id="feedback2"></div>
+        </div>
+
+        <div class="question-block" id="qb3">
+            <div class="question-text">3. Compare: \(\frac{2}{5} \bigcirc 0.35\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q3" value="A"> A) \(>\)</label></li>
+                <li><label><input type="radio" name="q3" value="B"> B) \(<\)</label></li>
+                <li><label><input type="radio" name="q3" value="C"> C) \(=\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(3, 'A')">Submit Answer</button>
+            <div class="feedback" id="feedback3"></div>
+        </div>
+    </div>
+
+    <div class="concept-section">
+        <h2 class="concept-title">Concept 6: Mixed Numbers as Percents</h2>
+
+        <div class="question-block" id="qb4">
+            <div class="question-text">4. Write \(2\frac{3}{4}\) as a percent.</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q4" value="A"> A) \(275\%\)</label></li>
+                <li><label><input type="radio" name="q4" value="B"> B) \(234\%\)</label></li>
+                <li><label><input type="radio" name="q4" value="C"> C) \(2.75\%\)</label></li>
+                <li><label><input type="radio" name="q4" value="D"> D) \(200\%\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(4, 'A')">Submit Answer</button>
+            <div class="feedback" id="feedback4"></div>
+        </div>
+
+        <div class="question-block" id="qb5">
+            <div class="question-text">5. Write \(1\frac{1}{2}\) as a percent.</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q5" value="A"> A) \(112\%\)</label></li>
+                <li><label><input type="radio" name="q5" value="B"> B) \(150\%\)</label></li>
+                <li><label><input type="radio" name="q5" value="C"> C) \(100\%\)</label></li>
+                <li><label><input type="radio" name="q5" value="D"> D) \(15\%\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(5, 'B')">Submit Answer</button>
+            <div class="feedback" id="feedback5"></div>
+        </div>
+
+        <div class="question-block" id="qb6">
+            <div class="question-text">6. Write \(3\frac{1}{5}\) as a percent.</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q6" value="A"> A) \(315\%\)</label></li>
+                <li><label><input type="radio" name="q6" value="B"> B) \(350\%\)</label></li>
+                <li><label><input type="radio" name="q6" value="C"> C) \(320\%\)</label></li>
+                <li><label><input type="radio" name="q6" value="D"> D) \(300\%\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(6, 'C')">Submit Answer</button>
+            <div class="feedback" id="feedback6"></div>
+        </div>
+    </div>
+
+    <div class="concept-section">
+        <h2 class="concept-title">Concept 16: Decimal Operations with Parentheses</h2>
+
+        <div class="question-block" id="qb7">
+            <div class="question-text">7. Evaluate: \((2 - 0.5)(2 \div 0.5)\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q7" value="A"> A) \(1.5\)</label></li>
+                <li><label><input type="radio" name="q7" value="B"> B) \(6\)</label></li>
+                <li><label><input type="radio" name="q7" value="C"> C) \(3\)</label></li>
+                <li><label><input type="radio" name="q7" value="D"> D) \(8\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(7, 'B')">Submit Answer</button>
+            <div class="feedback" id="feedback7"></div>
+        </div>
+
+        <div class="question-block" id="qb8">
+            <div class="question-text">8. Evaluate: \((1 - 0.2)(1 \div 0.2)\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q8" value="A"> A) \(4\)</label></li>
+                <li><label><input type="radio" name="q8" value="B"> B) \(5\)</label></li>
+                <li><label><input type="radio" name="q8" value="C"> C) \(0.8\)</label></li>
+                <li><label><input type="radio" name="q8" value="D"> D) \(8\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(8, 'A')">Submit Answer</button>
+            <div class="feedback" id="feedback8"></div>
+        </div>
+
+        <div class="question-block" id="qb9">
+            <div class="question-text">9. Evaluate: \((3 - 0.1)(3 \div 0.1)\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q9" value="A"> A) \(8.7\)</label></li>
+                <li><label><input type="radio" name="q9" value="B"> B) \(90\)</label></li>
+                <li><label><input type="radio" name="q9" value="C"> C) \(87\)</label></li>
+                <li><label><input type="radio" name="q9" value="D"> D) \(89.7\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(9, 'C')">Submit Answer</button>
+            <div class="feedback" id="feedback9"></div>
+        </div>
+    </div>
+
+    <div class="concept-section">
+        <h2 class="concept-title">Concept 17: Adding Decimals and Fractions</h2>
+
+        <div class="question-block" id="qb10">
+            <div class="question-text">10. Calculate (give a decimal answer): \(3.5 + \frac{1}{4}\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q10" value="A"> A) \(3.54\)</label></li>
+                <li><label><input type="radio" name="q10" value="B"> B) \(3.75\)</label></li>
+                <li><label><input type="radio" name="q10" value="C"> C) \(3.25\)</label></li>
+                <li><label><input type="radio" name="q10" value="D"> D) \(4.0\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(10, 'B')">Submit Answer</button>
+            <div class="feedback" id="feedback10"></div>
+        </div>
+
+        <div class="question-block" id="qb11">
+            <div class="question-text">11. Calculate (give a decimal answer): \(2.1 + \frac{3}{5}\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q11" value="A"> A) \(2.7\)</label></li>
+                <li><label><input type="radio" name="q11" value="B"> B) \(2.4\)</label></li>
+                <li><label><input type="radio" name="q11" value="C"> C) \(2.15\)</label></li>
+                <li><label><input type="radio" name="q11" value="D"> D) \(2.6\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(11, 'A')">Submit Answer</button>
+            <div class="feedback" id="feedback11"></div>
+        </div>
+
+        <div class="question-block" id="qb12">
+            <div class="question-text">12. Calculate (give a decimal answer): \(5.8 + \frac{1}{2}\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q12" value="A"> A) \(5.85\)</label></li>
+                <li><label><input type="radio" name="q12" value="B"> B) \(6.0\)</label></li>
+                <li><label><input type="radio" name="q12" value="C"> C) \(6.3\)</label></li>
+                <li><label><input type="radio" name="q12" value="D"> D) \(5.9\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(12, 'C')">Submit Answer</button>
+            <div class="feedback" id="feedback12"></div>
+        </div>
+    </div>
+
+    <div class="concept-section">
+        <h2 class="concept-title">Concept 11: Polygon Exterior Angles</h2>
+        
+        <p><strong>Review Diagram: Parallelogram Park</strong><br>
+        Notice how extending the sides of the path creates exterior angles (the turns a person makes). A full trip around any convex polygon requires a total turning measure of \(360^{\circ}\).</p>
+        
+        <div class="canvas-container">
+            <canvas id="parkCanvas" width="400" height="250"></canvas>
+            <p><em>Dashed lines represent the skater's original path before making a turn.</em></p>
+        </div>
+
+        <div class="question-block" id="qb13">
+            <div class="question-text">13. If Jason rides his skateboard around a <strong>Triangular</strong> Park and makes 3 turns, what is the average number of degrees in each turn?</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q13" value="A"> A) \(90^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q13" value="B"> B) \(120^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q13" value="C"> C) \(60^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q13" value="D"> D) \(180^{\circ}\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(13, 'B')">Submit Answer</button>
+            <div class="feedback" id="feedback13"></div>
+        </div>
+
+        <div class="question-block" id="qb14">
+            <div class="question-text">14. If Jason makes 6 turns riding around a <strong>Hexagonal</strong> Park, what is the average number of degrees per turn?</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q14" value="A"> A) \(60^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q14" value="B"> B) \(72^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q14" value="C"> C) \(120^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q14" value="D"> D) \(90^{\circ}\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(14, 'A')">Submit Answer</button>
+            <div class="feedback" id="feedback14"></div>
+        </div>
+
+        <div class="question-block" id="qb15">
+            <div class="question-text">15. If Jason makes 5 turns riding around a <strong>Pentagon-shaped</strong> park, what is the average number of degrees per turn?</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q15" value="A"> A) \(108^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q15" value="B"> B) \(60^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q15" value="C"> C) \(90^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q15" value="D"> D) \(72^{\circ}\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(15, 'D')">Submit Answer</button>
+            <div class="feedback" id="feedback15"></div>
+        </div>
     </div>
 
     <script>
-        const questions = [
-            // Concept 4: Number Lines & Integers
-            { section: "Concept 1: Number Lines (Based on Q4)" },
-            { id: 1, text: "An arrow points 4 ticks to the left of 0 on a number line where each tick is 1 unit. What number does it point to?", options: ["A) 4", "B) -4", "C) 0", "D) -3"], answer: 1 },
-            { id: 2, text: "If you start at -2 on a number line and move 5 spaces to the right, where do you end up?", options: ["A) -7", "B) 3", "C) -3", "D) 7"], answer: 1 },
-            { id: 3, text: "Which of these numbers is furthest to the left on a standard number line?", options: ["A) -5", "B) -8", "C) 2", "D) 0"], answer: 1 },
-
-            // Concept 6: Measuring & Conversion (cm to mm)
-            { section: "Concept 2: Measurement & Conversions (Based on Q6)" },
-            { id: 4, text: "A pencil is 12 cm long. How many millimeters is that?", options: ["A) 1.2 mm", "B) 12 mm", "C) 120 mm", "D) 1200 mm"], answer: 2 },
-            { id: 5, text: "If a string is 85 mm long, how long is it in centimeters?", options: ["A) 8.5 cm", "B) 85 cm", "C) 0.85 cm", "D) 850 cm"], answer: 0 },
-            { id: 6, text: "How many millimeters are in half a centimeter (0.5 cm)?", options: ["A) 50 mm", "B) 10 mm", "C) 5 mm", "D) 0.5 mm"], answer: 2 },
-
-            // Concept 16: Decimal Addition
-            { section: "Concept 3: Adding Decimals (Based on Q16)" },
-            { id: 7, text: "Add: 12.5 + 3.42", options: ["A) 15.92", "B) 4.67", "C) 15.47", "D) 16.02"], answer: 0 },
-            { id: 8, text: "Find the sum: 0.8 + 14.55 + 6.0", options: ["A) 20.63", "B) 21.35", "C) 21.80", "D) 15.43"], answer: 1 },
-            { id: 9, text: "What is 104.2 + 27.9?", options: ["A) 131.1", "B) 132.1", "C) 132.9", "D) 122.1"], answer: 1 },
-
-            // Concept 17: Long Division
-            { section: "Concept 4: Long Division (Based on Q17)" },
-            { id: 10, text: "Divide: 432 / 6", options: ["A) 72", "B) 62", "C) 74", "D) 68"], answer: 0 },
-            { id: 11, text: "What is 315 / 5?", options: ["A) 53", "B) 65", "C) 63", "D) 61"], answer: 2 },
-            { id: 12, text: "Calculate: 819 / 9", options: ["A) 89", "B) 91", "C) 90", "D) 99"], answer: 1 },
-
-            // Diagram + Concept 11: Average Speed
-            { section: "Concept 5: Average Speed (Based on Q11)" },
-            { isDiagram: true },
-            { id: 13, text: "A train travels 240 miles in 4 hours. What is its average speed?", options: ["A) 50 mph", "B) 60 mph", "C) 70 mph", "D) 80 mph"], answer: 1 },
-            { id: 14, text: "If a cyclist rides 45 miles in 3 hours, how many miles per hour did they ride?", options: ["A) 12 mph", "B) 15 mph", "C) 18 mph", "D) 20 mph"], answer: 1 },
-            { id: 15, text: "A plane flies 1,200 miles in 2 hours. What is its average speed?", options: ["A) 500 mph", "B) 600 mph", "C) 700 mph", "D) 800 mph"], answer: 1 }
-        ];
-
-        const examContent = document.getElementById('exam-content');
-        let score = 0;
+        let currentScore = 0;
         let answeredQuestions = new Set();
 
-        // Diagram SVG to be inserted before Concept 11 questions
-        const diagramHTML = `
-            <div class="diagram-container">
-                <h3>Understanding Average Speed</h3>
-                <p><strong>Average Speed = Total Distance &divide; Total Time</strong></p>
-                <svg width="400" height="150" viewBox="0 0 400 150">
-                    <line x1="20" y1="100" x2="380" y2="100" stroke="#7f8c8d" stroke-width="4" stroke-dasharray="10,5"/>
-                    <line x1="20" y1="120" x2="20" y2="130" stroke="black" stroke-width="2"/>
-                    <line x1="380" y1="120" x2="380" y2="130" stroke="black" stroke-width="2"/>
-                    <line x1="20" y1="125" x2="380" y2="125" stroke="black" stroke-width="2"/>
-                    <text x="160" y="145" font-family="sans-serif" font-weight="bold">Distance (e.g., 150 miles)</text>
-                    <rect x="50" y="70" width="60" height="25" fill="#e74c3c" rx="5"/>
-                    <rect x="65" y="55" width="30" height="15" fill="#c0392b" rx="3"/>
-                    <circle cx="65" cy="95" r="8" fill="#2c3e50"/>
-                    <circle cx="95" cy="95" r="8" fill="#2c3e50"/>
-                    <line x1="30" y1="80" x2="45" y2="80" stroke="black" stroke-width="2"/>
-                    <line x1="20" y1="85" x2="45" y2="85" stroke="black" stroke-width="2"/>
-                    <circle cx="200" cy="40" r="20" fill="white" stroke="#34495e" stroke-width="3"/>
-                    <line x1="200" y1="40" x2="200" y2="25" stroke="black" stroke-width="2"/>
-                    <line x1="200" y1="40" x2="210" y2="45" stroke="black" stroke-width="2"/>
-                    <text x="230" y="45" font-family="sans-serif" font-weight="bold">Time (e.g., 3 hours)</text>
-                    
-                    <text x="50" y="20" font-family="sans-serif" fill="#2980b9" font-weight="bold">Speed = 150 miles &divide; 3 hours = 50 mph</text>
-                </svg>
-            </div>
-        `;
+        function checkAnswer(questionNum, correctAnswer) {
+            // Check if already answered
+            if (answeredQuestions.has(questionNum)) return;
 
-        questions.forEach((q, index) => {
-            if (q.section) {
-                const header = document.createElement('h2');
-                header.className = 'section-title';
-                header.textContent = q.section;
-                examContent.appendChild(header);
-            } else if (q.isDiagram) {
-                examContent.insertAdjacentHTML('beforeend', diagramHTML);
-            } else {
-                const qBlock = document.createElement('div');
-                qBlock.className = 'question-block';
-                qBlock.id = `question-${q.id}`;
-
-                const qText = document.createElement('div');
-                qText.className = 'question-text';
-                qText.textContent = `${q.id}. ${q.text}`;
-                qBlock.appendChild(qText);
-
-                const optionsList = document.createElement('ul');
-                optionsList.className = 'options';
-
-                q.options.forEach((opt, optIndex) => {
-                    const li = document.createElement('li');
-                    const label = document.createElement('label');
-                    const radio = document.createElement('input');
-                    
-                    radio.type = 'radio';
-                    radio.name = `q${q.id}`;
-                    radio.value = optIndex;
-                    
-                    radio.addEventListener('change', () => handleAnswer(q.id, optIndex, q.answer, qBlock));
-
-                    label.appendChild(radio);
-                    label.appendChild(document.createTextNode(' ' + opt));
-                    li.appendChild(label);
-                    optionsList.appendChild(li);
-                });
-
-                qBlock.appendChild(optionsList);
-
-                const feedback = document.createElement('div');
-                feedback.className = 'feedback';
-                feedback.id = `feedback-${q.id}`;
-                qBlock.appendChild(feedback);
-
-                examContent.appendChild(qBlock);
+            // Get selected radio button
+            const options = document.getElementsByName('q' + questionNum);
+            let selectedValue = null;
+            for (const option of options) {
+                if (option.checked) {
+                    selectedValue = option.value;
+                    break;
+                }
             }
-        });
 
-        function handleAnswer(questionId, selectedIndex, correctIndex, blockElement) {
-            // Prevent scoring multiple times for the same question
-            if (answeredQuestions.has(questionId)) return;
+            const feedbackEl = document.getElementById('feedback' + questionNum);
+            const blockEl = document.getElementById('qb' + questionNum);
+
+            if (!selectedValue) {
+                alert("Please select an answer first!");
+                return;
+            }
+
+            // Lock in answer
+            answeredQuestions.add(questionNum);
+            for (const option of options) {
+                option.disabled = true;
+            }
             
-            const feedbackEl = document.getElementById(`feedback-${questionId}`);
-            feedbackEl.style.display = 'block';
+            // Disable button
+            event.target.disabled = true;
 
-            // Disable all radio buttons in this block
-            const radios = blockElement.querySelectorAll('input[type="radio"]');
-            radios.forEach(r => r.disabled = true);
-
-            if (selectedIndex === correctIndex) {
-                feedbackEl.textContent = "Correct!";
+            // Check correctness
+            feedbackEl.style.display = "block";
+            if (selectedValue === correctAnswer) {
+                currentScore++;
+                document.getElementById('score').innerText = currentScore;
+                feedbackEl.innerHTML = "Correct! \u2714\uFE0F";
                 feedbackEl.className = "feedback correct";
-                score++;
-                document.getElementById('current-score').textContent = score;
+                blockEl.style.borderLeftColor = "#198754";
             } else {
-                const correctLetter = String.fromCharCode(65 + correctIndex);
-                feedbackEl.textContent = `Incorrect. The correct answer was ${correctLetter}.`;
+                feedbackEl.innerHTML = "Incorrect. The correct answer was " + correctAnswer + ". \u274C";
                 feedbackEl.className = "feedback incorrect";
+                blockEl.style.borderLeftColor = "#dc3545";
             }
-
-            answeredQuestions.add(questionId);
         }
+
+        // Draw Parallelogram Park Diagram
+        function drawDiagram() {
+            const canvas = document.getElementById('parkCanvas');
+            if (canvas.getContext) {
+                const ctx = canvas.getContext('2d');
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                // Coordinates for the main parallelogram
+                const p1 = {x: 100, y: 50};
+                const p2 = {x: 280, y: 50};
+                const p3 = {x: 230, y: 180};
+                const p4 = {x: 50, y: 180};
+
+                // Draw solid Parallelogram
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.lineTo(p3.x, p3.y);
+                ctx.lineTo(p4.x, p4.y);
+                ctx.closePath();
+                ctx.strokeStyle = '#000';
+                ctx.stroke();
+
+                // Fill lightly
+                ctx.fillStyle = 'rgba(13, 110, 253, 0.1)';
+                ctx.fill();
+
+                // Draw dashed extensions representing the "turns" (exterior angles)
+                ctx.setLineDash([8, 6]);
+                ctx.strokeStyle = '#888';
+
+                // Extend top edge to the right
+                ctx.beginPath();
+                ctx.moveTo(p2.x, p2.y);
+                ctx.lineTo(p2.x + 60, p2.y);
+                ctx.stroke();
+
+                // Extend right edge down/left
+                ctx.beginPath();
+                ctx.moveTo(p3.x, p3.y);
+                const dxRight = p3.x - p2.x; // -50
+                const dyRight = p3.y - p2.y; // 130
+                ctx.lineTo(p3.x + (dxRight * 0.4), p3.y + (dyRight * 0.4));
+                ctx.stroke();
+
+                // Extend bottom edge to the left
+                ctx.beginPath();
+                ctx.moveTo(p4.x, p4.y);
+                ctx.lineTo(p4.x - 40, p4.y);
+                ctx.stroke();
+
+                // Extend left edge up/right
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                const dxLeft = p1.x - p4.x; // 50
+                const dyLeft = p1.y - p4.y; // -130
+                ctx.lineTo(p1.x + (dxLeft * 0.4), p1.y + (dyLeft * 0.4));
+                ctx.stroke();
+
+                // Reset dashes to draw turn arcs
+                ctx.setLineDash([]);
+                ctx.strokeStyle = '#dc3545';
+                ctx.lineWidth = 2;
+
+                // Function to draw simple curved arrow/arc for angles
+                function drawAngleArc(x, y, startAngle, endAngle, radius) {
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, startAngle, endAngle);
+                    ctx.stroke();
+                }
+
+                // Top right corner arc
+                drawAngleArc(p2.x, p2.y, 0, 1.9, 25);
+                
+                // Bottom right corner arc
+                drawAngleArc(p3.x, p3.y, 1.9, 3.14, 25);
+
+                // Bottom left corner arc
+                drawAngleArc(p4.x, p4.y, 3.14, 5.0, 25);
+
+                // Top left corner arc
+                drawAngleArc(p1.x, p1.y, 5.0, 6.28, 25);
+
+                // Labels
+                ctx.fillStyle = '#000';
+                ctx.font = '14px sans-serif';
+                ctx.fillText("Parallelogram Park", 120, 120);
+            }
+        }
+
+        // Initialize drawing on load
+        window.onload = drawDiagram;
     </script>
 </body>
 </html>
