@@ -3,250 +3,476 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saxon Math Course 1 - Practice Problems</title>
+    <title>Math Concept Exam</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; color: #333; }
-        h1 { text-align: center; color: #2c3e50; }
-        .problem-container { border-bottom: 1px solid #ddd; padding: 20px 0; margin-bottom: 10px; }
-        .problem-number { font-weight: bold; margin-right: 10px; font-size: 1.1em; color: #0056b3; }
-        .question { font-size: 1.05em; margin-bottom: 15px; }
-        .btn { background-color: #0056b3; color: white; border: none; padding: 8px 16px; cursor: pointer; border-radius: 4px; font-size: 0.9em; transition: background 0.2s; }
-        .btn:hover { background-color: #004494; }
-        .answer-box { display: none; margin-top: 15px; padding: 15px; border-left: 4px solid #28a745; background-color: #f8fff9; border-radius: 0 4px 4px 0; }
-        .answer-title { font-weight: bold; color: #28a745; margin-bottom: 5px; }
-        table.math-table { border-collapse: collapse; margin: 10px 0; }
-        table.math-table th, table.math-table td { border: 1px solid #333; padding: 5px 15px; text-align: center; }
-        svg { border: 1px solid #ccc; background-color: #fff; margin-top: 10px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            background-color: #f4f7f6;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        #scoreboard {
+            position: sticky;
+            top: 0;
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            border-radius: 0 0 8px 8px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+            margin-bottom: 30px;
+        }
+        .concept-section {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .concept-title {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #0d6efd;
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 6px;
+            background-color: #fafafa;
+            border-left: 4px solid #ccc;
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options li {
+            margin-bottom: 8px;
+        }
+        label {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            display: inline-block;
+            width: 100%;
+        }
+        label:hover {
+            background-color: #e9ecef;
+        }
+        .submit-btn {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+        .submit-btn:hover {
+            background-color: #0b5ed7;
+        }
+        .submit-btn:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
+        .correct {
+            color: #198754;
+        }
+        .incorrect {
+            color: #dc3545;
+        }
+        .canvas-container {
+            text-align: center;
+            margin: 20px 0;
+            background: #fff;
+            padding: 15px;
+            border: 1px dashed #aaa;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
 
-    <h1>Saxon Math Course 1 - Written Practice (Form B)</h1>
+    <div id="scoreboard">
+        Score: <span id="score">0</span> / 15
+    </div>
 
-    <div id="problems-wrapper">
+    <h1>Math Concepts Practice Exam</h1>
+    <p>Test your knowledge on the concepts covered in questions 4, 6, 16, 17, and 11. Select an answer for each question and click "Submit Answer" to see if you got it right!</p>
+
+    <div class="concept-section">
+        <h2 class="concept-title">Concept 4: Comparing Fractions and Decimals</h2>
+        
+        <div class="question-block" id="qb1">
+            <div class="question-text">1. Compare: \(\frac{3}{4} \bigcirc 0.80\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q1" value="A"> A) \(>\)</label></li>
+                <li><label><input type="radio" name="q1" value="B"> B) \(<\)</label></li>
+                <li><label><input type="radio" name="q1" value="C"> C) \(=\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(1, 'B')">Submit Answer</button>
+            <div class="feedback" id="feedback1"></div>
         </div>
 
-    <script>
-        const problems = [
-            {
-                num: "e.",
-                text: "A farmer mixes a fertilizer that weighs 3 pounds per gallon. Create a table of ordered pairs for this function for 1, 2, 3, and 4 gallons. Then graph the points on a coordinate plane, using the horizontal axis for gallons and the vertical axis for pounds. Would it be appropriate to draw a ray through the points? Why or why not?",
-                ans: `
-                    <p><strong>Table:</strong></p>
-                    <table class="math-table">
-                        <tr><th>Gallons (x)</th><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-                        <tr><th>Pounds (y)</th><td>3</td><td>6</td><td>9</td><td>12</td></tr>
-                    </table>
-                    <p><strong>Graph:</strong></p>
-                    <svg width="250" height="250" viewBox="0 -20 120 120">
-                        <line x1="10" y1="100" x2="110" y2="100" stroke="black" stroke-width="1"/>
-                        <line x1="10" y1="100" x2="10" y2="10" stroke="black" stroke-width="1"/>
-                        <circle cx="30" cy="82" r="2" fill="red"/>
-                        <circle cx="50" cy="64" r="2" fill="red"/>
-                        <circle cx="70" cy="46" r="2" fill="red"/>
-                        <circle cx="90" cy="28" r="2" fill="red"/>
-                        <line x1="10" y1="100" x2="100" y2="19" stroke="blue" stroke-dasharray="4" stroke-width="1"/>
-                        <text x="50" y="115" font-size="8">Gallons</text>
-                        <text x="-5" y="50" font-size="8" transform="rotate(-90, -5, 50)">Pounds</text>
-                    </svg>
-                    <p><strong>Explanation:</strong> Yes, drawing a ray starting from the origin is appropriate because you can measure continuous fractional amounts of gallons (like 2.5 gallons), and the weight increases proportionally from zero.</p>
-                `
-            },
-            {
-                num: "1.",
-                text: "When the sum of 3.0 and 3.0 is subtracted from the product of 3.0 and 3.0, what is the difference?",
-                ans: "<strong>Answer:</strong> 3.0<br><br><strong>Explanation:</strong> Sum = \\(3.0 + 3.0 = 6.0\\). Product = \\(3.0 \\times 3.0 = 9.0\\). Difference = \\(9.0 - 6.0 = 3.0\\)."
-            },
-            {
-                num: "2.",
-                text: "A 5.4-kilogram package weighs the same as how many smaller packages that each weigh 0.54 kilogram?",
-                ans: "<strong>Answer:</strong> 10<br><br><strong>Explanation:</strong> Divide the total weight by the weight per package: \\(5.4 \\div 0.54 = 10\\)."
-            },
-            {
-                num: "3.",
-                text: "If the average of 6 numbers is 15, what is the sum of the 6 numbers?",
-                ans: "<strong>Answer:</strong> 90<br><br><strong>Explanation:</strong> Average = Sum / Count. Therefore, Sum = Average &times; Count. \\(15 \\times 6 = 90\\)."
-            },
-            {
-                num: "4.",
-                text: "What is the name of a quadrilateral that has two pairs of parallel sides and four right angles?",
-                ans: "<strong>Answer:</strong> Rectangle (or Square)<br><br><strong>Explanation:</strong> By definition, a parallelogram with four right angles is a rectangle. A square is also a correct specific type of rectangle."
-            },
-            {
-                num: "5.",
-                text: "a. Write 0.25 as a percent.<br>b. Write 2.5 as a percent.",
-                ans: "<strong>Answer:</strong> a. 25% <br> b. 250%<br><br><strong>Explanation:</strong> To convert a decimal to a percent, multiply by 100 (move the decimal point two places to the right) and add the percent sign."
-            },
-            {
-                num: "6.",
-                text: "Write \\(\\frac{2}{3}\\) as a percent.",
-                ans: "<strong>Answer:</strong> \\(66\\frac{2}{3}\\%\\)<br><br><strong>Explanation:</strong> Divide 2 by 3 to get \\(0.6666...\\) Multiply by 100 to get \\(66.666...\\%\\), which is exactly \\(66\\frac{2}{3}\\%\\)."
-            },
-            {
-                num: "7.",
-                text: "Three of the numbers below are equivalent. Which one is not equivalent to the others?<br>A 2 &nbsp;&nbsp;&nbsp; B 200% &nbsp;&nbsp;&nbsp; C 0.2 &nbsp;&nbsp;&nbsp; D \\(\\frac{200}{100}\\)",
-                ans: "<strong>Answer:</strong> C 0.2<br><br><strong>Explanation:</strong> 2 = 200% = 200/100. Option C (0.2) equals 20%, which is not equivalent to the others."
-            },
-            {
-                num: "8.",
-                text: "\\(12^3\\)",
-                ans: "<strong>Answer:</strong> 1728<br><br><strong>Explanation:</strong> \\(12 \\times 12 \\times 12 = 144 \\times 12 = 1728\\)."
-            },
-            {
-                num: "9.",
-                text: "How much is \\(\\frac{3}{4}\\) of 400?",
-                ans: "<strong>Answer:</strong> 300<br><br><strong>Explanation:</strong> First divide 400 by 4 to get 100. Then multiply by 3 to get \\(100 \\times 3 = 300\\)."
-            },
-            {
-                num: "10.",
-                text: "Between which two consecutive whole numbers is \\(\\sqrt{60}\\)?",
-                ans: "<strong>Answer:</strong> Between 7 and 8<br><br><strong>Explanation:</strong> The perfect square just below 60 is 49 (\\(7^2\\)) and the perfect square just above 60 is 64 (\\(8^2\\)). Therefore, \\(\\sqrt{60}\\) lies between 7 and 8."
-            },
-            {
-                num: "11.",
-                text: "Maria walked completely around a square park, turning at each corner. What was the average number of degrees she turned at each of the corners?",
-                ans: "<strong>Answer:</strong> \\(90^\\circ\\)<br><br><strong>Explanation:</strong> Walking completely around a convex polygon means completing a full \\(360^\\circ\\) turn. A square has 4 corners, so the average exterior turn is \\(360^\\circ \\div 4 = 90^\\circ\\)."
-            },
-            {
-                num: "12.",
-                text: "Find the missing number in this function table.<br> x: 2, 5, 10, 12 <br> 3x + 2: 8, 17, __, 38",
-                ans: "<strong>Answer:</strong> 32<br><br><strong>Explanation:</strong> Substitute \\(x = 10\\) into the function \\(3x + 2\\). That gives \\(3(10) + 2 = 30 + 2 = 32\\)."
-            },
-            {
-                num: "13.",
-                text: "Factor and reduce: \\(\\frac{(36)(48)}{72}\\)",
-                ans: "<strong>Answer:</strong> 24<br><br><strong>Explanation:</strong> Break the numbers into factors. 72 is \\(12 \\times 6\\). 36 is \\(6 \\times 6\\), and 48 is \\(12 \\times 4\\). So, \\(\\frac{(6 \\times 6)(12 \\times 4)}{12 \\times 6}\\). Cancel out the 12 and the 6, leaving \\(6 \\times 4 = 24\\)."
-            },
-            {
-                num: "14.",
-                text: "\\(\\frac{40}{0.05}\\)",
-                ans: "<strong>Answer:</strong> 800<br><br><strong>Explanation:</strong> Multiply the numerator and denominator by 100 to remove the decimal: \\(4000 \\div 5 = 800\\)."
-            },
-            {
-                num: "15.",
-                text: "\\(12\\frac{1}{2} \\div 100\\)",
-                ans: "<strong>Answer:</strong> \\(\\frac{1}{8}\\)<br><br><strong>Explanation:</strong> Convert to an improper fraction: \\(\\frac{25}{2}\\). Then divide by 100 (which is multiplying by \\(\\frac{1}{100}\\)): \\(\\frac{25}{2} \\times \\frac{1}{100} = \\frac{25}{200} = \\frac{1}{8}\\)."
-            },
-            {
-                num: "16.",
-                text: "\\(1\\frac{1}{4} + 2\\frac{1}{2} + 3\\frac{1}{8}\\)",
-                ans: "<strong>Answer:</strong> \\(6\\frac{7}{8}\\)<br><br><strong>Explanation:</strong> Find a common denominator, which is 8. The fractions become \\(\\frac{2}{8} + \\frac{4}{8} + \\frac{1}{8} = \\frac{7}{8}\\). Sum the whole numbers: \\(1 + 2 + 3 = 6\\). Total = \\(6\\frac{7}{8}\\)."
-            },
-            {
-                num: "17.",
-                text: "\\(50 \\times 2\\frac{2}{5} \\times \\frac{5}{6}\\)",
-                ans: "<strong>Answer:</strong> 100<br><br><strong>Explanation:</strong> Convert to improper fractions: \\(50 \\times \\frac{12}{5} \\times \\frac{5}{6}\\). The 5s cancel out. \\(12 \\div 6 = 2\\). The equation simplifies to \\(50 \\times 2 = 100\\)."
-            },
-            {
-                num: "18.",
-                text: "\\(\\frac{3}{5}\\) of $15.00",
-                ans: "<strong>Answer:</strong> $9.00<br><br><strong>Explanation:</strong> First divide by 5: \\($15.00 \\div 5 = $3.00\\). Then multiply by 3: \\($3.00 \\times 3 = $9.00\\)."
-            },
-            {
-                num: "19.",
-                text: "\\(0.15 \\times \\$8.40\\)",
-                ans: "<strong>Answer:</strong> $1.26<br><br><strong>Explanation:</strong> \\(15 \\times 84 = 1260\\). Place the decimal 4 spots to the left (two for 0.15, two for 8.40): \\(1.2600 = \\$1.26\\)."
-            },
-            {
-                num: "20.",
-                text: "\\(6.5 - 2\\frac{1}{4}\\) (decimal answer)",
-                ans: "<strong>Answer:</strong> 4.25<br><br><strong>Explanation:</strong> Convert fraction to a decimal: \\(2\\frac{1}{4} = 2.25\\). Subtract: \\(6.50 - 2.25 = 4.25\\)."
-            },
-            {
-                num: "21.",
-                text: "What is the ratio of the number of cents in a nickel to the number of cents in a half-dollar?",
-                ans: "<strong>Answer:</strong> 1:10 or \\(\\frac{1}{10}\\)<br><br><strong>Explanation:</strong> A nickel has 5 cents and a half-dollar has 50 cents. Ratio = 5:50. Divide both by 5 to reduce to 1:10."
-            },
-            {
-                num: "22.",
-                text: "\\(5n = 8 \\cdot 15\\)",
-                ans: "<strong>Answer:</strong> 24<br><br><strong>Explanation:</strong> Multiply the right side: \\(8 \\times 15 = 120\\). Equation is \\(5n = 120\\). Divide by 5: \\(n = 24\\)."
-            },
-            {
-                num: "23.",
-                text: "\\(0.4n = 16\\)",
-                ans: "<strong>Answer:</strong> 40<br><br><strong>Explanation:</strong> Divide 16 by 0.4. This is the same as \\(160 \\div 4\\), which equals 40."
-            },
-            {
-                num: "24.",
-                text: "Draw a segment \\(2\\frac{1}{2}\\) inches long. Label the endpoints A and B. Label the midpoint M. What are the lengths of AM and MB?",
-                ans: `
-                    <strong>Answer:</strong> Lengths are \\(1\\frac{1}{4}\\) inches each.
-                    <br><br><strong>Explanation:</strong>
-                    <svg width="300" height="60" viewBox="0 0 300 60">
-                        <line x1="20" y1="30" x2="280" y2="30" stroke="black" stroke-width="2"/>
-                        <circle cx="20" cy="30" r="3" fill="black"/>
-                        <circle cx="150" cy="30" r="3" fill="black"/>
-                        <circle cx="280" cy="30" r="3" fill="black"/>
-                        <text x="15" y="20" font-weight="bold">A</text>
-                        <text x="145" y="20" font-weight="bold">M</text>
-                        <text x="275" y="20" font-weight="bold">B</text>
-                        <text x="105" y="50" font-size="12">Total: 2 1/2 inches</text>
-                    </svg><br>
-                    The total length is \\(2\\frac{1}{2}\\) which equals \\(\\frac{5}{2}\\) inches. The midpoint divides it in half. \\(\\frac{5}{2} \\div 2 = \\frac{5}{2} \\times \\frac{1}{2} = \\frac{5}{4} = 1\\frac{1}{4}\\).
-                `
-            },
-            {
-                num: "25.",
-                text: "Solve this proportion: \\(\\frac{4}{7} = \\frac{28}{w}\\)",
-                ans: "<strong>Answer:</strong> 49<br><br><strong>Explanation:</strong> Using cross multiplication: \\(4w = 7 \\times 28\\). \\(4w = 196\\). \\(w = 196 \\div 4 = 49\\)."
-            },
-            {
-                num: "26.",
-                text: "Multiply 5 hours by 8 dollars per hour: \\(\\frac{5 \\text{ hours}}{1} \\times \\frac{8 \\text{ dollars}}{1 \\text{ hour}}\\)",
-                ans: "<strong>Answer:</strong> 40 dollars<br><br><strong>Explanation:</strong> Multiply the numerators. The 'hours' units cancel out. \\(5 \\times 8 = 40\\)."
-            },
-            {
-                num: "27.",
-                text: "The coordinates of the vertices of a triangle are (0, 0), (8, 0), and (4, 6). What is the area of the triangle?",
-                ans: "<strong>Answer:</strong> 24 square units<br><br><strong>Explanation:</strong> Area of a triangle is \\(\\frac{1}{2} \\times \\text{Base} \\times \\text{Height}\\). The base is the segment from (0,0) to (8,0), which has a length of 8. The perpendicular height from the y-coordinates 0 to 6 is 6. Area = \\(\\frac{1}{2} \\times 8 \\times 6 = 24\\)."
-            },
-            {
-                num: "28.",
-                text: "There are 16 ounces in one pound. How many ounces are in 3 pounds?",
-                ans: "<strong>Answer:</strong> 48 ounces<br><br><strong>Explanation:</strong> Multiply the number of pounds by the number of ounces per pound: \\(3 \\times 16 = 48\\)."
-            },
-            {
-                num: "29.",
-                text: "\\(4^2 + 3^3 - \\sqrt{9} \\times 4 + 8^2 \\div \\sqrt{64}\\)",
-                ans: "<strong>Answer:</strong> 39<br><br><strong>Explanation:</strong> Use Order of Operations (PEMDAS):<br> Exponents/Roots: \\(16 + 27 - 3 \\times 4 + 64 \\div 8\\)<br> Multiplication/Division: \\(16 + 27 - 12 + 8\\)<br> Addition/Subtraction: \\(43 - 12 + 8 = 31 + 8 = 39\\)."
-            },
-            {
-                num: "30.",
-                text: "What is the probability of rolling an even number with one roll of a standard number cube? Express the ratio as a fraction and as a decimal.",
-                ans: "<strong>Answer:</strong> Fraction: \\(\\frac{1}{2}\\), Decimal: 0.5<br><br><strong>Explanation:</strong> A standard number cube has faces 1, 2, 3, 4, 5, 6. The even numbers are 2, 4, and 6. There are 3 even numbers out of 6 possible outcomes. Probability = \\(\\frac{3}{6} = \\frac{1}{2} = 0.5\\)."
-            }
-        ];
+        <div class="question-block" id="qb2">
+            <div class="question-text">2. Compare: \(\frac{7}{8} \bigcirc 0.875\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q2" value="A"> A) \(>\)</label></li>
+                <li><label><input type="radio" name="q2" value="B"> B) \(<\)</label></li>
+                <li><label><input type="radio" name="q2" value="C"> C) \(=\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(2, 'C')">Submit Answer</button>
+            <div class="feedback" id="feedback2"></div>
+        </div>
 
-        const wrapper = document.getElementById('problems-wrapper');
+        <div class="question-block" id="qb3">
+            <div class="question-text">3. Compare: \(\frac{2}{5} \bigcirc 0.35\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q3" value="A"> A) \(>\)</label></li>
+                <li><label><input type="radio" name="q3" value="B"> B) \(<\)</label></li>
+                <li><label><input type="radio" name="q3" value="C"> C) \(=\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(3, 'A')">Submit Answer</button>
+            <div class="feedback" id="feedback3"></div>
+        </div>
+    </div>
+
+    <div class="concept-section">
+        <h2 class="concept-title">Concept 6: Mixed Numbers as Percents</h2>
+
+        <div class="question-block" id="qb4">
+            <div class="question-text">4. Write \(2\frac{3}{4}\) as a percent.</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q4" value="A"> A) \(275\%\)</label></li>
+                <li><label><input type="radio" name="q4" value="B"> B) \(234\%\)</label></li>
+                <li><label><input type="radio" name="q4" value="C"> C) \(2.75\%\)</label></li>
+                <li><label><input type="radio" name="q4" value="D"> D) \(200\%\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(4, 'A')">Submit Answer</button>
+            <div class="feedback" id="feedback4"></div>
+        </div>
+
+        <div class="question-block" id="qb5">
+            <div class="question-text">5. Write \(1\frac{1}{2}\) as a percent.</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q5" value="A"> A) \(112\%\)</label></li>
+                <li><label><input type="radio" name="q5" value="B"> B) \(150\%\)</label></li>
+                <li><label><input type="radio" name="q5" value="C"> C) \(100\%\)</label></li>
+                <li><label><input type="radio" name="q5" value="D"> D) \(15\%\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(5, 'B')">Submit Answer</button>
+            <div class="feedback" id="feedback5"></div>
+        </div>
+
+        <div class="question-block" id="qb6">
+            <div class="question-text">6. Write \(3\frac{1}{5}\) as a percent.</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q6" value="A"> A) \(315\%\)</label></li>
+                <li><label><input type="radio" name="q6" value="B"> B) \(350\%\)</label></li>
+                <li><label><input type="radio" name="q6" value="C"> C) \(320\%\)</label></li>
+                <li><label><input type="radio" name="q6" value="D"> D) \(300\%\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(6, 'C')">Submit Answer</button>
+            <div class="feedback" id="feedback6"></div>
+        </div>
+    </div>
+
+    <div class="concept-section">
+        <h2 class="concept-title">Concept 16: Decimal Operations with Parentheses</h2>
+
+        <div class="question-block" id="qb7">
+            <div class="question-text">7. Evaluate: \((2 - 0.5)(2 \div 0.5)\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q7" value="A"> A) \(1.5\)</label></li>
+                <li><label><input type="radio" name="q7" value="B"> B) \(6\)</label></li>
+                <li><label><input type="radio" name="q7" value="C"> C) \(3\)</label></li>
+                <li><label><input type="radio" name="q7" value="D"> D) \(8\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(7, 'B')">Submit Answer</button>
+            <div class="feedback" id="feedback7"></div>
+        </div>
+
+        <div class="question-block" id="qb8">
+            <div class="question-text">8. Evaluate: \((1 - 0.2)(1 \div 0.2)\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q8" value="A"> A) \(4\)</label></li>
+                <li><label><input type="radio" name="q8" value="B"> B) \(5\)</label></li>
+                <li><label><input type="radio" name="q8" value="C"> C) \(0.8\)</label></li>
+                <li><label><input type="radio" name="q8" value="D"> D) \(8\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(8, 'A')">Submit Answer</button>
+            <div class="feedback" id="feedback8"></div>
+        </div>
+
+        <div class="question-block" id="qb9">
+            <div class="question-text">9. Evaluate: \((3 - 0.1)(3 \div 0.1)\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q9" value="A"> A) \(8.7\)</label></li>
+                <li><label><input type="radio" name="q9" value="B"> B) \(90\)</label></li>
+                <li><label><input type="radio" name="q9" value="C"> C) \(87\)</label></li>
+                <li><label><input type="radio" name="q9" value="D"> D) \(89.7\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(9, 'C')">Submit Answer</button>
+            <div class="feedback" id="feedback9"></div>
+        </div>
+    </div>
+
+    <div class="concept-section">
+        <h2 class="concept-title">Concept 17: Adding Decimals and Fractions</h2>
+
+        <div class="question-block" id="qb10">
+            <div class="question-text">10. Calculate (give a decimal answer): \(3.5 + \frac{1}{4}\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q10" value="A"> A) \(3.54\)</label></li>
+                <li><label><input type="radio" name="q10" value="B"> B) \(3.75\)</label></li>
+                <li><label><input type="radio" name="q10" value="C"> C) \(3.25\)</label></li>
+                <li><label><input type="radio" name="q10" value="D"> D) \(4.0\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(10, 'B')">Submit Answer</button>
+            <div class="feedback" id="feedback10"></div>
+        </div>
+
+        <div class="question-block" id="qb11">
+            <div class="question-text">11. Calculate (give a decimal answer): \(2.1 + \frac{3}{5}\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q11" value="A"> A) \(2.7\)</label></li>
+                <li><label><input type="radio" name="q11" value="B"> B) \(2.4\)</label></li>
+                <li><label><input type="radio" name="q11" value="C"> C) \(2.15\)</label></li>
+                <li><label><input type="radio" name="q11" value="D"> D) \(2.6\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(11, 'A')">Submit Answer</button>
+            <div class="feedback" id="feedback11"></div>
+        </div>
+
+        <div class="question-block" id="qb12">
+            <div class="question-text">12. Calculate (give a decimal answer): \(5.8 + \frac{1}{2}\)</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q12" value="A"> A) \(5.85\)</label></li>
+                <li><label><input type="radio" name="q12" value="B"> B) \(6.0\)</label></li>
+                <li><label><input type="radio" name="q12" value="C"> C) \(6.3\)</label></li>
+                <li><label><input type="radio" name="q12" value="D"> D) \(5.9\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(12, 'C')">Submit Answer</button>
+            <div class="feedback" id="feedback12"></div>
+        </div>
+    </div>
+
+    <div class="concept-section">
+        <h2 class="concept-title">Concept 11: Polygon Exterior Angles</h2>
         
-        problems.forEach((prob, index) => {
-            const problemHtml = `
-                <div class="problem-container">
-                    <div class="question">
-                        <span class="problem-number">${prob.num}</span> 
-                        ${prob.text}
-                    </div>
-                    <button class="btn" onclick="toggleAnswer('ans_${index}')">Review Answer</button>
-                    <div id="ans_${index}" class="answer-box">
-                        <div class="answer-title">Answer & Explanation:</div>
-                        ${prob.ans}
-                    </div>
-                </div>
-            `;
-            wrapper.innerHTML += problemHtml;
-        });
+        <p><strong>Review Diagram: Parallelogram Park</strong><br>
+        Notice how extending the sides of the path creates exterior angles (the turns a person makes). A full trip around any convex polygon requires a total turning measure of \(360^{\circ}\).</p>
+        
+        <div class="canvas-container">
+            <canvas id="parkCanvas" width="400" height="250"></canvas>
+            <p><em>Dashed lines represent the skater's original path before making a turn.</em></p>
+        </div>
 
-        function toggleAnswer(id) {
-            const el = document.getElementById(id);
-            if (el.style.display === "block") {
-                el.style.display = "none";
+        <div class="question-block" id="qb13">
+            <div class="question-text">13. If Jason rides his skateboard around a <strong>Triangular</strong> Park and makes 3 turns, what is the average number of degrees in each turn?</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q13" value="A"> A) \(90^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q13" value="B"> B) \(120^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q13" value="C"> C) \(60^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q13" value="D"> D) \(180^{\circ}\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(13, 'B')">Submit Answer</button>
+            <div class="feedback" id="feedback13"></div>
+        </div>
+
+        <div class="question-block" id="qb14">
+            <div class="question-text">14. If Jason makes 6 turns riding around a <strong>Hexagonal</strong> Park, what is the average number of degrees per turn?</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q14" value="A"> A) \(60^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q14" value="B"> B) \(72^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q14" value="C"> C) \(120^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q14" value="D"> D) \(90^{\circ}\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(14, 'A')">Submit Answer</button>
+            <div class="feedback" id="feedback14"></div>
+        </div>
+
+        <div class="question-block" id="qb15">
+            <div class="question-text">15. If Jason makes 5 turns riding around a <strong>Pentagon-shaped</strong> park, what is the average number of degrees per turn?</div>
+            <ul class="options">
+                <li><label><input type="radio" name="q15" value="A"> A) \(108^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q15" value="B"> B) \(60^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q15" value="C"> C) \(90^{\circ}\)</label></li>
+                <li><label><input type="radio" name="q15" value="D"> D) \(72^{\circ}\)</label></li>
+            </ul>
+            <button class="submit-btn" onclick="checkAnswer(15, 'D')">Submit Answer</button>
+            <div class="feedback" id="feedback15"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentScore = 0;
+        let answeredQuestions = new Set();
+
+        function checkAnswer(questionNum, correctAnswer) {
+            // Check if already answered
+            if (answeredQuestions.has(questionNum)) return;
+
+            // Get selected radio button
+            const options = document.getElementsByName('q' + questionNum);
+            let selectedValue = null;
+            for (const option of options) {
+                if (option.checked) {
+                    selectedValue = option.value;
+                    break;
+                }
+            }
+
+            const feedbackEl = document.getElementById('feedback' + questionNum);
+            const blockEl = document.getElementById('qb' + questionNum);
+
+            if (!selectedValue) {
+                alert("Please select an answer first!");
+                return;
+            }
+
+            // Lock in answer
+            answeredQuestions.add(questionNum);
+            for (const option of options) {
+                option.disabled = true;
+            }
+            
+            // Disable button
+            event.target.disabled = true;
+
+            // Check correctness
+            feedbackEl.style.display = "block";
+            if (selectedValue === correctAnswer) {
+                currentScore++;
+                document.getElementById('score').innerText = currentScore;
+                feedbackEl.innerHTML = "Correct! \u2714\uFE0F";
+                feedbackEl.className = "feedback correct";
+                blockEl.style.borderLeftColor = "#198754";
             } else {
-                el.style.display = "block";
+                feedbackEl.innerHTML = "Incorrect. The correct answer was " + correctAnswer + ". \u274C";
+                feedbackEl.className = "feedback incorrect";
+                blockEl.style.borderLeftColor = "#dc3545";
             }
         }
+
+        // Draw Parallelogram Park Diagram
+        function drawDiagram() {
+            const canvas = document.getElementById('parkCanvas');
+            if (canvas.getContext) {
+                const ctx = canvas.getContext('2d');
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+
+                // Coordinates for the main parallelogram
+                const p1 = {x: 100, y: 50};
+                const p2 = {x: 280, y: 50};
+                const p3 = {x: 230, y: 180};
+                const p4 = {x: 50, y: 180};
+
+                // Draw solid Parallelogram
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.lineTo(p3.x, p3.y);
+                ctx.lineTo(p4.x, p4.y);
+                ctx.closePath();
+                ctx.strokeStyle = '#000';
+                ctx.stroke();
+
+                // Fill lightly
+                ctx.fillStyle = 'rgba(13, 110, 253, 0.1)';
+                ctx.fill();
+
+                // Draw dashed extensions representing the "turns" (exterior angles)
+                ctx.setLineDash([8, 6]);
+                ctx.strokeStyle = '#888';
+
+                // Extend top edge to the right
+                ctx.beginPath();
+                ctx.moveTo(p2.x, p2.y);
+                ctx.lineTo(p2.x + 60, p2.y);
+                ctx.stroke();
+
+                // Extend right edge down/left
+                ctx.beginPath();
+                ctx.moveTo(p3.x, p3.y);
+                const dxRight = p3.x - p2.x; // -50
+                const dyRight = p3.y - p2.y; // 130
+                ctx.lineTo(p3.x + (dxRight * 0.4), p3.y + (dyRight * 0.4));
+                ctx.stroke();
+
+                // Extend bottom edge to the left
+                ctx.beginPath();
+                ctx.moveTo(p4.x, p4.y);
+                ctx.lineTo(p4.x - 40, p4.y);
+                ctx.stroke();
+
+                // Extend left edge up/right
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                const dxLeft = p1.x - p4.x; // 50
+                const dyLeft = p1.y - p4.y; // -130
+                ctx.lineTo(p1.x + (dxLeft * 0.4), p1.y + (dyLeft * 0.4));
+                ctx.stroke();
+
+                // Reset dashes to draw turn arcs
+                ctx.setLineDash([]);
+                ctx.strokeStyle = '#dc3545';
+                ctx.lineWidth = 2;
+
+                // Function to draw simple curved arrow/arc for angles
+                function drawAngleArc(x, y, startAngle, endAngle, radius) {
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, startAngle, endAngle);
+                    ctx.stroke();
+                }
+
+                // Top right corner arc
+                drawAngleArc(p2.x, p2.y, 0, 1.9, 25);
+                
+                // Bottom right corner arc
+                drawAngleArc(p3.x, p3.y, 1.9, 3.14, 25);
+
+                // Bottom left corner arc
+                drawAngleArc(p4.x, p4.y, 3.14, 5.0, 25);
+
+                // Top left corner arc
+                drawAngleArc(p1.x, p1.y, 5.0, 6.28, 25);
+
+                // Labels
+                ctx.fillStyle = '#000';
+                ctx.font = '14px sans-serif';
+                ctx.fillText("Parallelogram Park", 120, 120);
+            }
+        }
+
+        // Initialize drawing on load
+        window.onload = drawDiagram;
     </script>
 </body>
 </html>
