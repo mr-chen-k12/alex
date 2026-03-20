@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice Quiz</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 80px; /* Space for the sticky scoreboard */
+            background-color: #f4f7f6;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .topic-header {
+            margin-top: 40px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        #scoreboard {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #2c3e50;
+            color: #fff;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 1.5em;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .question-container {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .choice-btn {
+            background-color: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            padding: 12px 15px;
+            font-size: 1em;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .choice-btn:hover:not(.disabled) {
+            background-color: #e2e6e8;
+            border-color: #95a5a6;
+        }
+        .choice-btn.correct {
+            background-color: #d5f5e3;
+            border-color: #2ecc71;
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .choice-btn.incorrect {
+            background-color: #fadbd8;
+            border-color: #e74c3c;
+            color: #c0392b;
+        }
+        .choice-btn.disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .feedback.correct-text {
+            color: #27ae60;
+        }
+        .feedback.incorrect-text {
+            color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scoreboard">Score: <span id="score">0</span> / 15</div>
+
+    <h1>Math Interactive Practice Quiz</h1>
+    <p>Test your knowledge based on the topics from the previous assignment. Click on an answer to see if you are correct!</p>
+
+    <h2 class="topic-header">Topic 1: Sales Tax & Total Price</h2>
+
+    <div class="question-container" id="q1">
+        <div class="question-text">1. A book costs $14.50 and the sales tax rate is 8%. What is the total price including tax?</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(1, 'A', 'A', this)">A) $15.66</button>
+            <button class="choice-btn" onclick="checkAnswer(1, 'B', 'A', this)">B) $16.50</button>
+            <button class="choice-btn" onclick="checkAnswer(1, 'C', 'A', this)">C) $15.16</button>
+            <button class="choice-btn" onclick="checkAnswer(1, 'D', 'A', this)">D) $14.58</button>
+        </div>
+        <div class="feedback" id="feedback-1"></div>
+    </div>
+
+    <div class="question-container" id="q2">
+        <div class="question-text">2. If a video game costs $45.99 and the tax rate is 7%, what is the total price including tax?</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(2, 'A', 'A', this)">A) $49.21</button>
+            <button class="choice-btn" onclick="checkAnswer(2, 'B', 'A', this)">B) $49.00</button>
+            <button class="choice-btn" onclick="checkAnswer(2, 'C', 'A', this)">C) $48.21</button>
+            <button class="choice-btn" onclick="checkAnswer(2, 'D', 'A', this)">D) $50.00</button>
+        </div>
+        <div class="feedback" id="feedback-2"></div>
+    </div>
+
+    <div class="question-container" id="q3">
+        <div class="question-text">3. A pair of shoes costs $62.00. With a 5% sales tax, what is the final price?</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(3, 'A', 'A', this)">A) $65.10</button>
+            <button class="choice-btn" onclick="checkAnswer(3, 'B', 'A', this)">B) $68.20</button>
+            <button class="choice-btn" onclick="checkAnswer(3, 'C', 'A', this)">C) $67.00</button>
+            <button class="choice-btn" onclick="checkAnswer(3, 'D', 'A', this)">D) $65.00</button>
+        </div>
+        <div class="feedback" id="feedback-3"></div>
+    </div>
+
+    <h2 class="topic-header">Topic 2: Sums, Products, and Quotients of Fractions</h2>
+
+    <div class="question-container" id="q4">
+        <div class="question-text">4. When the sum of $\frac{1}{3}$ and $\frac{1}{6}$ is divided by the product of $\frac{1}{3}$ and $\frac{1}{6}$, what is the quotient?</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(4, 'A', 'A', this)">A) 9</button>
+            <button class="choice-btn" onclick="checkAnswer(4, 'B', 'A', this)">B) 6</button>
+            <button class="choice-btn" onclick="checkAnswer(4, 'C', 'A', this)">C) 18</button>
+            <button class="choice-btn" onclick="checkAnswer(4, 'D', 'A', this)">D) 3</button>
+        </div>
+        <div class="feedback" id="feedback-4"></div>
+    </div>
+
+    <div class="question-container" id="q5">
+        <div class="question-text">5. When the sum of $\frac{1}{2}$ and $\frac{1}{5}$ is divided by the product of $\frac{1}{2}$ and $\frac{1}{5}$, what is the quotient?</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(5, 'A', 'A', this)">A) 7</button>
+            <button class="choice-btn" onclick="checkAnswer(5, 'B', 'A', this)">B) 10</button>
+            <button class="choice-btn" onclick="checkAnswer(5, 'C', 'A', this)">C) $\frac{7}{100}$</button>
+            <button class="choice-btn" onclick="checkAnswer(5, 'D', 'A', this)">D) $\frac{1}{7}$</button>
+        </div>
+        <div class="feedback" id="feedback-5"></div>
+    </div>
+
+    <div class="question-container" id="q6">
+        <div class="question-text">6. When the sum of $\frac{1}{4}$ and $\frac{1}{8}$ is divided by the product of $\frac{1}{4}$ and $\frac{1}{8}$, what is the quotient?</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(6, 'A', 'A', this)">A) 12</button>
+            <button class="choice-btn" onclick="checkAnswer(6, 'B', 'A', this)">B) 8</button>
+            <button class="choice-btn" onclick="checkAnswer(6, 'C', 'A', this)">C) 24</button>
+            <button class="choice-btn" onclick="checkAnswer(6, 'D', 'A', this)">D) 4</button>
+        </div>
+        <div class="feedback" id="feedback-6"></div>
+    </div>
+
+    <h2 class="topic-header">Topic 3: Multiplying Mixed Numbers by Fractions</h2>
+
+    <div class="question-container" id="q7">
+        <div class="question-text">7. Evaluate: $2 \frac{1}{2} \cdot \frac{2}{5}$</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(7, 'A', 'A', this)">A) 1</button>
+            <button class="choice-btn" onclick="checkAnswer(7, 'B', 'A', this)">B) 2</button>
+            <button class="choice-btn" onclick="checkAnswer(7, 'C', 'A', this)">C) $\frac{4}{5}$</button>
+            <button class="choice-btn" onclick="checkAnswer(7, 'D', 'A', this)">D) $\frac{1}{2}$</button>
+        </div>
+        <div class="feedback" id="feedback-7"></div>
+    </div>
+
+    <div class="question-container" id="q8">
+        <div class="question-text">8. Evaluate: $1 \frac{3}{4} \cdot \frac{4}{7}$</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(8, 'A', 'A', this)">A) 1</button>
+            <button class="choice-btn" onclick="checkAnswer(8, 'B', 'A', this)">B) $\frac{3}{7}$</button>
+            <button class="choice-btn" onclick="checkAnswer(8, 'C', 'A', this)">C) 7</button>
+            <button class="choice-btn" onclick="checkAnswer(8, 'D', 'A', this)">D) $\frac{7}{16}$</button>
+        </div>
+        <div class="feedback" id="feedback-8"></div>
+    </div>
+
+    <div class="question-container" id="q9">
+        <div class="question-text">9. Evaluate: $4 \frac{1}{5} \cdot \frac{10}{21}$</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(9, 'A', 'A', this)">A) 2</button>
+            <button class="choice-btn" onclick="checkAnswer(9, 'B', 'A', this)">B) 1</button>
+            <button class="choice-btn" onclick="checkAnswer(9, 'C', 'A', this)">C) $\frac{10}{21}$</button>
+            <button class="choice-btn" onclick="checkAnswer(9, 'D', 'A', this)">D) 4</button>
+        </div>
+        <div class="feedback" id="feedback-9"></div>
+    </div>
+
+    <h2 class="topic-header">Topic 4: Ordering Numbers from Least to Greatest</h2>
+
+    <div class="question-container" id="q10">
+        <div class="question-text">10. Arrange in order from least to greatest: $2$, $-2$, $0$, $\frac{3}{4}$, $-\frac{3}{4}$</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(10, 'A', 'A', this)">A) $-2$, $-\frac{3}{4}$, $0$, $\frac{3}{4}$, $2$</button>
+            <button class="choice-btn" onclick="checkAnswer(10, 'B', 'A', this)">B) $-2$, $0$, $-\frac{3}{4}$, $\frac{3}{4}$, $2$</button>
+            <button class="choice-btn" onclick="checkAnswer(10, 'C', 'A', this)">C) $0$, $-\frac{3}{4}$, $-2$, $\frac{3}{4}$, $2$</button>
+            <button class="choice-btn" onclick="checkAnswer(10, 'D', 'A', this)">D) $2$, $\frac{3}{4}$, $0$, $-\frac{3}{4}$, $-2$</button>
+        </div>
+        <div class="feedback" id="feedback-10"></div>
+    </div>
+
+    <div class="question-container" id="q11">
+        <div class="question-text">11. Arrange in order from least to greatest: $-5$, $-3$, $1$, $-1$, $0$</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(11, 'A', 'A', this)">A) $-5$, $-3$, $-1$, $0$, $1$</button>
+            <button class="choice-btn" onclick="checkAnswer(11, 'B', 'A', this)">B) $-1$, $-3$, $-5$, $0$, $1$</button>
+            <button class="choice-btn" onclick="checkAnswer(11, 'C', 'A', this)">C) $0$, $-1$, $-3$, $-5$, $1$</button>
+            <button class="choice-btn" onclick="checkAnswer(11, 'D', 'A', this)">D) $1$, $0$, $-1$, $-3$, $-5$</button>
+        </div>
+        <div class="feedback" id="feedback-11"></div>
+    </div>
+
+    <div class="question-container" id="q12">
+        <div class="question-text">12. Arrange in order from least to greatest: $\frac{1}{3}$, $-0.5$, $0.25$, $-1$, $0$</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(12, 'A', 'A', this)">A) $-1$, $-0.5$, $0$, $0.25$, $\frac{1}{3}$</button>
+            <button class="choice-btn" onclick="checkAnswer(12, 'B', 'A', this)">B) $-0.5$, $-1$, $0$, $0.25$, $\frac{1}{3}$</button>
+            <button class="choice-btn" onclick="checkAnswer(12, 'C', 'A', this)">C) $0$, $-0.5$, $-1$, $0.25$, $\frac{1}{3}$</button>
+            <button class="choice-btn" onclick="checkAnswer(12, 'D', 'A', this)">D) $\frac{1}{3}$, $0.25$, $0$, $-0.5$, $-1$</button>
+        </div>
+        <div class="feedback" id="feedback-12"></div>
+    </div>
+
+    <h2 class="topic-header">Topic 5: Ratios and Probability</h2>
+
+    <div class="question-container" id="q13">
+        <div class="question-text">13. A jar contains 10 green apples and 15 red apples. What is the probability of randomly picking a green apple?</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(13, 'A', 'A', this)">A) $\frac{2}{5}$</button>
+            <button class="choice-btn" onclick="checkAnswer(13, 'B', 'A', this)">B) $\frac{3}{5}$</button>
+            <button class="choice-btn" onclick="checkAnswer(13, 'C', 'A', this)">C) $\frac{2}{3}$</button>
+            <button class="choice-btn" onclick="checkAnswer(13, 'D', 'A', this)">D) $\frac{1}{10}$</button>
+        </div>
+        <div class="feedback" id="feedback-13"></div>
+    </div>
+
+    <div class="question-container" id="q14">
+        <div class="question-text">14. A basket has 12 oranges and 8 lemons. What is the ratio of lemons to oranges?</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(14, 'A', 'A', this)">A) 2 to 3</button>
+            <button class="choice-btn" onclick="checkAnswer(14, 'B', 'A', this)">B) 3 to 2</button>
+            <button class="choice-btn" onclick="checkAnswer(14, 'C', 'A', this)">C) 2 to 5</button>
+            <button class="choice-btn" onclick="checkAnswer(14, 'D', 'A', this)">D) 8 to 20</button>
+        </div>
+        <div class="feedback" id="feedback-14"></div>
+    </div>
+
+    <div class="question-container" id="q15">
+        <div class="question-text">15. A box holds 5 black pens, 7 blue pens, and 3 red pens. If one pen is randomly drawn, what is the probability it is blue?</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="checkAnswer(15, 'A', 'A', this)">A) $\frac{7}{15}$</button>
+            <button class="choice-btn" onclick="checkAnswer(15, 'B', 'A', this)">B) $\frac{1}{3}$</button>
+            <button class="choice-btn" onclick="checkAnswer(15, 'C', 'A', this)">C) $\frac{7}{8}$</button>
+            <button class="choice-btn" onclick="checkAnswer(15, 'D', 'A', this)">D) $\frac{1}{5}$</button>
+        </div>
+        <div class="feedback" id="feedback-15"></div>
+    </div>
+
+    <script>
+        let currentScore = 0;
+        let answeredQuestions = new Set(); // To prevent double scoring
+
+        function checkAnswer(questionNum, selectedOption, correctOption, buttonElement) {
+            // If question has already been answered, do nothing
+            if (answeredQuestions.has(questionNum)) {
+                return;
+            }
+
+            // Get all buttons for this question
+            const container = document.getElementById('q' + questionNum);
+            const buttons = container.querySelectorAll('.choice-btn');
+            const feedbackDiv = document.getElementById('feedback-' + questionNum);
+
+            // Disable all buttons in this question to prevent further clicks
+            buttons.forEach(btn => btn.classList.add('disabled'));
+            
+            // Mark question as answered
+            answeredQuestions.add(questionNum);
+
+            // Check if correct
+            if (selectedOption === correctOption) {
+                buttonElement.classList.add('correct');
+                feedbackDiv.innerHTML = "Correct! Well done.";
+                feedbackDiv.className = "feedback show correct-text";
+                currentScore++;
+                updateScoreboard();
+            } else {
+                buttonElement.classList.add('incorrect');
+                // Highlight the correct answer as well
+                buttons.forEach(btn => {
+                    if(btn.innerText.startsWith(correctOption)) {
+                        btn.classList.add('correct');
+                    }
+                });
+                feedbackDiv.innerHTML = "Incorrect. The correct answer was " + correctOption + ".";
+                feedbackDiv.className = "feedback show incorrect-text";
+            }
+        }
+
+        function updateScoreboard() {
+            document.getElementById('score').innerText = currentScore;
+        }
+    </script>
+</body>
+</html>
