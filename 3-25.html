@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice: Set 2</title>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .problem-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fafafa;
+        }
+        .question-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .btn-toggle {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+        .btn-toggle:hover {
+            background-color: #2980b9;
+        }
+        .answer-section {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border-left: 4px solid #2ecc71;
+            background-color: #f0fdf4;
+            border-radius: 0 4px 4px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+        }
+        table, th, td {
+            border: 1px solid #bdc3c7;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #ecf0f1;
+        }
+        .diagram {
+            margin: 15px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Math Practice Problems: Set 2</h1>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>1. Connect:</strong> Complete the table by finding the decimal and percent for $\frac{2}{5}$.</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans1')">Show Answer & Explanation</button>
+        <div id="ans1" class="answer-section">
+            <p><strong>Answer:</strong> Decimal: $0.4$ | Percent: $40\%$</p>
+            <p><strong>Explanation:</strong> $\frac{2}{5} = 2 \div 5 = 0.4$. To convert $0.4$ to a percent, multiply by $100$ to get $40\%$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>2.</strong> A 2-foot piece of string is cut into $1 \frac{1}{2}$-inch pieces. How many pieces of string will there be?</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans2')">Show Answer & Explanation</button>
+        <div id="ans2" class="answer-section">
+            <p><strong>Answer:</strong> 16 pieces</p>
+            <p><strong>Explanation:</strong> Convert 2 feet into inches: $2 \times 12 = 24 \text{ inches}$. Divide the total length by the cut length: $24 \div 1 \frac{1}{2}$. Convert to an improper fraction: $24 \div \frac{3}{2} = 24 \times \frac{2}{3} = \frac{48}{3} = 16$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>3.</strong> A standard basketball is the shape of what geometric solid?</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans3')">Show Answer & Explanation</button>
+        <div id="ans3" class="answer-section">
+            <p><strong>Answer:</strong> Sphere</p>
+            <p><strong>Explanation:</strong> A basketball is perfectly round in 3D space, which is the definition of a sphere.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>4.</strong> If $\frac{1}{6}$ of the students voted for candidate A and $\frac{2}{6}$ voted for candidate B, what fraction of the students did not vote for either?</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans4')">Show Answer & Explanation</button>
+        <div id="ans4" class="answer-section">
+            <p><strong>Answer:</strong> $\frac{1}{2}$</p>
+            <p><strong>Explanation:</strong> Add the fractions of voters: $\frac{1}{6} + \frac{2}{6} = \frac{3}{6}$. Subtract from the whole ($1$ or $\frac{6}{6}$): $\frac{6}{6} - \frac{3}{6} = \frac{3}{6}$. Simplify the fraction to $\frac{1}{2}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>5.</strong> Eight months is<br>a. what fraction of a year?<br>b. what percent of a year?</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans5')">Show Answer & Explanation</button>
+        <div id="ans5" class="answer-section">
+            <p><strong>Answer:</strong> a. $\frac{2}{3}$ | b. $66 \frac{2}{3}\%$</p>
+            <p><strong>Explanation:</strong> There are 12 months in a year. <br>a. $\frac{8}{12}$ simplifies to $\frac{2}{3}$. <br>b. $\frac{2}{3}$ as a percent is $66.6\overline{6}\%$ or $66 \frac{2}{3}\%$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>6.</strong> Boxes measuring 1 cubic foot are stacked 5 boxes wide, 2 boxes deep, and 4 boxes high. What is the total volume of the stack?</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans6')">Show Answer & Explanation</button>
+        <div id="ans6" class="answer-section">
+            <p><strong>Answer:</strong> 40 cubic feet</p>
+            <p><strong>Explanation:</strong> Volume = length $\times$ width $\times$ height = $5 \times 2 \times 4 = 40$. Since each box is 1 cubic foot, the volume is $40 \text{ cubic feet}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>7.</strong> Maria was facing south. Then she turned clockwise $270^\circ$. After the turn, what direction was she facing?</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans7')">Show Answer & Explanation</button>
+        <div id="ans7" class="answer-section">
+            <p><strong>Answer:</strong> East</p>
+            <p><strong>Explanation:</strong> Starting South, turning clockwise (to the right) $90^\circ$ faces West. Another $90^\circ$ faces North. A final $90^\circ$ (total $270^\circ$) faces East.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>8.</strong> If $\frac{3}{8}$ of the pizza was eaten, what percent of the pizza was left?</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans8')">Show Answer & Explanation</button>
+        <div id="ans8" class="answer-section">
+            <p><strong>Answer:</strong> $62.5\%$</p>
+            <p><strong>Explanation:</strong> If $\frac{3}{8}$ was eaten, $\frac{5}{8}$ is left. Convert $\frac{5}{8}$ to a percentage: $5 \div 8 = 0.625$, which is $62.5\%$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>9.</strong> Write the percent form of $\frac{1}{9}$.</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans9')">Show Answer & Explanation</button>
+        <div id="ans9" class="answer-section">
+            <p><strong>Answer:</strong> $11 \frac{1}{9}\%$</p>
+            <p><strong>Explanation:</strong> $\frac{1}{9} \times 100 = \frac{100}{9}$. $100 \div 9 = 11$ with a remainder of $1$, which makes $11 \frac{1}{9}\%$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>10.</strong> $7 \frac{1}{4} - 4.15$ (decimal answer)</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans10')">Show Answer & Explanation</button>
+        <div id="ans10" class="answer-section">
+            <p><strong>Answer:</strong> $3.10$</p>
+            <p><strong>Explanation:</strong> $\frac{1}{4} = 0.25$, so $7 \frac{1}{4} = 7.25$. Subtract: $7.25 - 4.15 = 3.10$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>11.</strong> $8 \cdot 7 \cdot 0 \cdot 5$</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans11')">Show Answer & Explanation</button>
+        <div id="ans11" class="answer-section">
+            <p><strong>Answer:</strong> $0$</p>
+            <p><strong>Explanation:</strong> By the zero property of multiplication, any sequence of products containing a zero equals zero.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>12.</strong> $\frac{6.4}{0.16}$</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans12')">Show Answer & Explanation</button>
+        <div id="ans12" class="answer-section">
+            <p><strong>Answer:</strong> $40$</p>
+            <p><strong>Explanation:</strong> Multiply top and bottom by 100 to remove the decimal: $640 \div 16$. Since $16 \times 4 = 64$, $640 \div 16 = 40$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>13.</strong> $\sqrt{3600}$</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans13')">Show Answer & Explanation</button>
+        <div id="ans13" class="answer-section">
+            <p><strong>Answer:</strong> $60$</p>
+            <p><strong>Explanation:</strong> $\sqrt{3600} = \sqrt{36} \times \sqrt{100} = 6 \times 10 = 60$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>14.</strong> $\sqrt{100} + 3^2 - \sqrt{16} \times (4 + 1)$</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans14')">Show Answer & Explanation</button>
+        <div id="ans14" class="answer-section">
+            <p><strong>Answer:</strong> $-1$</p>
+            <p><strong>Explanation:</strong> <br>Parentheses: $(4 + 1) = 5$<br>
+            Exponents/Roots: $\sqrt{100} = 10$, $3^2 = 9$, $\sqrt{16} = 4$<br>
+            Substitute: $10 + 9 - 4 \times 5$<br>
+            Multiply: $4 \times 5 = 20$<br>
+            Add/Subtract: $10 + 9 - 20 = 19 - 20 = -1$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>15.</strong> Solve this proportion: $\frac{14}{21} = \frac{18}{n}$</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans15')">Show Answer & Explanation</button>
+        <div id="ans15" class="answer-section">
+            <p><strong>Answer:</strong> $n = 27$</p>
+            <p><strong>Explanation:</strong> Simplify the first fraction: $\frac{14}{21} = \frac{2}{3}$. So, $\frac{2}{3} = \frac{18}{n}$. Since $2 \times 9 = 18$, multiply the denominator by 9 as well: $3 \times 9 = 27$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>16.</strong> $5 \frac{1}{3} \times 1 \frac{1}{8} \times 3$</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans16')">Show Answer & Explanation</button>
+        <div id="ans16" class="answer-section">
+            <p><strong>Answer:</strong> $18$</p>
+            <p><strong>Explanation:</strong> Convert to improper fractions: $\frac{16}{3} \times \frac{9}{8} \times \frac{3}{1}$. Cross simplify: the 3s cancel out. $16 \div 8 = 2$. Multiply the remaining numerators: $2 \times 9 = 18$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>17.</strong> $(5.4 \times 0.05) \div 9$</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans17')">Show Answer & Explanation</button>
+        <div id="ans17" class="answer-section">
+            <p><strong>Answer:</strong> $0.03$</p>
+            <p><strong>Explanation:</strong> First, multiply: $5.4 \times 0.05 = 0.27$. Then divide: $0.27 \div 9 = 0.03$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>18.</strong> If the sales-tax rate is $6\%$, what is the tax on a $\$150.00$ purchase?</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans18')">Show Answer & Explanation</button>
+        <div id="ans18" class="answer-section">
+            <p><strong>Answer:</strong> $\$9.00$</p>
+            <p><strong>Explanation:</strong> Convert $6\%$ to a decimal ($0.06$) and multiply: $\$150.00 \times 0.06 = \$9.00$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>19.</strong> Look at this set of ages: $12, 14, 12, 18, 20$<br>
+        a. Find the mode.<br>
+        b. Find the median.</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans19')">Show Answer & Explanation</button>
+        <div id="ans19" class="answer-section">
+            <p><strong>Answer:</strong> a. $12$ | b. $14$</p>
+            <p><strong>Explanation:</strong><br>
+            a. The mode is the most frequent number, which is $12$.<br>
+            b. Arrange in order: $12, 12, 14, 18, 20$. The middle number is $14$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>20.</strong> Write the prime factorization of 360 using exponents.</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans20')">Show Answer & Explanation</button>
+        <div id="ans20" class="answer-section">
+            <p><strong>Answer:</strong> $2^3 \cdot 3^2 \cdot 5$</p>
+            <p><strong>Explanation:</strong> Break down 360: $360 = 36 \times 10 = (4 \times 9) \times (2 \times 5) = (2^2 \times 3^2) \times (2 \times 5) = 2^3 \times 3^2 \times 5$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>21.</strong> What is the greatest common factor (GCF) of $17$ and $23$?</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans21')">Show Answer & Explanation</button>
+        <div id="ans21" class="answer-section">
+            <p><strong>Answer:</strong> $1$</p>
+            <p><strong>Explanation:</strong> Both $17$ and $23$ are prime numbers. Their only common factor is $1$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>22.</strong> The perimeter of an equilateral triangle is $1.5\text{ meters}$. How many centimeters long is each side?</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans22')">Show Answer & Explanation</button>
+        <div id="ans22" class="answer-section">
+            <p><strong>Answer:</strong> $50\text{ cm}$</p>
+            <p><strong>Explanation:</strong> Convert perimeter to cm: $1.5\text{ m} = 150\text{ cm}$. An equilateral triangle has $3$ equal sides. $150 \div 3 = 50\text{ cm}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">
+            <strong>23.</strong> A triangle has a base of $12\text{ cm}$ and an altitude (height) of $5\text{ cm}$. What is the area of this triangle?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans23')">Show Answer & Explanation</button>
+        <div id="ans23" class="answer-section">
+            <p><strong>Answer:</strong> $30\text{ cm}^2$</p>
+            <p><strong>Explanation:</strong> Area $= \frac{1}{2}bh = \frac{1}{2}(12)(5) = 6 \times 5 = 30\text{ cm}^2$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>24.</strong> Three of the interior angles of a quadrilateral measure $90^\circ$, $80^\circ$, and $100^\circ$. What is the measure of the fourth angle?</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans24')">Show Answer & Explanation</button>
+        <div id="ans24" class="answer-section">
+            <p><strong>Answer:</strong> $90^\circ$</p>
+            <p><strong>Explanation:</strong> The sum of interior angles in any quadrilateral is $360^\circ$. Add the known angles: $90 + 80 + 100 = 270^\circ$. Subtract from $360^\circ$: $360 - 270 = 90^\circ$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>25.</strong> A line segment is $3 \frac{1}{2}\text{ inches}$ long. If a midpoint divides it exactly in half, what is the length of each new segment?</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans25')">Show Answer & Explanation</button>
+        <div id="ans25" class="answer-section">
+            <p><strong>Answer:</strong> $1 \frac{3}{4}\text{ inches}$</p>
+            <p><strong>Explanation:</strong> Divide $3 \frac{1}{2}$ by $2$. Convert to improper fraction: $\frac{7}{2}$. Multiply by $\frac{1}{2}$: $\frac{7}{2} \times \frac{1}{2} = \frac{7}{4}$. Convert back: $1 \frac{3}{4}\text{ inches}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>26.</strong> A jar contains 50 marbles. If 15 of them are red, what is the probability of pulling out a red marble at random?</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans26')">Show Answer & Explanation</button>
+        <div id="ans26" class="answer-section">
+            <p><strong>Answer:</strong> $\frac{3}{10}$ or $30\%$</p>
+            <p><strong>Explanation:</strong> Favorable outcomes over total outcomes: $\frac{15}{50}$. Divide numerator and denominator by $5$ to simplify: $\frac{3}{10}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text"><strong>27.</strong> Compare: $2\text{ gallons} \bigcirc 8\text{ liters}$</div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans27')">Show Answer & Explanation</button>
+        <div id="ans27" class="answer-section">
+            <p><strong>Answer:</strong> $2\text{ gallons} < 8\text{ liters}$</p>
+            <p><strong>Explanation:</strong> $1\text{ gallon}$ is approximately $3.785\text{ liters}$. Therefore, $2\text{ gallons}$ is about $7.57\text{ liters}$, which is less than $8\text{ liters}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question-text">
+            <strong>28.</strong> A function table uses the rule $y = 3x$. If the input values ($x$) are $2, 4,$ and $6$, what are the respective output values ($y$)?
+        </div>
+        <button class="btn-toggle" onclick="toggleAnswer('ans28')">Show Answer & Explanation</button>
+        <div id="ans28" class="answer-section">
+            <p><strong>Answer:</strong> $6, 12,$ and $18$</p>
+            <p><strong>Explanation:</strong> Multiply each input by 3. <br>$2 \times 3 = 6$ <br>$4 \times 3 = 12$ <br>$6 \times 3 = 18$</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleAnswer(id) {
+        var x = document.getElementById(id);
+        var btn = x.previousElementSibling;
+        if (x.style.display === "none" || x.style.display === "") {
+            x.style.display = "block";
+            btn.innerHTML = "Hide Answer & Explanation";
+        } else {
+            x.style.display = "none";
+            btn.innerHTML = "Show Answer & Explanation";
+        }
+    }
+</script>
+
+</body>
+</html>
