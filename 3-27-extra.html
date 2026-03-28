@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Math Quiz</title>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .section-title {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            color: #2980b9;
+        }
+        .question-card {
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fafbfc;
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .choices-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .choice-btn {
+            background-color: #ffffff;
+            border: 2px solid #dcdde1;
+            padding: 12px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            text-align: left;
+            transition: all 0.2s;
+        }
+        .choice-btn:hover {
+            border-color: #3498db;
+            background-color: #f1f8ff;
+        }
+        .correct-btn {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724 !important;
+        }
+        .wrong-btn {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24 !important;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-size: 1.1em;
+            display: none;
+        }
+        .explanation {
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Interactive Math Quiz</h1>
+    <p style="text-align: center;">Select an answer for each question below to receive immediate feedback and a step-by-step explanation.</p>
+
+    <h2 class="section-title">Concept 1: Calculating Averages (Based on Q3)</h2>
+
+    <div class="question-card">
+        <div class="question-text">1. If the sum of four numbers is 32.8, what is the average of the four numbers?</div>
+        <div class="choices-container">
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb1', 'exp1')">A) 8.0</button>
+            <button class="choice-btn" onclick="checkAns(this, true, 'fb1', 'exp1')">B) 8.2</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb1', 'exp1')">C) 8.4</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb1', 'exp1')">D) 7.2</button>
+        </div>
+        <div id="fb1" class="feedback"></div>
+        <div id="exp1" class="explanation">
+            <strong>Explanation:</strong> To find the average, divide the total sum by the count of numbers. <br>
+            Average = Sum &divide; Count <br>
+            32.8 &divide; 4 = 8.2
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">2. If the sum of six numbers is 45.6, what is the average of the six numbers?</div>
+        <div class="choices-container">
+            <button class="choice-btn" onclick="checkAns(this, true, 'fb2', 'exp2')">A) 7.6</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb2', 'exp2')">B) 8.6</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb2', 'exp2')">C) 7.1</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb2', 'exp2')">D) 6.6</button>
+        </div>
+        <div id="fb2" class="feedback"></div>
+        <div id="exp2" class="explanation">
+            <strong>Explanation:</strong> Divide the total sum by the count of numbers. <br>
+            45.6 &divide; 6 = 7.6
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">3. If the sum of eight numbers is 100.8, what is the average of the eight numbers?</div>
+        <div class="choices-container">
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb3', 'exp3')">A) 12.1</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb3', 'exp3')">B) 13.6</button>
+            <button class="choice-btn" onclick="checkAns(this, true, 'fb3', 'exp3')">C) 12.6</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb3', 'exp3')">D) 11.8</button>
+        </div>
+        <div id="fb3" class="feedback"></div>
+        <div id="exp3" class="explanation">
+            <strong>Explanation:</strong> Divide the total sum by the count of numbers. <br>
+            100.8 &divide; 8 = 12.6
+        </div>
+    </div>
+
+    <h2 class="section-title">Concept 2: Algebraic Addition (Based on Q5)</h2>
+
+    <div class="question-card">
+        <div class="question-text">4. Solve using algebraic addition: $-8 - -3$</div>
+        <div class="choices-container">
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb4', 'exp4')">A) -11</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb4', 'exp4')">B) 11</button>
+            <button class="choice-btn" onclick="checkAns(this, true, 'fb4', 'exp4')">C) -5</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb4', 'exp4')">D) 5</button>
+        </div>
+        <div id="fb4" class="feedback"></div>
+        <div id="exp4" class="explanation">
+            <strong>Explanation:</strong> Change the subtraction to adding the opposite. <br>
+            $-8 - (-3)$ becomes $-8 + (+3)$. <br>
+            Since the signs are different, subtract their absolute values (8 - 3 = 5) and keep the sign of the larger absolute value (negative). The answer is -5.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">5. Solve using algebraic addition: $-12 - -15$</div>
+        <div class="choices-container">
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb5', 'exp5')">A) -27</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb5', 'exp5')">B) -3</button>
+            <button class="choice-btn" onclick="checkAns(this, true, 'fb5', 'exp5')">C) 3</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb5', 'exp5')">D) 27</button>
+        </div>
+        <div id="fb5" class="feedback"></div>
+        <div id="exp5" class="explanation">
+            <strong>Explanation:</strong> Change the subtraction to adding the opposite. <br>
+            $-12 - (-15)$ becomes $-12 + (+15)$. <br>
+            Subtract absolute values (15 - 12 = 3) and keep the sign of the larger number (positive). The answer is 3.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">6. Solve using algebraic addition: $-5 - -5$</div>
+        <div class="choices-container">
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb6', 'exp6')">A) -10</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb6', 'exp6')">B) 10</button>
+            <button class="choice-btn" onclick="checkAns(this, true, 'fb6', 'exp6')">C) 0</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb6', 'exp6')">D) -25</button>
+        </div>
+        <div id="fb6" class="feedback"></div>
+        <div id="exp6" class="explanation">
+            <strong>Explanation:</strong> Change the subtraction to adding the opposite. <br>
+            $-5 - (-5)$ becomes $-5 + (+5)$. <br>
+            These are additive inverses. Adding a number to its opposite always results in 0.
+        </div>
+    </div>
+
+    <h2 class="section-title">Concept 3: Dividing Mixed Numbers (Based on Q24)</h2>
+
+    <div class="question-card">
+        <div class="question-text">7. Divide: $3 \frac{1}{3} \div 1 \frac{2}{3}$</div>
+        <div class="choices-container">
+            <button class="choice-btn" onclick="checkAns(this, true, 'fb7', 'exp7')">A) $2$</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb7', 'exp7')">B) $\frac{1}{2}$</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb7', 'exp7')">C) $5$</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb7', 'exp7')">D) $1 \frac{1}{3}$</button>
+        </div>
+        <div id="fb7" class="feedback"></div>
+        <div id="exp7" class="explanation">
+            <strong>Explanation:</strong> <br>
+            Step 1: Convert to improper fractions: $\frac{10}{3} \div \frac{5}{3}$ <br>
+            Step 2: Multiply by the reciprocal: $\frac{10}{3} \times \frac{3}{5}$ <br>
+            Step 3: The 3s cancel out, leaving $\frac{10}{5} = 2$.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">8. Divide: $4 \frac{1}{2} \div 2 \frac{1}{4}$</div>
+        <div class="choices-container">
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb8', 'exp8')">A) $\frac{1}{2}$</button>
+            <button class="choice-btn" onclick="checkAns(this, true, 'fb8', 'exp8')">B) $2$</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb8', 'exp8')">C) $4$</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb8', 'exp8')">D) $8 \frac{1}{8}$</button>
+        </div>
+        <div id="fb8" class="feedback"></div>
+        <div id="exp8" class="explanation">
+            <strong>Explanation:</strong> <br>
+            Step 1: Convert to improper fractions: $\frac{9}{2} \div \frac{9}{4}$ <br>
+            Step 2: Multiply by the reciprocal: $\frac{9}{2} \times \frac{4}{9}$ <br>
+            Step 3: The 9s cancel out, leaving $\frac{4}{2} = 2$.
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">9. Divide: $1 \frac{3}{4} \div 2 \frac{1}{2}$</div>
+        <div class="choices-container">
+            <button class="choice-btn" onclick="checkAns(this, true, 'fb9', 'exp9')">A) $\frac{7}{10}$</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb9', 'exp9')">B) $1 \frac{1}{4}$</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb9', 'exp9')">C) $\frac{5}{7}$</button>
+            <button class="choice-btn" onclick="checkAns(this, false, 'fb9', 'exp9')">D) $4 \frac{3}{8}$</button>
+        </div>
+        <div id="fb9" class="feedback"></div>
+        <div id="exp9" class="explanation">
+            <strong>Explanation:</strong> <br>
+            Step 1: Convert to improper fractions: $\frac{7}{4} \div \frac{5}{2}$ <br>
+            Step 2: Multiply by the reciprocal: $\frac{7}{4} \times \frac{2}{5}$ <br>
+            Step 3: Multiply straight across: $\frac{14}{20}$ <br>
+            Step 4: Reduce the fraction by dividing top and bottom by 2 to get $\frac{7}{10}$.
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function checkAns(buttonElement, isCorrect, feedbackId, explanationId) {
+        // Find the parent container of the clicked button
+        var parentDiv = buttonElement.parentNode;
+        
+        // Remove styling from all sibling buttons first (in case the user clicks multiple times)
+        var allButtons = parentDiv.querySelectorAll('.choice-btn');
+        allButtons.forEach(function(btn) {
+            btn.classList.remove('correct-btn', 'wrong-btn');
+        });
+
+        var feedbackDiv = document.getElementById(feedbackId);
+        var expDiv = document.getElementById(explanationId);
+
+        // Apply correct or incorrect styling and text
+        if (isCorrect) {
+            buttonElement.classList.add('correct-btn');
+            feedbackDiv.innerHTML = "<strong style='color: #28a745;'>Correct!</strong>";
+        } else {
+            buttonElement.classList.add('wrong-btn');
+            feedbackDiv.innerHTML = "<strong style='color: #dc3545;'>Incorrect. Try again or check the explanation below.</strong>";
+        }
+
+        // Display the feedback and explanation blocks
+        feedbackDiv.style.display = "block";
+        expDiv.style.display = "block";
+        
+        // Re-render MathJax in case the explanation was hidden during initial load
+        if (window.MathJax) {
+            MathJax.typesetPromise([expDiv]).catch(function (err) {
+                console.log(err.message);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
