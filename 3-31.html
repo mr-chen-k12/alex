@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Worksheet Solutions</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px auto;
+            max-width: 800px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .problem-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .question {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .answer-section {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ccc;
+            background-color: #f1f8ff;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .answer {
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 5px;
+        }
+        .explanation {
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Math Worksheet Solutions (Problems 1 - 30)</h1>
+
+    <div id="problems-container"></div>
+
+    <script>
+        const problems = [
+            {
+                q: "1. Michael caught sixty-two crawfish in the creek. Miguel caught seven crawfish, and Marcus and Michelle each caught twelve crawfish. Altogether, how many crawfish did these young people catch?",
+                a: "93 crawfish",
+                e: "Michael caught 62. Miguel caught 7. Marcus and Michelle <b>each</b> caught 12, so together they caught \\(12 \\times 2 = 24\\). Add them all together: \\(62 + 7 + 24 = 93\\)."
+            },
+            {
+                q: "2. The Matterhorn is fourteen thousand, six hundred ninety-one feet high. Mont Blanc is fifteen thousand, seven hundred seventy-one feet high. How much taller is Mont Blanc than the Matterhorn?",
+                a: "1,080 feet",
+                e: "Mont Blanc is 15,771 feet. The Matterhorn is 14,691 feet. Subtract to find the difference: \\(15,771 - 14,691 = 1,080\\)."
+            },
+            {
+                q: "3. There are 25 squares on a bingo card. How many squares are on 4 bingo cards?",
+                a: "100 squares",
+                e: "Multiply the number of squares on one card by the number of cards: \\(25 \\times 4 = 100\\)."
+            },
+            {
+                q: "4. Ninety-six books were placed on 4 shelves so that the same number of books were on each shelf. How many books were on each shelf?",
+                a: "24 books",
+                e: "Divide the total number of books by the number of shelves: \\(96 \\div 4 = 24\\)."
+            },
+            {
+                q: "5. One half of the 780 fans stood and cheered. How many fans stood and cheered? What percent of the fans stood and cheered?",
+                a: "390 fans; 50%",
+                e: "To find one half, divide by 2: \\(780 \\div 2 = 390\\). One half represents \\(50\\%\\)."
+            },
+            {
+                q: "6. How many years is ten centuries?",
+                a: "1,000 years",
+                e: "One century is 100 years. Ten centuries is \\(10 \\times 100 = 1,000\\) years."
+            },
+            {
+                q: "7. Estimate the sum of 493 and 387 by rounding both numbers to the nearest hundred before adding.",
+                a: "900",
+                e: "493 rounds to 500. 387 rounds to 400. Their sum is \\(500 + 400 = 900\\)."
+            },
+            {
+                q: "8. What fraction of this set is not shaded? (Image shows 10 circles, 4 shaded and 6 unshaded).",
+                a: "\\(\\frac{3}{5}\\)",
+                e: "There are 10 circles in total. 6 of them are not shaded. The fraction is \\(\\frac{6}{10}\\), which simplifies to \\(\\frac{3}{5}\\)."
+            },
+            {
+                q: "9. This 2-liter bottle contains how many milliliters of soda?",
+                a: "2,000 milliliters",
+                e: "1 liter is equal to 1,000 milliliters. Therefore, 2 liters is \\(2 \\times 1000 = 2,000\\) mL."
+            },
+            {
+                q: "10. What is the perimeter of this rectangle? (6 in. by 4 in.)",
+                a: "20 inches",
+                e: "The perimeter is the sum of all sides: \\(P = 2 \\times (length + width) = 2 \\times (6 + 4) = 2 \\times 10 = 20\\) inches."
+            },
+            {
+                q: "11. If the rectangle in problem 10 were to be covered with squares with sides one inch long, how many squares would be needed?",
+                a: "24 squares",
+                e: "This is asking for the area of the rectangle. Area = length \\(\\times\\) width = \\(6 \\times 4 = 24\\) square inches."
+            },
+            {
+                q: "12. Which transformation(s) would position \\(\\Delta STR\\) on \\(\\Delta PQR\\)?",
+                a: "Rotation of 180° around point R",
+                e: "The triangle has been turned upside down and flipped across the vertex R. A rotation of \\(180^{\\circ}\\) (or a point reflection) around point R maps \\(\\Delta STR\\) onto \\(\\Delta PQR\\)."
+            },
+            {
+                q: "13. \\(\\$6.15 - (\\$0.57 + \\$1.20)\\)",
+                a: "$4.38",
+                e: "First add the numbers in parentheses: \\(\\$0.57 + \\$1.20 = \\$1.77\\). Then subtract that from the total: \\(\\$6.15 - \\$1.77 = \\$4.38\\)."
+            },
+            {
+                q: "14. \\(43,160 - 8459\\)",
+                a: "34,701",
+                e: "Subtracting the values: \\(43,160 - 8,459 = 34,701\\)."
+            },
+            {
+                q: "15. \\(8 \\times 8 \\times 8\\)",
+                a: "512",
+                e: "First multiply \\(8 \\times 8 = 64\\). Then multiply \\(64 \\times 8 = 512\\)."
+            },
+            {
+                q: "16. \\(\\$3.54 \\times 6\\)",
+                a: "$21.24",
+                e: "Multiply standard: \\(3.54 \\times 6 = 21.24\\)."
+            },
+            {
+                q: "17. \\(80 \\times 57\\)",
+                a: "4,560",
+                e: "\\(8 \\times 57 = 456\\). Adding the zero gives \\(4,560\\)."
+            },
+            {
+                q: "18. \\(704 \\times 9\\)",
+                a: "6,336",
+                e: "\\(704 \\times 9 = 6,336\\)."
+            },
+            {
+                q: "19. \\(354 \\div 9\\)",
+                a: "39 with a remainder of 3 (or 39 1/3)",
+                e: "\\(9 \\times 39 = 351\\). \\(354 - 351 = 3\\). So the answer is \\(39\\) remainder \\(3\\)."
+            },
+            {
+                q: "20. \\(285 \\div 7\\)",
+                a: "40 with a remainder of 5",
+                e: "\\(7 \\times 40 = 280\\). \\(285 - 280 = 5\\). So the answer is \\(40\\) remainder \\(5\\)."
+            },
+            {
+                q: "21. \\(439 \\div 5\\)",
+                a: "87 with a remainder of 4",
+                e: "\\(5 \\times 87 = 435\\). \\(439 - 435 = 4\\). So the answer is \\(87\\) remainder \\(4\\)."
+            },
+            {
+                q: "22. \\(515 \\div 6\\)",
+                a: "85 with a remainder of 5",
+                e: "\\(6 \\times 85 = 510\\). \\(515 - 510 = 5\\). So the answer is \\(85\\) remainder \\(5\\)."
+            },
+            {
+                q: "23. \\(\\frac{360}{4}\\)",
+                a: "90",
+                e: "This is a division problem: \\(360 \\div 4 = 90\\)."
+            },
+            {
+                q: "24. \\(784 \\div 8\\)",
+                a: "98",
+                e: "\\(784 \\div 8 = 98\\). (Since \\(8 \\times 100 = 800\\), it is \\(2 \\times 8 = 16\\) less, making it 98)."
+            },
+            {
+                q: "25. \\(\\sqrt{36} + N = 6^2\\)",
+                a: "N = 30",
+                e: "First simplify the knowns: \\(\\sqrt{36} = 6\\) and \\(6^2 = 36\\). The equation becomes \\(6 + N = 36\\). Subtract 6 from both sides to get \\(N = 30\\)."
+            },
+            {
+                q: "26. \\(462 - Y = 205\\)",
+                a: "Y = 257",
+                e: "Rearrange the equation to solve for Y: \\(Y = 462 - 205\\). Subtracting yields \\(Y = 257\\)."
+            },
+            {
+                q: "27. \\(50 = 5R\\)",
+                a: "R = 10",
+                e: "Divide both sides by 5: \\(50 \\div 5 = R\\), therefore \\(R = 10\\)."
+            },
+            {
+                q: "28. Find the next number in this counting sequence: ..., 90, 180, 270, ____, ...",
+                a: "360",
+                e: "The sequence increases by 90 each time (multiples of 90). The next number is \\(270 + 90 = 360\\)."
+            },
+            {
+                q: "29. Sierra's arm is 20 inches long. If Sierra swings her arm in a circle, what will be the diameter of the circle?",
+                a: "40 inches",
+                e: "Her arm acts as the radius of the circle (20 inches). The diameter is twice the radius: \\(D = 2 \\times 20 = 40\\) inches."
+            },
+            {
+                q: "30. Which of these numbers is a multiple of 8? A. 4, B. 12, C. 48, D. 84",
+                a: "C. 48",
+                e: "A multiple of 8 is a number that can be divided by 8 evenly. \\(48 \\div 8 = 6\\), so 48 is the multiple."
+            }
+        ];
+
+        const container = document.getElementById('problems-container');
+
+        problems.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'problem-card';
+
+            const id = 'ans-' + index;
+
+            card.innerHTML = `
+                <div class="question">${item.q}</div>
+                <button class="btn" onclick="toggleAnswer('${id}')">Reveal Answer & Explanation</button>
+                <div id="${id}" class="answer-section">
+                    <div class="answer">Answer: ${item.a}</div>
+                    <div class="explanation"><strong>Explanation:</strong> ${item.e}</div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        function toggleAnswer(id) {
+            const el = document.getElementById(id);
+            if (el.style.display === "none" || el.style.display === "") {
+                el.style.display = "block";
+                // Tell MathJax to typeset the newly revealed math just in case
+                MathJax.typesetPromise([el]).catch(function (err) {
+                    console.log(err.message);
+                });
+            } else {
+                el.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
