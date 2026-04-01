@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saxon Math Course 1 - Lesson 104 Solutions</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+        };
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0 auto;
+            max-width: 900px;
+            padding: 20px;
+            color: #333;
+        }
+        h1 { text-align: center; color: #2c3e50; }
+        h2 { color: #34495e; border-bottom: 2px solid #ecf0f1; padding-bottom: 5px; margin-top: 40px; }
+        .problem-container {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .question { font-weight: bold; margin-bottom: 15px; }
+        .answer-container {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        button:hover { background-color: #2980b9; }
+        svg { background-color: #fff; border: 1px solid #ccc; display: block; margin: 10px 0; }
+        table { border-collapse: collapse; margin-bottom: 15px; }
+        th, td { border: 1px solid #333; padding: 8px 12px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <h1>Saxon Math Course 1 - Lesson 104</h1>
+
+    <h2>Lesson Practice</h2>
+
+    <div class="problem-container">
+        <div class="question">Simplify the following:<br>
+            a. $-2 + -3 - -4 + -5$<br>
+            b. $-3 + (+2) - (+5) - (-6)$<br>
+            c. $+3 + -4 - +6 + +7 - -1$<br>
+            d. $2 + (-3) - (-9) - (+7) + (+1)$<br>
+            e. $3 - -5 + -4 - +2 + +8$<br>
+            f. $(-10) - (+20) - (-30) + (-40)$
+        </div>
+        <button onclick="toggleAnswer('ans-lp')">Show Answers & Explanations</button>
+        <div id="ans-lp" class="answer-container">
+            <p><strong>Explanations:</strong> Convert subtractions to additions of the opposite, then combine like signs.</p>
+            <ul>
+                <li><strong>a.</strong> $-2 - 3 + 4 - 5 = -10 + 4 = $ <strong>$-6$</strong></li>
+                <li><strong>b.</strong> $-3 + 2 - 5 + 6 = -8 + 8 = $ <strong>$0$</strong></li>
+                <li><strong>c.</strong> $3 - 4 - 6 + 7 + 1 = 11 - 10 = $ <strong>$1$</strong></li>
+                <li><strong>d.</strong> $2 - 3 + 9 - 7 + 1 = 12 - 10 = $ <strong>$2$</strong></li>
+                <li><strong>e.</strong> $3 + 5 - 4 - 2 + 8 = 16 - 6 = $ <strong>$10$</strong></li>
+                <li><strong>f.</strong> $-10 - 20 + 30 - 40 = -70 + 30 = $ <strong>$-40$</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>Written Practice</h2>
+
+    <div class="problem-container">
+        <div class="question">1. A pyramid with a square base has how many more edges than vertices?</div>
+        <button onclick="toggleAnswer('ans-1')">Show Answer & Explanation</button>
+        <div id="ans-1" class="answer-container">
+            <p><strong>Explanation:</strong> A square-based pyramid has 5 vertices (4 at the base, 1 at the apex) and 8 edges (4 around the base, 4 reaching to the apex). The difference is $8 - 5 = 3$.</p>
+            <p><strong>Answer:</strong> 3</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">2. Becki weighed 7 lb 8 oz when she was born and 12 lb 6 oz at 3 months. How many pounds and ounces did Becki gain in 3 months?</div>
+        <button onclick="toggleAnswer('ans-2')">Show Answer & Explanation</button>
+        <div id="ans-2" class="answer-container">
+            <p><strong>Explanation:</strong> Subtract the birth weight from the 3-month weight. <br>
+            $12\text{ lb } 6\text{ oz} - 7\text{ lb } 8\text{ oz}$. Since 6 oz is less than 8 oz, borrow 1 lb (16 oz) from the 12 lbs.<br>
+            $11\text{ lb } (6+16)\text{ oz} = 11\text{ lb } 22\text{ oz}$.<br>
+            Now subtract: $11\text{ lb } 22\text{ oz} - 7\text{ lb } 8\text{ oz} = 4\text{ lb } 14\text{ oz}$.</p>
+            <p><strong>Answer:</strong> 4 lb 14 oz</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">3. There are 6 fish and 10 snails in the aquarium. What is the ratio of fish to snails?</div>
+        <button onclick="toggleAnswer('ans-3')">Show Answer & Explanation</button>
+        <div id="ans-3" class="answer-container">
+            <p><strong>Explanation:</strong> The ratio is $\frac{\text{Fish}}{\text{Snails}} = \frac{6}{10}$. Reduce the fraction by dividing by 2 to get $\frac{3}{5}$.</p>
+            <p><strong>Answer:</strong> 3/5</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">4. A team's win-loss ratio was 3 to 2. If the team had played 20 games without a tie, how many games had it won?</div>
+        <button onclick="toggleAnswer('ans-4')">Show Answer & Explanation</button>
+        <div id="ans-4" class="answer-container">
+            <p><strong>Explanation:</strong> Total ratio parts = $3 \text{ (wins)} + 2 \text{ (losses)} = 5 \text{ parts}$. <br>
+            Total games = 20. Divide total games by total parts: $\frac{20}{5} = 4 \text{ games per part}$. <br>
+            Multiply by the win parts: $3 \times 4 = 12 \text{ wins}$.</p>
+            <p><strong>Answer:</strong> 12 games</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">5. If Molly tosses a coin and rolls a number cube, what is the probability of the coin landing heads up and the number cube stopping with a 6 on top?</div>
+        <button onclick="toggleAnswer('ans-5')">Show Answer & Explanation</button>
+        <div id="ans-5" class="answer-container">
+            <p><strong>Explanation:</strong> These are independent events. Multiply their probabilities.<br>
+            $P(\text{Heads}) = \frac{1}{2}$. $P(6) = \frac{1}{6}$.<br>
+            $P(\text{Heads and } 6) = \frac{1}{2} \times \frac{1}{6} = \frac{1}{12}$.</p>
+            <p><strong>Answer:</strong> 1/12</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">
+            6. a. What is the perimeter of this parallelogram? <br>
+               b. What is the area of this parallelogram?
+            <svg width="250" height="120" viewBox="0 0 250 120">
+                <polygon points="50,20 200,20 170,90 20,90" fill="none" stroke="black" stroke-width="2"/>
+                <line x1="170" y1="20" x2="170" y2="90" stroke="black" stroke-dasharray="4"/>
+                <text x="110" y="110">8 cm</text>
+                <text x="5" y="55">7 cm</text>
+                <text x="180" y="60">6 cm</text>
+                <polyline points="160,90 160,80 170,80" fill="none" stroke="black" />
+            </svg>
+        </div>
+        <button onclick="toggleAnswer('ans-6')">Show Answer & Explanation</button>
+        <div id="ans-6" class="answer-container">
+            <p><strong>Explanation:</strong><br>
+            <strong>a.</strong> Perimeter is the distance around the outside. $P = 2(\text{base}) + 2(\text{side}) = 2(8) + 2(7) = 16 + 14 = 30\text{ cm}$.<br>
+            <strong>b.</strong> Area is base $\times$ height. $A = 8\text{ cm} \times 6\text{ cm} = 48\text{ cm}^2$.</p>
+            <p><strong>Answer:</strong> a. 30 cm; b. 48 cm$^2$</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">7. If each acute angle of a parallelogram measures $59^\circ$, then what is the measure of each obtuse angle?</div>
+        <button onclick="toggleAnswer('ans-7')">Show Answer & Explanation</button>
+        <div id="ans-7" class="answer-container">
+            <p><strong>Explanation:</strong> Consecutive angles in a parallelogram are supplementary (they add up to $180^\circ$). <br>
+            $180^\circ - 59^\circ = 121^\circ$.</p>
+            <p><strong>Answer:</strong> $121^\circ$</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">
+            8. The center of this circle is the origin. The circle passes through (2, 0).<br>
+            a. Estimate the area of the circle in square units by counting squares.<br>
+            b. Calculate the area of the circle by using 3.14 for $\pi$.
+            <svg width="200" height="200" viewBox="-40 -40 80 80">
+                <g stroke="#eee" stroke-width="1">
+                    <line x1="-30" y1="-30" x2="-30" y2="30"/>
+                    <line x1="-20" y1="-30" x2="-20" y2="30"/>
+                    <line x1="-10" y1="-30" x2="-10" y2="30"/>
+                    <line x1="10" y1="-30" x2="10" y2="30"/>
+                    <line x1="20" y1="-30" x2="20" y2="30"/>
+                    <line x1="30" y1="-30" x2="30" y2="30"/>
+                    <line x1="-30" y1="-30" x2="30" y2="-30"/>
+                    <line x1="-30" y1="-20" x2="30" y2="-20"/>
+                    <line x1="-30" y1="-10" x2="30" y2="-10"/>
+                    <line x1="-30" y1="10" x2="30" y2="10"/>
+                    <line x1="-30" y1="20" x2="30" y2="20"/>
+                    <line x1="-30" y1="30" x2="30" y2="30"/>
+                </g>
+                <line x1="-40" y1="0" x2="40" y2="0" stroke="black"/>
+                <line x1="0" y1="-40" x2="0" y2="40" stroke="black"/>
+                <circle cx="0" cy="0" r="20" fill="none" stroke="blue" stroke-width="2"/>
+            </svg>
+        </div>
+        <button onclick="toggleAnswer('ans-8')">Show Answer & Explanation</button>
+        <div id="ans-8" class="answer-container">
+            <p><strong>Explanation:</strong><br>
+            <strong>a.</strong> Counting full and partial squares inside the circle roughly yields 12 to 13 squares.<br>
+            <strong>b.</strong> The radius is 2 units. Area $= \pi r^2 \approx 3.14 \times (2)^2 = 3.14 \times 4 = 12.56$.</p>
+            <p><strong>Answer:</strong> a. ~12-13 sq units; b. 12.56</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">9. Which ratio forms a proportion with $\frac{2}{3}$?<br>
+            A $\frac{2}{4}$ &nbsp;&nbsp;&nbsp; B $\frac{3}{4}$ &nbsp;&nbsp;&nbsp; C $\frac{4}{6}$ &nbsp;&nbsp;&nbsp; D $\frac{3}{2}$
+        </div>
+        <button onclick="toggleAnswer('ans-9')">Show Answer & Explanation</button>
+        <div id="ans-9" class="answer-container">
+            <p><strong>Explanation:</strong> A proportion is an equation stating two ratios are equal. Reduce each option to see which equals $\frac{2}{3}$. Only C ($\frac{4}{6}$) reduces to $\frac{2}{3}$.</p>
+            <p><strong>Answer:</strong> C</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">10. Complete this proportion: $\frac{6}{8} = \frac{a}{12}$</div>
+        <button onclick="toggleAnswer('ans-10')">Show Answer & Explanation</button>
+        <div id="ans-10" class="answer-container">
+            <p><strong>Explanation:</strong> Cross-multiply to solve for $a$:<br>
+            $8 \times a = 6 \times 12$<br>
+            $8a = 72$<br>
+            $a = 9$</p>
+            <p><strong>Answer:</strong> 9</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">11. What is the perimeter of the hexagon at right? Dimensions are in centimeters.
+            <svg width="200" height="200" viewBox="0 0 200 200">
+                <polygon points="50,20 100,20 100,100 180,100 180,160 50,160" fill="none" stroke="black" stroke-width="2"/>
+                <text x="70" y="15">5</text>
+                <text x="185" y="135">6</text>
+                <text x="110" y="175">13</text>
+                <text x="25" y="90">12</text>
+            </svg>
+        </div>
+        <button onclick="toggleAnswer('ans-11')">Show Answer & Explanation</button>
+        <div id="ans-11" class="answer-container">
+            <p><strong>Explanation:</strong> Find the missing side lengths. <br>
+            The unknown inner vertical side + 6 (right vertical side) = 12 (total left vertical side). So the inner vertical side is $12 - 6 = 6$. <br>
+            The unknown inner horizontal side + 5 (top horizontal) = 13 (bottom horizontal). So the inner horizontal side is $13 - 5 = 8$.<br>
+            Perimeter $= 12 \text{ (left)} + 5 \text{ (top)} + 6 \text{ (inner vertical)} + 8 \text{ (inner horizontal)} + 6 \text{ (right)} + 13 \text{ (bottom)} = 50\text{ cm}$.</p>
+            <p><strong>Answer:</strong> 50 cm</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">Complete the table to answer problems 12–14:
+            <table>
+                <tr><th>Fraction</th><th>Decimal</th><th>Percent</th></tr>
+                <tr><td>12. $\frac{3}{20}$</td><td>a. ___</td><td>b. ___</td></tr>
+                <tr><td>13. a. ___</td><td>1.2</td><td>b. ___</td></tr>
+                <tr><td>14. a. ___</td><td>b. ___</td><td>10%</td></tr>
+            </table>
+        </div>
+        <button onclick="toggleAnswer('ans-12-14')">Show Answers & Explanations</button>
+        <div id="ans-12-14" class="answer-container">
+            <p><strong>Explanations:</strong></p>
+            <ul>
+                <li><strong>12:</strong> $\frac{3}{20} = \frac{15}{100} = 0.15 = 15\%$ <br><strong>Ans: a. 0.15, b. 15%</strong></li>
+                <li><strong>13:</strong> $1.2 = 1 \frac{2}{10} = 1 \frac{1}{5} = \frac{6}{5}$. As a percent: $1.2 \times 100 = 120\%$ <br><strong>Ans: a. 1 1/5 (or 6/5), b. 120%</strong></li>
+                <li><strong>14:</strong> $10\% = \frac{10}{100} = \frac{1}{10}$. As a decimal: $0.10$ <br><strong>Ans: a. 1/10, b. 0.1</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">15. Sharon bought a notebook for 40% off the regular price of $6.95. What was the sale price of the notebook?</div>
+        <button onclick="toggleAnswer('ans-15')">Show Answer & Explanation</button>
+        <div id="ans-15" class="answer-container">
+            <p><strong>Explanation:</strong> If it is 40% off, she pays 60% of the price. <br>
+            Sale Price = $0.60 \times 6.95 = 4.17$.</p>
+            <p><strong>Answer:</strong> $4.17</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">16. Between which two consecutive whole numbers is $\sqrt{220}$?</div>
+        <button onclick="toggleAnswer('ans-16')">Show Answer & Explanation</button>
+        <div id="ans-16" class="answer-container">
+            <p><strong>Explanation:</strong> Find perfect squares near 220. <br>
+            $14^2 = 196$ and $15^2 = 225$. Since 220 is between 196 and 225, $\sqrt{220}$ is between 14 and 15.</p>
+            <p><strong>Answer:</strong> 14 and 15</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">17. Compare: $\left(\frac{1}{2}\right)^3 \bigcirc$ the probability of 3 consecutive "heads" coin tosses</div>
+        <button onclick="toggleAnswer('ans-17')">Show Answer & Explanation</button>
+        <div id="ans-17" class="answer-container">
+            <p><strong>Explanation:</strong> <br>
+            Left side: $\left(\frac{1}{2}\right)^3 = \frac{1}{8}$. <br>
+            Right side: $P(3\text{ heads}) = \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{8}$. <br>
+            They are equal.</p>
+            <p><strong>Answer:</strong> $=$</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">18. Divide 0.624 by 0.05 and round the quotient to the nearest whole number.</div>
+        <button onclick="toggleAnswer('ans-18')">Show Answer & Explanation</button>
+        <div id="ans-18" class="answer-container">
+            <p><strong>Explanation:</strong> $0.624 \div 0.05 = 62.4 \div 5 = 12.48$. <br>
+            Rounding to the nearest whole number gives 12.</p>
+            <p><strong>Answer:</strong> 12</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">19. The average of three numbers is 20. What is the sum of the three numbers?</div>
+        <button onclick="toggleAnswer('ans-19')">Show Answer & Explanation</button>
+        <div id="ans-19" class="answer-container">
+            <p><strong>Explanation:</strong> Average $= \frac{\text{Sum}}{\text{Count}}$. <br>
+            Therefore, $\text{Sum} = \text{Average} \times \text{Count} = 20 \times 3 = 60$.</p>
+            <p><strong>Answer:</strong> 60</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">20. Write the prime factorization of 450 using exponents.</div>
+        <button onclick="toggleAnswer('ans-20')">Show Answer & Explanation</button>
+        <div id="ans-20" class="answer-container">
+            <p><strong>Explanation:</strong> Create a factor tree for 450. <br>
+            $450 = 45 \times 10$ <br>
+            $45 = 9 \times 5 = 3 \times 3 \times 5$ <br>
+            $10 = 2 \times 5$ <br>
+            Combine all prime factors: $2 \times 3 \times 3 \times 5 \times 5 = 2 \cdot 3^2 \cdot 5^2$.</p>
+            <p><strong>Answer:</strong> $2 \cdot 3^2 \cdot 5^2$</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">21. $-3 + -5 - -4 - +2$</div>
+        <button onclick="toggleAnswer('ans-21')">Show Answer & Explanation</button>
+        <div id="ans-21" class="answer-container">
+            <p><strong>Explanation:</strong> Change subtractions to adding the opposite.<br>
+            $-3 - 5 + 4 - 2 = -8 + 4 - 2 = -4 - 2 = -6$.</p>
+            <p><strong>Answer:</strong> $-6$</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">22. $3^4 + 5^2 \times 4 - \sqrt{100} \times 2^3$</div>
+        <button onclick="toggleAnswer('ans-22')">Show Answer & Explanation</button>
+        <div id="ans-22" class="answer-container">
+            <p><strong>Explanation:</strong> Follow order of operations (PEMDAS/GEMDAS). <br>
+            Exponents and roots first: $81 + 25 \times 4 - 10 \times 8$.<br>
+            Multiplication: $81 + 100 - 80$.<br>
+            Addition and Subtraction: $181 - 80 = 101$.</p>
+            <p><strong>Answer:</strong> 101</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">23. How many blocks 1 inch on each edge would it take to fill a shoe box that is 12 inches long, 6 inches wide, and 5 inches tall?</div>
+        <button onclick="toggleAnswer('ans-23')">Show Answer & Explanation</button>
+        <div id="ans-23" class="answer-container">
+            <p><strong>Explanation:</strong> Find the volume of the box in cubic inches. <br>
+            $V = \text{length} \times \text{width} \times \text{height} = 12 \times 6 \times 5 = 360$. Since each block is 1 cubic inch, it takes 360 blocks.</p>
+            <p><strong>Answer:</strong> 360 blocks</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">24. Three fourths of the 60 athletes played in the game. How many athletes did not play?</div>
+        <button onclick="toggleAnswer('ans-24')">Show Answer & Explanation</button>
+        <div id="ans-24" class="answer-container">
+            <p><strong>Explanation:</strong> If $\frac{3}{4}$ played, then $\frac{1}{4}$ did not play. <br>
+            $\frac{1}{4} \text{ of } 60 = 60 \div 4 = 15$.</p>
+            <p><strong>Answer:</strong> 15 athletes</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">25. The distance a car travels can be found by multiplying the speed of the car by the amount of time the car travels at that speed. How far would a car travel in 4 hours at 88 kilometers per hour? <br>
+        $\frac{88 \text{ km}}{1 \text{ hr}} \times \frac{4 \text{ hr}}{1}$</div>
+        <button onclick="toggleAnswer('ans-25')">Show Answer & Explanation</button>
+        <div id="ans-25" class="answer-container">
+            <p><strong>Explanation:</strong> Multiply the given fractions, canceling the "hr" units.<br>
+            $88 \times 4 = 352\text{ km}$.</p>
+            <p><strong>Answer:</strong> 352 km</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">26. Use the figure on the right to answer a - c.<br>
+            a. What is the area of the shaded rectangle?<br>
+            b. What is the area of the unshaded rectangle?<br>
+            c. What is the combined area of the two rectangles?
+            <svg width="200" height="150" viewBox="0 0 200 150">
+                <rect x="50" y="20" width="40" height="100" fill="#a0c4ff" stroke="black"/>
+                <text x="65" y="15">5 cm</text>
+                <text x="5" y="70">12 cm</text>
+                <rect x="90" y="70" width="70" height="50" fill="white" stroke="black"/>
+                <text x="115" y="65">8 cm</text>
+                <text x="165" y="100">6 cm</text>
+            </svg>
+        </div>
+        <button onclick="toggleAnswer('ans-26')">Show Answer & Explanation</button>
+        <div id="ans-26" class="answer-container">
+            <p><strong>Explanation:</strong><br>
+            <strong>a.</strong> The shaded rectangle is 12 cm high and 5 cm wide. Area $= 12 \times 5 = 60\text{ cm}^2$.<br>
+            <strong>b.</strong> The unshaded rectangle is 6 cm high and 8 cm wide. Area $= 6 \times 8 = 48\text{ cm}^2$.<br>
+            <strong>c.</strong> Combined Area $= 60 + 48 = 108\text{ cm}^2$.</p>
+            <p><strong>Answer:</strong> a. 60 cm$^2$; b. 48 cm$^2$; c. 108 cm$^2$</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">27. Colby measured the circumference and diameter of four circles. Then he divided the circumference by the diameter of each circle to find the number of diameters in a circumference. Here are his answers: <br>
+        3.12, 3.2, 3.15, 3.1<br>
+        Find the average of Colby's answers. Round the average to the nearest hundredth.</div>
+        <button onclick="toggleAnswer('ans-27')">Show Answer & Explanation</button>
+        <div id="ans-27" class="answer-container">
+            <p><strong>Explanation:</strong> Add the numbers and divide by 4. <br>
+            $3.12 + 3.20 + 3.15 + 3.10 = 12.57$.<br>
+            $12.57 \div 4 = 3.1425$.<br>
+            Rounding to the nearest hundredth (two decimal places) gives $3.14$.</p>
+            <p><strong>Answer:</strong> 3.14</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">28. Hector was thinking of a two-digit counting number, and he asked Simon to guess the number. Describe how you can find the probability that Simon will guess correctly on the first try.</div>
+        <button onclick="toggleAnswer('ans-28')">Show Answer & Explanation</button>
+        <div id="ans-28" class="answer-container">
+            <p><strong>Explanation:</strong> The two-digit counting numbers go from 10 to 99. To find the total amount, subtract the highest from lowest and add 1 ($99 - 10 + 1 = 90$), or just realize it's all numbers 1-99 minus the single digits 1-9. There are 90 possible numbers. Since Simon makes exactly 1 guess, his chance is 1 out of the 90 possibilities.</p>
+            <p><strong>Answer:</strong> The probability is 1/90. (Find total numbers from 10 to 99, which is 90, and set the guess as 1 favorable outcome over 90).</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">29. The coordinates of three vertices of a triangle are (3, 5), (-1, 5), and (-1, -3). What is the area of the triangle?</div>
+        <button onclick="toggleAnswer('ans-29')">Show Answer & Explanation</button>
+        <div id="ans-29" class="answer-container">
+            <p><strong>Explanation:</strong> Plotting these points reveals a right triangle. <br>
+            The base connects (-1, 5) and (3, 5). Length $= 3 - (-1) = 4$ units.<br>
+            The height connects (-1, 5) and (-1, -3). Length $= 5 - (-3) = 8$ units.<br>
+            $\text{Area} = \frac{1}{2} \times \text{base} \times \text{height} = \frac{1}{2} \times 4 \times 8 = 16\text{ sq units}$.</p>
+            <p><strong>Answer:</strong> 16 square units</p>
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">30. $\frac{2 \text{ gal}}{1} \times \frac{4 \text{ qt}}{1 \text{ gal}} \times \frac{2 \text{ pt}}{1 \text{ qt}}$</div>
+        <button onclick="toggleAnswer('ans-30')">Show Answer & Explanation</button>
+        <div id="ans-30" class="answer-container">
+            <p><strong>Explanation:</strong> Cancel out the units that appear in both the numerator and the denominator (gallons and quarts). <br>
+            You are left with $2 \times 4 \times 2 \text{ pt} = 16 \text{ pints}$.</p>
+            <p><strong>Answer:</strong> 16 pt</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(id) {
+            var element = document.getElementById(id);
+            if (element.style.display === "none" || element.style.display === "") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
