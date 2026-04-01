@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice Quiz</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        #scoreboard {
+            background-color: #34495e;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .question-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .question-text {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        button.option-btn {
+            background-color: #ecf0f1;
+            border: 2px solid #bdc3c7;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        button.option-btn:hover:not(:disabled) {
+            background-color: #d5dbdb;
+        }
+        button.option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        /* Modal Styles */
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        #modal-box {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            width: 80%;
+            max-width: 500px;
+        }
+        #modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        #modal-exp {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        #close-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #close-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Interactive Math Practice</h1>
+    <div id="scoreboard">Score: <span id="score-val">0</span> / 18</div>
+    
+    <div id="quiz-container"></div>
+
+    <div id="modal-overlay">
+        <div id="modal-box">
+            <div id="modal-title"></div>
+            <div id="modal-exp"></div>
+            <button id="close-btn" onclick="closeModal()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            // Based on Problem #5 (Probability)
+            {
+                q: "A coin is tossed and a 6-sided die is rolled. What is the probability of landing on tails and rolling a 4?",
+                opts: ["1/2", "1/6", "1/12", "1/8"],
+                ans: 2,
+                exp: "The probability of tails is 1/2. The probability of rolling a 4 is 1/6. Since these are independent events, multiply them: 1/2 × 1/6 = 1/12."
+            },
+            {
+                q: "A coin is tossed and a 6-sided die is rolled. What is the probability of landing on heads and rolling an even number?",
+                opts: ["1/4", "1/2", "1/8", "1/12"],
+                ans: 0,
+                exp: "P(Heads) = 1/2. P(Even) = 3/6 = 1/2. Multiply them: 1/2 × 1/2 = 1/4."
+            },
+            {
+                q: "Two 6-sided dice are rolled. What is the probability of rolling a 3 on the first die and a 5 on the second die?",
+                opts: ["1/6", "1/12", "1/36", "1/18"],
+                ans: 2,
+                exp: "P(3 on first) = 1/6. P(5 on second) = 1/6. Multiply them: 1/6 × 1/6 = 1/36."
+            },
+            // Based on Problem #8 (Area of a circle given a point on an axis)
+            {
+                q: "The center of a circle is the origin. The circle passes through (3, 0). Calculate the area of the circle using 3.14 for \\(\\pi\\).",
+                opts: ["9.42", "18.84", "28.26", "31.40"],
+                ans: 2,
+                exp: "The distance from the origin (0,0) to (3,0) is the radius, so r = 3. Area = \\(\\pi r^2\\) ≈ 3.14 × (3)² = 3.14 × 9 = 28.26."
+            },
+            {
+                q: "The center of a circle is the origin. The circle passes through (4, 0). Calculate the area of the circle using 3.14 for \\(\\pi\\).",
+                opts: ["12.56", "25.12", "50.24", "64.00"],
+                ans: 2,
+                exp: "The radius is 4. Area = \\(\\pi r^2\\) ≈ 3.14 × (4)² = 3.14 × 16 = 50.24."
+            },
+            {
+                q: "The center of a circle is the origin. The circle passes through (5, 0). Calculate the area of the circle using 3.14 for \\(\\pi\\).",
+                opts: ["15.70", "31.40", "78.50", "100.00"],
+                ans: 2,
+                exp: "The radius is 5. Area = \\(\\pi r^2\\) ≈ 3.14 × (5)² = 3.14 × 25 = 78.50."
+            },
+            // Based on Problem #16 (Estimating Square Roots)
+            {
+                q: "Between which two consecutive whole numbers is \\(\\sqrt{150}\\)?",
+                opts: ["11 and 12", "12 and 13", "13 and 14", "14 and 15"],
+                ans: 1,
+                exp: "12² = 144 and 13² = 169. Since 150 is between 144 and 169, the square root is between 12 and 13."
+            },
+            {
+                q: "Between which two consecutive whole numbers is \\(\\sqrt{80}\\)?",
+                opts: ["7 and 8", "8 and 9", "9 and 10", "10 and 11"],
+                ans: 1,
+                exp: "8² = 64 and 9² = 81. Since 80 is between 64 and 81, the square root is between 8 and 9."
+            },
+            {
+                q: "Between which two consecutive whole numbers is \\(\\sqrt{300}\\)?",
+                opts: ["15 and 16", "16 and 17", "17 and 18", "18 and 19"],
+                ans: 2,
+                exp: "17² = 289 and 18² = 324. Since 300 is between 289 and 324, the square root is between 17 and 18."
+            },
+            // Based on Problem #17 (Comparing Probabilities and Exponents)
+            {
+                q: "Compare: \\((1/6)^2\\) ◯ the probability of rolling a 6 on two consecutive rolls of a number cube.",
+                opts: ["<", ">", "=", "Cannot be determined"],
+                ans: 2,
+                exp: "\\((1/6)^2 = 1/36\\). The probability of rolling a 6 twice is \\(1/6 \\times 1/6 = 1/36\\). They are equal."
+            },
+            {
+                q: "Compare: \\((1/2)^4\\) ◯ the probability of getting 4 consecutive \"tails\" on a coin toss.",
+                opts: ["<", ">", "=", "Cannot be determined"],
+                ans: 2,
+                exp: "\\((1/2)^4 = 1/16\\). The probability of 4 tails is \\(1/2 \\times 1/2 \\times 1/2 \\times 1/2 = 1/16\\). They are equal."
+            },
+            {
+                q: "Compare: \\((1/3)^2\\) ◯ the probability of guessing the correct answer on two consecutive multiple-choice questions, each with 3 options.",
+                opts: ["<", ">", "=", "Cannot be determined"],
+                ans: 2,
+                exp: "The probability of guessing 1 out of 3 options correctly twice is \\(1/3 \\times 1/3 = 1/9\\). Since \\((1/3)^2 = 1/9\\), they are equal."
+            },
+            // Based on Problem #21 (Adding/Subtracting Integers)
+            {
+                q: "Simplify: \\(-5 + -2 - -7 - +4\\)",
+                opts: ["-10", "-4", "4", "10"],
+                ans: 1,
+                exp: "Change subtractions to adding the opposite: \\(-5 - 2 + 7 - 4 = -7 + 7 - 4 = -4\\)."
+            },
+            {
+                q: "Simplify: \\(-10 - -5 + -3 - +1\\)",
+                opts: ["-19", "-9", "9", "19"],
+                ans: 1,
+                exp: "Change subtractions to adding the opposite: \\(-10 + 5 - 3 - 1 = -5 - 3 - 1 = -9\\)."
+            },
+            {
+                q: "Simplify: \\(4 + -8 - -2 - +6\\)",
+                opts: ["-12", "-8", "8", "12"],
+                ans: 1,
+                exp: "Change subtractions to adding the opposite: \\(4 - 8 + 2 - 6 = -4 + 2 - 6 = -2 - 6 = -8\\)."
+            },
+            // Based on Problem #28 (Probability of guessing a number)
+            {
+                q: "Jessica is thinking of a one-digit counting number (1 through 9). What is the probability of guessing it correctly on the first try?",
+                opts: ["1/10", "1/9", "1/8", "1/1"],
+                ans: 1,
+                exp: "There are 9 counting numbers from 1 to 9. The chance of guessing the correct one is 1 out of 9, or 1/9."
+            },
+            {
+                q: "Mark is thinking of a three-digit counting number (100 through 999). What is the probability of guessing it correctly on the first try?",
+                opts: ["1/999", "1/1000", "1/899", "1/900"],
+                ans: 3,
+                exp: "There are 900 three-digit counting numbers (999 - 100 + 1 = 900). The chance of guessing correctly is 1/900."
+            },
+            {
+                q: "Sarah is thinking of a counting number from 1 to 50 inclusive. What is the probability of guessing it correctly on the first try?",
+                opts: ["1/49", "1/50", "1/51", "1/100"],
+                ans: 1,
+                exp: "There are exactly 50 numbers to choose from. The probability of getting the exact right one is 1/50."
+            }
+        ];
+
+        let currentScore = 0;
+        let answeredQuestions = new Set();
+
+        const quizContainer = document.getElementById('quiz-container');
+        const scoreSpan = document.getElementById('score-val');
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalTitle = document.getElementById('modal-title');
+        const modalExp = document.getElementById('modal-exp');
+
+        // Render Questions
+        quizData.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            const qText = document.createElement('div');
+            qText.className = 'question-text';
+            qText.innerHTML = `${index + 1}. ${item.q}`;
+            card.appendChild(qText);
+
+            const optionsGrid = document.createElement('div');
+            optionsGrid.className = 'options-grid';
+            optionsGrid.id = `options-${index}`;
+
+            item.opts.forEach((opt, optIndex) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = opt;
+                btn.onclick = () => checkAnswer(index, optIndex, btn);
+                optionsGrid.appendChild(btn);
+            });
+
+            card.appendChild(optionsGrid);
+            quizContainer.appendChild(card);
+        });
+
+        // Trigger MathJax after adding to DOM
+        if (window.MathJax) {
+            MathJax.typesetPromise();
+        }
+
+        function checkAnswer(qIndex, optIndex, clickedBtn) {
+            const isCorrect = (optIndex === quizData[qIndex].ans);
+            
+            // Disable all buttons in this question once answered
+            const allBtns = document.getElementById(`options-${qIndex}`).querySelectorAll('.option-btn');
+            allBtns.forEach(btn => {
+                btn.disabled = true;
+                if (btn === clickedBtn) {
+                    btn.style.backgroundColor = isCorrect ? '#2ecc71' : '#e74c3c';
+                    btn.style.color = 'white';
+                    btn.style.borderColor = isCorrect ? '#27ae60' : '#c0392b';
+                }
+            });
+
+            // Highlight the actual correct answer if they got it wrong
+            if (!isCorrect) {
+                allBtns[quizData[qIndex].ans].style.backgroundColor = '#2ecc71';
+                allBtns[quizData[qIndex].ans].style.color = 'white';
+            }
+
+            // Update Scoreboard if first try
+            if (!answeredQuestions.has(qIndex)) {
+                answeredQuestions.add(qIndex);
+                if (isCorrect) {
+                    currentScore++;
+                    scoreSpan.innerText = currentScore;
+                }
+            }
+
+            // Show Modal
+            modalTitle.innerText = isCorrect ? "✅ Correct!" : "❌ Incorrect";
+            modalTitle.style.color = isCorrect ? "#27ae60" : "#c0392b";
+            
+            // Format Math expressions inside the explanation dynamically
+            modalExp.innerHTML = quizData[qIndex].exp;
+            
+            modalOverlay.style.display = 'block';
+
+            // Typeset the modal to render any math equations in the explanation
+            if (window.MathJax) {
+                MathJax.typesetPromise([modalExp]);
+            }
+        }
+
+        function closeModal() {
+            modalOverlay.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
