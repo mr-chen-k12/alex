@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Worksheet Solutions (Variant B)</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f4f9;
+  }
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  .controls {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .btn-print {
+    background-color: #28a745;
+    margin: 0 10px;
+  }
+  .btn-print:hover {
+    background-color: #218838;
+  }
+  .question-box {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    page-break-inside: avoid; /* Prevents questions from splitting across pages */
+  }
+  .question-text {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  .explanation {
+    display: none;
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #e9f7ef;
+    border-left: 5px solid #28a745;
+    border-radius: 4px;
+  }
+  .answer-highlight {
+    font-weight: bold;
+    color: #d32f2f;
+  }
+  svg {
+    display: block;
+    margin: 10px 0;
+  }
+
+  /* Print Styles for 8.5 x 11 paper */
+  @media print {
+    @page {
+      size: letter;
+      margin: 0.75in;
+    }
+    body {
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    .controls, button {
+      display: none !important; /* Hide all buttons when printing */
+    }
+    .question-box {
+      box-shadow: none;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 15px;
+      padding: 10px 0;
+      border-radius: 0;
+    }
+    /* Add extra space for the student to write if explanations are hidden */
+    .question-box:not(.show-answers) {
+      padding-bottom: 60px; 
+    }
+    .explanation {
+      background-color: transparent;
+      border-left: none;
+      padding: 5px 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <h1>Math Worksheet Solutions (Variant B)</h1>
+  <button class="btn-print" onclick="preparePrint(false)">Print Blank Worksheet</button>
+  <button class="btn-print" onclick="preparePrint(true)">Print Answer Key</button>
+</div>
+
+<script>
+  function toggleAnswer(id) {
+    const el = document.getElementById('ans-' + id);
+    const btn = document.getElementById('btn-' + id);
+    if (el.style.display === "none" || el.style.display === "") {
+      el.style.display = "block";
+      btn.innerText = "Hide Answer & Explanation";
+    } else {
+      el.style.display = "none";
+      btn.innerText = "Reveal Answer & Explanation";
+    }
+  }
+
+  function preparePrint(showAnswers) {
+    const explanations = document.querySelectorAll('.explanation');
+    const qBoxes = document.querySelectorAll('.question-box');
+    
+    explanations.forEach(el => {
+      el.style.display = showAnswers ? 'block' : 'none';
+    });
+    
+    qBoxes.forEach(box => {
+      if (showAnswers) {
+        box.classList.add('show-answers');
+      } else {
+        box.classList.remove('show-answers');
+      }
+    });
+
+    window.print();
+  }
+</script>
+
+<div class="question-box">
+  <div class="question-text">1. Samantha bought bananas at 8 cents per pound at the market. She spent 120 cents. How many pounds of bananas did Samantha buy?</div>
+  <button id="btn-1" onclick="toggleAnswer(1)">Reveal Answer & Explanation</button>
+  <div id="ans-1" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">15 pounds</span></p>
+    <p><strong>Explanation:</strong> To find the total pounds, divide the total cost by the cost per pound. <br> $120 \div 8 = 15$.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">2. The library had 315 books on a display shelf. Students checked out 128 of them. How many books stayed on the display shelf?</div>
+  <button id="btn-2" onclick="toggleAnswer(2)">Reveal Answer & Explanation</button>
+  <div id="ans-2" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">187 books</span></p>
+    <p><strong>Explanation:</strong> Subtract the number of books checked out from the initial total. <br> $315 - 128 = 187$.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">3. Mark watched a quarter of a 120-minute movie. How many minutes of the movie did he watch?</div>
+  <button id="btn-3" onclick="toggleAnswer(3)">Reveal Answer & Explanation</button>
+  <div id="ans-3" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">30 minutes</span></p>
+    <p><strong>Explanation:</strong> Divide the total minutes by 4 to find a quarter. <br> $120 \div 4 = 30$.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">4. One fifth of the students went to the gymnasium. What fraction of the students did not go to the gymnasium? What percent of the students did not go to the gymnasium?</div>
+  <button id="btn-4" onclick="toggleAnswer(4)">Reveal Answer & Explanation</button>
+  <div id="ans-4" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">Fraction: $\frac{4}{5}$, Percent: 80%</span></p>
+    <p><strong>Explanation:</strong> The whole group is represented by 1. The fraction that did not go is $1 - \frac{1}{5} = \frac{4}{5}$. To convert $\frac{4}{5}$ to a percentage, multiply by 100: $\frac{4}{5} \times 100 = 80\%$.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">5. If one side of an equilateral triangle is 5 centimeters long, then what is its perimeter in (a) centimeters? (b) millimeters?</div>
+  <button id="btn-5" onclick="toggleAnswer(5)">Reveal Answer & Explanation</button>
+  <div id="ans-5" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">(a) 15 cm, (b) 150 mm</span></p>
+    <p><strong>Explanation:</strong> An equilateral triangle has 3 equal sides. <br>(a) Perimeter in cm: $5 + 5 + 5 = 15$ cm. <br>(b) Since 1 cm = 10 mm, $15 \text{ cm} \times 10 = 150$ mm.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">6. Which of these arrows could be pointing to 4250? (Given a number line from 4000 to 5000 with arrows A, B, C evenly spaced at the quarters)</div>
+  <button id="btn-6" onclick="toggleAnswer(6)">Reveal Answer & Explanation</button>
+  <div id="ans-6" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">Arrow A</span></p>
+    <p><strong>Explanation:</strong> The number line starts at 4000 and ends at 5000. 4250 is exactly one-quarter of the way between 4000 and 5000. Arrow A represents the 1/4 position.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">7. Two cups equal a pint. Two pints equal a quart. Four quarts equal a gallon. A pint is what fraction of a gallon?</div>
+  <button id="btn-7" onclick="toggleAnswer(7)">Reveal Answer & Explanation</button>
+  <div id="ans-7" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$\frac{1}{8}$</span></p>
+    <p><strong>Explanation:</strong> There are 4 quarts in a gallon, and 2 pints in each quart. $4 \times 2 = 8$ pints in a gallon. Therefore, 1 pint is $\frac{1}{8}$ of a gallon.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">8. A large watermelon weighed 7 kilograms. How many grams is that?</div>
+  <button id="btn-8" onclick="toggleAnswer(8)">Reveal Answer & Explanation</button>
+  <div id="ans-8" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">7000 grams</span></p>
+    <p><strong>Explanation:</strong> There are 1000 grams in a kilogram. $7 \times 1000 = 7000$ grams.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">9. Estimate the product of 489 and 6.</div>
+  <button id="btn-9" onclick="toggleAnswer(9)">Reveal Answer & Explanation</button>
+  <div id="ans-9" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">3000</span></p>
+    <p><strong>Explanation:</strong> To estimate, round 489 to the nearest hundred, which is 500. Multiply $500 \times 6 = 3000$.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">10. It is morning. What time was it 12 hours ago? (Clock face shows 8:15)</div>
+  <button id="btn-10" onclick="toggleAnswer(10)">Reveal Answer & Explanation</button>
+  <div id="ans-10" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">8:15 p.m.</span></p>
+    <p><strong>Explanation:</strong> Since it is morning, the time on the clock is 8:15 a.m. Exactly 12 hours prior to an AM time is the identical PM time: 8:15 p.m.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">11. Compare: $\frac{2}{3} \bigcirc \frac{5}{8}$. Draw and shade two congruent rectangles to show the comparison.</div>
+  <button id="btn-11" onclick="toggleAnswer(11)">Reveal Answer & Explanation</button>
+  <div id="ans-11" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$\frac{2}{3} > \frac{5}{8}$</span></p>
+    <p><strong>Explanation:</strong> Getting a common denominator of 24, we see $\frac{2}{3} = \frac{16}{24}$ and $\frac{5}{8} = \frac{15}{24}$. Therefore, $\frac{2}{3}$ is slightly larger.</p>
+    <svg width="250" height="120" xmlns="http://www.w3.org/2000/svg">
+      <text x="0" y="20" font-family="Arial" font-size="14">2/3:</text>
+      <rect x="0" y="30" width="60" height="30" fill="#a0c4ff" stroke="#000" />
+      <rect x="60" y="30" width="60" height="30" fill="#a0c4ff" stroke="#000" />
+      <rect x="120" y="30" width="60" height="30" fill="#fff" stroke="#000" />
+      
+      <text x="0" y="85" font-family="Arial" font-size="14">5/8:</text>
+      <rect x="0" y="95" width="22.5" height="30" fill="#ffadad" stroke="#000" />
+      <rect x="22.5" y="95" width="22.5" height="30" fill="#ffadad" stroke="#000" />
+      <rect x="45" y="95" width="22.5" height="30" fill="#ffadad" stroke="#000" />
+      <rect x="67.5" y="95" width="22.5" height="30" fill="#ffadad" stroke="#000" />
+      <rect x="90" y="95" width="22.5" height="30" fill="#ffadad" stroke="#000" />
+      <rect x="112.5" y="95" width="22.5" height="30" fill="#fff" stroke="#000" />
+      <rect x="135" y="95" width="22.5" height="30" fill="#fff" stroke="#000" />
+      <rect x="157.5" y="95" width="22.5" height="30" fill="#fff" stroke="#000" />
+    </svg>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">12. $6.145 - 3.2$</div>
+  <button id="btn-12" onclick="toggleAnswer(12)">Reveal Answer & Explanation</button>
+  <div id="ans-12" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$2.945$</span></p>
+    <p><strong>Explanation:</strong> Align the decimals and add placeholder zeroes: <br>
+       $\phantom{-}6.145$ <br>
+       $-3.200$ <br>
+       $-------$ <br>
+       $\phantom{-}2.945$
+    </p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">13. $4.75 + 2.3 + 0.25$</div>
+  <button id="btn-13" onclick="toggleAnswer(13)">Reveal Answer & Explanation</button>
+  <div id="ans-13" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$7.30$</span></p>
+    <p><strong>Explanation:</strong> Align the decimals before adding:<br>
+       $\phantom{+}4.75$<br>
+       $\phantom{+}2.30$<br>
+       $+0.25$<br>
+       $------$<br>
+       $\phantom{+}7.30$
+    </p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">14. $\$100.00 - \$68.40$</div>
+  <button id="btn-14" onclick="toggleAnswer(14)">Reveal Answer & Explanation</button>
+  <div id="ans-14" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$\$31.60$</span></p>
+    <p><strong>Explanation:</strong> Standard subtraction aligning decimals (borrowing across zeroes):<br>
+       $\phantom{-}100.00$<br>
+       $-068.40$<br>
+       $-------$<br>
+       $\phantom{-}031.60$
+    </p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">15. $\$22.35 + 85¢ + \$12$</div>
+  <button id="btn-15" onclick="toggleAnswer(15)">Reveal Answer & Explanation</button>
+  <div id="ans-15" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$\$35.20$</span></p>
+    <p><strong>Explanation:</strong> First, convert 85¢ to $\$0.85$. Ensure all numbers have the same decimal formatting. <br>
+       $\phantom{+}22.35$<br>
+       $\phantom{+}12.00$<br>
+       $+00.85$<br>
+       $-------$<br>
+       $\phantom{+}35.20$
+    </p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">16. $835 \div 2$</div>
+  <button id="btn-16" onclick="toggleAnswer(16)">Reveal Answer & Explanation</button>
+  <div id="ans-16" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$417 \text{ R } 1$</span></p>
+    <p><strong>Explanation:</strong> <br>
+       $8 \div 2 = 4$ remainder $0$.<br>
+       Bring down 3. $3 \div 2 = 1$ remainder $1$.<br>
+       Bring down 5 to make 15. $15 \div 2 = 7$ remainder $1$.
+    </p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">17. $\$45.78 \div 6$</div>
+  <button id="btn-17" onclick="toggleAnswer(17)">Reveal Answer & Explanation</button>
+  <div id="ans-17" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$\$7.63$</span></p>
+    <p><strong>Explanation:</strong> <br>
+       $45 \div 6 = 7$ remainder $3$.<br>
+       Bring down 7 making 37. $37 \div 6 = 6$ remainder $1$.<br>
+       Bring down 8 making 18. $18 \div 6 = 3$.
+    </p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">18. $749 \div 4$</div>
+  <button id="btn-18" onclick="toggleAnswer(18)">Reveal Answer & Explanation</button>
+  <div id="ans-18" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$187 \text{ R } 1$</span></p>
+    <p><strong>Explanation:</strong> <br>
+       $7 \div 4 = 1$ remainder $3$.<br>
+       Bring down 4 making 34. $34 \div 4 = 8$ remainder $2$.<br>
+       Bring down 9 making 29. $29 \div 4 = 7$ remainder $1$.
+    </p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">19. $487 \times 5$</div>
+  <button id="btn-19" onclick="toggleAnswer(19)">Reveal Answer & Explanation</button>
+  <div id="ans-19" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$2435$</span></p>
+    <p><strong>Explanation:</strong> <br>
+       $5 \times 7 = 35$ (write 5, carry 3).<br>
+       $5 \times 8 = 40$; $40 + 3 = 43$ (write 3, carry 4).<br>
+       $5 \times 4 = 20$; $20 + 4 = 24$. Result is 2435.
+    </p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">20. $53 \times 40$</div>
+  <button id="btn-20" onclick="toggleAnswer(20)">Reveal Answer & Explanation</button>
+  <div id="ans-20" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$2120$</span></p>
+    <p><strong>Explanation:</strong> Multiply 53 by 4 and then attach a zero at the end.<br>
+       $4 \times 3 = 12$ (write 2, carry 1).<br>
+       $4 \times 5 = 20$; $20 + 1 = 21$. Result is 212. Append the 0 to get 2120.
+    </p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">21. $6 \times \$4.75$</div>
+  <button id="btn-21" onclick="toggleAnswer(21)">Reveal Answer & Explanation</button>
+  <div id="ans-21" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$\$28.50$</span></p>
+    <p><strong>Explanation:</strong> Ignore the decimal temporarily and multiply $475 \times 6 = 2850$. Place the decimal two spots in to get $\$28.50$.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">22. $840 \div \sqrt{16}$</div>
+  <button id="btn-22" onclick="toggleAnswer(22)">Reveal Answer & Explanation</button>
+  <div id="ans-22" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$210$</span></p>
+    <p><strong>Explanation:</strong> First solve the square root: $\sqrt{16} = 4$. Then divide: $840 \div 4 = 210$.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">23. $\frac{516}{4}$</div>
+  <button id="btn-23" onclick="toggleAnswer(23)">Reveal Answer & Explanation</button>
+  <div id="ans-23" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$129$</span></p>
+    <p><strong>Explanation:</strong> <br>
+       $5 \div 4 = 1$ remainder $1$.<br>
+       $11 \div 4 = 2$ remainder $3$.<br>
+       $36 \div 4 = 9$.
+    </p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">24. $623 \div 8$</div>
+  <button id="btn-24" onclick="toggleAnswer(24)">Reveal Answer & Explanation</button>
+  <div id="ans-24" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$77 \text{ R } 7$</span></p>
+    <p><strong>Explanation:</strong> <br>
+       $62 \div 8 = 7$ remainder $6$.<br>
+       Bring down 3 to make 63. $63 \div 8 = 7$ remainder $7$. The quotient is 77 with a remainder of 7.
+    </p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">25. $6N = 138$</div>
+  <button id="btn-25" onclick="toggleAnswer(25)">Reveal Answer & Explanation</button>
+  <div id="ans-25" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$N = 23$</span></p>
+    <p><strong>Explanation:</strong> Isolate $N$ by dividing both sides by 6. <br> $138 \div 6 = 23$.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">26. $Y \times 2^3 = 104$</div>
+  <button id="btn-26" onclick="toggleAnswer(26)">Reveal Answer & Explanation</button>
+  <div id="ans-26" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$Y = 13$</span></p>
+    <p><strong>Explanation:</strong> First solve the exponent: $2^3 = 2 \times 2 \times 2 = 8$. The equation becomes $Y \times 8 = 104$. Divide both sides by 8: <br> $104 \div 8 = 13$.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">27. $6 + 9 + 3 + 5 + N + 4 + 8 + 2 = 45$</div>
+  <button id="btn-27" onclick="toggleAnswer(27)">Reveal Answer & Explanation</button>
+  <div id="ans-27" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">$N = 8$</span></p>
+    <p><strong>Explanation:</strong> Combine all the known numbers: <br> $6+9+3+5+4+8+2 = 37$. <br> The equation becomes $37 + N = 45$. Subtract 37 from 45 to get $N = 8$.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">28. Find the perimeter and area of a rectangle with a length of 9 units and a width of 5 units.</div>
+  <button id="btn-28" onclick="toggleAnswer(28)">Reveal Answer & Explanation</button>
+  <div id="ans-28" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">Perimeter = 28 units, Area = 45 sq units</span></p>
+    <p><strong>Explanation:</strong> <br>
+       $\text{Perimeter} = 2 \times (\text{Length} + \text{Width}) = 2 \times (9 + 5) = 2 \times 14 = 28$ units. <br>
+       $\text{Area} = \text{Length} \times \text{Width} = 9 \times 5 = 45$ square units.
+    </p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">29. Name the geometric transformation that moves a square 5 units to the right and 2 units up without flipping or turning it.</div>
+  <button id="btn-29" onclick="toggleAnswer(29)">Reveal Answer & Explanation</button>
+  <div id="ans-29" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">Translation</span></p>
+    <p><strong>Explanation:</strong> A translation (or slide) moves a shape in a specific direction without changing its orientation or size. Because the shape just moved right and up, it is a translation.</p>
+  </div>
+</div>
+
+<div class="question-box">
+  <div class="question-text">30. The first four multiples of 15 are 15, 30, 45, and 60. What are the first four multiples of 150?</div>
+  <button id="btn-30" onclick="toggleAnswer(30)">Reveal Answer & Explanation</button>
+  <div id="ans-30" class="explanation">
+    <p><strong>Answer:</strong> <span class="answer-highlight">150, 300, 450, 600</span></p>
+    <p><strong>Explanation:</strong> Since 150 is ten times 15, its multiples are simply ten times the multiples of 15. Just append a zero to the original sequence of multiples.</p>
+  </div>
+</div>
+
+</body>
+</html>
