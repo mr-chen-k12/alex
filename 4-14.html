@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saxon Math Course 1 - Lesson 108</title>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .problem-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid #3498db;
+        }
+        .problem-header {
+            font-weight: bold;
+            color: #2980b9;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .svg-container {
+            margin: 15px 0;
+            text-align: center;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .answer-section {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-radius: 5px;
+            border-left: 4px solid #2ecc71;
+        }
+        .answer-title {
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 8px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 400px;
+            margin: 15px 0;
+        }
+        table, th, td {
+            border: 1px solid #bdc3c7;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #ecf0f1;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lesson 108: Transformations</h1>
+
+    <h2>Lesson Practice</h2>
+
+    <div class="problem-card">
+        <div class="problem-header">Problems a - e</div>
+        <p>What transformation(s) could be used to position triangle I on triangle II? Explain all answers.</p>
+        
+        <p><strong>a.</strong></p>
+        <div class="svg-container">
+            <svg width="150" height="100" viewBox="0 0 150 100">
+                <polygon points="20,50 100,50 20,10" fill="none" stroke="black" stroke-width="2"/>
+                <polygon points="20,50 100,50 20,90" fill="none" stroke="black" stroke-width="2"/>
+                <text x="40" y="40">I</text>
+                <text x="40" y="70">II</text>
+                <rect x="20" y="40" width="10" height="10" fill="none" stroke="black"/>
+            </svg>
+        </div>
+        <button onclick="toggle('ans-a')">Show Answer & Explanation</button>
+        <div id="ans-a" class="answer-section">
+            <div class="answer-title">Answer: Reflection</div>
+            <p><strong>Explanation:</strong> Triangle I is flipped over the horizontal line segment it shares with Triangle II. This "flip" is a reflection across that horizontal axis.</p>
+        </div>
+
+        <hr style="border-top: 1px dashed #ccc; margin: 20px 0;">
+
+        <p><strong>b.</strong></p>
+        <div class="svg-container">
+            <svg width="200" height="100" viewBox="0 0 200 100">
+                <polygon points="50,10 20,80 80,80" fill="none" stroke="black" stroke-width="2"/>
+                <polygon points="150,10 120,80 180,80" fill="none" stroke="black" stroke-width="2"/>
+                <text x="45" y="65">I</text>
+                <text x="145" y="65">II</text>
+            </svg>
+        </div>
+        <button onclick="toggle('ans-b')">Show Answer & Explanation</button>
+        <div id="ans-b" class="answer-section">
+            <div class="answer-title">Answer: Translation</div>
+            <p><strong>Explanation:</strong> Triangle I is simply slid to the right to position it over Triangle II. Its orientation and size do not change. A "slide" is called a translation.</p>
+        </div>
+
+        <hr style="border-top: 1px dashed #ccc; margin: 20px 0;">
+
+        <p><strong>c.</strong></p>
+        <div class="svg-container">
+            <svg width="150" height="120" viewBox="0 0 150 120">
+                <polygon points="60,100 60,10 100,100" fill="none" stroke="black" stroke-width="2"/>
+                <polygon points="60,100 150,100 60,60" fill="none" stroke="black" stroke-width="2"/>
+                <text x="75" y="85">I</text>
+                <text x="90" y="90">II</text>
+                <rect x="60" y="90" width="10" height="10" fill="none" stroke="black"/>
+            </svg>
+        </div>
+        <button onclick="toggle('ans-c')">Show Answer & Explanation</button>
+        <div id="ans-c" class="answer-section">
+            <div class="answer-title">Answer: Rotation</div>
+            <p><strong>Explanation:</strong> Triangle I is turned $90^\circ$ clockwise around the vertex with the right angle. This turning motion is a rotation.</p>
+        </div>
+
+        <hr style="border-top: 1px dashed #ccc; margin: 20px 0;">
+
+        <p><strong>d.</strong></p>
+        <div class="svg-container">
+            <svg width="150" height="100" viewBox="0 0 150 100">
+                <polygon points="70,10 70,90 30,90" fill="none" stroke="black" stroke-width="2"/>
+                <polygon points="80,10 80,90 120,90" fill="none" stroke="black" stroke-width="2"/>
+                <text x="50" y="70">I</text>
+                <text x="95" y="70">II</text>
+                <rect x="60" y="80" width="10" height="10" fill="none" stroke="black"/>
+                <rect x="80" y="80" width="10" height="10" fill="none" stroke="black"/>
+            </svg>
+        </div>
+        <button onclick="toggle('ans-d')">Show Answer & Explanation</button>
+        <div id="ans-d" class="answer-section">
+            <div class="answer-title">Answer: Reflection (and Translation)</div>
+            <p><strong>Explanation:</strong> Triangle I is flipped over a vertical axis to create a mirror image, which is a reflection. Since there is a gap between them, it would be reflected across a line exactly halfway between them (or reflected over its vertical leg and then translated to the right).</p>
+        </div>
+
+        <hr style="border-top: 1px dashed #ccc; margin: 20px 0;">
+
+        <p><strong>e.</strong></p>
+        <div class="svg-container">
+            <svg width="150" height="120" viewBox="0 0 150 120">
+                <polygon points="75,60 15,60 75,90" fill="none" stroke="black" stroke-width="2"/>
+                <polygon points="75,60 135,60 75,30" fill="none" stroke="black" stroke-width="2"/>
+                <text x="50" y="75">I</text>
+                <text x="90" y="50">II</text>
+                <rect x="65" y="60" width="10" height="10" fill="none" stroke="black"/>
+                <rect x="75" y="50" width="10" height="10" fill="none" stroke="black"/>
+            </svg>
+        </div>
+        <button onclick="toggle('ans-e')">Show Answer & Explanation</button>
+        <div id="ans-e" class="answer-section">
+            <div class="answer-title">Answer: Rotation</div>
+            <p><strong>Explanation:</strong> Triangle I is turned $180^\circ$ around the central shared vertex to exactly match the position of Triangle II.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem f</div>
+        <p>For exercise f, triangle $ABC$ is reflected across the $y$-axis. Write the coordinates of the vertices of $\Delta ABC$ and the coordinates of the vertices of its reflection $\Delta A'B'C' $. Explain all answers.</p>
+        <div class="svg-container">
+            <svg width="250" height="250" viewBox="-6 -6 12 12" style="background:#f9f9f9; border:1px solid #ccc;">
+                <defs>
+                    <pattern id="grid" width="1" height="1" patternUnits="userSpaceOnUse">
+                        <rect width="1" height="1" fill="none" stroke="#ddd" stroke-width="0.05"/>
+                    </pattern>
+                </defs>
+                <rect x="-6" y="-6" width="12" height="12" fill="url(#grid)"/>
+                <line x1="-6" y1="0" x2="6" y2="0" stroke="black" stroke-width="0.1"/>
+                <line x1="0" y1="-6" x2="0" y2="6" stroke="black" stroke-width="0.1"/>
+                <polygon points="-2,-4 -1,-1 -4,-2" fill="none" stroke="blue" stroke-width="0.1"/>
+                <text x="-2.2" y="-4.2" font-size="0.6">A</text>
+                <text x="-0.8" y="-0.8" font-size="0.6">B</text>
+                <text x="-4.5" y="-2" font-size="0.6">C</text>
+                
+                <polygon points="2,-4 1,-1 4,-2" fill="none" stroke="blue" stroke-width="0.1"/>
+                <text x="2.2" y="-4.2" font-size="0.6">A'</text>
+                <text x="1.2" y="-0.8" font-size="0.6">B'</text>
+                <text x="4.5" y="-2" font-size="0.6">C'</text>
+            </svg>
+        </div>
+        <button onclick="toggle('ans-f')">Show Answer & Explanation</button>
+        <div id="ans-f" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>$\Delta ABC$: $A(-2, 4), B(-1, 1), C(-4, 2)$</p>
+            <p>$\Delta A'B'C'$: $A'(2, 4), B'(1, 1), C'(4, 2)$</p>
+            <p><strong>Explanation:</strong> Read the coordinates directly from the given grid. The origin $(0,0)$ is where the thick axes cross. To reflect a point across the $y$-axis, the $x$-coordinate changes its sign while the $y$-coordinate remains exactly the same $(x, y) \rightarrow (-x, y)$.</p>
+        </div>
+    </div>
+
+    <h2>Written Practice</h2>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 1</div>
+        <p>What is the sum of the first five positive even numbers?</p>
+        <button onclick="toggle('ans-1')">Show Answer & Explanation</button>
+        <div id="ans-1" class="answer-section">
+            <div class="answer-title">Answer: $30$</div>
+            <p><strong>Explanation:</strong> The first five positive even numbers are $2, 4, 6, 8, \text{ and } 10$.<br>
+            Sum = $2 + 4 + 6 + 8 + 10 = 30$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 2</div>
+        <p>The team's win-loss ratio is 4 to 3. If the team has won 12 games, how many games has the team lost?</p>
+        <button onclick="toggle('ans-2')">Show Answer & Explanation</button>
+        <div id="ans-2" class="answer-section">
+            <div class="answer-title">Answer: $9$ games lost</div>
+            <p><strong>Explanation:</strong> Set up a proportion using the ratio of wins to losses: $\frac{4}{3}$.<br>
+            Let $x$ be the number of lost games.<br>
+            $$\frac{4}{3} = \frac{12}{x}$$
+            Multiply both sides by $3x$ (or cross-multiply):<br>
+            $$4x = 36$$
+            $$x = 9$$
+            The team lost 9 games.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 3</div>
+        <p>Five students were absent today. The teacher reported that 80% of the students were present. Find the number of students who were present and justify your answer.</p>
+        <button onclick="toggle('ans-3')">Show Answer & Explanation</button>
+        <div id="ans-3" class="answer-section">
+            <div class="answer-title">Answer: $20$ students present</div>
+            <p><strong>Explanation:</strong> If $80\%$ of the students are present, then $100\% - 80\% = 20\%$ of the students are absent.<br>
+            We know the absent students equal $5$. Therefore, $20\%$ of the total class = $5$ students.<br>
+            Since $20\% = \frac{1}{5}$, the total number of students in the class is $5 \times 5 = 25$.<br>
+            To find the number of present students, subtract the absent students from the total: $25 - 5 = 20$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 4</div>
+        <p>Kaliska joined the band and got a new drum. Its diameter is 12 inches. What is the area of the top of the drum? Round your answer to the nearest square inch. (Use 3.14 for $\pi$.)</p>
+        <button onclick="toggle('ans-4')">Show Answer & Explanation</button>
+        <div id="ans-4" class="answer-section">
+            <div class="answer-title">Answer: $113$ square inches</div>
+            <p><strong>Explanation:</strong> First, find the radius. The radius is half of the diameter: $r = 12 / 2 = 6$ inches.<br>
+            The formula for the area of a circle is $A = \pi r^2$.<br>
+            $$A \approx 3.14 \times (6)^2$$
+            $$A \approx 3.14 \times 36$$
+            $$A \approx 113.04$$
+            Rounding to the nearest square inch, we get $113$ square inches.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 5</div>
+        <p>Three eighths of the 48 band members played woodwinds. How many woodwind players were in the band?</p>
+        <button onclick="toggle('ans-5')">Show Answer & Explanation</button>
+        <div id="ans-5" class="answer-section">
+            <div class="answer-title">Answer: $18$ woodwind players</div>
+            <p><strong>Explanation:</strong> Multiply the total number of band members by the fraction that plays woodwinds.<br>
+            $$\frac{3}{8} \times 48 = \frac{3 \times 48}{8}$$
+            Divide $48$ by $8$ first to make it easier: $48 / 8 = 6$.<br>
+            $$3 \times 6 = 18$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 6</div>
+        <p>What is the least common multiple (LCM) of 6, 8, and 12?</p>
+        <button onclick="toggle('ans-6')">Show Answer & Explanation</button>
+        <div id="ans-6" class="answer-section">
+            <div class="answer-title">Answer: $24$</div>
+            <p><strong>Explanation:</strong> Find the prime factorization of each number:<br>
+            $6 = 2 \times 3$<br>
+            $8 = 2^3$<br>
+            $12 = 2^2 \times 3$<br>
+            The LCM must include the highest power of each prime factor present: $2^3 \times 3 = 8 \times 3 = 24$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 7</div>
+        <p>Triangles I and II are congruent. Describe the transformations that would position triangle I on triangle II.</p>
+        <div class="svg-container">
+            <svg width="200" height="100" viewBox="0 0 200 100">
+                <polygon points="20,80 80,80 80,40" fill="none" stroke="black" stroke-width="2"/>
+                <polygon points="120,60 180,60 180,10" fill="none" stroke="black" stroke-width="2"/>
+                <text x="50" y="70">I</text>
+                <text x="150" y="50">II</text>
+                <rect x="70" y="70" width="10" height="10" fill="none" stroke="black"/>
+                <rect x="170" y="50" width="10" height="10" fill="none" stroke="black"/>
+            </svg>
+        </div>
+        <button onclick="toggle('ans-7')">Show Answer & Explanation</button>
+        <div id="ans-7" class="answer-section">
+            <div class="answer-title">Answer: Translation (right and up)</div>
+            <p><strong>Explanation:</strong> Triangle I maintains its exact orientation and size. It has simply slid to the right and then slid up. Sliding a figure without rotating or flipping it is called a translation.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 8</div>
+        <p>Complete this proportion: $\frac{0.7}{20} = \frac{n}{100}$</p>
+        <button onclick="toggle('ans-8')">Show Answer & Explanation</button>
+        <div id="ans-8" class="answer-section">
+            <div class="answer-title">Answer: $n = 3.5$</div>
+            <p><strong>Explanation:</strong> You can solve this by seeing the relationship between the denominators. $20 \times 5 = 100$. Therefore, multiply the numerator by $5$ as well:<br>
+            $$n = 0.7 \times 5 = 3.5$$
+            Alternatively, cross-multiply:<br>
+            $$20n = 0.7 \times 100$$
+            $$20n = 70$$
+            $$n = 70 / 20 = 3.5$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problems 9 - 11</div>
+        <p>Complete the table to answer problems 9–11.</p>
+        <table>
+            <tr>
+                <th>Fraction</th>
+                <th>Decimal</th>
+                <th>Percent</th>
+            </tr>
+            <tr>
+                <td><strong>9.</strong> $1 \frac{2}{5}$</td>
+                <td><strong>a.</strong></td>
+                <td><strong>b.</strong></td>
+            </tr>
+            <tr>
+                <td><strong>10. a.</strong></td>
+                <td>$0.24$</td>
+                <td><strong>b.</strong></td>
+            </tr>
+            <tr>
+                <td><strong>11. a.</strong></td>
+                <td><strong>b.</strong></td>
+                <td>$35\%$</td>
+            </tr>
+        </table>
+        <button onclick="toggle('ans-9-11')">Show Answer & Explanation</button>
+        <div id="ans-9-11" class="answer-section">
+            <div class="answer-title">Answers:</div>
+            <p><strong>9.</strong> a. $1.4$, b. $140\%$<br>
+            <em>Explanation:</em> $1 \frac{2}{5} = 1 + \frac{4}{10} = 1.4$. To get percent, multiply by 100: $1.4 \times 100 = 140\%$.</p>
+            <p><strong>10.</strong> a. $\frac{6}{25}$, b. $24\%$<br>
+            <em>Explanation:</em> $0.24 = \frac{24}{100}$. Simplified, divide top and bottom by 4 to get $\frac{6}{25}$. Decimal to percent: move decimal two spots right to get $24\%$.</p>
+            <p><strong>11.</strong> a. $\frac{7}{20}$, b. $0.35$<br>
+            <em>Explanation:</em> $35\% = \frac{35}{100}$. Simplified, divide by 5 to get $\frac{7}{20}$. Percent to decimal: move decimal two spots left to get $0.35$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 12</div>
+        <p>$4 \frac{3}{4} + (2 \frac{1}{4} + \frac{7}{8})$</p>
+        <button onclick="toggle('ans-12')">Show Answer & Explanation</button>
+        <div id="ans-12" class="answer-section">
+            <div class="answer-title">Answer: $7 \frac{7}{8}$</div>
+            <p><strong>Explanation:</strong> First, find a common denominator (which is 8) for all fractions to make addition easier.<br>
+            $$4 \frac{6}{8} + (2 \frac{2}{8} + \frac{7}{8})$$<br>
+            Work inside the parentheses first:<br>
+            $$2 \frac{2}{8} + \frac{7}{8} = 2 \frac{9}{8} = 3 \frac{1}{8}$$<br>
+            Now add the outside number:<br>
+            $$4 \frac{6}{8} + 3 \frac{1}{8} = 7 \frac{7}{8}$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 13</div>
+        <p>$1 \frac{1}{5} (2 \div 1 \frac{2}{3})$</p>
+        <button onclick="toggle('ans-13')">Show Answer & Explanation</button>
+        <div id="ans-13" class="answer-section">
+            <div class="answer-title">Answer: $1 \frac{11}{25}$ or $\frac{36}{25}$</div>
+            <p><strong>Explanation:</strong> First, convert mixed numbers to improper fractions:<br>
+            $\frac{6}{5} (\frac{2}{1} \div \frac{5}{3})$<br>
+            Do the division inside the parentheses by multiplying by the reciprocal:<br>
+            $\frac{2}{1} \times \frac{3}{5} = \frac{6}{5}$<br>
+            Now multiply the outside fraction by the result:<br>
+            $$\frac{6}{5} \times \frac{6}{5} = \frac{36}{25}$$<br>
+            Convert back to a mixed number: $\frac{36}{25} = 1 \frac{11}{25}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 14</div>
+        <p>$6.2 + (9 - 2.79)$</p>
+        <button onclick="toggle('ans-14')">Show Answer & Explanation</button>
+        <div id="ans-14" class="answer-section">
+            <div class="answer-title">Answer: $12.41$</div>
+            <p><strong>Explanation:</strong> Work inside the parentheses first (align the decimals!):<br>
+            $9.00 - 2.79 = 6.21$<br>
+            Then add the result to $6.2$ (align the decimals!):<br>
+            $6.20 + 6.21 = 12.41$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 15</div>
+        <p>$-3 + +7 + -8 - -1$</p>
+        <button onclick="toggle('ans-15')">Show Answer & Explanation</button>
+        <div id="ans-15" class="answer-section">
+            <div class="answer-title">Answer: $-3$</div>
+            <p><strong>Explanation:</strong> First, simplify the signs:<br>
+            $-3 + 7 - 8 + 1$<br>
+            Work left to right:<br>
+            $(-3 + 7) = 4$<br>
+            $4 - 8 = -4$<br>
+            $-4 + 1 = -3$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 16</div>
+        <p>Find $6\%$ of $\$2.89$. Round the product to the nearest cent.</p>
+        <button onclick="toggle('ans-16')">Show Answer & Explanation</button>
+        <div id="ans-16" class="answer-section">
+            <div class="answer-title">Answer: $\$0.17$</div>
+            <p><strong>Explanation:</strong> Convert $6\%$ to a decimal ($0.06$) and multiply:<br>
+            $$0.06 \times 2.89 = 0.1734$$<br>
+            Round to the nearest cent (two decimal places). Look at the third decimal digit (3), since it's less than 5, keep the second digit as is:<br>
+            $\$0.17$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 17</div>
+        <p>What fraction of a meter is a millimeter?</p>
+        <button onclick="toggle('ans-17')">Show Answer & Explanation</button>
+        <div id="ans-17" class="answer-section">
+            <div class="answer-title">Answer: $\frac{1}{1000}$</div>
+            <p><strong>Explanation:</strong> The prefix "milli-" means one-thousandth. There are $1000$ millimeters in $1$ meter, so one millimeter is $\frac{1}{1000}$ of a meter.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 18</div>
+        <p>Arrange these numbers in order from least to greatest: $0.3, 0.31, 0.305$</p>
+        <button onclick="toggle('ans-18')">Show Answer & Explanation</button>
+        <div id="ans-18" class="answer-section">
+            <div class="answer-title">Answer: $0.3, 0.305, 0.31$</div>
+            <p><strong>Explanation:</strong> To compare them easily, give them all the same number of decimal places by adding zeros to the end:<br>
+            $0.300$<br>
+            $0.310$<br>
+            $0.305$<br>
+            Now compare the numbers like whole numbers: $300 < 305 < 310$. Therefore, the order is $0.3, 0.305, 0.31$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 19</div>
+        <p>If each edge of a cube is 10 centimeters long, then its volume is how many cubic centimeters?</p>
+        <button onclick="toggle('ans-19')">Show Answer & Explanation</button>
+        <div id="ans-19" class="answer-section">
+            <div class="answer-title">Answer: $1000 \text{ cm}^3$</div>
+            <p><strong>Explanation:</strong> The formula for the volume of a cube is $V = s^3$, where $s$ is the side length.<br>
+            $$V = 10 \times 10 \times 10 = 1000$$<br>
+            The volume is $1000$ cubic centimeters.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 20</div>
+        <p>$2^5 - 5^2 + \sqrt{25} \times 2$</p>
+        <button onclick="toggle('ans-20')">Show Answer & Explanation</button>
+        <div id="ans-20" class="answer-section">
+            <div class="answer-title">Answer: $17$</div>
+            <p><strong>Explanation:</strong> Follow the order of operations (PEMDAS/BODMAS). Resolve exponents and roots first:<br>
+            $2^5 = 32$<br>
+            $5^2 = 25$<br>
+            $\sqrt{25} = 5$<br>
+            Substitute back into the equation:<br>
+            $$32 - 25 + 5 \times 2$$<br>
+            Next, perform multiplication:<br>
+            $$5 \times 2 = 10$$<br>
+            Now add and subtract from left to right:<br>
+            $$32 - 25 + 10$$<br>
+            $$7 + 10 = 17$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 21</div>
+        <p>Solve and check: $8a - 4 = 60$</p>
+        <button onclick="toggle('ans-21')">Show Answer & Explanation</button>
+        <div id="ans-21" class="answer-section">
+            <div class="answer-title">Answer: $a = 8$</div>
+            <p><strong>Explanation:</strong> <br>
+            First, add $4$ to both sides of the equation to isolate the term with the variable:<br>
+            $$8a = 64$$<br>
+            Next, divide both sides by $8$:<br>
+            $$a = 8$$<br>
+            <strong>Check:</strong> Substitute $8$ back into the original equation for $a$:<br>
+            $$8(8) - 4 = 60$$<br>
+            $$64 - 4 = 60$$<br>
+            $$60 = 60 \text{ (True)}$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 22</div>
+        <p>Acute angle $a$ is one third of a right angle. What is the measure of angle $a$?</p>
+        <button onclick="toggle('ans-22')">Show Answer & Explanation</button>
+        <div id="ans-22" class="answer-section">
+            <div class="answer-title">Answer: $30^\circ$</div>
+            <p><strong>Explanation:</strong> A right angle is exactly $90^\circ$. If angle $a$ is one third of a right angle, multiply $90$ by $\frac{1}{3}$ (or divide by 3).<br>
+            $$\frac{90^\circ}{3} = 30^\circ$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problems 23 & 24 Context</div>
+        <p>Refer to the figure to answer problems 23 and 24. Dimensions are in millimeters.</p>
+        <div class="svg-container">
+            <svg width="250" height="200" viewBox="-20 -20 350 250">
+                <polygon points="0,0 300,0 300,150 200,150 200,200 0,200" fill="#e0e0e0" stroke="black" stroke-width="2"/>
+                <text x="140" y="-10" font-size="16">30</text>
+                <text x="-25" y="100" font-size="16">20</text>
+                <text x="90" y="220" font-size="16">20</text>
+                <text x="310" y="80" font-size="16">15</text>
+                <text x="240" y="140" font-size="16">10</text>
+                
+                <line x1="200" y1="0" x2="200" y2="150" stroke="#888" stroke-dasharray="5,5"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 23</div>
+        <p>What is the perimeter of this polygon?</p>
+        <button onclick="toggle('ans-23')">Show Answer & Explanation</button>
+        <div id="ans-23" class="answer-section">
+            <div class="answer-title">Answer: $100 \text{ mm}$</div>
+            <p><strong>Explanation:</strong> The perimeter is the total distance around the outside of the shape. We need the lengths of all 6 sides. We are given 4 of them:<br>
+            - Top horizontal: $30$<br>
+            - Far Right vertical: $15$<br>
+            - Inner horizontal: $10$<br>
+            - Bottom horizontal: $20$<br>
+            - Left vertical: $20$<br>
+            Wait, the implicit vertical inner line must be calculated. Since the total left vertical side is $20$, and the far right vertical side is $15$, the inner vertical "step" is $20 - 15 = 5$.<br>
+            Perimeter = $30 + 15 + 10 + 5 + 20 + 20 = 100 \text{ mm}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 24</div>
+        <p>What is the area of this polygon?</p>
+        <button onclick="toggle('ans-24')">Show Answer & Explanation</button>
+        <div id="ans-24" class="answer-section">
+            <div class="answer-title">Answer: $550 \text{ mm}^2$</div>
+            <p><strong>Explanation:</strong> You can find the area by splitting the polygon into two simpler rectangles. Split it vertically:<br>
+            1. Left rectangle: Width is $20$ (from the bottom), height is $20$ (from the left). Area = $20 \times 20 = 400 \text{ mm}^2$.<br>
+            2. Right rectangle: The total width at the top is $30$, and the left piece is $20$, so the width of the right piece is $30 - 20 = 10$ (which matches the diagram label). The height is given as $15$. Area = $10 \times 15 = 150 \text{ mm}^2$.<br>
+            Total Area = $400 + 150 = 550 \text{ mm}^2$.<br>
+            <em>(Alternatively, subtract the missing corner from a $30 \times 20$ large rectangle: $600 - (10 \times 5) = 550$).</em></p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 25</div>
+        <p>A pint of water weighs about one pound. About how much does a two-gallon bucket of water weigh? (Disregard the weight of the bucket.)</p>
+        <button onclick="toggle('ans-25')">Show Answer & Explanation</button>
+        <div id="ans-25" class="answer-section">
+            <div class="answer-title">Answer: About $16 \text{ pounds}$</div>
+            <p><strong>Explanation:</strong> First, figure out how many pints are in $2$ gallons.<br>
+            - There are $2$ pints in $1$ quart.<br>
+            - There are $4$ quarts in $1$ gallon.<br>
+            - So, there are $8$ pints in $1$ gallon ($2 \times 4 = 8$).<br>
+            For $2$ gallons, there are $16$ pints ($8 \times 2 = 16$).<br>
+            If $1$ pint weighs $1$ pound, then $16$ pints weigh $16$ pounds.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 26</div>
+        <p>The parallel sides of this trapezoid are $10 \text{ mm}$ apart. The trapezoid is divided into two triangles. What is the area of the trapezoid?</p>
+        <div class="svg-container">
+            <svg width="250" height="120" viewBox="0 0 250 120">
+                <polygon points="20,20 180,20 140,100 40,100" fill="#e0f7fa" stroke="black" stroke-width="2"/>
+                <line x1="20" y1="20" x2="140" y2="100" stroke="black" stroke-width="2" stroke-dasharray="5,5"/>
+                <line x1="180" y1="20" x2="210" y2="20" stroke="black" stroke-width="1"/>
+                <line x1="140" y1="100" x2="210" y2="100" stroke="black" stroke-width="1"/>
+                <line x1="200" y1="20" x2="200" y2="100" stroke="black" stroke-width="1"/>
+                <text x="100" y="15">20 mm</text>
+                <text x="80" y="115">12 mm</text>
+                <text x="210" y="65">10 mm</text>
+            </svg>
+        </div>
+        <button onclick="toggle('ans-26')">Show Answer & Explanation</button>
+        <div id="ans-26" class="answer-section">
+            <div class="answer-title">Answer: $160 \text{ mm}^2$</div>
+            <p><strong>Explanation:</strong> You can use the formula for the area of a trapezoid: $A = \frac{1}{2}h(b_1 + b_2)$.<br>
+            Here, the height $h = 10 \text{ mm}$, and the bases $b_1 = 20 \text{ mm}$ and $b_2 = 12 \text{ mm}$.<br>
+            $$A = \frac{1}{2}(10)(20 + 12)$$
+            $$A = 5 \times 32 = 160 \text{ mm}^2$$<br>
+            <em>(Alternatively, find the area of the two triangles formed by the dashed line: $\frac{1}{2}(20)(10) + \frac{1}{2}(12)(10) = 100 + 60 = 160$).</em></p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 27</div>
+        <p>The cubic container shown can contain one liter of water. One liter is how many milliliters?</p>
+        <div class="svg-container">
+            <svg width="150" height="150" viewBox="0 0 150 150">
+                <rect x="30" y="50" width="60" height="60" fill="#bbdefb" stroke="black" stroke-width="2"/>
+                <polygon points="30,50 50,30 110,30 90,50" fill="#90caf9" stroke="black" stroke-width="2"/>
+                <polygon points="90,50 110,30 110,90 90,110" fill="#64b5f6" stroke="black" stroke-width="2"/>
+                <text x="45" y="125">10 cm</text>
+                <text x="115" y="70">10 cm</text>
+                <text x="115" y="105">10 cm</text>
+            </svg>
+        </div>
+        <button onclick="toggle('ans-27')">Show Answer & Explanation</button>
+        <div id="ans-27" class="answer-section">
+            <div class="answer-title">Answer: $1000 \text{ milliliters}$</div>
+            <p><strong>Explanation:</strong> 
+            First, find the volume of the cube in cubic centimeters (cm³):<br>
+            Volume = $10 \text{ cm} \times 10 \text{ cm} \times 10 \text{ cm} = 1000 \text{ cm}^3$.<br>
+            One cubic centimeter ($1 \text{ cm}^3$) is exactly equal to one milliliter ($1 \text{ mL}$).<br>
+            Since the cube holds $1000 \text{ cm}^3$, and is stated to hold $1$ liter, $1$ liter must equal $1000 \text{ mL}$. (The prefix "milli-" also means one-thousandth, so $1000 \text{ mL} = 1 \text{ L}$).</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 28</div>
+        <p>A bag contains 6 red marbles and 4 blue marbles. If Delia draws one marble from the bag and then draws another marble without replacing the first, what is the probability that both marbles will be red?</p>
+        <button onclick="toggle('ans-28')">Show Answer & Explanation</button>
+        <div id="ans-28" class="answer-section">
+            <div class="answer-title">Answer: $\frac{1}{3}$</div>
+            <p><strong>Explanation:</strong> This is a dependent probability problem.<br>
+            1. Total marbles at start = $6 \text{ red} + 4 \text{ blue} = 10 \text{ marbles}$.<br>
+            Probability of drawing a red marble first ($P(R_1)$) = $\frac{6}{10} = \frac{3}{5}$.<br>
+            2. Since she doesn't replace it, there are now only $9$ marbles left, and $5$ of them are red.<br>
+            Probability of drawing a red marble second ($P(R_2)$) = $\frac{5}{9}$.<br>
+            3. Multiply the probabilities for both events to occur:<br>
+            $$\frac{3}{5} \times \frac{5}{9} = \frac{15}{45}$$<br>
+            Simplify the fraction: Divide top and bottom by $15$ to get $\frac{1}{3}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 29</div>
+        <p>One and one half kilometers is how many meters?</p>
+        <button onclick="toggle('ans-29')">Show Answer & Explanation</button>
+        <div id="ans-29" class="answer-section">
+            <div class="answer-title">Answer: $1500 \text{ meters}$</div>
+            <p><strong>Explanation:</strong> There are $1000$ meters in $1$ kilometer.<br>
+            One and one half kilometers is $1.5 \text{ km}$.<br>
+            Multiply by $1000$ to convert to meters:<br>
+            $$1.5 \times 1000 = 1500 \text{ m}$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-header">Problem 30</div>
+        <p>On a coordinate plane draw triangle $RST$ with these vertices: $R(-1, 4), S(-3, 1), T(-1, 1)$. Then draw its reflection across the $y$-axis. Name the reflection $\Delta R'S'T'$. What are the coordinates of the vertices of $\Delta R'S'T'$?</p>
+        <button onclick="toggle('ans-30')">Show Answer & Explanation</button>
+        <div id="ans-30" class="answer-section">
+            <div class="answer-title">Answer: $R'(1, 4), S'(3, 1), T'(1, 1)$</div>
+            <p><strong>Explanation:</strong> To reflect a shape across the $y$-axis, you multiply the $x$-coordinate by $-1$ (change its sign) and keep the $y$-coordinate exactly the same.<br>
+            $R(-1, 4) \rightarrow R'(1, 4)$<br>
+            $S(-3, 1) \rightarrow S'(3, 1)$<br>
+            $T(-1, 1) \rightarrow T'(1, 1)$</p>
+        </div>
+    </div>
+
+    <script>
+        function toggle(id) {
+            var element = document.getElementById(id);
+            if (element.style.display === "none" || element.style.display === "") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
