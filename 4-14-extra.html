@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remediation Practice Quiz</title>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        h2 {
+            margin-top: 40px;
+            border-bottom: 2px solid #bdc3c7;
+            padding-bottom: 5px;
+        }
+        .question-card {
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            background-color: #fafbfc;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            background-color: #ffffff;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            padding: 12px 15px;
+            font-size: 1em;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #ecf0f1;
+            border-color: #95a5a6;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            color: #7f8c8d;
+        }
+        
+        /* State Classes */
+        .correct-answer {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724 !important;
+            font-weight: bold;
+        }
+        .clicked-incorrect {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24 !important;
+        }
+
+        .feedback-area {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #3498db;
+        }
+        .status-correct {
+            color: #28a745;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .status-incorrect {
+            color: #dc3545;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .explanation-text {
+            display: none; /* Holds the raw text until revealed */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Remediation Practice Quiz</h1>
+    <p>Select an answer for each question. You will immediately see if you are correct, along with a detailed explanation.</p>
+
+    <h2>Topic: Prime Numbers & Multiplication (Review of #1)</h2>
+    
+    <div class="question-card">
+        <div class="question-text">1. What is the product of the next two prime numbers after 7?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) 99</button>
+            <button class="option-btn" data-correct="false">B) 120</button>
+            <button class="option-btn" data-correct="true">C) 143</button>
+            <button class="option-btn" data-correct="false">D) 105</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> A prime number is only divisible by 1 and itself. The prime numbers following 7 are 11 and 13. Their product is $11 \times 13 = 143$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">2. What is the sum of the first four prime numbers?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) 16</button>
+            <button class="option-btn" data-correct="true">B) 17</button>
+            <button class="option-btn" data-correct="false">C) 18</button>
+            <button class="option-btn" data-correct="false">D) 26</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> The first four prime numbers are 2, 3, 5, and 7. Their sum is $2 + 3 + 5 + 7 = 17$. (Note: 1 is not a prime number).
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">3. What is the product of the first three <em>odd</em> prime numbers?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) 30</button>
+            <button class="option-btn" data-correct="true">B) 105</button>
+            <button class="option-btn" data-correct="false">C) 15</button>
+            <button class="option-btn" data-correct="false">D) 315</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> The first prime number is 2, but it is even. The first three <em>odd</em> prime numbers are 3, 5, and 7. Their product is $3 \times 5 \times 7 = 105$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <h2>Topic: Ratios (Review of #3)</h2>
+
+    <div class="question-card">
+        <div class="question-text">4. A 60-minute class consists of 15 minutes of lecture, and the rest of the time is spent on group work. What is the ratio of lecture time to group work time?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="true">A) $1:3$</button>
+            <button class="option-btn" data-correct="false">B) $1:4$</button>
+            <button class="option-btn" data-correct="false">C) $3:1$</button>
+            <button class="option-btn" data-correct="false">D) $1:5$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> Total time = 60 mins. Lecture time = 15 mins. Group work time = $60 - 15 = 45$ mins. The ratio of lecture to group work is $15:45$. Dividing both sides by 15 simplifies this to $1:3$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">5. There are 24 hours in a day. If you sleep for 8 hours, what is the ratio of hours spent sleeping to hours spent awake?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $1:3$</button>
+            <button class="option-btn" data-correct="false">B) $2:1$</button>
+            <button class="option-btn" data-correct="false">C) $3:1$</button>
+            <button class="option-btn" data-correct="true">D) $1:2$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> Total time = 24 hours. Sleep time = 8 hours. Awake time = $24 - 8 = 16$ hours. The ratio of sleep to awake time is $8:16$. Dividing by 8 simplifies this to $1:2$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">6. A bag contains 20 apples. If 4 of the apples are bruised, what is the ratio of bruised apples to unbruised apples?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $1:5$</button>
+            <button class="option-btn" data-correct="true">B) $1:4$</button>
+            <button class="option-btn" data-correct="false">C) $4:5$</button>
+            <button class="option-btn" data-correct="false">D) $4:1$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> Total apples = 20. Bruised = 4. Unbruised = $20 - 4 = 16$. The ratio of bruised to unbruised is $4:16$. Dividing by 4 gives $1:4$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <h2>Topic: Fractions to Decimals (Review of #9a)</h2>
+
+    <div class="question-card">
+        <div class="question-text">7. Convert the fraction $\frac{3}{8}$ to a decimal.</div>
+        <div class="options">
+            <button class="option-btn" data-correct="true">A) $0.375$</button>
+            <button class="option-btn" data-correct="false">B) $0.38$</button>
+            <button class="option-btn" data-correct="false">C) $0.333$</button>
+            <button class="option-btn" data-correct="false">D) $2.66$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> To convert a fraction to a decimal, divide the numerator by the denominator. $3 \div 8 = 0.375$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">8. Convert the fraction $\frac{9}{20}$ to a decimal.</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $0.9$</button>
+            <button class="option-btn" data-correct="false">B) $0.405$</button>
+            <button class="option-btn" data-correct="true">C) $0.45$</button>
+            <button class="option-btn" data-correct="false">D) $0.29$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> Divide $9$ by $20$. An easy mental math trick is to multiply the top and bottom by 5 to get a denominator of 100: $\frac{9 \times 5}{20 \times 5} = \frac{45}{100} = 0.45$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">9. Convert the fraction $\frac{5}{16}$ to a decimal.</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $0.315$</button>
+            <button class="option-btn" data-correct="true">B) $0.3125$</button>
+            <button class="option-btn" data-correct="false">C) $0.516$</button>
+            <button class="option-btn" data-correct="false">D) $3.2$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> Divide $5$ by $16$ using long division. $5.0000 \div 16 = 0.3125$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <h2>Topic: Basic Probability (Review of #12a)</h2>
+
+    <div class="question-card">
+        <div class="question-text">10. A standard 6-sided die is rolled once. What is the probability of rolling a number less than 3?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $\frac{1}{2}$</button>
+            <button class="option-btn" data-correct="true">B) $\frac{1}{3}$</button>
+            <button class="option-btn" data-correct="false">C) $\frac{1}{6}$</button>
+            <button class="option-btn" data-correct="false">D) $\frac{2}{3}$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> The numbers less than 3 on a die are 1 and 2. That is 2 favorable outcomes out of 6 possible outcomes. $\frac{2}{6}$ simplifies to $\frac{1}{3}$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">11. A spinner is divided into 5 equal sections labeled 1 through 5. What is the probability of the spinner landing on an even number?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $\frac{1}{5}$</button>
+            <button class="option-btn" data-correct="false">B) $\frac{1}{2}$</button>
+            <button class="option-btn" data-correct="true">C) $\frac{2}{5}$</button>
+            <button class="option-btn" data-correct="false">D) $\frac{3}{5}$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> The even numbers on the spinner are 2 and 4. That is 2 favorable outcomes out of 5 total sections. The probability is $\frac{2}{5}$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">12. All the letters of the word "MATHEMATICS" are placed into a bag. If you draw one letter at random, what is the probability of drawing a vowel?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $\frac{3}{11}$</button>
+            <button class="option-btn" data-correct="true">B) $\frac{4}{11}$</button>
+            <button class="option-btn" data-correct="false">C) $\frac{5}{11}$</button>
+            <button class="option-btn" data-correct="false">D) $\frac{4}{10}$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> "MATHEMATICS" has 11 letters total. The vowels are A, E, A, and I (4 vowels). The probability is $\frac{4}{11}$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <h2>Topic: Converting & Rounding Decimals (Review of #17)</h2>
+
+    <div class="question-card">
+        <div class="question-text">13. Write the fraction $\frac{5}{6}$ as a decimal number rounded to the hundredths place.</div>
+        <div class="options">
+            <button class="option-btn" data-correct="true">A) $0.83$</button>
+            <button class="option-btn" data-correct="false">B) $0.84$</button>
+            <button class="option-btn" data-correct="false">C) $0.80$</button>
+            <button class="option-btn" data-correct="false">D) $0.833$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> $5 \div 6 = 0.8333...$ To round to the hundredths place, look at the thousandths digit (3). Since 3 is less than 5, keep the hundredths digit the same. Answer: $0.83$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">14. Write the fraction $\frac{2}{7}$ as a decimal number rounded to the hundredths place.</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $0.28$</button>
+            <button class="option-btn" data-correct="true">B) $0.29$</button>
+            <button class="option-btn" data-correct="false">C) $0.285$</button>
+            <button class="option-btn" data-correct="false">D) $0.30$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> $2 \div 7 \approx 0.2857...$ Looking at the thousandths digit (5), we round the hundredths digit (8) up by 1. Answer: $0.29$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">15. Write the fraction $\frac{8}{9}$ as a decimal number rounded to the hundredths place.</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $0.88$</button>
+            <button class="option-btn" data-correct="true">B) $0.89$</button>
+            <button class="option-btn" data-correct="false">C) $0.888$</button>
+            <button class="option-btn" data-correct="false">D) $0.90$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> $8 \div 9 = 0.8888...$ The digit in the thousandths place is 8, which is 5 or greater, so we round the hundredths digit up. Answer: $0.89$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <h2>Topic: Scale Factor (Review of #19)</h2>
+
+    <div class="question-card">
+        <div class="question-text">16. Rectangle A is 4 feet wide and 5 feet long. Rectangle B is 12 feet wide and 15 feet long. What is the scale factor from Rectangle A to Rectangle B?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $\frac{1}{3}$</button>
+            <button class="option-btn" data-correct="true">B) $3$</button>
+            <button class="option-btn" data-correct="false">C) $4$</button>
+            <button class="option-btn" data-correct="false">D) $8$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> Divide a side length of Rectangle B by the corresponding side length of Rectangle A. $\frac{12}{4} = 3$ or $\frac{15}{5} = 3$. The scale factor is $3$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">17. Triangle X has a base of 20 cm. A similar Triangle Y has a corresponding base of 5 cm. What is the scale factor from Triangle X to Triangle Y?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="true">A) $\frac{1}{4}$</button>
+            <button class="option-btn" data-correct="false">B) $4$</button>
+            <button class="option-btn" data-correct="false">C) $\frac{1}{5}$</button>
+            <button class="option-btn" data-correct="false">D) $15$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> We are going from a larger shape to a smaller shape, so the scale factor is a fraction. Divide the side of Y by the corresponding side of X: $\frac{5}{20} = \frac{1}{4}$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">18. A square has a perimeter of 12 inches. A similar, larger square has a perimeter of 48 inches. What is the scale factor from the smaller square to the larger square?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $3$</button>
+            <button class="option-btn" data-correct="true">B) $4$</button>
+            <button class="option-btn" data-correct="false">C) $36$</button>
+            <button class="option-btn" data-correct="false">D) $\frac{1}{4}$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> The scale factor for perimeters is the exact same as the scale factor for the side lengths. $\frac{48}{12} = 4$. (To verify: side lengths are 3 and 12, respectively. $\frac{12}{3} = 4$).
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <h2>Topic: Integer Arithmetic (Review of #21c)</h2>
+
+    <div class="question-card">
+        <div class="question-text">19. Evaluate mentally: $-5 - (+9)$</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $4$</button>
+            <button class="option-btn" data-correct="false">B) $-4$</button>
+            <button class="option-btn" data-correct="true">C) $-14$</button>
+            <button class="option-btn" data-correct="false">D) $14$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> Subtracting a positive 9 is the same as adding a negative 9. $-5 + (-9) = -14$. (If you owe $\$5$ and then lose another $\$9$, you are down $\$14$).
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">20. Evaluate mentally: $-12 - (+4)$</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $-8$</button>
+            <button class="option-btn" data-correct="false">B) $8$</button>
+            <button class="option-btn" data-correct="false">C) $16$</button>
+            <button class="option-btn" data-correct="true">D) $-16$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> $-12 - 4$ means starting at $-12$ on the number line and moving 4 units further left. This results in $-16$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">21. Evaluate mentally: $3 - (+10)$</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $13$</button>
+            <button class="option-btn" data-correct="true">B) $-7$</button>
+            <button class="option-btn" data-correct="false">C) $7$</button>
+            <button class="option-btn" data-correct="false">D) $-13$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> You have 3 but you are subtracting 10. Since you are subtracting a larger number from a smaller number, the result drops below zero. $3 - 10 = -7$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <h2>Topic: Area of Triangles (Review of #22)</h2>
+
+    <div class="question-card">
+        <div class="question-text">22. A right triangle has legs measuring 6 inches and 8 inches. What is the area of the triangle?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $48 \text{ sq in}$</button>
+            <button class="option-btn" data-correct="true">B) $24 \text{ sq in}$</button>
+            <button class="option-btn" data-correct="false">C) $14 \text{ sq in}$</button>
+            <button class="option-btn" data-correct="false">D) $10 \text{ sq in}$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> The legs of a right triangle serve as its base and height. Area $= \frac{1}{2} \times \text{base} \times \text{height} = \frac{1}{2} \times 6 \times 8 = \frac{1}{2} \times 48 = 24$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">23. A triangle has a base of 10 meters and a height of 7 meters. What is the area of the triangle?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="true">A) $35 \text{ sq m}$</button>
+            <button class="option-btn" data-correct="false">B) $70 \text{ sq m}$</button>
+            <button class="option-btn" data-correct="false">C) $17 \text{ sq m}$</button>
+            <button class="option-btn" data-correct="false">D) $14 \text{ sq m}$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> Area $= \frac{1}{2} \times \text{base} \times \text{height} = \frac{1}{2} \times 10 \times 7 = \frac{1}{2} \times 70 = 35 \text{ sq m}$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">24. What is the area of a right triangle that has legs measuring 12 cm and 5 cm?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $60 \text{ sq cm}$</button>
+            <button class="option-btn" data-correct="false">B) $17 \text{ sq cm}$</button>
+            <button class="option-btn" data-correct="true">C) $30 \text{ sq cm}$</button>
+            <button class="option-btn" data-correct="false">D) $13 \text{ sq cm}$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> Area $= \frac{1}{2} \times 12 \times 5 = \frac{1}{2} \times 60 = 30 \text{ sq cm}$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <h2>Topic: Dependent Probability (Drawing without Replacement)</h2>
+
+    <div class="question-card">
+        <div class="question-text">25. A bag contains 6 red marbles and 4 blue marbles. If you draw one marble, keep it out of the bag (do not replace it), and then draw a second marble, what is the probability that both marbles are red?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $\frac{9}{25}$</button>
+            <button class="option-btn" data-correct="true">B) $\frac{1}{3}$</button>
+            <button class="option-btn" data-correct="false">C) $\frac{6}{19}$</button>
+            <button class="option-btn" data-correct="false">D) $\frac{3}{5}$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> First draw (red): There are 6 red marbles out of 10 total. Probability = $\frac{6}{10}$.<br>
+            Second draw (red): Because you did not replace the first marble, there are now 5 red marbles left out of 9 total. Probability = $\frac{5}{9}$.<br>
+            Multiply the probabilities: $\frac{6}{10} \times \frac{5}{9} = \frac{30}{90} = \frac{1}{3}$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">26. A bag contains 5 green marbles and 3 yellow marbles. What is the probability of drawing two green marbles in a row without replacing the first marble?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="true">A) $\frac{5}{14}$</button>
+            <button class="option-btn" data-correct="false">B) $\frac{25}{64}$</button>
+            <button class="option-btn" data-correct="false">C) $\frac{5}{8}$</button>
+            <button class="option-btn" data-correct="false">D) $\frac{10}{15}$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> First draw (green): 5 green out of 8 total ($\frac{5}{8}$).<br>
+            Second draw (green): 4 green left out of 7 total ($\frac{4}{7}$).<br>
+            Multiply: $\frac{5}{8} \times \frac{4}{7} = \frac{20}{56}$. Dividing numerator and denominator by 4 simplifies this to $\frac{5}{14}$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-text">27. A bag contains 4 black marbles and 6 white marbles. You draw a marble and do not replace it, then you draw a second marble. What is the probability that you draw a black marble first, followed by a white marble second?</div>
+        <div class="options">
+            <button class="option-btn" data-correct="false">A) $\frac{6}{25}$</button>
+            <button class="option-btn" data-correct="true">B) $\frac{4}{15}$</button>
+            <button class="option-btn" data-correct="false">C) $\frac{24}{100}$</button>
+            <button class="option-btn" data-correct="false">D) $\frac{2}{5}$</button>
+        </div>
+        <div class="explanation-text">
+            <strong>Explanation:</strong> First draw (black): 4 black out of 10 total ($\frac{4}{10}$).<br>
+            Second draw (white): 6 white out of 9 total marbles remaining ($\frac{6}{9}$).<br>
+            Multiply: $\frac{4}{10} \times \frac{6}{9} = \frac{24}{90}$. Dividing numerator and denominator by 6 simplifies this to $\frac{4}{15}$.
+        </div>
+        <div class="feedback-area"></div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Select all option buttons
+        const optionButtons = document.querySelectorAll('.option-btn');
+
+        optionButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Find the parent question card
+                const questionCard = this.closest('.question-card');
+                const isCorrect = this.getAttribute('data-correct') === 'true';
+                
+                // Get the explanation text
+                const explanationText = questionCard.querySelector('.explanation-text').innerHTML;
+                
+                // Disable all buttons in this question to prevent multiple guesses
+                const allButtonsInCard = questionCard.querySelectorAll('.option-btn');
+                allButtonsInCard.forEach(b => {
+                    b.disabled = true;
+                    // Highlight the correct answer for the student
+                    if (b.getAttribute('data-correct') === 'true') {
+                        b.classList.add('correct-answer');
+                    }
+                });
+
+                // Apply styling to the clicked button if it was incorrect
+                if (!isCorrect) {
+                    this.classList.add('clicked-incorrect');
+                }
+
+                // Show feedback area
+                const feedbackArea = questionCard.querySelector('.feedback-area');
+                feedbackArea.style.display = 'block';
+                
+                // Build feedback HTML
+                let statusHTML = isCorrect 
+                    ? '<div class="status-correct">Correct!</div>' 
+                    : '<div class="status-incorrect">Incorrect.</div>';
+                    
+                feedbackArea.innerHTML = statusHTML + explanationText;
+
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
