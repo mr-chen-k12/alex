@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentage Conversion Practice</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            color: #555;
+        }
+        .problem-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 5px solid #3498db;
+        }
+        .problem-number {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .question {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            padding: 12px 15px;
+            font-size: 1em;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #e2e6ea;
+            border-color: #dae0e5;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            color: #6c757d;
+        }
+        .option-btn.correct-choice {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        .option-btn.wrong-choice {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        .feedback-section {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .feedback-section.correct {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
+        }
+        .feedback-section.wrong {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+        }
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        .explanation {
+            margin-top: 10px;
+            color: #333;
+        }
+    </style>
+
+    <script>
+        function checkAnswer(questionId, buttonElement, isCorrect) {
+            // Get all buttons for this question
+            const container = buttonElement.closest('.options-container');
+            const buttons = container.querySelectorAll('.option-btn');
+            
+            // Disable all buttons to prevent multiple guesses
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                // Reveal the correct answer to the student
+                if (btn.dataset.correct === "true") {
+                    btn.classList.add('correct-choice');
+                }
+            });
+
+            // Mark the clicked button if it was wrong
+            if (!isCorrect) {
+                buttonElement.classList.add('wrong-choice');
+            }
+
+            // Show feedback
+            const feedbackSection = document.getElementById('feedback-' + questionId);
+            feedbackSection.style.display = 'block';
+            
+            const feedbackTitle = feedbackSection.querySelector('.feedback-title');
+            if (isCorrect) {
+                feedbackSection.classList.add('correct');
+                feedbackSection.classList.remove('wrong');
+                feedbackTitle.textContent = "✅ Correct!";
+            } else {
+                feedbackSection.classList.add('wrong');
+                feedbackSection.classList.remove('correct');
+                feedbackTitle.textContent = "❌ Incorrect.";
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Percentage Conversion Quiz</h1>
+    <div class="intro">
+        Test your skills! Convert the given percentage into a fraction (in simplest form) and a decimal. Click on an option to check your answer.
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Question 1</div>
+        <div class="question">Convert 45% to a fraction and a decimal.</div>
+        <div class="options-container">
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(1, this, false)">A. $\frac{9}{10}$ and 4.5</button>
+            <button class="option-btn" data-correct="true" onclick="checkAnswer(1, this, true)">B. $\frac{9}{20}$ and 0.45</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(1, this, false)">C. $\frac{4}{5}$ and 0.45</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(1, this, false)">D. $\frac{45}{10}$ and 0.045</button>
+        </div>
+        <div id="feedback-1" class="feedback-section">
+            <div class="feedback-title"></div>
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                45% as a decimal is $0.45$.<br>
+                As a fraction, it is $\frac{45}{100}$. Divide the numerator and denominator by their greatest common divisor, which is 5:<br>
+                $45 \div 5 = 9$<br>
+                $100 \div 5 = 20$<br>
+                So, the simplified fraction is $\frac{9}{20}$.
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Question 2</div>
+        <div class="question">Convert 80% to a fraction and a decimal.</div>
+        <div class="options-container">
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(2, this, false)">A. $\frac{8}{100}$ and 0.08</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(2, this, false)">B. $\frac{4}{25}$ and 0.80</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(2, this, false)">C. $\frac{8}{10}$ and 8.0</button>
+            <button class="option-btn" data-correct="true" onclick="checkAnswer(2, this, true)">D. $\frac{4}{5}$ and 0.80</button>
+        </div>
+        <div id="feedback-2" class="feedback-section">
+            <div class="feedback-title"></div>
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                80% as a decimal is $0.80$ (or $0.8$).<br>
+                As a fraction, it is $\frac{80}{100}$. Divide the numerator and denominator by 20:<br>
+                $80 \div 20 = 4$<br>
+                $100 \div 20 = 5$<br>
+                So, the simplified fraction is $\frac{4}{5}$.
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Question 3</div>
+        <div class="question">Convert 15% to a fraction and a decimal.</div>
+        <div class="options-container">
+            <button class="option-btn" data-correct="true" onclick="checkAnswer(3, this, true)">A. $\frac{3}{20}$ and 0.15</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(3, this, false)">B. $\frac{1}{5}$ and 0.15</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(3, this, false)">C. $\frac{3}{10}$ and 1.5</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(3, this, false)">D. $\frac{15}{10}$ and 0.015</button>
+        </div>
+        <div id="feedback-3" class="feedback-section">
+            <div class="feedback-title"></div>
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                15% as a decimal is $0.15$.<br>
+                As a fraction, it is $\frac{15}{100}$. Divide the numerator and denominator by 5:<br>
+                $15 \div 5 = 3$<br>
+                $100 \div 5 = 20$<br>
+                So, the simplified fraction is $\frac{3}{20}$.
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Question 4</div>
+        <div class="question">Convert 5% to a fraction and a decimal.</div>
+        <div class="options-container">
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(4, this, false)">A. $\frac{1}{2}$ and 0.5</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(4, this, false)">B. $\frac{5}{10}$ and 0.05</button>
+            <button class="option-btn" data-correct="true" onclick="checkAnswer(4, this, true)">C. $\frac{1}{20}$ and 0.05</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(4, this, false)">D. $\frac{1}{5}$ and 0.50</button>
+        </div>
+        <div id="feedback-4" class="feedback-section">
+            <div class="feedback-title"></div>
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                5% as a decimal is $0.05$. (Move the decimal point two places to the left).<br>
+                As a fraction, it is $\frac{5}{100}$. Divide the numerator and denominator by 5:<br>
+                $5 \div 5 = 1$<br>
+                $100 \div 5 = 20$<br>
+                So, the simplified fraction is $\frac{1}{20}$.
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Question 5</div>
+        <div class="question">Convert 120% to a fraction and a decimal.</div>
+        <div class="options-container">
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(5, this, false)">A. $\frac{12}{100}$ and 0.12</button>
+            <button class="option-btn" data-correct="true" onclick="checkAnswer(5, this, true)">B. $1 \frac{1}{5}$ and 1.20</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(5, this, false)">C. $\frac{6}{50}$ and 1.20</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(5, this, false)">D. $1 \frac{1}{2}$ and 1.2</button>
+        </div>
+        <div id="feedback-5" class="feedback-section">
+            <div class="feedback-title"></div>
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                120% as a decimal is $1.20$.<br>
+                As a fraction, it is $\frac{120}{100}$. First, cancel a zero to get $\frac{12}{10}$. Then divide by 2 to get the improper fraction $\frac{6}{5}$.<br>
+                Converting $\frac{6}{5}$ to a mixed number gives $1 \frac{1}{5}$.
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Question 6</div>
+        <div class="question">Convert 35% to a fraction and a decimal.</div>
+        <div class="options-container">
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(6, this, false)">A. $\frac{3}{5}$ and 0.35</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(6, this, false)">B. $\frac{7}{10}$ and 3.5</button>
+            <button class="option-btn" data-correct="true" onclick="checkAnswer(6, this, true)">C. $\frac{7}{20}$ and 0.35</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(6, this, false)">D. $\frac{35}{50}$ and 0.035</button>
+        </div>
+        <div id="feedback-6" class="feedback-section">
+            <div class="feedback-title"></div>
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                35% as a decimal is $0.35$.<br>
+                As a fraction, it is $\frac{35}{100}$. Divide the numerator and denominator by 5:<br>
+                $35 \div 5 = 7$<br>
+                $100 \div 5 = 20$<br>
+                So, the simplified fraction is $\frac{7}{20}$.
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Question 7</div>
+        <div class="question">Convert 75% to a fraction and a decimal.</div>
+        <div class="options-container">
+            <button class="option-btn" data-correct="true" onclick="checkAnswer(7, this, true)">A. $\frac{3}{4}$ and 0.75</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(7, this, false)">B. $\frac{7}{5}$ and 0.75</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(7, this, false)">C. $\frac{3}{5}$ and 7.5</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(7, this, false)">D. $\frac{75}{10}$ and 0.075</button>
+        </div>
+        <div id="feedback-7" class="feedback-section">
+            <div class="feedback-title"></div>
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                75% as a decimal is $0.75$.<br>
+                As a fraction, it is $\frac{75}{100}$. Both numbers are divisible by 25:<br>
+                $75 \div 25 = 3$<br>
+                $100 \div 25 = 4$<br>
+                So, the simplified fraction is $\frac{3}{4}$.
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Question 8</div>
+        <div class="question">Convert 2% to a fraction and a decimal.</div>
+        <div class="options-container">
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(8, this, false)">A. $\frac{1}{20}$ and 0.20</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(8, this, false)">B. $\frac{2}{10}$ and 0.2</button>
+            <button class="option-btn" data-correct="true" onclick="checkAnswer(8, this, true)">C. $\frac{1}{50}$ and 0.02</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(8, this, false)">D. $\frac{1}{5}$ and 0.02</button>
+        </div>
+        <div id="feedback-8" class="feedback-section">
+            <div class="feedback-title"></div>
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                2% as a decimal is $0.02$.<br>
+                As a fraction, it is $\frac{2}{100}$. Divide the numerator and denominator by 2:<br>
+                $2 \div 2 = 1$<br>
+                $100 \div 2 = 50$<br>
+                So, the simplified fraction is $\frac{1}{50}$.
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Question 9</div>
+        <div class="question">Convert 55% to a fraction and a decimal.</div>
+        <div class="options-container">
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(9, this, false)">A. $\frac{11}{50}$ and 0.55</button>
+            <button class="option-btn" data-correct="true" onclick="checkAnswer(9, this, true)">B. $\frac{11}{20}$ and 0.55</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(9, this, false)">C. $\frac{5}{11}$ and 5.5</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(9, this, false)">D. $\frac{55}{10}$ and 0.055</button>
+        </div>
+        <div id="feedback-9" class="feedback-section">
+            <div class="feedback-title"></div>
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                55% as a decimal is $0.55$.<br>
+                As a fraction, it is $\frac{55}{100}$. Divide the numerator and denominator by 5:<br>
+                $55 \div 5 = 11$<br>
+                $100 \div 5 = 20$<br>
+                So, the simplified fraction is $\frac{11}{20}$.
+            </div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Question 10</div>
+        <div class="question">Convert 250% to a fraction and a decimal.</div>
+        <div class="options-container">
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(10, this, false)">A. $2 \frac{1}{4}$ and 2.05</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(10, this, false)">B. $\frac{25}{100}$ and 0.25</button>
+            <button class="option-btn" data-correct="true" onclick="checkAnswer(10, this, true)">C. $2 \frac{1}{2}$ and 2.50</button>
+            <button class="option-btn" data-correct="false" onclick="checkAnswer(10, this, false)">D. $\frac{5}{4}$ and 2.5</button>
+        </div>
+        <div id="feedback-10" class="feedback-section">
+            <div class="feedback-title"></div>
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                250% as a decimal is $2.50$ (or $2.5$).<br>
+                As a fraction, it is $\frac{250}{100}$. Cancel a zero to get $\frac{25}{10}$. Both divide by 5 to give the improper fraction $\frac{5}{2}$.<br>
+                Converting $\frac{5}{2}$ to a mixed number yields $2 \frac{1}{2}$.
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
