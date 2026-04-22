@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Course Solutions - Version D</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$']]
+          }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        /* Screen Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+        .problem-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 5px solid #3498db;
+        }
+        .problem-number {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .question {
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+        .toggle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        .answer-section {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-radius: 4px;
+            border-left: 4px solid #2ecc71;
+        }
+        .answer-title {
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 5px;
+        }
+        .explanation-title {
+            font-weight: bold;
+            color: #8e44ad;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        svg {
+            display: block;
+            margin: 10px 0;
+        }
+
+        /* Print Styles for 8.5x11 paper - QUESTIONS ONLY */
+        @media print {
+            @page {
+                size: letter;
+                margin: 0.75in;
+            }
+            body {
+                background-color: #fff;
+                color: #000;
+                padding: 0;
+                max-width: 100%;
+                font-size: 12pt;
+            }
+            h1, h2 {
+                color: #000;
+                border-bottom: 2px solid #000;
+                page-break-after: avoid;
+            }
+            .problem-card {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                border-left: 4px solid #555;
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+                padding: 15px;
+            }
+            .toggle-btn {
+                display: none !important;
+            }
+            .answer-section {
+                display: none !important;
+            }
+            .question {
+                margin-bottom: 70px;
+            }
+        }
+    </style>
+    <script>
+        function toggleAnswer(id, btnId) {
+            var element = document.getElementById(id);
+            var btn = document.getElementById(btnId);
+            if (element.style.display === "none" || element.style.display === "") {
+                element.style.display = "block";
+                btn.textContent = "Hide Answer & Explanation";
+            } else {
+                element.style.display = "none";
+                btn.textContent = "Show Answer & Explanation";
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Math Course Solutions - Form D</h1>
+
+    <h2>Lesson Practice</h2>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem a</div>
+        <div class="question">Draw a rectangle and a parallelogram that is not a rectangle. Draw all the lines of symmetry for each shape, if any exist.</div>
+        <button id="btn-lp-a" class="toggle-btn" onclick="toggleAnswer('ans-lp-a', 'btn-lp-a')">Show Answer & Explanation</button>
+        <div id="ans-lp-a" class="answer-section">
+            <div class="answer-title">Answer & Visual:</div>
+            <svg width="320" height="150" viewBox="0 0 320 150">
+                <rect x="20" y="30" width="100" height="60" fill="none" stroke="black" stroke-width="2"/>
+                <line x1="70" y1="20" x2="70" y2="100" stroke="red" stroke-width="2" stroke-dasharray="5,5"/>
+                <line x1="10" y1="60" x2="130" y2="60" stroke="red" stroke-width="2" stroke-dasharray="5,5"/>
+                
+                <polygon points="180,90 200,30 280,30 260,90" fill="none" stroke="black" stroke-width="2"/>
+            </svg>
+            <div class="explanation-title">Explanation:</div>
+            <p>A rectangle has exactly 2 lines of symmetry (one horizontal and one vertical cutting through the midpoints of the opposite sides). A standard parallelogram (that is not a rectangle or rhombus) has 0 lines of symmetry because folding it over any line will not result in matching halves.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem b</div>
+        <div class="question">All but one of these letters can be drawn to have a line of symmetry. Which of these letters does not have a line of symmetry?<br><br><strong>B &nbsp; D &nbsp; E &nbsp; G &nbsp; H &nbsp; M</strong></div>
+        <button id="btn-lp-b" class="toggle-btn" onclick="toggleAnswer('ans-lp-b', 'btn-lp-b')">Show Answer & Explanation</button>
+        <div id="ans-lp-b" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>G</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>H and M have a vertical line of symmetry. B, D, E, and H have a horizontal line of symmetry. The letter G cannot be folded over any line to match perfectly.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem c</div>
+        <div class="question">Which three of these letters have rotational symmetry? (Hint: Rotating your paper upside down might help.)<br><br><strong>H &nbsp; L &nbsp; O &nbsp; R &nbsp; V &nbsp; X</strong></div>
+        <button id="btn-lp-c" class="toggle-btn" onclick="toggleAnswer('ans-lp-c', 'btn-lp-c')">Show Answer & Explanation</button>
+        <div id="ans-lp-c" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>H, O, and X</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>If you rotate the letters H, O, and X by 180 degrees (upside down), they look identical to their original orientation. The others (L, R, V) will look upside down and not map onto themselves.</p>
+        </div>
+    </div>
+
+    <h2>Written Practice</h2>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 1</div>
+        <div class="question">When the greatest four-digit number is divided by the greatest single-digit number, what is the quotient?</div>
+        <button id="btn-wp-1" class="toggle-btn" onclick="toggleAnswer('ans-wp-1', 'btn-wp-1')">Show Answer & Explanation</button>
+        <div id="ans-wp-1" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>1111</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>The greatest four-digit number is 9999. The greatest single-digit number is 9.<br>$$9999 \div 9 = 1111$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 2</div>
+        <div class="question">The ratio of cats to dogs at an animal shelter is 3 to 2. If there are 18 cats at the shelter, how many dogs are there?</div>
+        <button id="btn-wp-2" class="toggle-btn" onclick="toggleAnswer('ans-wp-2', 'btn-wp-2')">Show Answer & Explanation</button>
+        <div id="ans-wp-2" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>12 dogs</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>Set up a proportion: $$\frac{\text{Cats}}{\text{Dogs}} = \frac{3}{2} = \frac{18}{D}$$
+            Find the scale factor: $3 \times 6 = 18$, so $2 \times 6 = 12$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 3</div>
+        <div class="question">A rectangular prism has a length of 4 inches, a width of 5 inches, and a height of 10 inches. What is the volume of the prism?</div>
+        <button id="btn-wp-3" class="toggle-btn" onclick="toggleAnswer('ans-wp-3', 'btn-wp-3')">Show Answer & Explanation</button>
+        <div id="ans-wp-3" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>200 cubic inches</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>The volume of a rectangular prism is length times width times height.<br>$$V = 4 \times 5 \times 10 = 20 \times 10 = 200 \text{ in}^3$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 4</div>
+        <div class="question">A full turn is 360 degrees. How many degrees is $\frac{1}{4}$ of a turn?</div>
+        <button id="btn-wp-4" class="toggle-btn" onclick="toggleAnswer('ans-wp-4', 'btn-wp-4')">Show Answer & Explanation</button>
+        <div id="ans-wp-4" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>90 degrees</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>Multiply the full turn by the fraction: $$360^\circ \times \frac{1}{4} = 90^\circ$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 5</div>
+        <div class="question">Does a regular hexagon have rotational and line symmetry? Use words to explain how you know.</div>
+        <button id="btn-wp-5" class="toggle-btn" onclick="toggleAnswer('ans-wp-5', 'btn-wp-5')">Show Answer & Explanation</button>
+        <div id="ans-wp-5" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>Yes, it has both.</p>
+            <div class="explanation-title">Explanation:</div>
+            <p><strong>Line Symmetry:</strong> A regular hexagon has 6 lines of symmetry (three connecting opposite vertices, and three connecting the midpoints of opposite sides).<br>
+            <strong>Rotational Symmetry:</strong> Because all 6 sides and angles are equal, rotating the hexagon by 60 degrees ($360 \div 6$) around its center perfectly maps it onto its original position.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 6</div>
+        <div class="question">Sketch a rectangle similar to a 4 cm by 7 cm rectangle. Make the scale factor from the original rectangle to your sketch 3. What is the perimeter of the rectangle you sketched?</div>
+        <button id="btn-wp-6" class="toggle-btn" onclick="toggleAnswer('ans-wp-6', 'btn-wp-6')">Show Answer & Explanation</button>
+        <div id="ans-wp-6" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>66 cm</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>The original rectangle has dimensions 4 cm and 7 cm. With a scale factor of 3, the new side lengths are $4 \times 3 = 12 \text{ cm}$ and $7 \times 3 = 21 \text{ cm}$.<br>
+            The perimeter of the new rectangle is $12 + 21 + 12 + 21 = 66 \text{ cm}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 7</div>
+        <div class="question">What is the area of a right triangle with legs of 6 cm and 8 cm, and a hypotenuse of 10 cm?</div>
+        <button id="btn-wp-7" class="toggle-btn" onclick="toggleAnswer('ans-wp-7', 'btn-wp-7')">Show Answer & Explanation</button>
+        <div id="ans-wp-7" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>24 cm²</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>The area of a right triangle is calculated using the two legs as the base and height (the hypotenuse is not needed for area).<br>
+            $$Area = \frac{1}{2} \times 6 \times 8 = \frac{1}{2} \times 48 = 24 \text{ cm}^2$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 8</div>
+        <div class="question">Draw a ratio box for this problem. Then solve the problem using a proportion.<br><br>A dealership has 80 cars on the lot. If 40% of the cars are sedans and the rest are SUVs, how many SUVs are on the lot?</div>
+        <button id="btn-wp-8" class="toggle-btn" onclick="toggleAnswer('ans-wp-8', 'btn-wp-8')">Show Answer & Explanation</button>
+        <div id="ans-wp-8" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>48 SUVs</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>If 40% are sedans, then 60% are SUVs (100% - 40%). Set up a proportion comparing the SUV percentage to the total:
+            $$\frac{\text{Percent}}{\text{Total}} \Rightarrow \frac{60}{100} = \frac{x}{80}$$
+            Cross-multiplying gives: $100x = 4800$, so $x = 48$.<br>There are 48 SUVs.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 9</div>
+        <div class="question">Convert the fraction $3 \frac{1}{2}$ to a decimal (a) and a percent (b).</div>
+        <button id="btn-wp-9" class="toggle-btn" onclick="toggleAnswer('ans-wp-9', 'btn-wp-9')">Show Answer & Explanation</button>
+        <div id="ans-wp-9" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>a. 3.5 &nbsp;&nbsp; b. 350%</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>$\frac{1}{2}$ is equivalent to 0.5, so $3 \frac{1}{2} = 3.5$. To find the percent, multiply the decimal by 100 to get 350%.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 10</div>
+        <div class="question">Convert the decimal 2.8 to a mixed fraction (a) and a percent (b).</div>
+        <button id="btn-wp-10" class="toggle-btn" onclick="toggleAnswer('ans-wp-10', 'btn-wp-10')">Show Answer & Explanation</button>
+        <div id="ans-wp-10" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>a. $2 \frac{4}{5}$ &nbsp;&nbsp; b. 280%</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>2.8 is "two and eight-tenths" ($2 \frac{8}{10}$), which simplifies to $2 \frac{4}{5}$ by dividing numerator and denominator by 2. Multiply 2.8 by 100 to find the percent: 280%.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 11</div>
+        <div class="question">Convert 45% to a fraction (a) and a decimal (b).</div>
+        <button id="btn-wp-11" class="toggle-btn" onclick="toggleAnswer('ans-wp-11', 'btn-wp-11')">Show Answer & Explanation</button>
+        <div id="ans-wp-11" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>a. $\frac{9}{20}$ &nbsp;&nbsp; b. 0.45</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>45% as a decimal is 0.45. As a fraction, it is $\frac{45}{100}$, which reduces by dividing numerator and denominator by 5 to get $\frac{9}{20}$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 12</div>
+        <div class="question">$$5 \frac{1}{3} + 2 \frac{1}{6} + 1 \frac{1}{2}$$</div>
+        <button id="btn-wp-12" class="toggle-btn" onclick="toggleAnswer('ans-wp-12', 'btn-wp-12')">Show Answer & Explanation</button>
+        <div id="ans-wp-12" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>9</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>Find a common denominator for the fractions, which is 6:
+            $$5 \frac{2}{6} + 2 \frac{1}{6} + 1 \frac{3}{6}$$
+            Add the whole numbers: $5 + 2 + 1 = 8$.<br>
+            Add the fractions: $\frac{2}{6} + \frac{1}{6} + \frac{3}{6} = \frac{6}{6}$.<br>
+            Since $\frac{6}{6} = 1$, add it to the whole number:<br>
+            Total: $8 + 1 = 9$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 13</div>
+        <div class="question">$$\left(4 \frac{1}{2} \div 3\right) \div 1 \frac{1}{2}$$</div>
+        <button id="btn-wp-13" class="toggle-btn" onclick="toggleAnswer('ans-wp-13', 'btn-wp-13')">Show Answer & Explanation</button>
+        <div id="ans-wp-13" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>1</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>Convert mixed numbers to improper fractions:
+            $$\left(\frac{9}{2} \div \frac{3}{1}\right) \div \frac{3}{2}$$
+            Follow PEMDAS, evaluate parentheses by multiplying by the reciprocal:
+            $$\left(\frac{9}{2} \times \frac{1}{3}\right) \div \frac{3}{2} = \frac{9}{6} \div \frac{3}{2} = \frac{3}{2} \div \frac{3}{2}$$
+            Any number divided by itself is 1.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 14</div>
+        <div class="question">$$25 - (3.2 + 6.8)$$</div>
+        <button id="btn-wp-14" class="toggle-btn" onclick="toggleAnswer('ans-wp-14', 'btn-wp-14')">Show Answer & Explanation</button>
+        <div id="ans-wp-14" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>15</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>First, add the numbers in parentheses: $3.2 + 6.8 = 10.0$.<br>
+            Subtract from 25: $25.0 - 10.0 = 15$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 15</div>
+        <div class="question">$$0.25x = \$50.00$$</div>
+        <button id="btn-wp-15" class="toggle-btn" onclick="toggleAnswer('ans-wp-15', 'btn-wp-15')">Show Answer & Explanation</button>
+        <div id="ans-wp-15" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>$x = 200$</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>Divide both sides by 0.25:
+            $$x = \frac{50.00}{0.25} = \frac{5000}{25} = 200$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 16</div>
+        <div class="question">Find 7.5% of $40.00 by multiplying 0.075 by $40.00.</div>
+        <button id="btn-wp-16" class="toggle-btn" onclick="toggleAnswer('ans-wp-16', 'btn-wp-16')">Show Answer & Explanation</button>
+        <div id="ans-wp-16" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>$3.00</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>$$0.075 \times 40.00 = 3.00$$<br>
+            The product is exactly $3.00.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 17</div>
+        <div class="question">Round the quotient to the nearest hundredth: $$0.145 \div 5$$</div>
+        <button id="btn-wp-17" class="toggle-btn" onclick="toggleAnswer('ans-wp-17', 'btn-wp-17')">Show Answer & Explanation</button>
+        <div id="ans-wp-17" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>0.03</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>Divide: $$0.145 \div 5 = 0.029$$
+            The hundredths place is 2. The next digit is 9, which is 5 or greater, so round the 2 up to 3. The rounded answer is 0.03.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 18</div>
+        <div class="question">Write the prime factorization of 600 using exponents.</div>
+        <button id="btn-wp-18" class="toggle-btn" onclick="toggleAnswer('ans-wp-18', 'btn-wp-18')">Show Answer & Explanation</button>
+        <div id="ans-wp-18" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>$2^3 \times 3 \times 5^2$</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>Break down 600: $600 = 6 \times 100$.<br>
+            $6 = 2 \times 3$.<br>
+            $100 = 10 \times 10 = (2 \times 5) \times (2 \times 5) = 2^2 \times 5^2$.<br>
+            Combine them in numerical order: $(2 \times 2^2) \times 3 \times 5^2 = 2^3 \times 3 \times 5^2$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 19</div>
+        <div class="question">"All equilateral triangles are similar." True or false?</div>
+        <button id="btn-wp-19" class="toggle-btn" onclick="toggleAnswer('ans-wp-19', 'btn-wp-19')">Show Answer & Explanation</button>
+        <div id="ans-wp-19" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>True</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>All equilateral triangles have three equal angles of 60 degrees. Because their corresponding angles are always identical and their sides are uniformly proportional, they are universally similar shapes.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 20</div>
+        <div class="question">$$4^3 - 4^2 \div 4 - 4 \times 3$$</div>
+        <button id="btn-wp-20" class="toggle-btn" onclick="toggleAnswer('ans-wp-20', 'btn-wp-20')">Show Answer & Explanation</button>
+        <div id="ans-wp-20" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>48</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>Follow the order of operations (PEMDAS/BODMAS):<br>
+            Exponents first: $64 - 16 \div 4 - 4 \times 3$<br>
+            Multiplication and Division (left to right): $64 - 4 - 12$<br>
+            Addition and Subtraction (left to right): $60 - 12 = 48$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 21</div>
+        <div class="question">What is the perimeter of this polygon? (An L-shaped polygon with top horizontal edge = 15 cm, left vertical edge = 12 cm, right vertical edge = 5 cm, and bottom-inner horizontal edge = 9 cm).</div>
+        <button id="btn-wp-21" class="toggle-btn" onclick="toggleAnswer('ans-wp-21', 'btn-wp-21')">Show Answer & Explanation</button>
+        <div id="ans-wp-21" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>54 cm</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>To find the perimeter, add all the outer boundaries.<br>
+            Top edge = 15 cm<br>
+            Left edge = 12 cm<br>
+            Right edge = 5 cm<br>
+            Bottom-inner horizontal edge = 9 cm<br>
+            The missing bottom horizontal segment is $15 \text{ cm} - 9 \text{ cm} = 6 \text{ cm}$.<br>
+            The missing inner vertical "step-down" segment is $12 \text{ cm} - 5 \text{ cm} = 7 \text{ cm}$.<br>
+            $$Perimeter = 15 + 12 + 6 + 7 + 9 + 5 = 54 \text{ cm}$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 22</div>
+        <div class="question">What is the area of the polygon from problem 21?</div>
+        <button id="btn-wp-22" class="toggle-btn" onclick="toggleAnswer('ans-wp-22', 'btn-wp-22')">Show Answer & Explanation</button>
+        <div id="ans-wp-22" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>117 cm²</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>Split the polygon into two rectangles.<br>
+            Rectangle 1 (left side column): Width = 6 cm, Height = 12 cm. Area = $6 \times 12 = 72 \text{ cm}^2$.<br>
+            Rectangle 2 (right side step): Width = 9 cm, Height = 5 cm. Area = $9 \times 5 = 45 \text{ cm}^2$.<br>
+            Total Area = $72 + 45 = 117 \text{ cm}^2$.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 23</div>
+        <div class="question">Figures A and B are congruent triangles. Figure A is pointing to the left, while Figure B is pointing to the right and has been shifted higher up. Name the transformations that would position Figure A on Figure B.</div>
+        <button id="btn-wp-23" class="toggle-btn" onclick="toggleAnswer('ans-wp-23', 'btn-wp-23')">Show Answer & Explanation</button>
+        <div id="ans-wp-23" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>Reflection and Translation</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>Because the figure has had its directional orientation flipped backwards, a <strong>reflection</strong> over a vertical axis is required. To then slide it perfectly into the new location of Figure B higher up, a <strong>translation</strong> is needed.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 24</div>
+        <div class="question">The perimeter of a rectangle is 50 cm. If the width of the rectangle is 10 cm, what is the length?</div>
+        <button id="btn-wp-24" class="toggle-btn" onclick="toggleAnswer('ans-wp-24', 'btn-wp-24')">Show Answer & Explanation</button>
+        <div id="ans-wp-24" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>15 cm</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>The perimeter formula for a rectangle is $P = 2l + 2w$.<br>
+            $$50 = 2l + 2(10)$$
+            $$50 = 2l + 20$$
+            $$30 = 2l$$
+            $$l = 15 \text{ cm}$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 25</div>
+        <div class="question">A circular track has a diameter of 300 m. Find the circumference of the track to the nearest ten meters.</div>
+        <button id="btn-wp-25" class="toggle-btn" onclick="toggleAnswer('ans-wp-25', 'btn-wp-25')">Show Answer & Explanation</button>
+        <div id="ans-wp-25" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>940 m</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>Circumference formula is $C = \pi \times d$. Using 3.14 for $\pi$:<br>
+            $$C \approx 3.14 \times 300 = 942 \text{ m}$$<br>
+            The question asks to round to the nearest ten meters. 942 rounded to the nearest ten is 940 m.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 26</div>
+        <div class="question">Use a ruler to draw line segment $\overline{AB}$ $5 \frac{1}{2}$ inches long. Then draw a dot at the midpoint of $AB$, and label the point $M$. How long is $\overline{AM}$?</div>
+        <button id="btn-wp-26" class="toggle-btn" onclick="toggleAnswer('ans-wp-26', 'btn-wp-26')">Show Answer & Explanation</button>
+        <div id="ans-wp-26" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>$2 \frac{3}{4}$ inches</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>The midpoint divides the segment exactly in half. Divide $5 \frac{1}{2}$ by 2:
+            $$5 \frac{1}{2} = \frac{11}{2}$$
+            $$\frac{11}{2} \div 2 = \frac{11}{2} \times \frac{1}{2} = \frac{11}{4} = 2 \frac{3}{4}$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 27</div>
+        <div class="question">Use a compass to draw a circle on a coordinate plane. Make the center of the circle the origin, and make the radius 7 units. At which two points does the circle cross the y-axis?</div>
+        <button id="btn-wp-27" class="toggle-btn" onclick="toggleAnswer('ans-wp-27', 'btn-wp-27')">Show Answer & Explanation</button>
+        <div id="ans-wp-27" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>(0, 7) and (0, -7)</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>Since the circle is centered at the origin (0,0) and has a radius of 7, it will extend 7 units straight up and 7 units straight down along the y-axis.</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 28</div>
+        <div class="question">What is the area of the circle in problem 27? (Use 3.14 for $\pi$.)</div>
+        <button id="btn-wp-28" class="toggle-btn" onclick="toggleAnswer('ans-wp-28', 'btn-wp-28')">Show Answer & Explanation</button>
+        <div id="ans-wp-28" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>153.86 square units</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>The area formula for a circle is $A = \pi \times r^2$.<br>
+            Radius $r = 7$, so $r^2 = 49$.<br>
+            $$A = 3.14 \times 49 = 153.86$$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 29</div>
+        <div class="question">$$-5 + -3 - -6 - +4$$</div>
+        <button id="btn-wp-29" class="toggle-btn" onclick="toggleAnswer('ans-wp-29', 'btn-wp-29')">Show Answer & Explanation</button>
+        <div id="ans-wp-29" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>-6</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>Simplify the signs:<br>
+            $-5 - 3 + 6 - 4$<br>
+            Combine left to right:<br>
+            $-8 + 6 - 4$<br>
+            $-2 - 4 = -6$</p>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="problem-number">Problem 30</div>
+        <div class="question">If Sarah flips a standard coin four times, what is the probability that it lands on heads all four times?</div>
+        <button id="btn-wp-30" class="toggle-btn" onclick="toggleAnswer('ans-wp-30', 'btn-wp-30')">Show Answer & Explanation</button>
+        <div id="ans-wp-30" class="answer-section">
+            <div class="answer-title">Answer:</div>
+            <p>$\frac{1}{16}$</p>
+            <div class="explanation-title">Explanation:</div>
+            <p>The probability of landing on heads on a single flip is $\frac{1}{2}$. Since the four flips are independent events, multiply the probabilities together:<br>
+            $$\frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{16}$$</p>
+        </div>
+    </div>
+
+</body>
+</html>
