@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Study Guide</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        canvas {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .question-block {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .question-text {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        button {
+            padding: 12px 15px;
+            font-size: 1em;
+            text-align: left;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        button:hover:not(:disabled) {
+            background-color: #e2e2e2;
+        }
+        button:disabled {
+            cursor: default;
+        }
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+            display: none;
+        }
+        .explanation.visible {
+            display: block;
+        }
+        .correct-btn {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724 !important;
+        }
+        .incorrect-btn {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Interactive Math Study Guide</h1>
+    <p style="text-align: center;">Click on an answer to reveal the correct choice and explanation.</p>
+
+    <h2>1. Adding Positives and Negatives (Double Negatives)</h2>
+    
+    <div class="question-block">
+        <div class="question-text">1. Evaluate the expression: \(-6 + 5 - (-2) + 3\)</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(0\)</button>
+            <button onclick="checkAnswer(this, true)">B) \(4\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(-4\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(2\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Subtracting a negative is the same as adding a positive. \(-(-2)\) becomes \(+2\).<br>
+            The equation becomes: \(-6 + 5 + 2 + 3\).<br>
+            Solving left to right: \(-1 + 2 + 3 = 1 + 3 = 4\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">2. Evaluate the expression: \(12 - (-8) + (-5) - 3\)</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(2\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(28\)</button>
+            <button onclick="checkAnswer(this, true)">C) \(12\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(-4\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> \(- (-8)\) becomes \(+8\). Adding a negative \(+ (-5)\) is just subtraction \(- 5\).<br>
+            The equation becomes: \(12 + 8 - 5 - 3\).<br>
+            Solving: \(20 - 5 - 3 = 15 - 3 = 12\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">3. Evaluate the expression: \(-10 - 4 - (-7) + 2\)</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, true)">A) \(-5\)</button>
+            <button onclick="checkAnswer(this, false)">B) \(-19\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(5\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(-9\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> \(- (-7)\) becomes \(+7\).<br>
+            The equation becomes: \(-10 - 4 + 7 + 2\).<br>
+            Solving: \(-14 + 7 + 2 = -7 + 2 = -5\).
+        </div>
+    </div>
+
+    <h2>2. Area of a Triangle <canvas id="canvasTriangle" width="120" height="100"></canvas></h2>
+
+    <div class="question-block">
+        <div class="question-text">1. Find the area of a right triangle with a base of 8 cm and a height of 5 cm.</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(40 \text{ cm}^2\)</button>
+            <button onclick="checkAnswer(this, false)">B) \(13 \text{ cm}^2\)</button>
+            <button onclick="checkAnswer(this, true)">C) \(20 \text{ cm}^2\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(26 \text{ cm}^2\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> The formula for the area of a triangle is \(A = \frac{1}{2} \times \text{base} \times \text{height}\).<br>
+            \(A = \frac{1}{2} \times 8 \times 5 = 4 \times 5 = 20 \text{ cm}^2\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">2. A triangle has a base of 12 inches and a height of 7 inches. What is its area?</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, true)">A) \(42 \text{ in}^2\)</button>
+            <button onclick="checkAnswer(this, false)">B) \(84 \text{ in}^2\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(19 \text{ in}^2\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(38 \text{ in}^2\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> \(A = \frac{1}{2} \times 12 \times 7\). Half of 12 is 6, and \(6 \times 7 = 42 \text{ in}^2\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">3. If the area of a triangle is \(30 \text{ m}^2\) and its base is 10 m, what is its height?</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(3 \text{ m}\)</button>
+            <button onclick="checkAnswer(this, true)">B) \(6 \text{ m}\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(15 \text{ m}\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(20 \text{ m}\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Use the formula \(A = \frac{1}{2}bh\). Plug in the knowns: \(30 = \frac{1}{2}(10)h\).<br>
+            \(30 = 5h\). Divide by 5 to get \(h = 6 \text{ m}\).
+        </div>
+    </div>
+
+    <h2>3. Coordinate Plane & Midpoints <canvas id="canvasGrid" width="120" height="120"></canvas></h2>
+
+    <div class="question-block">
+        <div class="question-text">1. Find the midpoint between the points \((2, 4)\) and \((6, 8)\).</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, true)">A) \((4, 6)\)</button>
+            <button onclick="checkAnswer(this, false)">B) \((8, 12)\)</button>
+            <button onclick="checkAnswer(this, false)">C) \((2, 2)\)</button>
+            <button onclick="checkAnswer(this, false)">D) \((3, 5)\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> The midpoint formula is \((\frac{x_1 + x_2}{2}, \frac{y_1 + y_2}{2})\).<br>
+            X-coordinate: \(\frac{2 + 6}{2} = \frac{8}{2} = 4\).<br>
+            Y-coordinate: \(\frac{4 + 8}{2} = \frac{12}{2} = 6\). Midpoint is \((4, 6)\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">2. What is the midpoint of the line segment with endpoints \((-4, 2)\) and \((2, -6)\)?</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \((-2, -4)\)</button>
+            <button onclick="checkAnswer(this, true)">B) \((-1, -2)\)</button>
+            <button onclick="checkAnswer(this, false)">C) \((-1, -4)\)</button>
+            <button onclick="checkAnswer(this, false)">D) \((-3, -2)\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> X: \(\frac{-4 + 2}{2} = \frac{-2}{2} = -1\).<br>
+            Y: \(\frac{2 + -6}{2} = \frac{-4}{2} = -2\). Midpoint is \((-1, -2)\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">3. Find the midpoint between \((-3, -5)\) and \((5, 3)\).</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \((2, -2)\)</button>
+            <button onclick="checkAnswer(this, false)">B) \((1, 1)\)</button>
+            <button onclick="checkAnswer(this, true)">C) \((1, -1)\)</button>
+            <button onclick="checkAnswer(this, false)">D) \((4, -1)\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> X: \(\frac{-3 + 5}{2} = \frac{2}{2} = 1\).<br>
+            Y: \(\frac{-5 + 3}{2} = \frac{-2}{2} = -1\). Midpoint is \((1, -1)\).
+        </div>
+    </div>
+
+    <h2>4. Order of Operations (PEMDAS & Square Roots)</h2>
+
+    <div class="question-block">
+        <div class="question-text">1. Evaluate: \(3 + 2 \times 6 \div \sqrt{4} \times 8\)</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(120\)</button>
+            <button onclick="checkAnswer(this, true)">B) \(51\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(40\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(24\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> 
+            1. Roots first: \(\sqrt{4} = 2\). The equation is \(3 + 2 \times 6 \div 2 \times 8\).<br>
+            2. Multiply/Divide left-to-right: \(2 \times 6 = 12\). Equation: \(3 + 12 \div 2 \times 8\).<br>
+            3. Next division: \(12 \div 2 = 6\). Equation: \(3 + 6 \times 8\).<br>
+            4. Next multiplication: \(6 \times 8 = 48\). Equation: \(3 + 48\).<br>
+            5. Add: \(51\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">2. Evaluate: \(10 - \sqrt{25} \times 2 + 4^2 \div 2\)</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, true)">A) \(8\)</button>
+            <button onclick="checkAnswer(this, false)">B) \(18\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(-2\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(13\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong>
+            1. Exponents/Roots: \(\sqrt{25} = 5\) and \(4^2 = 16\). Equation: \(10 - 5 \times 2 + 16 \div 2\).<br>
+            2. Multiply/Divide: \(5 \times 2 = 10\) and \(16 \div 2 = 8\). Equation: \(10 - 10 + 8\).<br>
+            3. Add/Subtract left-to-right: \(0 + 8 = 8\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">3. Evaluate: \((\sqrt{81} - 3) \times 2 + 12 \div 4\)</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(9\)</button>
+            <button onclick="checkAnswer(this, false)">B) \(12\)</button>
+            <button onclick="checkAnswer(this, true)">C) \(15\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(24\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong>
+            1. Parentheses & Roots: \(\sqrt{81} = 9\), so \((9 - 3) = 6\). Equation: \(6 \times 2 + 12 \div 4\).<br>
+            2. Multiply/Divide left-to-right: \(6 \times 2 = 12\) and \(12 \div 4 = 3\). Equation: \(12 + 3\).<br>
+            3. Add: \(15\).
+        </div>
+    </div>
+
+    <h2>5. Area of an L-Shape <canvas id="canvasLShape" width="120" height="120"></canvas></h2>
+
+    <div class="question-block">
+        <div class="question-text">1. Find the total area of an L-shape that can be split into two rectangles: a vertical rectangle measuring 5cm by 2cm, and a horizontal rectangle measuring 6cm by 3cm.</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(38 \text{ cm}^2\)</button>
+            <button onclick="checkAnswer(this, false)">B) \(24 \text{ cm}^2\)</button>
+            <button onclick="checkAnswer(this, true)">C) \(28 \text{ cm}^2\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(30 \text{ cm}^2\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Area is additive. Area 1 = \(5 \times 2 = 10\). Area 2 = \(6 \times 3 = 18\). Total Area = \(10 + 18 = 28 \text{ cm}^2\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">2. An L-shape consists of a vertical stem (7m height, 4m width) and a horizontal base extending to the right (5m width, 4m height). What is the total area?</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, true)">A) \(48 \text{ m}^2\)</button>
+            <button onclick="checkAnswer(this, false)">B) \(68 \text{ m}^2\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(40 \text{ m}^2\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(32 \text{ m}^2\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Stem Area = \(7 \times 4 = 28\). Base Area = \(5 \times 4 = 20\). Total Area = \(28 + 20 = 48 \text{ m}^2\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">3. An L-shaped room is split into two sections: \(6 \text{ ft} \times 3 \text{ ft}\) and \(8 \text{ ft} \times 3 \text{ ft}\). What is the total area of the floor?</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(38 \text{ sq ft}\)</button>
+            <button onclick="checkAnswer(this, true)">B) \(42 \text{ sq ft}\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(48 \text{ sq ft}\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(36 \text{ sq ft}\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Section 1 = \(6 \times 3 = 18\). Section 2 = \(8 \times 3 = 24\). Total Area = \(18 + 24 = 42 \text{ sq ft}\).
+        </div>
+    </div>
+
+    <h2>6. Solving Ratios using Cross Products</h2>
+
+    <div class="question-block">
+        <div class="question-text">1. Solve for \(x\): \(\frac{6}{10} = \frac{x}{25}\)</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(10\)</button>
+            <button onclick="checkAnswer(this, false)">B) \(12\)</button>
+            <button onclick="checkAnswer(this, true)">C) \(15\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(20\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Use cross multiplication: \(10 \times x = 6 \times 25\).<br>
+            \(10x = 150\). Divide by 10 to isolate \(x\).<br>
+            \(x = 15\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">2. Solve for \(x\): \(\frac{4}{x} = \frac{12}{21}\)</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, true)">A) \(7\)</button>
+            <button onclick="checkAnswer(this, false)">B) \(6\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(8\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(9\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Cross multiply: \(12 \times x = 4 \times 21\).<br>
+            \(12x = 84\). Divide by 12.<br>
+            \(x = 7\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">3. Solve for \(x\): \(\frac{x}{8} = \frac{9}{24}\)</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(2\)</button>
+            <button onclick="checkAnswer(this, true)">B) \(3\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(4\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(5\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Cross multiply: \(24 \times x = 8 \times 9\).<br>
+            \(24x = 72\). Divide by 24.<br>
+            \(x = 3\).
+        </div>
+    </div>
+
+    <h2>7. Converting to Simplified Fractions and Decimals</h2>
+
+    <div class="question-block">
+        <div class="question-text">1. Convert 65% to a simplified fraction and a decimal.</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, true)">A) \(\frac{13}{20}\) and \(0.65\)</button>
+            <button onclick="checkAnswer(this, false)">B) \(\frac{6}{5}\) and \(0.65\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(\frac{13}{50}\) and \(6.5\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(\frac{65}{100}\) and \(0.065\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> To decimal: move decimal point two places left (\(65\% = 0.65\)).<br>
+            To fraction: \(65\% = \frac{65}{100}\). Both numbers divide by 5.<br>
+            \(65 \div 5 = 13\) and \(100 \div 5 = 20\). Fraction is \(\frac{13}{20}\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">2. Convert 45% to a simplified fraction and a decimal.</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(\frac{4}{5}\) and \(0.45\)</button>
+            <button onclick="checkAnswer(this, true)">B) \(\frac{9}{20}\) and \(0.45\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(\frac{9}{10}\) and \(0.45\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(\frac{45}{50}\) and \(4.5\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Decimal: \(45\% = 0.45\).<br>
+            Fraction: \(\frac{45}{100}\). Divide top and bottom by 5 to simplify: \(\frac{9}{20}\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">3. Convert 8% to a simplified fraction and a decimal.</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(\frac{4}{25}\) and \(0.8\)</button>
+            <button onclick="checkAnswer(this, false)">B) \(\frac{2}{50}\) and \(0.08\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(\frac{8}{10}\) and \(0.08\)</button>
+            <button onclick="checkAnswer(this, true)">D) \(\frac{2}{25}\) and \(0.08\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Decimal: \(8\% = 0.08\) (remember to move it two places).<br>
+            Fraction: \(\frac{8}{100}\). Divide by 4 top and bottom: \(\frac{2}{25}\).
+        </div>
+    </div>
+
+    <h2>8. Circumference and Radius of a Circle <canvas id="canvasCircle" width="120" height="120"></canvas></h2>
+
+    <div class="question-block">
+        <div class="question-text">1. Find the circumference of a circle with a radius of 5 cm (Use \(\pi \approx 3.14\)).</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(15.7 \text{ cm}\)</button>
+            <button onclick="checkAnswer(this, true)">B) \(31.4 \text{ cm}\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(78.5 \text{ cm}\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(62.8 \text{ cm}\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Formula is \(C = 2\pi r\).<br>
+            \(C = 2 \times 3.14 \times 5\). Since \(2 \times 5 = 10\), we have \(10 \times 3.14 = 31.4 \text{ cm}\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">2. If the circumference of a circle is 18.84 m, what is its radius? (Use \(\pi \approx 3.14\)).</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, true)">A) \(3 \text{ m}\)</button>
+            <button onclick="checkAnswer(this, false)">B) \(6 \text{ m}\)</button>
+            <button onclick="checkAnswer(this, false)">C) \(9 \text{ m}\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(4 \text{ m}\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Use \(C = 2\pi r\). Plug in: \(18.84 = 2 \times 3.14 \times r\).<br>
+            \(18.84 = 6.28 \times r\). Divide both sides by 6.28.<br>
+            \(r = 3 \text{ m}\).
+        </div>
+    </div>
+
+    <div class="question-block">
+        <div class="question-text">3. Find the circumference of a circle with a radius of 10 in (Use \(\pi \approx 3.14\)).</div>
+        <div class="options">
+            <button onclick="checkAnswer(this, false)">A) \(31.4 \text{ in}\)</button>
+            <button onclick="checkAnswer(this, false)">B) \(314 \text{ in}\)</button>
+            <button onclick="checkAnswer(this, true)">C) \(62.8 \text{ in}\)</button>
+            <button onclick="checkAnswer(this, false)">D) \(100 \text{ in}\)</button>
+        </div>
+        <div class="explanation">
+            <strong>Explanation:</strong> Formula is \(C = 2\pi r\).<br>
+            \(C = 2 \times 3.14 \times 10\).<br>
+            \(C = 6.28 \times 10 = 62.8 \text{ in}\).
+        </div>
+    </div>
+
+    <script>
+        // --- QUIZ LOGIC ---
+        function checkAnswer(button, isCorrect) {
+            const optionsContainer = button.parentElement;
+            const explanation = optionsContainer.nextElementSibling;
+            const allButtons = optionsContainer.querySelectorAll('button');
+
+            // Disable all buttons in this question and show the correct one
+            allButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.getAttribute('onclick').includes('true')) {
+                    btn.classList.add('correct-btn');
+                }
+            });
+
+            // Highlight the clicked button if it was wrong
+            if (!isCorrect) {
+                button.classList.add('incorrect-btn');
+            }
+
+            // Reveal explanation
+            explanation.classList.add('visible');
+        }
+
+        // --- CANVAS (CANDICE) DRAWING LOGIC ---
+        
+        // 1. Draw Right Triangle
+        const ctxTri = document.getElementById('canvasTriangle').getContext('2d');
+        ctxTri.beginPath();
+        ctxTri.moveTo(20, 80);  // Bottom left
+        ctxTri.lineTo(100, 80); // Bottom right
+        ctxTri.lineTo(20, 20);  // Top left
+        ctxTri.closePath();
+        ctxTri.lineWidth = 2;
+        ctxTri.strokeStyle = '#2980b9';
+        ctxTri.stroke();
+        ctxTri.fillStyle = 'rgba(52, 152, 219, 0.2)';
+        ctxTri.fill();
+        // Right angle square
+        ctxTri.strokeRect(20, 70, 10, 10);
+
+        // 2. Draw Coordinate Plane
+        const ctxGrid = document.getElementById('canvasGrid').getContext('2d');
+        ctxGrid.beginPath();
+        // Y axis
+        ctxGrid.moveTo(60, 10);
+        ctxGrid.lineTo(60, 110);
+        // X axis
+        ctxGrid.moveTo(10, 60);
+        ctxGrid.lineTo(110, 60);
+        ctxGrid.strokeStyle = '#333';
+        ctxGrid.lineWidth = 2;
+        ctxGrid.stroke();
+        // Arrows
+        ctxGrid.fillStyle = '#333';
+        ctxGrid.fillText("Y", 65, 15);
+        ctxGrid.fillText("X", 100, 55);
+        
+        // 3. Draw L-Shape (matching the image sketch dimensions conceptually)
+        const ctxL = document.getElementById('canvasLShape').getContext('2d');
+        ctxL.beginPath();
+        ctxL.moveTo(30, 20);   // Top left
+        ctxL.lineTo(60, 20);   // Top right
+        ctxL.lineTo(60, 60);   // Inner corner
+        ctxL.lineTo(100, 60);  // Inner right
+        ctxL.lineTo(100, 90);  // Bottom right
+        ctxL.lineTo(30, 90);   // Bottom left
+        ctxL.closePath();
+        ctxL.lineWidth = 2;
+        ctxL.strokeStyle = '#e67e22';
+        ctxL.stroke();
+        ctxL.fillStyle = 'rgba(230, 126, 34, 0.2)';
+        ctxL.fill();
+
+        // 4. Draw Circle
+        const ctxCirc = document.getElementById('canvasCircle').getContext('2d');
+        ctxCirc.beginPath();
+        ctxCirc.arc(60, 60, 40, 0, 2 * Math.PI);
+        ctxCirc.lineWidth = 2;
+        ctxCirc.strokeStyle = '#27ae60';
+        ctxCirc.stroke();
+        ctxCirc.fillStyle = 'rgba(39, 174, 96, 0.2)';
+        ctxCirc.fill();
+        // Radius line
+        ctxCirc.beginPath();
+        ctxCirc.moveTo(60, 60);
+        ctxCirc.lineTo(100, 60);
+        ctxCirc.strokeStyle = '#333';
+        ctxCirc.stroke();
+        // Center dot
+        ctxCirc.beginPath();
+        ctxCirc.arc(60, 60, 3, 0, 2 * Math.PI);
+        ctxCirc.fillStyle = '#333';
+        ctxCirc.fill();
+        ctxCirc.fillText("r", 75, 55);
+    </script>
+</body>
+</html>
