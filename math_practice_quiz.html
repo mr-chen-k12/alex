@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice Quiz</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        MathJax = {
+          tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        .question-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 5px solid #3498db;
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .options {
+            margin-bottom: 15px;
+        }
+        .option-label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .option-label:hover {
+            background: #f0f8ff;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        .check-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .check-btn:hover {
+            background-color: #2980b9;
+        }
+        .feedback {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .feedback.correct {
+            background-color: #e8f8f5;
+            border-left: 4px solid #2ecc71;
+            color: #27ae60;
+        }
+        .feedback.incorrect {
+            background-color: #fbeee6;
+            border-left: 4px solid #e74c3c;
+            color: #c0392b;
+        }
+        .explanation-text {
+            margin-top: 10px;
+            color: #333;
+        }
+    </style>
+    <script>
+        function checkAnswer(qId, correctOption) {
+            const selected = document.querySelector(`input[name="q${qId}"]:checked`);
+            const feedbackDiv = document.getElementById(`feedback-${qId}`);
+            if (!selected) {
+                alert("Please select an answer before checking.");
+                return;
+            }
+            const isCorrect = selected.value === correctOption;
+            const explanationHTML = document.getElementById(`exp-${qId}`).innerHTML;
+
+            if (isCorrect) {
+                feedbackDiv.innerHTML = "<strong>Correct!</strong><div class='explanation-text'>" + explanationHTML + "</div>";
+                feedbackDiv.className = "feedback correct";
+            } else {
+                feedbackDiv.innerHTML = "<strong>Incorrect.</strong><div class='explanation-text'>" + explanationHTML + "</div>";
+                feedbackDiv.className = "feedback incorrect";
+            }
+            feedbackDiv.style.display = "block";
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Math Practice - Multiple Choice</h1>
+    <p style="text-align: center;">Based on your selected problem types, here are 3 practice questions for each concept.</p>
+
+    <h2>Set 1: Volume of a Rectangular Prism (Based on Problem 3)</h2>
+    
+    <!-- Question 3.1 -->
+    <div class="question-card">
+        <div class="question-text">1. A rectangular prism has a length of 4 inches, a width of 5 inches, and a height of 10 inches. What is the volume of the prism?</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q1" value="A"> A) 19 cubic inches</label>
+            <label class="option-label"><input type="radio" name="q1" value="B"> B) 100 cubic inches</label>
+            <label class="option-label"><input type="radio" name="q1" value="C"> C) 200 cubic inches</label>
+            <label class="option-label"><input type="radio" name="q1" value="D"> D) 400 cubic inches</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(1, 'C')">Check Answer</button>
+        <div id="feedback-1" class="feedback"></div>
+        <div id="exp-1" style="display:none;">The volume of a rectangular prism is length $\times$ width $\times$ height.<br>$$V = 4 \times 5 \times 10 = 20 \times 10 = 200 \text{ in}^3$$</div>
+    </div>
+
+    <!-- Question 3.2 -->
+    <div class="question-card">
+        <div class="question-text">2. A rectangular prism has a length of 2 cm, a width of 3 cm, and a height of 7 cm. What is the volume of the prism?</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q2" value="A"> A) 12 cubic cm</label>
+            <label class="option-label"><input type="radio" name="q2" value="B"> B) 21 cubic cm</label>
+            <label class="option-label"><input type="radio" name="q2" value="C"> C) 42 cubic cm</label>
+            <label class="option-label"><input type="radio" name="q2" value="D"> D) 49 cubic cm</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(2, 'C')">Check Answer</button>
+        <div id="feedback-2" class="feedback"></div>
+        <div id="exp-2" style="display:none;">Multiply all three dimensions to find the volume:<br>$$V = 2 \times 3 \times 7 = 6 \times 7 = 42 \text{ cm}^3$$</div>
+    </div>
+
+    <!-- Question 3.3 -->
+    <div class="question-card">
+        <div class="question-text">3. What is the volume of a rectangular prism with a length of 5 m, width of 5 m, and height of 4 m?</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q3" value="A"> A) 100 cubic m</label>
+            <label class="option-label"><input type="radio" name="q3" value="B"> B) 25 cubic m</label>
+            <label class="option-label"><input type="radio" name="q3" value="C"> C) 14 cubic m</label>
+            <label class="option-label"><input type="radio" name="q3" value="D"> D) 125 cubic m</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(3, 'A')">Check Answer</button>
+        <div id="feedback-3" class="feedback"></div>
+        <div id="exp-3" style="display:none;">Use the volume formula $V = l \times w \times h$.<br>$$V = 5 \times 5 \times 4 = 25 \times 4 = 100 \text{ m}^3$$</div>
+    </div>
+
+
+    <h2>Set 2: Similar Shapes & Perimeter (Based on Problem 6)</h2>
+
+    <!-- Question 6.1 -->
+    <div class="question-card">
+        <div class="question-text">4. A rectangle is 3 cm by 4 cm. If you draw a similar rectangle with a scale factor of 3, what is the perimeter of the new rectangle?</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q4" value="A"> A) 14 cm</label>
+            <label class="option-label"><input type="radio" name="q4" value="B"> B) 21 cm</label>
+            <label class="option-label"><input type="radio" name="q4" value="C"> C) 42 cm</label>
+            <label class="option-label"><input type="radio" name="q4" value="D"> D) 108 cm</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(4, 'C')">Check Answer</button>
+        <div id="feedback-4" class="feedback"></div>
+        <div id="exp-4" style="display:none;">First find the new sides by multiplying by the scale factor of 3: $3 \times 3 = 9 \text{ cm}$ and $4 \times 3 = 12 \text{ cm}$.<br>Then find the perimeter: $9 + 12 + 9 + 12 = 42 \text{ cm}$.</div>
+    </div>
+
+    <!-- Question 6.2 -->
+    <div class="question-card">
+        <div class="question-text">5. The dimensions of a rectangle are 6 in by 2 in. A similar rectangle is drawn with a scale factor of 4. What is the new perimeter?</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q5" value="A"> A) 32 in</label>
+            <label class="option-label"><input type="radio" name="q5" value="B"> B) 64 in</label>
+            <label class="option-label"><input type="radio" name="q5" value="C"> C) 48 in</label>
+            <label class="option-label"><input type="radio" name="q5" value="D"> D) 16 in</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(5, 'B')">Check Answer</button>
+        <div id="feedback-5" class="feedback"></div>
+        <div id="exp-5" style="display:none;">The new dimensions are $6 \times 4 = 24 \text{ in}$ and $2 \times 4 = 8 \text{ in}$.<br>Perimeter $= 24 + 8 + 24 + 8 = 64 \text{ in}$.</div>
+    </div>
+
+    <!-- Question 6.3 -->
+    <div class="question-card">
+        <div class="question-text">6. An original rectangle is 10 ft by 4 ft. If the scale factor for a new similar rectangle is 0.5, what is the perimeter of the new rectangle?</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q6" value="A"> A) 14 ft</label>
+            <label class="option-label"><input type="radio" name="q6" value="B"> B) 28 ft</label>
+            <label class="option-label"><input type="radio" name="q6" value="C"> C) 7 ft</label>
+            <label class="option-label"><input type="radio" name="q6" value="D"> D) 5 ft</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(6, 'A')">Check Answer</button>
+        <div id="feedback-6" class="feedback"></div>
+        <div id="exp-6" style="display:none;">Multiply by 0.5 (which is half): new sides are $5 \text{ ft}$ and $2 \text{ ft}$.<br>Perimeter $= 5 + 2 + 5 + 2 = 14 \text{ ft}$.</div>
+    </div>
+
+
+    <h2>Set 3: Proportions & Percentages (Based on Problem 8)</h2>
+
+    <!-- Question 8.1 -->
+    <div class="question-card">
+        <div class="question-text">7. A store has 150 shirts in stock. If 40% of the shirts are red and the rest are blue, how many blue shirts are there?</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q7" value="A"> A) 60</label>
+            <label class="option-label"><input type="radio" name="q7" value="B"> B) 90</label>
+            <label class="option-label"><input type="radio" name="q7" value="C"> C) 110</label>
+            <label class="option-label"><input type="radio" name="q7" value="D"> D) 40</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(7, 'B')">Check Answer</button>
+        <div id="feedback-7" class="feedback"></div>
+        <div id="exp-7" style="display:none;">If 40% are red, then 60% are blue ($100\% - 40\%$).<br>Set up a proportion or multiply: $0.60 \times 150 = 90$ blue shirts.</div>
+    </div>
+
+    <!-- Question 8.2 -->
+    <div class="question-card">
+        <div class="question-text">8. In a group of 200 students, 25% take an art class and the rest take music. How many students take music?</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q8" value="A"> A) 50</label>
+            <label class="option-label"><input type="radio" name="q8" value="B"> B) 125</label>
+            <label class="option-label"><input type="radio" name="q8" value="C"> C) 150</label>
+            <label class="option-label"><input type="radio" name="q8" value="D"> D) 175</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(8, 'C')">Check Answer</button>
+        <div id="feedback-8" class="feedback"></div>
+        <div id="exp-8" style="display:none;">If 25% take art, 75% take music.<br>Find 75% of 200: $\frac{75}{100} = \frac{x}{200} \Rightarrow x = 150$.</div>
+    </div>
+
+    <!-- Question 8.3 -->
+    <div class="question-card">
+        <div class="question-text">9. An animal shelter has 50 pets. If 10% are cats and the rest are dogs, how many dogs are there?</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q9" value="A"> A) 5</label>
+            <label class="option-label"><input type="radio" name="q9" value="B"> B) 40</label>
+            <label class="option-label"><input type="radio" name="q9" value="C"> C) 45</label>
+            <label class="option-label"><input type="radio" name="q9" value="D"> D) 50</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(9, 'C')">Check Answer</button>
+        <div id="feedback-9" class="feedback"></div>
+        <div id="exp-9" style="display:none;">If 10% are cats, then 90% are dogs.<br>$90\%$ of $50 = 0.90 \times 50 = 45$ dogs.</div>
+    </div>
+
+
+    <h2>Set 4: Conversions (Based on Problem 11)</h2>
+
+    <!-- Question 11.1 -->
+    <div class="question-card">
+        <div class="question-text">10. Convert 45% to a fraction in simplest form and a decimal.</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q10" value="A"> A) $\frac{9}{20}$ and 0.45</label>
+            <label class="option-label"><input type="radio" name="q10" value="B"> B) $\frac{45}{100}$ and 4.5</label>
+            <label class="option-label"><input type="radio" name="q10" value="C"> C) $\frac{9}{10}$ and 0.45</label>
+            <label class="option-label"><input type="radio" name="q10" value="D"> D) $\frac{1}{2}$ and 0.50</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(10, 'A')">Check Answer</button>
+        <div id="feedback-10" class="feedback"></div>
+        <div id="exp-10" style="display:none;">As a decimal, $45\% = 0.45$. As a fraction, it is $\frac{45}{100}$, which reduces to $\frac{9}{20}$ when divided by 5.</div>
+    </div>
+
+    <!-- Question 11.2 -->
+    <div class="question-card">
+        <div class="question-text">11. Convert 80% to a fraction in simplest form and a decimal.</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q11" value="A"> A) $\frac{8}{10}$ and 8.0</label>
+            <label class="option-label"><input type="radio" name="q11" value="B"> B) $\frac{4}{5}$ and 0.08</label>
+            <label class="option-label"><input type="radio" name="q11" value="C"> C) $\frac{4}{5}$ and 0.80</label>
+            <label class="option-label"><input type="radio" name="q11" value="D"> D) $\frac{80}{100}$ and 0.88</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(11, 'C')">Check Answer</button>
+        <div id="feedback-11" class="feedback"></div>
+        <div id="exp-11" style="display:none;">Decimal: $80\% = 0.80$. Fraction: $\frac{80}{100}$, divide top and bottom by 20 to get $\frac{4}{5}$.</div>
+    </div>
+
+    <!-- Question 11.3 -->
+    <div class="question-card">
+        <div class="question-text">12. Convert 5% to a fraction in simplest form and a decimal.</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q12" value="A"> A) $\frac{1}{20}$ and 0.5</label>
+            <label class="option-label"><input type="radio" name="q12" value="B"> B) $\frac{1}{2}$ and 0.05</label>
+            <label class="option-label"><input type="radio" name="q12" value="C"> C) $\frac{1}{5}$ and 0.5</label>
+            <label class="option-label"><input type="radio" name="q12" value="D"> D) $\frac{1}{20}$ and 0.05</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(12, 'D')">Check Answer</button>
+        <div id="feedback-12" class="feedback"></div>
+        <div id="exp-12" style="display:none;">Decimal: $5\% = 0.05$. Fraction: $\frac{5}{100}$, divide top and bottom by 5 to get $\frac{1}{20}$.</div>
+    </div>
+
+
+    <h2>Set 5: Order of Operations with Decimals (Based on Problem 14)</h2>
+
+    <!-- Question 14.1 -->
+    <div class="question-card">
+        <div class="question-text">13. Evaluate: $$50 - (3.2 + 6.8)$$</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q13" value="A"> A) 40.0</label>
+            <label class="option-label"><input type="radio" name="q13" value="B"> B) 43.6</label>
+            <label class="option-label"><input type="radio" name="q13" value="C"> C) 60.0</label>
+            <label class="option-label"><input type="radio" name="q13" value="D"> D) 53.2</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(13, 'A')">Check Answer</button>
+        <div id="feedback-13" class="feedback"></div>
+        <div id="exp-13" style="display:none;">Perform addition inside parentheses first: $3.2 + 6.8 = 10.0$.<br>Then subtract from 50: $50 - 10 = 40$.</div>
+    </div>
+
+    <!-- Question 14.2 -->
+    <div class="question-card">
+        <div class="question-text">14. Evaluate: $$25 - (1.5 + 2.5)$$</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q14" value="A"> A) 22.5</label>
+            <label class="option-label"><input type="radio" name="q14" value="B"> B) 21.0</label>
+            <label class="option-label"><input type="radio" name="q14" value="C"> C) 26.0</label>
+            <label class="option-label"><input type="radio" name="q14" value="D"> D) 29.0</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(14, 'B')">Check Answer</button>
+        <div id="feedback-14" class="feedback"></div>
+        <div id="exp-14" style="display:none;">Parentheses first: $1.5 + 2.5 = 4.0$.<br>Subtract: $25 - 4 = 21$.</div>
+    </div>
+
+    <!-- Question 14.3 -->
+    <div class="question-card">
+        <div class="question-text">15. Evaluate: $$100 - (12.4 + 7.6)$$</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q15" value="A"> A) 87.6</label>
+            <label class="option-label"><input type="radio" name="q15" value="B"> B) 95.2</label>
+            <label class="option-label"><input type="radio" name="q15" value="C"> C) 80.0</label>
+            <label class="option-label"><input type="radio" name="q15" value="D"> D) 120.0</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(15, 'C')">Check Answer</button>
+        <div id="feedback-15" class="feedback"></div>
+        <div id="exp-15" style="display:none;">Add the decimals first: $12.4 + 7.6 = 20.0$.<br>Subtract from 100: $100 - 20 = 80$.</div>
+    </div>
+
+
+    <h2>Set 6: Order of Operations (Based on Problem 20)</h2>
+
+    <!-- Question 20.1 -->
+    <div class="question-card">
+        <div class="question-text">16. Evaluate: $$4^2 - 2^2 \times 3 + 8 \div 4$$</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q16" value="A"> A) 26</label>
+            <label class="option-label"><input type="radio" name="q16" value="B"> B) 6</label>
+            <label class="option-label"><input type="radio" name="q16" value="C"> C) 14</label>
+            <label class="option-label"><input type="radio" name="q16" value="D"> D) -4</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(16, 'B')">Check Answer</button>
+        <div id="feedback-16" class="feedback"></div>
+        <div id="exp-16" style="display:none;">Exponents: $16 - 4 \times 3 + 8 \div 4$<br>Multiplication/Division: $16 - 12 + 2$<br>Addition/Subtraction (left to right): $4 + 2 = 6$.</div>
+    </div>
+
+    <!-- Question 20.2 -->
+    <div class="question-card">
+        <div class="question-text">17. Evaluate: $$6^2 - 3^2 \times 2 + 15 \div 3$$</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q17" value="A"> A) 23</label>
+            <label class="option-label"><input type="radio" name="q17" value="B"> B) 59</label>
+            <label class="option-label"><input type="radio" name="q17" value="C"> C) 5</label>
+            <label class="option-label"><input type="radio" name="q17" value="D"> D) 41</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(17, 'A')">Check Answer</button>
+        <div id="feedback-17" class="feedback"></div>
+        <div id="exp-17" style="display:none;">Exponents: $36 - 9 \times 2 + 15 \div 3$<br>Multiplication/Division: $36 - 18 + 5$<br>Addition/Subtraction: $18 + 5 = 23$.</div>
+    </div>
+
+    <!-- Question 20.3 -->
+    <div class="question-card">
+        <div class="question-text">18. Evaluate: $$3^2 - 1^2 \times 5 + 12 \div 6$$</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q18" value="A"> A) 10</label>
+            <label class="option-label"><input type="radio" name="q18" value="B"> B) 32</label>
+            <label class="option-label"><input type="radio" name="q18" value="C"> C) 6</label>
+            <label class="option-label"><input type="radio" name="q18" value="D"> D) 2</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(18, 'C')">Check Answer</button>
+        <div id="feedback-18" class="feedback"></div>
+        <div id="exp-18" style="display:none;">Exponents: $9 - 1 \times 5 + 12 \div 6$<br>Multiplication/Division: $9 - 5 + 2$<br>Addition/Subtraction: $4 + 2 = 6$.</div>
+    </div>
+
+
+    <h2>Set 7: Perimeter of Complex Polygons (Based on Problem 21)</h2>
+
+    <!-- Question 21.1 -->
+    <div class="question-card">
+        <div class="question-text">19. What is the perimeter of an L-shaped polygon where the top edge is 12 cm, left vertical edge is 10 cm, right vertical edge is 4 cm, and the bottom-inner horizontal edge is 7 cm?</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q19" value="A"> A) 33 cm</label>
+            <label class="option-label"><input type="radio" name="q19" value="B"> B) 44 cm</label>
+            <label class="option-label"><input type="radio" name="q19" value="C"> C) 38 cm</label>
+            <label class="option-label"><input type="radio" name="q19" value="D"> D) 48 cm</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(19, 'B')">Check Answer</button>
+        <div id="feedback-19" class="feedback"></div>
+        <div id="exp-19" style="display:none;">Find the missing sides: <br>Bottom edge = Top (12) - Inner horizontal (7) = 5 cm.<br>Inner vertical = Left (10) - Right (4) = 6 cm.<br>Perimeter = $12 + 10 + 4 + 7 + 5 + 6 = 44 \text{ cm}$.</div>
+    </div>
+
+    <!-- Question 21.2 -->
+    <div class="question-card">
+        <div class="question-text">20. An L-shaped room has these outer walls: Top = 15 m, Left = 12 m. The rightmost vertical wall is 5 m, and the bottom inner horizontal wall is 8 m. What is the perimeter of the room?</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q20" value="A"> A) 40 m</label>
+            <label class="option-label"><input type="radio" name="q20" value="B"> B) 47 m</label>
+            <label class="option-label"><input type="radio" name="q20" value="C"> C) 54 m</label>
+            <label class="option-label"><input type="radio" name="q20" value="D"> D) 60 m</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(20, 'C')">Check Answer</button>
+        <div id="feedback-20" class="feedback"></div>
+        <div id="exp-20" style="display:none;">Missing bottom wall = $15 - 8 = 7 \text{ m}$.<br>Missing inner vertical wall = $12 - 5 = 7 \text{ m}$.<br>Perimeter = $15 + 12 + 5 + 8 + 7 + 7 = 54 \text{ m}$.</div>
+    </div>
+
+    <!-- Question 21.3 -->
+    <div class="question-card">
+        <div class="question-text">21. Find the perimeter of an L-shaped polygon with Top = 8 ft, Left = 8 ft, Right vertical = 2 ft, and bottom inner horizontal = 5 ft.</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q21" value="A"> A) 32 ft</label>
+            <label class="option-label"><input type="radio" name="q21" value="B"> B) 23 ft</label>
+            <label class="option-label"><input type="radio" name="q21" value="C"> C) 29 ft</label>
+            <label class="option-label"><input type="radio" name="q21" value="D"> D) 34 ft</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(21, 'A')">Check Answer</button>
+        <div id="feedback-21" class="feedback"></div>
+        <div id="exp-21" style="display:none;">Missing bottom = $8 - 5 = 3 \text{ ft}$.<br>Missing inner vertical = $8 - 2 = 6 \text{ ft}$.<br>Perimeter = $8 + 8 + 2 + 5 + 3 + 6 = 32 \text{ ft}$.</div>
+    </div>
+
+
+    <h2>Set 8: Circumference (Based on Problem 25)</h2>
+
+    <!-- Question 25.1 -->
+    <div class="question-card">
+        <div class="question-text">22. A circular track has a diameter of 100 m. Find the circumference of the track to the nearest ten meters. (Use 3.14 for $\pi$)</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q22" value="A"> A) 314 m</label>
+            <label class="option-label"><input type="radio" name="q22" value="B"> B) 310 m</label>
+            <label class="option-label"><input type="radio" name="q22" value="C"> C) 320 m</label>
+            <label class="option-label"><input type="radio" name="q22" value="D"> D) 160 m</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(22, 'B')">Check Answer</button>
+        <div id="feedback-22" class="feedback"></div>
+        <div id="exp-22" style="display:none;">$C = \pi \times d \approx 3.14 \times 100 = 314 \text{ m}$.<br>Rounded to the nearest ten, 314 becomes 310 m.</div>
+    </div>
+
+    <!-- Question 25.2 -->
+    <div class="question-card">
+        <div class="question-text">23. A circular plaza has a diameter of 300 feet. What is the circumference of the plaza to the nearest ten feet? (Use 3.14 for $\pi$)</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q23" value="A"> A) 940 ft</label>
+            <label class="option-label"><input type="radio" name="q23" value="B"> B) 942 ft</label>
+            <label class="option-label"><input type="radio" name="q23" value="C"> C) 950 ft</label>
+            <label class="option-label"><input type="radio" name="q23" value="D"> D) 900 ft</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(23, 'A')">Check Answer</button>
+        <div id="feedback-23" class="feedback"></div>
+        <div id="exp-23" style="display:none;">$C = 3.14 \times 300 = 942 \text{ ft}$.<br>Rounded to the nearest ten feet, it is 940 ft.</div>
+    </div>
+
+    <!-- Question 25.3 -->
+    <div class="question-card">
+        <div class="question-text">24. A large circular garden has a diameter of 50 m. Find the circumference to the nearest ten meters. (Use 3.14 for $\pi$)</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q24" value="A"> A) 157 m</label>
+            <label class="option-label"><input type="radio" name="q24" value="B"> B) 150 m</label>
+            <label class="option-label"><input type="radio" name="q24" value="C"> C) 160 m</label>
+            <label class="option-label"><input type="radio" name="q24" value="D"> D) 79 m</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(24, 'C')">Check Answer</button>
+        <div id="feedback-24" class="feedback"></div>
+        <div id="exp-24" style="display:none;">$C = 3.14 \times 50 = 157 \text{ m}$.<br>Rounded to the nearest ten, the 7 rounds the 5 up to a 6, making it 160 m.</div>
+    </div>
+
+
+    <h2>Set 9: Operations with Positive and Negative Integers (Based on Problem 29)</h2>
+
+    <!-- Question 29.1 -->
+    <div class="question-card">
+        <div class="question-text">25. Evaluate: $$-5 + (-3) - (-8) - (+2)$$</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q25" value="A"> A) -2</label>
+            <label class="option-label"><input type="radio" name="q25" value="B"> B) -6</label>
+            <label class="option-label"><input type="radio" name="q25" value="C"> C) 2</label>
+            <label class="option-label"><input type="radio" name="q25" value="D"> D) -18</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(25, 'A')">Check Answer</button>
+        <div id="feedback-25" class="feedback"></div>
+        <div id="exp-25" style="display:none;">Simplify the signs first: $-5 - 3 + 8 - 2$<br>Combine left to right: $-8 + 8 - 2 = 0 - 2 = -2$.</div>
+    </div>
+
+    <!-- Question 29.2 -->
+    <div class="question-card">
+        <div class="question-text">26. Evaluate: $$-10 + (-4) - (-5) - (+1)$$</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q26" value="A"> A) -10</label>
+            <label class="option-label"><input type="radio" name="q26" value="B"> B) -20</label>
+            <label class="option-label"><input type="radio" name="q26" value="C"> C) -8</label>
+            <label class="option-label"><input type="radio" name="q26" value="D"> D) 0</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(26, 'A')">Check Answer</button>
+        <div id="feedback-26" class="feedback"></div>
+        <div id="exp-26" style="display:none;">Simplify the signs: $-10 - 4 + 5 - 1$<br>Combine left to right: $-14 + 5 - 1 = -9 - 1 = -10$.</div>
+    </div>
+
+    <!-- Question 29.3 -->
+    <div class="question-card">
+        <div class="question-text">27. Evaluate: $$-2 + (-6) - (-10) - (+4)$$</div>
+        <div class="options">
+            <label class="option-label"><input type="radio" name="q27" value="A"> A) -6</label>
+            <label class="option-label"><input type="radio" name="q27" value="B"> B) 6</label>
+            <label class="option-label"><input type="radio" name="q27" value="C"> C) -2</label>
+            <label class="option-label"><input type="radio" name="q27" value="D"> D) 2</label>
+        </div>
+        <button class="check-btn" onclick="checkAnswer(27, 'C')">Check Answer</button>
+        <div id="feedback-27" class="feedback"></div>
+        <div id="exp-27" style="display:none;">Simplify the signs: $-2 - 6 + 10 - 4$<br>Combine left to right: $-8 + 10 - 4 = 2 - 4 = -2$.</div>
+    </div>
+
+</body>
+</html>
