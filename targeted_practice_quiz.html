@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Targeted Practice Quiz</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --correct: #27ae60;
+            --incorrect: #e74c3c;
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 40px;
+        }
+        .section {
+            margin-bottom: 40px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--secondary);
+        }
+        .section-title {
+            font-size: 1.4em;
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .question-card {
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 6px;
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .option-btn {
+            background-color: white;
+            border: 2px solid #ddd;
+            padding: 12px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--secondary);
+            background-color: #f0f8ff;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+        .option-btn.correct {
+            background-color: #d5f5e3;
+            border-color: var(--correct);
+            color: #1e8449;
+            font-weight: bold;
+        }
+        .option-btn.incorrect {
+            background-color: #fadbd8;
+            border-color: var(--incorrect);
+            color: #943126;
+        }
+        .feedback-area {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+            font-size: 1.05em;
+        }
+        .feedback-area.show {
+            display: block;
+            animation: fadeIn 0.4s;
+        }
+        .feedback-correct {
+            background-color: #d5f5e3;
+            border-left: 4px solid var(--correct);
+        }
+        .feedback-incorrect {
+            background-color: #fadbd8;
+            border-left: 4px solid var(--incorrect);
+        }
+        .explanation-title {
+            font-weight: bold;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Targeted Practice Quiz</h1>
+    <p style="text-align:center; font-size:1.1em; color:#555; margin-bottom: 40px;">
+        Practice questions focused on the concepts missed in problems 3, 4, 8, 10, 14, 18, 25, and 28.
+    </p>
+
+    <div id="quiz-container"></div>
+
+    <script>
+        const quizData = [
+            {
+                section: "Practice for Question 3: Converting Feet to Yards",
+                questions: [
+                    {
+                        q: "A garden hose is 45 feet long. How many yards is that?",
+                        options: ["15 yards", "135 yards", "12 yards", "42 yards"],
+                        answer: 0,
+                        explanation: "There are 3 feet in 1 yard. To convert feet to yards, divide the total feet by 3. So, 45 ÷ 3 = 15 yards."
+                    },
+                    {
+                        q: "A football field is 300 feet long. How many yards is this?",
+                        options: ["900 yards", "100 yards", "30 yards", "303 yards"],
+                        answer: 1,
+                        explanation: "Divide the number of feet by 3 to find the yards. 300 ÷ 3 = 100 yards."
+                    },
+                    {
+                        q: "The height of a building is 120 feet. What is its height in yards?",
+                        options: ["360 yards", "40 yards", "60 yards", "12 yards"],
+                        answer: 1,
+                        explanation: "Divide the feet by 3. 120 ÷ 3 = 40 yards."
+                    }
+                ]
+            },
+            {
+                section: "Practice for Question 4: Adding Large Numbers",
+                questions: [
+                    {
+                        q: "A pilot flew 350 miles on Monday, 720 miles on Tuesday, and 1,150 miles on Wednesday. How many miles did she fly in all?",
+                        options: ["2,120 miles", "2,220 miles", "1,220 miles", "2,320 miles"],
+                        answer: 1,
+                        explanation: "Add the three numbers together: 350 + 720 + 1150. First, 350 + 720 = 1070. Then, 1070 + 1150 = 2,220."
+                    },
+                    {
+                        q: "A store sold $425 worth of apples, $615 worth of oranges, and $1,250 worth of bananas. What were the total sales?",
+                        options: ["$2,290", "$2,190", "$2,390", "$1,290"],
+                        answer: 0,
+                        explanation: "Add all the amounts: 425 + 615 = 1040. Then, 1040 + 1250 = 2,290."
+                    },
+                    {
+                        q: "Four friends collect trading cards. They have 120, 340, 560, and 1,020 cards respectively. How many cards do they have altogether?",
+                        options: ["2,040 cards", "1,940 cards", "2,140 cards", "1,040 cards"],
+                        answer: 0,
+                        explanation: "Add them up: 120 + 340 = 460. 460 + 560 = 1020. 1020 + 1020 = 2,040."
+                    }
+                ]
+            },
+            {
+                section: "Practice for Question 8: Kilograms to Grams & Division",
+                questions: [
+                    {
+                        q: "A pair of heavy winter boots weighs exactly 2 kilograms together. How many grams does ONE boot weigh?",
+                        options: ["2,000 grams", "1,000 grams", "500 grams", "200 grams"],
+                        answer: 1,
+                        explanation: "First, convert kilograms to grams (1 kg = 1,000 g), so 2 kg = 2,000 g. Since there are two boots, divide by 2. 2000 ÷ 2 = 1,000 grams per boot."
+                    },
+                    {
+                        q: "Two identical laptops in a box weigh 3 kilograms in total. How many grams does ONE laptop weigh?",
+                        options: ["1,500 grams", "3,000 grams", "150 grams", "6,000 grams"],
+                        answer: 0,
+                        explanation: "3 kilograms equals 3,000 grams. Divide by 2 to find the weight of one laptop: 3000 ÷ 2 = 1,500 grams."
+                    },
+                    {
+                        q: "A pair of roller skates weighs 1.5 kilograms together. How many grams does ONE skate weigh?",
+                        options: ["750 grams", "1,500 grams", "75 grams", "3,000 grams"],
+                        answer: 0,
+                        explanation: "1.5 kilograms equals 1,500 grams. Divide by 2: 1500 ÷ 2 = 750 grams."
+                    }
+                ]
+            },
+            {
+                section: "Practice for Question 10: Finding the Difference (Growth/Change)",
+                questions: [
+                    {
+                        q: "A plant was 12 inches tall in May and 19 inches tall in July. How many inches did the plant grow between May and July?",
+                        options: ["7 inches", "31 inches", "6 inches", "8 inches"],
+                        answer: 0,
+                        explanation: "Subtract the starting height from the ending height to find the growth: 19 - 12 = 7 inches."
+                    },
+                    {
+                        q: "The temperature was 45°F at 8 AM and 62°F at noon. How much did the temperature rise?",
+                        options: ["17°F", "15°F", "27°F", "107°F"],
+                        answer: 0,
+                        explanation: "Subtract the morning temperature from the noon temperature: 62 - 45 = 17 degrees."
+                    },
+                    {
+                        q: "A savings account had $150 in week 1 and $325 in week 4. How much money was saved between week 1 and week 4?",
+                        options: ["$175", "$475", "$225", "$150"],
+                        answer: 0,
+                        explanation: "Find the difference between the two amounts: 325 - 150 = $175."
+                    }
+                ]
+            },
+            {
+                section: "Practice for Question 14: Subtracting Decimals with Regrouping",
+                questions: [
+                    {
+                        q: "Solve: $20.00 - $14.35",
+                        options: ["$5.65", "$6.65", "$5.75", "$6.35"],
+                        answer: 0,
+                        explanation: "Align the decimals and regroup across the zeros. 20.00 - 14.35 = 5.65."
+                    },
+                    {
+                        q: "Solve: $50.00 - $32.81",
+                        options: ["$17.19", "$18.19", "$17.29", "$28.19"],
+                        answer: 0,
+                        explanation: "Align decimals and borrow carefully from the 50. 50.00 - 32.81 = 17.19."
+                    },
+                    {
+                        q: "Solve: $10.00 - $4.92",
+                        options: ["$5.08", "$6.08", "$5.18", "$4.08"],
+                        answer: 0,
+                        explanation: "Regroup across the zeros from the 10. 10.00 - 4.92 = 5.08."
+                    }
+                ]
+            },
+            {
+                section: "Practice for Question 18: Multiplying Decimals by Whole Numbers",
+                questions: [
+                    {
+                        q: "Solve: $0.75 × 8",
+                        options: ["$6.00", "$5.60", "$6.50", "$0.60"],
+                        answer: 0,
+                        explanation: "Multiply 75 by 8 to get 600. Since there are two decimal places in 0.75, place the decimal two spots from the right: $6.00."
+                    },
+                    {
+                        q: "Solve: $1.24 × 5",
+                        options: ["$6.20", "$5.20", "$7.20", "$6.00"],
+                        answer: 0,
+                        explanation: "Multiply 124 by 5 to get 620. Put the decimal point two places from the right: $6.20."
+                    },
+                    {
+                        q: "Solve: $0.89 × 4",
+                        options: ["$3.56", "$4.56", "$3.46", "$2.56"],
+                        answer: 0,
+                        explanation: "Multiply 89 by 4 to get 356. Place the decimal point two spots from the right: $3.56."
+                    }
+                ]
+            },
+            {
+                section: "Practice for Question 25: Area and Tiling with Squares",
+                questions: [
+                    {
+                        q: "If a 4-inch square is covered with 1-inch squares, how many of the 1-inch squares are needed?",
+                        options: ["16 squares", "8 squares", "4 squares", "12 squares"],
+                        answer: 0,
+                        explanation: "The area of a 4-inch square is 4 × 4 = 16 square inches. Since each small square is 1 square inch, you need 16 of them."
+                    },
+                    {
+                        q: "A square grid is 5 cm long on each side. How many 1 cm squares make up this grid?",
+                        options: ["25 squares", "10 squares", "20 squares", "15 squares"],
+                        answer: 0,
+                        explanation: "Calculate the area: 5 cm × 5 cm = 25 square cm. It takes 25 small 1-cm squares to fill it."
+                    },
+                    {
+                        q: "A square table measures 6 feet on each side. How many 1-foot square tiles are needed to cover the top?",
+                        options: ["36 tiles", "12 tiles", "24 tiles", "18 tiles"],
+                        answer: 0,
+                        explanation: "The area of the table is 6 × 6 = 36 square feet. Therefore, 36 tiles of 1 square foot each are needed."
+                    }
+                ]
+            },
+            {
+                section: "Practice for Question 28: 90-Degree Counterclockwise Rotations",
+                questions: [
+                    {
+                        q: "Imagine an arrow pointing straight North (Up). If you rotate it 90 degrees counterclockwise, which direction will it point?",
+                        options: ["West (Left)", "East (Right)", "South (Down)", "North (Up)"],
+                        answer: 0,
+                        explanation: "Counterclockwise means turning to the left, opposite the way a clock ticks. An upward arrow turned 90 degrees left will point West."
+                    },
+                    {
+                        q: "Imagine an arrow pointing East (Right). If you rotate it 90 degrees counterclockwise, which direction will it point?",
+                        options: ["North (Up)", "South (Down)", "West (Left)", "East (Right)"],
+                        answer: 0,
+                        explanation: "Turning an arrow that points right by 90 degrees to the left (counterclockwise) makes it point straight up (North)."
+                    },
+                    {
+                        q: "Imagine the capital letter 'E'. If you rotate it 90 degrees counterclockwise, where will the three 'prongs' point?",
+                        options: ["Up", "Down", "Left", "Right"],
+                        answer: 0,
+                        explanation: "Normally, the prongs of an 'E' point to the right. If you rotate the letter 90 degrees to the left (counterclockwise), the prongs will point straight up."
+                    }
+                ]
+            }
+        ];
+
+        const container = document.getElementById('quiz-container');
+        let globalQuestionCounter = 0;
+
+        quizData.forEach((sectionData, secIdx) => {
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'section';
+            
+            const secTitle = document.createElement('div');
+            secTitle.className = 'section-title';
+            secTitle.innerText = sectionData.section;
+            sectionDiv.appendChild(secTitle);
+
+            sectionData.questions.forEach((qData, qIdx) => {
+                globalQuestionCounter++;
+                const qId = `q_${secIdx}_${qIdx}`;
+                
+                const qCard = document.createElement('div');
+                qCard.className = 'question-card';
+                
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.innerText = `${globalQuestionCounter}. ${qData.q}`;
+                qCard.appendChild(qText);
+
+                const optionsGrid = document.createElement('div');
+                optionsGrid.className = 'options-grid';
+                optionsGrid.id = `grid_${qId}`;
+
+                qData.options.forEach((optText, optIdx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerText = optText;
+                    btn.onclick = () => checkAnswer(qId, optIdx, qData.answer, qData.explanation);
+                    optionsGrid.appendChild(btn);
+                });
+
+                qCard.appendChild(optionsGrid);
+
+                const feedback = document.createElement('div');
+                feedback.id = `feedback_${qId}`;
+                feedback.className = 'feedback-area';
+                qCard.appendChild(feedback);
+
+                sectionDiv.appendChild(qCard);
+            });
+
+            container.appendChild(sectionDiv);
+        });
+
+        function checkAnswer(qId, selectedIdx, correctIdx, explanation) {
+            const grid = document.getElementById(`grid_${qId}`);
+            const buttons = grid.getElementsByTagName('button');
+            const feedback = document.getElementById(`feedback_${qId}`);
+
+            // Disable all buttons for this question
+            for (let btn of buttons) {
+                btn.disabled = true;
+            }
+
+            // Mark correct and incorrect
+            if (selectedIdx === correctIdx) {
+                buttons[selectedIdx].classList.add('correct');
+                feedback.className = 'feedback-area feedback-correct show';
+                feedback.innerHTML = `
+                    <div style="color: var(--correct); font-weight: bold; margin-bottom: 5px;">✅ Correct!</div>
+                    <div class="explanation-title">Explanation:</div>
+                    <div>${explanation}</div>
+                `;
+            } else {
+                buttons[selectedIdx].classList.add('incorrect');
+                buttons[correctIdx].classList.add('correct');
+                feedback.className = 'feedback-area feedback-incorrect show';
+                feedback.innerHTML = `
+                    <div style="color: var(--incorrect); font-weight: bold; margin-bottom: 5px;">❌ Incorrect. The correct answer was: ${buttons[correctIdx].innerText}</div>
+                    <div class="explanation-title">Explanation:</div>
+                    <div>${explanation}</div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
