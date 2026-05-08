@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Solutions - Lesson 114</title>
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .section-title {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+        .problem-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .question {
+            font-weight: 500;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        table {
+            border-collapse: collapse;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 400px;
+        }
+        table, th, td {
+            border: 1px solid #bdc3c7;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #ecf0f1;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .answer-container {
+            margin-top: 15px;
+            background-color: #e8f6f3;
+            border-left: 5px solid #1abc9c;
+            padding: 15px;
+            border-radius: 0 5px 5px 0;
+            display: none;
+        }
+        .answer-container.visible {
+            display: block;
+            animation: fadeIn 0.4s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Saxon Math Course 1 - Analogous Solutions</h1>
+
+    <h2 class="section-title">Lesson Practice</h2>
+
+    <div class="problem-card">
+        <div class="question"><strong>a.</strong> Find the sum: $5\text{ ft } 9\text{ in} + 3\text{ ft } 6\text{ in}$</div>
+        <button class="btn" onclick="toggleAnswer('lp-a')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-lp-a">
+            <strong>Answer:</strong> $9\text{ ft } 3\text{ in}$<br><br>
+            <strong>Explanation:</strong> First, add the feet and inches separately: <br>
+            $5\text{ ft} + 3\text{ ft} = 8\text{ ft}$ <br>
+            $9\text{ in} + 6\text{ in} = 15\text{ in}$ <br>
+            Since $12\text{ inches} = 1\text{ foot}$, convert $15\text{ inches}$ into $1\text{ foot } 3\text{ inches}$.<br>
+            Total: $8\text{ ft} + 1\text{ ft } 3\text{ in} = 9\text{ ft } 3\text{ in}$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>b.</strong> Find the difference: $4\text{ hr } 20\text{ min} - 2\text{ hr } 50\text{ min}$</div>
+        <button class="btn" onclick="toggleAnswer('lp-b')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-lp-b">
+            <strong>Answer:</strong> $1\text{ hr } 30\text{ min}$<br><br>
+            <strong>Explanation:</strong> You cannot subtract 50 min from 20 min, so borrow 1 hour (60 minutes) from the 4 hours. <br>
+            $4\text{ hr } 20\text{ min}$ becomes $3\text{ hr } 80\text{ min}$. <br>
+            Now subtract: $(3\text{ hr} - 2\text{ hr}) = 1\text{ hr}$, and $(80\text{ min} - 50\text{ min}) = 30\text{ min}$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>c.</strong> Write in standard notation: $3.4 \times 10^5$</div>
+        <button class="btn" onclick="toggleAnswer('lp-c')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-lp-c">
+            <strong>Answer:</strong> 340,000<br><br>
+            <strong>Explanation:</strong> Multiplying by $10^5$ shifts the decimal point 5 places to the right. $3.4 \rightarrow 34 \rightarrow 340 \rightarrow 3400 \rightarrow 34000 \rightarrow 340000$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>d.</strong> Write in standard notation: 2.8 million</div>
+        <button class="btn" onclick="toggleAnswer('lp-d')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-lp-d">
+            <strong>Answer:</strong> 2,800,000<br><br>
+            <strong>Explanation:</strong> "Million" means multiplying by 1,000,000. <br>
+            $2.8 \times 1,000,000 = 2,800,000$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>e.</strong> Write in standard notation: $1 \frac{1}{4}$ billion</div>
+        <button class="btn" onclick="toggleAnswer('lp-e')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-lp-e">
+            <strong>Answer:</strong> 1,250,000,000<br><br>
+            <strong>Explanation:</strong> Change the fraction to a decimal: 1.25. Multiply by 1 billion (1,000,000,000). <br>
+            $1.25 \times 1,000,000,000 = 1,250,000,000$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>f.</strong> Write in standard notation: $\frac{3}{4}$ million</div>
+        <button class="btn" onclick="toggleAnswer('lp-f')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-lp-f">
+            <strong>Answer:</strong> 750,000<br><br>
+            <strong>Explanation:</strong> Convert $\frac{3}{4}$ to the decimal 0.75. Multiply by 1,000,000. <br>
+            $0.75 \times 1,000,000 = 750,000$.
+        </div>
+    </div>
+
+    <h2 class="section-title">Written Practice</h2>
+
+    <div class="problem-card">
+        <div class="question"><strong>1.</strong> For helping with a neighborhood bake sale, five students were given a total of $90.00. If they divide the money equally, how much money will each student receive?</div>
+        <button class="btn" onclick="toggleAnswer('wp-1')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-1">
+            <strong>Answer:</strong> $18.00<br><br>
+            <strong>Explanation:</strong> Divide the total money by the number of students: <br>
+            $90.00 &divide; 5 = $18.00.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>2.</strong> Which of the following is the best estimate of the length of a standard family car? <br>
+        A. 0.5 m &nbsp;&nbsp; B. 1.5 m &nbsp;&nbsp; C. 4.5 m &nbsp;&nbsp; D. 15 m</div>
+        <button class="btn" onclick="toggleAnswer('wp-2')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-2">
+            <strong>Answer:</strong> C. 4.5 m<br><br>
+            <strong>Explanation:</strong> 0.5 m and 1.5 m are too short (the size of a box or a bicycle). 15 m is too long (the size of a bus). 4.5 meters (approx 14.7 feet) is a realistic length for a standard car.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>3.</strong> If the chance of snow is 70%, what is the probability that it will not snow? Express the answer as a decimal.</div>
+        <button class="btn" onclick="toggleAnswer('wp-3')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-3">
+            <strong>Answer:</strong> 0.3<br><br>
+            <strong>Explanation:</strong> The total probability of all outcomes is 100%. <br>
+            Chance of no snow = 100% - 70% = 30%. <br>
+            To express 30% as a decimal, move the decimal point two places left: 0.30 or 0.3.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>4.</strong> The ratio of boys to girls in the school choir is 4 to 3. If there are 140 students in total, how many boys are in the choir?</div>
+        <button class="btn" onclick="toggleAnswer('wp-4')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-4">
+            <strong>Answer:</strong> 80<br><br>
+            <strong>Explanation:</strong> The ratio is 4 (boys) : 3 (girls). Total ratio parts = $4 + 3 = 7$.<br>
+            Find the value of one part: $140 \div 7 = 20$ students per part. <br>
+            Number of boys = $4\text{ parts} \times 20 = 80$ boys.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>5.</strong> Write $7.2 \times 10^5$ as a standard numeral.</div>
+        <button class="btn" onclick="toggleAnswer('wp-5')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-5">
+            <strong>Answer:</strong> 720,000<br><br>
+            <strong>Explanation:</strong> Move the decimal point 5 places to the right: $7.2 \rightarrow 720000$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>6.</strong> Calculate mentally: <br>
+        a. $(-15)(+4)$ &nbsp;&nbsp; b. $(-15)(-4)$ &nbsp;&nbsp; c. $\frac{-15}{+3}$ &nbsp;&nbsp; d. $\frac{-15}{-3}$</div>
+        <button class="btn" onclick="toggleAnswer('wp-6')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-6">
+            <strong>Answer:</strong> <br>
+            a. -60 <br>
+            b. 60 <br>
+            c. -5 <br>
+            d. 5 <br><br>
+            <strong>Explanation:</strong><br>
+            When multiplying or dividing:<br>
+            - Different signs yield a negative result.<br>
+            - Like signs yield a positive result.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>7.</strong> Calculate mentally: <br>
+        a. $-10 + -5$ &nbsp;&nbsp; b. $-10 - -5$ &nbsp;&nbsp; c. $+5 + -10$ &nbsp;&nbsp; d. $+5 - -10$</div>
+        <button class="btn" onclick="toggleAnswer('wp-7')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-7">
+            <strong>Answer:</strong> <br>
+            a. -15 <br>
+            b. -5 <br>
+            c. -5 <br>
+            d. 15 <br><br>
+            <strong>Explanation:</strong><br>
+            a. Adding two negatives makes a larger negative.<br>
+            b. Subtracting a negative is adding a positive: $-10 + 5 = -5$.<br>
+            c. Positive plus negative: subtract the smaller absolute value from the larger, keep sign of the larger.<br>
+            d. Subtracting a negative is adding a positive: $5 + 10 = 15$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>8.</strong> Describe a method for arranging these fractions from least to greatest: $\frac{2}{3}, \frac{5}{6}, \frac{3}{4}$. Then arrange them.</div>
+        <button class="btn" onclick="toggleAnswer('wp-8')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-8">
+            <strong>Answer:</strong> Least to greatest: $\frac{2}{3}, \frac{3}{4}, \frac{5}{6}$<br><br>
+            <strong>Explanation:</strong> Find a common denominator. For 3, 6, and 4, the least common multiple (LCM) is 12. <br>
+            $\frac{2}{3} = \frac{8}{12}$ <br>
+            $\frac{5}{6} = \frac{10}{12}$ <br>
+            $\frac{3}{4} = \frac{9}{12}$ <br>
+            Comparing numerators: $8 < 9 < 10$, thus $\frac{2}{3} < \frac{3}{4} < \frac{5}{6}$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">
+            <strong>Problems 9–11:</strong> Complete the table.<br>
+            <table>
+                <tr><th>Fraction</th><th>Decimal</th><th>Percent</th></tr>
+                <tr><td>$\frac{1}{20}$</td><td>9. a.</td><td>9. b.</td></tr>
+                <tr><td>10. a.</td><td>1.50</td><td>10. b.</td></tr>
+                <tr><td>11. a.</td><td>11. b.</td><td>20%</td></tr>
+            </table>
+        </div>
+        <button class="btn" onclick="toggleAnswer('wp-9-11')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-9-11">
+            <strong>Answer & Explanation:</strong><br><br>
+            <strong>9. a. 0.05 | b. 5%</strong><br>
+            Explanation: $\frac{1}{20} = \frac{5}{100}$, which is 0.05 as a decimal and 5% as a percent.<br><br>
+            
+            <strong>10. a. $1 \frac{1}{2}$ (or $\frac{3}{2}$) | b. 150%</strong><br>
+            Explanation: $1.50 = 1 + \frac{50}{100} = 1 \frac{1}{2}$. As a percent, move the decimal right two places: 150%.<br><br>
+            
+            <strong>11. a. $\frac{1}{5}$ | b. 0.20</strong><br>
+            Explanation: 20% = $\frac{20}{100} = \frac{1}{5}$. As a decimal, $20 \div 100 = 0.20$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>12.</strong> $10 \frac{1}{3}\text{ in} - 4 \frac{5}{6}\text{ in.}$</div>
+        <button class="btn" onclick="toggleAnswer('wp-12')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-12">
+            <strong>Answer:</strong> $5 \frac{1}{2}\text{ in.}$<br><br>
+            <strong>Explanation:</strong> Find a common denominator (6): <br>
+            $10 \frac{2}{6} - 4 \frac{5}{6}$.<br>
+            Since $\frac{2}{6} < \frac{5}{6}$, borrow 1 ($=\frac{6}{6}$) from the whole number 10:<br>
+            $9 \frac{8}{6} - 4 \frac{5}{6} = 5 \frac{3}{6}$. <br>
+            Simplify the fraction: $5 \frac{1}{2}$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>13.</strong> $2 \frac{1}{2}\text{ ft} \times 1 \frac{1}{5}\text{ ft}$</div>
+        <button class="btn" onclick="toggleAnswer('wp-13')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-13">
+            <strong>Answer:</strong> $3\text{ sq ft}$<br><br>
+            <strong>Explanation:</strong> Convert to improper fractions: <br>
+            $\frac{5}{2} \times \frac{6}{5} = \frac{30}{10}$. <br>
+            Simplify: $\frac{30}{10} = 3$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>14.</strong> $(4\text{ cm})(4\text{ cm})(4\text{ cm})$</div>
+        <button class="btn" onclick="toggleAnswer('wp-14')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-14">
+            <strong>Answer:</strong> $64\text{ cm}^3$<br><br>
+            <strong>Explanation:</strong> Multiply the numbers: $4 \times 4 \times 4 = 64$. <br>
+            Multiply the units: $\text{cm} \times \text{cm} \times \text{cm} = \text{cm}^3$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>15.</strong> $0.8\text{ m} \times 0.4\text{ m}$</div>
+        <button class="btn" onclick="toggleAnswer('wp-15')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-15">
+            <strong>Answer:</strong> $0.32\text{ m}^2$<br><br>
+            <strong>Explanation:</strong> $0.8 \times 0.4 = 0.32$. <br>
+            The units become $\text{m}^2$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>16.</strong> $4^3 + 3^2$</div>
+        <button class="btn" onclick="toggleAnswer('wp-16')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-16">
+            <strong>Answer:</strong> 73<br><br>
+            <strong>Explanation:</strong> Evaluate the exponents first:<br>
+            $4^3 = 4 \times 4 \times 4 = 64$ <br>
+            $3^2 = 3 \times 3 = 9$ <br>
+            Add them: $64 + 9 = 73$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>17.</strong> Find the area of this trapezoid. Show and explain your work to justify your answer. <br>
+        (Top base = 6 ft, Bottom base = 12 ft, Height = 5 ft)</div>
+        <button class="btn" onclick="toggleAnswer('wp-17')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-17">
+            <strong>Answer:</strong> 45 sq ft<br><br>
+            <strong>Explanation:</strong> The formula for the area of a trapezoid is $A = \frac{1}{2}(b_1 + b_2)h$. <br>
+            Substitute the given values: $A = \frac{1}{2}(12 + 6) \times 5$. <br>
+            $A = \frac{1}{2}(18) \times 5 = 9 \times 5 = 45$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>18.</strong> $4\text{ feet } 2\text{ inches} - 2\text{ feet } 8\text{ inches}$</div>
+        <button class="btn" onclick="toggleAnswer('wp-18')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-18">
+            <strong>Answer:</strong> $1\text{ foot } 6\text{ inches}$<br><br>
+            <strong>Explanation:</strong> You cannot subtract 8 in from 2 in, so borrow 1 foot (12 inches) from the 4 feet. <br>
+            $4\text{ ft } 2\text{ in}$ becomes $3\text{ ft } 14\text{ in}$. <br>
+            Subtract: $(3\text{ ft} - 2\text{ ft}) = 1\text{ ft}$. $(14\text{ in} - 8\text{ in}) = 6\text{ inches}$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>19.</strong> Consider a capital letter 'E' drawn with a vertical line on the left and three horizontal bars. <br>
+        a. Does a horizontal line passing straight through the middle bar act as a line of symmetry? <br>
+        b. Does the letter 'E' have rotational symmetry? Explain your answer.</div>
+        <button class="btn" onclick="toggleAnswer('wp-19')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-19">
+            <strong>Answer:</strong> <br>
+            a. Yes, it is a line of symmetry.<br>
+            b. No, it does not have rotational symmetry.<br><br>
+            <strong>Explanation:</strong> <br>
+            a. A line of symmetry divides a figure into two identical halves that are mirror images. Folding the top half of the 'E' over the middle horizontal line perfectly covers the bottom half. <br>
+            b. If you rotate the letter 'E' $180^\circ$ around its center, it faces backward (like a '3'). It requires a full $360^\circ$ rotation to look identical again, so it lacks rotational symmetry.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>20.</strong> How many cubes one centimeter on each edge would be needed to fill this box? <br>
+        (Dimensions: 6 cm &times; 4 cm &times; 3 cm)</div>
+        <button class="btn" onclick="toggleAnswer('wp-20')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-20">
+            <strong>Answer:</strong> 72 cubes<br><br>
+            <strong>Explanation:</strong> Find the volume of the rectangular prism: $V = \text{length} \times \text{width} \times \text{height}$. <br>
+            $V = 6 \times 4 \times 3 = 72\text{ cm}^3$. <br>
+            Since each cube is $1\text{ cm}^3$, exactly 72 cubes are needed.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>21.</strong> Marcus worked for five days and earned $350. At that rate, how much would he earn in seven days?</div>
+        <button class="btn" onclick="toggleAnswer('wp-21')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-21">
+            <strong>Answer:</strong> $490<br><br>
+            <strong>Explanation:</strong> First, find his daily rate by dividing the total earned by the number of days: <br>
+            $350 \div 5\text{ days} = \$70\text{ per day}$. <br>
+            Then multiply the daily rate by 7 days: $\$70 \times 7 = \$490$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>22.</strong> One hundred five (105) is the product of which three prime numbers?</div>
+        <button class="btn" onclick="toggleAnswer('wp-22')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-22">
+            <strong>Answer:</strong> 3, 5, and 7<br><br>
+            <strong>Explanation:</strong> Find the prime factorization of 105. <br>
+            Since it ends in 5, $105 = 5 \times 21$. <br>
+            $21 = 3 \times 7$. <br>
+            So, $105 = 3 \times 5 \times 7$. All three are prime.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>23.</strong> Jupiter is about 480 million miles from the Sun. Write that distance in standard notation.</div>
+        <button class="btn" onclick="toggleAnswer('wp-23')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-23">
+            <strong>Answer:</strong> 480,000,000 miles<br><br>
+            <strong>Explanation:</strong> "Million" signifies 6 zeros after the number, or multiplying by 1,000,000. <br>
+            $480 \times 1,000,000 = 480,000,000$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>24.</strong> Use a rhombus with Side = 12 in, Height = 10 in, and an acute angle of $45^\circ$ for problems a-c.<br>
+        a. What is the perimeter of this rhombus?<br>
+        b. What is the area of this rhombus?<br>
+        c. What is the measure of each obtuse angle in this rhombus?</div>
+        <button class="btn" onclick="toggleAnswer('wp-24')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-24">
+            <strong>Answer:</strong> <br>
+            a. 48 in. <br>
+            b. 120 sq in. <br>
+            c. $135^\circ$ <br><br>
+            <strong>Explanation:</strong> <br>
+            a. A rhombus has 4 equal sides. $P = 4 \times 12\text{ in} = 48\text{ in.}$ <br>
+            b. Area of a rhombus is base &times; height. $A = 12\text{ in} \times 10\text{ in} = 120\text{ sq in.}$ <br>
+            c. Consecutive angles in a rhombus are supplementary (add up to $180^\circ$). Obtuse angle = $180^\circ - 45^\circ = 135^\circ$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>25.</strong> The ratio of dimes to nickels in a vending machine is 3 to 7. If there are 90 dimes, how many nickels are there?</div>
+        <button class="btn" onclick="toggleAnswer('wp-25')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-25">
+            <strong>Answer:</strong> 210 nickels<br><br>
+            <strong>Explanation:</strong> Set up a proportion: $\frac{\text{Dimes}}{\text{Nickels}} = \frac{3}{7} = \frac{90}{x}$. <br>
+            Since $3 \times 30 = 90$, multiply the denominator by the same factor: $7 \times 30 = 210$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>26.</strong> a. The coordinates of the three vertices of a right triangle are (0, 0), (6, 0), and (6, 8). What is the area of the triangle?<br>
+        b. If the triangle were reflected across the x-axis, what would be the coordinates of the vertices of the reflection?</div>
+        <button class="btn" onclick="toggleAnswer('wp-26')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-26">
+            <strong>Answer:</strong> <br>
+            a. 24 square units<br>
+            b. (0, 0), (6, 0), and (6, -8)<br><br>
+            <strong>Explanation:</strong> <br>
+            a. Plotting the points reveals a right triangle with a base of 6 units and a height of 8 units. Area = $\frac{1}{2}bh = \frac{1}{2}(6)(8) = 24$.<br>
+            b. Reflecting across the x-axis negates the y-coordinates: $(x, y) \rightarrow (x, -y)$. The points on the x-axis stay the same.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>27.</strong> What is the median of this data set? <br>
+        (Data: 15, 10, 8, 12, 12, 14, 10, 15)</div>
+        <button class="btn" onclick="toggleAnswer('wp-27')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-27">
+            <strong>Answer:</strong> 12<br><br>
+            <strong>Explanation:</strong> First, list the 8 numbers in order from least to greatest: <br>
+            8, 10, 10, 12, 12, 14, 15, 15. <br>
+            Since there is an even number of values, the median is the average of the 4th and 5th middle values: $\frac{12 + 12}{2} = 12$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>28.</strong> What is the mean of this data set? <br>
+        (Data: 15, 10, 8, 12, 12, 14, 10, 15)</div>
+        <button class="btn" onclick="toggleAnswer('wp-28')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-28">
+            <strong>Answer:</strong> 12<br><br>
+            <strong>Explanation:</strong> The mean is the sum of all values divided by the number of values. <br>
+            Sum = $15+10+8+12+12+14+10+15 = 96$. <br>
+            Mean = $96 \div 8 = 12$.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>29.</strong> The diameter of a circular clock face is 20 cm. What is the circumference of the clock? (Use 3.14 for $\pi$.) How can estimation help you determine if your answer is reasonable?</div>
+        <button class="btn" onclick="toggleAnswer('wp-29')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-29">
+            <strong>Answer:</strong> 62.8 cm<br><br>
+            <strong>Explanation:</strong> Circumference formula: $C = \pi \times d$. <br>
+            $C = 3.14 \times 20 = 62.8\text{ cm}$. <br>
+            <strong>Estimation:</strong> Since $\pi$ is approximately 3, the circumference should be roughly $3 \times 20 = 60$. Since 62.8 is close to 60, the answer is reasonable.
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question"><strong>30.</strong> Find the value of $V$ in $V = s^3$ when $s$ is 4 cm.</div>
+        <button class="btn" onclick="toggleAnswer('wp-30')">Show Answer & Explanation</button>
+        <div class="answer-container" id="ans-wp-30">
+            <strong>Answer:</strong> $64\text{ cm}^3$<br><br>
+            <strong>Explanation:</strong> Substitute 4 for $s$ in the formula: <br>
+            $V = (4\text{ cm})^3$ <br>
+            $V = 4\text{ cm} \times 4\text{ cm} \times 4\text{ cm} = 64\text{ cm}^3$.
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(id) {
+            var answerDiv = document.getElementById('ans-' + id);
+            if (answerDiv.classList.contains('visible')) {
+                answerDiv.classList.remove('visible');
+            } else {
+                answerDiv.classList.add('visible');
+            }
+        }
+    </script>
+</body>
+</html>
