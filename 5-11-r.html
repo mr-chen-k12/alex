@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concise Math Review Quiz</title>
+    
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .instructions {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 4px solid #f39c12;
+        }
+        .question-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 25px;
+            border-top: 5px solid #3498db;
+        }
+        .question-title {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .question {
+            font-size: 1.15em;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .option-btn {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            border: 2px solid #bdc3c7;
+            padding: 12px 15px;
+            font-size: 1em;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #d5d8dc;
+            border-color: #95a5a6;
+        }
+        .option-btn.correct {
+            background-color: #d4efdf;
+            border-color: #27ae60;
+            color: #1e8449;
+        }
+        .option-btn.incorrect {
+            background-color: #fadbd8;
+            border-color: #e74c3c;
+            color: #922b21;
+        }
+        .option-btn:disabled {
+            cursor: default;
+        }
+        .feedback {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .feedback.success {
+            background-color: #d4efdf;
+            color: #1e8449;
+            border-left: 4px solid #27ae60;
+        }
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #fdf2e9;
+            border-left: 4px solid #e67e22;
+            border-radius: 6px;
+        }
+        .explanation.visible, .feedback.visible {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        svg {
+            display: block;
+            margin: 15px 0;
+            background: #f9f9f9;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Interactive Math Review Quiz</h1>
+    
+    <div class="instructions">
+        <strong>Instructions:</strong> We've condensed the material into 13 key questions, representing one major concept per topic from your review sheet. Click on an answer choice to get immediate feedback. If you select an incorrect answer, a step-by-step explanation will appear to help you understand the concept!
+    </div>
+
+    <div class="question-container" id="q1">
+        <span class="question-title">Topic 1: Complex Probability</span>
+        <div class="question">Your sock drawer has 5 pairs of blue socks, 4 pairs of red socks, and 3 pairs of white socks. If you pull out a pair of red socks and don't replace them, what's the probability you will pull out another pair of red socks?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q1', this, false)">A) \( \frac{1}{3} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q1', this, false)">B) \( \frac{16}{144} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q1', this, true)">C) \( \frac{1}{11} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q1', this, false)">D) \( \frac{4}{11} \)</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="explanation">
+            <p><strong>Explanation:</strong></p>
+            <p><strong>Step 1:</strong> First pull (already happened): There were 4 red out of 12 total (\( \frac{4}{12} = \frac{1}{3} \)).</p>
+            <p><strong>Step 2:</strong> Second pull: Since you removed a red pair, there are now <strong>3 red pairs</strong> left and <strong>11 total pairs</strong> left.</p>
+            <p><strong>Step 3:</strong> The probability of the second pull is \( \frac{3}{11} \).</p>
+            <p><strong>Step 4:</strong> To find the total probability of both events happening together, multiply them: \( \frac{1}{3} \times \frac{3}{11} = \frac{3}{33} \).</p>
+            <p><strong>Step 5:</strong> Reduce the fraction: \( \frac{3}{33} = \frac{1}{11} \).</p>
+        </div>
+    </div>
+
+    <div class="question-container" id="q2">
+        <span class="question-title">Topic 2: Decimal to Fraction</span>
+        <div class="question">Convert \( 0.7 \) to a fraction in simplest form.</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q2', this, false)">A) \( \frac{1}{7} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q2', this, true)">B) \( \frac{7}{10} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q2', this, false)">C) \( \frac{7}{100} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q2', this, false)">D) \( \frac{3}{4} \)</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="explanation">
+            <p><strong>Explanation:</strong></p>
+            <p><strong>Step 1:</strong> Write the decimal numerals as the numerator (7).</p>
+            <p><strong>Step 2:</strong> Write the decimal place value as the denominator. The 7 is in the "tenths" place, so the denominator is 10.</p>
+            <p><strong>Result:</strong> \( \frac{7}{10} \). It cannot be reduced further.</p>
+        </div>
+    </div>
+
+    <div class="question-container" id="q3">
+        <span class="question-title">Topic 3: Finding a Ratio</span>
+        <div class="question">What is the <strong>boy-girl</strong> ratio in a class of 26 students if there are 14 girls?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q3', this, true)">A) \( \frac{6}{7} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q3', this, false)">B) \( \frac{7}{6} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q3', this, false)">C) \( \frac{12}{26} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q3', this, false)">D) \( \frac{14}{26} \)</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="explanation">
+            <p><strong>Explanation:</strong></p>
+            <p><strong>Step 1:</strong> Find the number of boys. Total students (26) - girls (14) = 12 boys.</p>
+            <p><strong>Step 2:</strong> Make a fraction in the order requested (boy-girl). Boys on top, girls on bottom: \( \frac{12}{14} \).</p>
+            <p><strong>Step 3:</strong> Reduce to simplest form: Divide top and bottom by 2 to get \( \frac{6}{7} \).</p>
+        </div>
+    </div>
+
+    <div class="question-container" id="q4">
+        <span class="question-title">Topic 4: Order of Operations</span>
+        <div class="question">Solve: \( 3^3 - 2^2 - 4 \times 5 \)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q4', this, false)">A) 23</button>
+            <button class="option-btn" onclick="checkAnswer('q4', this, false)">B) 11</button>
+            <button class="option-btn" onclick="checkAnswer('q4', this, true)">C) 3</button>
+            <button class="option-btn" onclick="checkAnswer('q4', this, false)">D) -3</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="explanation">
+            <p><strong>Explanation:</strong></p>
+            <p><strong>Step 1:</strong> Exponents first. \( 3^3 = 27 \) and \( 2^2 = 4 \). The equation is now \( 27 - 4 - 4 \times 5 \).</p>
+            <p><strong>Step 2:</strong> Multiplication next. \( 4 \times 5 = 20 \). The equation is now \( 27 - 4 - 20 \).</p>
+            <p><strong>Step 3:</strong> Subtraction from left to right. \( 27 - 4 = 23 \).</p>
+            <p><strong>Step 4:</strong> \( 23 - 20 = 3 \).</p>
+        </div>
+    </div>
+
+    <div class="question-container" id="q5">
+        <span class="question-title">Topic 5: Two-Step Equation</span>
+        <div class="question">Solve for \( m \): \( 5m + 7 = 22 \)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q5', this, false)">A) m = 5.8</button>
+            <button class="option-btn" onclick="checkAnswer('q5', this, true)">B) m = 3</button>
+            <button class="option-btn" onclick="checkAnswer('q5', this, false)">C) m = 15</button>
+            <button class="option-btn" onclick="checkAnswer('q5', this, false)">D) m = 5</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="explanation">
+            <p><strong>Explanation:</strong></p>
+            <p><strong>Step 1:</strong> Subtract 7 from both sides to get the variable alone: \( 5m = 22 - 7 \) &rarr; \( 5m = 15 \).</p>
+            <p><strong>Step 2:</strong> Divide by 5 to find the missing factor: \( m = 15 \div 5 \) &rarr; \( m = 3 \).</p>
+        </div>
+    </div>
+
+    <div class="question-container" id="q6">
+        <span class="question-title">Topic 6: Volume of a Rectangular Prism</span>
+        <div class="question">What is the volume of a rectangular prism with measurements of 8 inches, 3 inches, and 6 inches?</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q6', this, false)">A) 17 cubic inches</button>
+            <button class="option-btn" onclick="checkAnswer('q6', this, false)">B) 48 cubic inches</button>
+            <button class="option-btn" onclick="checkAnswer('q6', this, true)">C) 144 cubic inches</button>
+            <button class="option-btn" onclick="checkAnswer('q6', this, false)">D) 124 cubic inches</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="explanation">
+            <p><strong>Explanation:</strong></p>
+            <p><strong>Step 1:</strong> Use the formula \( V = Length \times Width \times Height \).</p>
+            <p><strong>Step 2:</strong> Multiply the measurements: \( 8 \times 3 \times 6 \).</p>
+            <p><strong>Step 3:</strong> \( 24 \times 6 = 144 \) cubic inches.</p>
+        </div>
+    </div>
+
+    <div class="question-container" id="q7">
+        <span class="question-title">Topic 7: Adding & Subtracting Integers</span>
+        <div class="question">Solve: \( -4 + (-5) - (-3) \)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q7', this, true)">A) -6</button>
+            <button class="option-btn" onclick="checkAnswer('q7', this, false)">B) -12</button>
+            <button class="option-btn" onclick="checkAnswer('q7', this, false)">C) -2</button>
+            <button class="option-btn" onclick="checkAnswer('q7', this, false)">D) 4</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="explanation">
+            <p><strong>Explanation:</strong></p>
+            <p><strong>Step 1:</strong> Change the subtraction symbol to addition and flip the following sign. The equation becomes \( -4 + (-5) + (+3) \).</p>
+            <p><strong>Step 2:</strong> Add the first two negatives: \( -4 + (-5) = -9 \).</p>
+            <p><strong>Step 3:</strong> Add the final number (different signs, subtract and take the sign of the larger digit): \( -9 + 3 = -6 \).</p>
+        </div>
+    </div>
+
+    <div class="question-container" id="q8">
+        <span class="question-title">Topic 8: Solving a Proportion</span>
+        <div class="question">Solve for \( a \): \( \frac{6}{15} = \frac{a}{20} \)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q8', this, false)">A) a = 120</button>
+            <button class="option-btn" onclick="checkAnswer('q8', this, false)">B) a = 6</button>
+            <button class="option-btn" onclick="checkAnswer('q8', this, false)">C) a = 12</button>
+            <button class="option-btn" onclick="checkAnswer('q8', this, true)">D) a = 8</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="explanation">
+            <p><strong>Explanation:</strong></p>
+            <p><strong>Step 1:</strong> Multiply the known cross products: \( 6 \times 20 = 120 \).</p>
+            <p><strong>Step 2:</strong> Divide by the remaining number: \( 120 \div 15 = 8 \).</p>
+            <p>Therefore, \( a = 8 \).</p>
+        </div>
+    </div>
+
+    <div class="question-container" id="q9">
+        <span class="question-title">Topic 9: Subtracting Mixed Numbers (with Regrouping)</span>
+        <div class="question">Solve: \( 5 \frac{1}{6} - 2 \frac{2}{3} \)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q9', this, false)">A) \( 3 \frac{1}{6} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q9', this, true)">B) \( 2 \frac{1}{2} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q9', this, false)">C) \( 2 \frac{5}{6} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q9', this, false)">D) \( 3 \frac{1}{2} \)</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="explanation">
+            <p><strong>Explanation:</strong></p>
+            <p><strong>Step 1:</strong> Find a common denominator. Change \( 2 \frac{2}{3} \) to \( 2 \frac{4}{6} \).</p>
+            <p><strong>Step 2:</strong> The problem is \( 5 \frac{1}{6} - 2 \frac{4}{6} \). You cannot subtract 4 from 1, so you must regroup.</p>
+            <p><strong>Step 3:</strong> Borrow 1 whole from 5 (making it 4). Add \( \frac{6}{6} \) to \( \frac{1}{6} \) to get \( \frac{7}{6} \). The problem is now \( 4 \frac{7}{6} - 2 \frac{4}{6} \).</p>
+            <p><strong>Step 4:</strong> Subtract: \( 4 - 2 = 2 \) and \( \frac{7}{6} - \frac{4}{6} = \frac{3}{6} \).</p>
+            <p><strong>Step 5:</strong> Reduce \( 2 \frac{3}{6} \) to \( 2 \frac{1}{2} \).</p>
+        </div>
+    </div>
+
+    <div class="question-container" id="q10">
+        <span class="question-title">Topic 10: Divide Mixed Numbers</span>
+        <div class="question">Solve: \( 3 \frac{3}{4} \div 2 \)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q10', this, true)">A) \( 1 \frac{7}{8} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q10', this, false)">B) \( 7 \frac{1}{2} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q10', this, false)">C) \( 1 \frac{3}{8} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q10', this, false)">D) \( 6 \frac{3}{4} \)</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="explanation">
+            <p><strong>Explanation:</strong></p>
+            <p><strong>Step 1:</strong> Change the mixed number and whole number into improper fractions: \( \frac{15}{4} \div \frac{2}{1} \).</p>
+            <p><strong>Step 2:</strong> Use "Keep, Change, Flip". Keep \( \frac{15}{4} \), change division to multiplication, flip \( \frac{2}{1} \) to \( \frac{1}{2} \).</p>
+            <p><strong>Step 3:</strong> Multiply: \( \frac{15}{4} \times \frac{1}{2} = \frac{15}{8} \).</p>
+            <p><strong>Step 4:</strong> Convert back to a mixed number: 8 goes into 15 one time with 7 left over &rarr; \( 1 \frac{7}{8} \).</p>
+        </div>
+    </div>
+
+    <div class="question-container" id="q11">
+        <span class="question-title">Topic 11: Putting it all together</span>
+        <div class="question">Order from least to greatest: \( \frac{1}{4}, -4, 0.4 \)</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q11', this, false)">A) \( 0.4, \frac{1}{4}, -4 \)</button>
+            <button class="option-btn" onclick="checkAnswer('q11', this, false)">B) \( \frac{1}{4}, 0.4, -4 \)</button>
+            <button class="option-btn" onclick="checkAnswer('q11', this, false)">C) \( -4, 0.4, \frac{1}{4} \)</button>
+            <button class="option-btn" onclick="checkAnswer('q11', this, true)">D) \( -4, \frac{1}{4}, 0.4 \)</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="explanation">
+            <p><strong>Explanation:</strong></p>
+            <p><strong>Step 1:</strong> Change all to the same form (decimals are easiest). \( \frac{1}{4} = 0.25 \).</p>
+            <p><strong>Step 2:</strong> Compare the numbers: \( -4 \), \( 0.25 \), and \( 0.4 \).</p>
+            <p><strong>Step 3:</strong> -4 is the smallest because it is negative. Between 0.25 and 0.4, 0.4 (or 0.40) is larger.</p>
+            <p><strong>Result:</strong> \( -4 \), \( \frac{1}{4} \), \( 0.4 \).</p>
+        </div>
+    </div>
+
+    <div class="question-container" id="q12">
+        <span class="question-title">Topic 12: Area of a Circle</span>
+        <div class="question">The diameter of a circle is 8 inches. What is the area of the circle? (Use \( \pi = 3.14 \))</div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q12', this, false)">A) 25.12 sq in</button>
+            <button class="option-btn" onclick="checkAnswer('q12', this, false)">B) 200.96 sq in</button>
+            <button class="option-btn" onclick="checkAnswer('q12', this, true)">C) 50.24 sq in</button>
+            <button class="option-btn" onclick="checkAnswer('q12', this, false)">D) 12.56 sq in</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="explanation">
+            <p><strong>Explanation:</strong></p>
+            <p><strong>Step 1:</strong> First, find the radius. \( Radius = Diameter \div 2 \), so \( 8 \div 2 = 4 \) inches.</p>
+            <p><strong>Step 2:</strong> Use the area formula: \( A = \pi \times r^2 \).</p>
+            <p><strong>Step 3:</strong> \( A = 3.14 \times 4^2 = 3.14 \times 16 \).</p>
+            <p><strong>Step 4:</strong> Multiply: \( 3.14 \times 16 = 50.24 \).</p>
+        </div>
+    </div>
+
+    <div class="question-container" id="q13">
+        <span class="question-title">Topic 13: Area of a Complex Shape</span>
+        <div class="question">
+            Find the area of the hexagon below.
+            <svg width="200" height="150" viewBox="0 0 200 150">
+                <polygon points="40,30 110,30 110,90 160,90 160,130 40,130" fill="#e2e8f0" stroke="#2c3e50" stroke-width="2"/>
+                <text x="65" y="20">3 cm</text> <text x="5" y="85">8 cm</text> <text x="170" y="115">2 cm</text> <text x="85" y="145">7 cm</text> </svg>
+        </div>
+        <div class="options-grid">
+            <button class="option-btn" onclick="checkAnswer('q13', this, false)">A) 30 sq cm</button>
+            <button class="option-btn" onclick="checkAnswer('q13', this, true)">B) 32 sq cm</button>
+            <button class="option-btn" onclick="checkAnswer('q13', this, false)">C) 56 sq cm</button>
+            <button class="option-btn" onclick="checkAnswer('q13', this, false)">D) 24 sq cm</button>
+        </div>
+        <div class="feedback"></div>
+        <div class="explanation">
+            <p><strong>Explanation:</strong></p>
+            <p><strong>Step 1:</strong> Break the complex shape into 2 rectangles. For example, draw a vertical line down from the inner corner.</p>
+            <p><strong>Step 2:</strong> This creates a left rectangle and a right rectangle. The left rectangle has a width of 3 cm and a full height of 8 cm. \( Area_1 = 3 \times 8 = 24 \) sq cm.</p>
+            <p><strong>Step 3:</strong> The bottom width is 7 cm, and the left rectangle takes up 3 cm of it, leaving \( 7 - 3 = 4 \) cm for the width of the right rectangle. The height of the right rectangle is given as 2 cm. \( Area_2 = 4 \times 2 = 8 \) sq cm.</p>
+            <p><strong>Step 4:</strong> Add the areas together: \( 24 + 8 = 32 \) sq cm.</p>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(questionId, buttonClicked, isCorrect) {
+            // Find the container for this question
+            const container = document.getElementById(questionId);
+            
+            // Disable all buttons in this question to prevent multiple guesses
+            const buttons = container.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                // Reveal the correct answer visually regardless of what they clicked
+                if (btn.getAttribute('onclick').includes('true')) {
+                    btn.classList.add('correct');
+                }
+            });
+
+            const feedbackEl = container.querySelector('.feedback');
+            const explanationEl = container.querySelector('.explanation');
+
+            if (isCorrect) {
+                // They got it right
+                feedbackEl.textContent = "Correct! Great job.";
+                feedbackEl.className = "feedback success visible";
+            } else {
+                // They got it wrong
+                buttonClicked.classList.add('incorrect');
+                feedbackEl.innerHTML = "<strong>Incorrect.</strong> See the explanation below to understand how to solve it.";
+                feedbackEl.className = "feedback visible";
+                feedbackEl.style.backgroundColor = "#fadbd8";
+                feedbackEl.style.color = "#922b21";
+                feedbackEl.style.borderLeft = "4px solid #e74c3c";
+                
+                // Show explanation
+                explanationEl.classList.add('visible');
+            }
+        }
+    </script>
+</body>
+</html>
