@@ -1,0 +1,485 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saxon Math Course 1 - Lesson 117 Solutions</title>
+    <!-- MathJax for rendering math equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9fbfd;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .problem-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #3498db;
+        }
+        .question {
+            font-weight: 500;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+        .toggle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+        }
+        .toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        .answer {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f1f8ff;
+            border-radius: 4px;
+            border-left: 3px solid #2ecc71;
+        }
+        .answer strong {
+            color: #27ae60;
+        }
+        svg {
+            display: block;
+            margin: 10px 0;
+            max-width: 100%;
+        }
+    </style>
+    <script>
+        function toggleAnswer(id) {
+            var answerDiv = document.getElementById('answer-' + id);
+            var btn = document.getElementById('btn-' + id);
+            if (answerDiv.style.display === 'block') {
+                answerDiv.style.display = 'none';
+                btn.textContent = 'Show Answer & Explanation';
+            } else {
+                answerDiv.style.display = 'block';
+                btn.textContent = 'Hide Answer';
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Math Practice Solutions</h1>
+
+    <div class="problem-container">
+        <div class="question">d. Sixty is \( \frac{3}{8} \) of what number?</div>
+        <button id="btn-d" class="toggle-btn" onclick="toggleAnswer('d')">Show Answer & Explanation</button>
+        <div id="answer-d" class="answer">
+            <strong>Answer:</strong> 160<br><br>
+            <strong>Explanation:</strong> Set up the equation: \( 60 = \frac{3}{8}x \). To solve for \( x \), multiply both sides by the reciprocal \( \frac{8}{3} \).<br>
+            \( x = 60 \times \frac{8}{3} = \frac{480}{3} = 160 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">e. Three fifths of the students in the class were girls. If there were 18 girls in the class, how many students were in the class altogether?</div>
+        <button id="btn-e" class="toggle-btn" onclick="toggleAnswer('e')">Show Answer & Explanation</button>
+        <div id="answer-e" class="answer">
+            <strong>Answer:</strong> 30 students<br><br>
+            <strong>Explanation:</strong> Let \( x \) be the total number of students. We know \( \frac{3}{5}x = 18 \).<br>
+            Multiply by the reciprocal: \( x = 18 \times \frac{5}{3} = \frac{90}{3} = 30 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">1. Three fifths of the townspeople voted. If 120 of the townspeople voted, how many people live in the town?</div>
+        <button id="btn-1" class="toggle-btn" onclick="toggleAnswer('1')">Show Answer & Explanation</button>
+        <div id="answer-1" class="answer">
+            <strong>Answer:</strong> 200 people<br><br>
+            <strong>Explanation:</strong> Let \( T \) be the total townspeople. \( \frac{3}{5}T = 120 \).<br>
+            \( T = 120 \times \frac{5}{3} = 40 \times 5 = 200 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">2. If 130 children are separated as equally as possible into four groups, how many will be in each group? (Write four numbers, one for each of the four groups.)</div>
+        <button id="btn-2" class="toggle-btn" onclick="toggleAnswer('2')">Show Answer & Explanation</button>
+        <div id="answer-2" class="answer">
+            <strong>Answer:</strong> 33, 33, 32, 32<br><br>
+            <strong>Explanation:</strong> Divide 130 by 4: \( 130 \div 4 = 32 \) with a remainder of 2. <br>
+            This means the base group size is 32. Since there is a remainder of 2, two of the groups will have one extra child (32 + 1 = 33). Therefore, the groups will be 33, 33, 32, and 32.
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">3. If the parking lot charges $1.25 per half hour, what is the cost of parking a car from 11:15 a.m. to 2:45 p.m.?</div>
+        <button id="btn-3" class="toggle-btn" onclick="toggleAnswer('3')">Show Answer & Explanation</button>
+        <div id="answer-3" class="answer">
+            <strong>Answer:</strong> $8.75<br><br>
+            <strong>Explanation:</strong> From 11:15 a.m. to 2:45 p.m. is 3.5 hours. <br>
+            Since there are two half-hours in every hour, 3.5 hours equals 7 half-hours. <br>
+            \( 7 \times \$1.25 = \$8.75 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">4. If the area of the square is 400 m², then what is the area of the circle? (Use 3.14 for \( \pi \).)</div>
+        <button id="btn-4" class="toggle-btn" onclick="toggleAnswer('4')">Show Answer & Explanation</button>
+        <div id="answer-4" class="answer">
+            <strong>Answer:</strong> 314 m²<br><br>
+            <strong>Explanation:</strong> The area of the square is \( s^2 = 400 \), so the side length \( s \) is 20 m. <br>
+            The circle fits perfectly inside the square, so its diameter is 20 m, which means its radius \( r \) is 10 m. <br>
+            Area of the circle = \( \pi r^2 = 3.14 \times (10)^2 = 3.14 \times 100 = 314 \text{ m}^2 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">5. Only 4 of the 50 states have names that begin with the letter A. What percent of the states have names that begin with letters other than A?</div>
+        <button id="btn-5" class="toggle-btn" onclick="toggleAnswer('5')">Show Answer & Explanation</button>
+        <div id="answer-5" class="answer">
+            <strong>Answer:</strong> 92%<br><br>
+            <strong>Explanation:</strong> The number of states starting with other letters is \( 50 - 4 = 46 \).<br>
+            The percentage is \( \frac{46}{50} = \frac{92}{100} = 92\% \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">6. The coordinates of the vertices of a triangle are (3, 6), (5, 0), and (0, 0). What is the area of the triangle?</div>
+        <button id="btn-6" class="toggle-btn" onclick="toggleAnswer('6')">Show Answer & Explanation</button>
+        <div id="answer-6" class="answer">
+            <strong>Answer:</strong> 15 square units<br><br>
+            <strong>Explanation:</strong> The base of the triangle on the x-axis goes from (0,0) to (5,0), so the base \( b = 5 \). <br>
+            The height is the y-coordinate of the peak vertex (3,6), so the height \( h = 6 \). <br>
+            Area = \( \frac{1}{2}bh = \frac{1}{2}(5)(6) = 15 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">7. Write one hundred five thousandths as a decimal number.</div>
+        <button id="btn-7" class="toggle-btn" onclick="toggleAnswer('7')">Show Answer & Explanation</button>
+        <div id="answer-7" class="answer">
+            <strong>Answer:</strong> 0.105<br><br>
+            <strong>Explanation:</strong> "Thousandths" means there are three decimal places. "One hundred five" is 105. Placed in the decimal form: 0.105.
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">8. Round the quotient of $7.00 ÷ 9 to the nearest cent.</div>
+        <button id="btn-8" class="toggle-btn" onclick="toggleAnswer('8')">Show Answer & Explanation</button>
+        <div id="answer-8" class="answer">
+            <strong>Answer:</strong> $0.78<br><br>
+            <strong>Explanation:</strong> \( 7.00 \div 9 = 0.7777... \)<br>
+            To round to the nearest cent (hundredths place), look at the thousandths digit (7). Since it is 5 or greater, round up the hundredths digit. Result: $0.78.
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">9. Arrange in order from least to greatest: 81%, \( \frac{4}{5} \), 0.815</div>
+        <button id="btn-9" class="toggle-btn" onclick="toggleAnswer('9')">Show Answer & Explanation</button>
+        <div id="answer-9" class="answer">
+            <strong>Answer:</strong> \( \frac{4}{5} \), 81%, 0.815<br><br>
+            <strong>Explanation:</strong> Convert all to decimals to compare:<br>
+            81% = 0.81<br>
+            \( \frac{4}{5} = 0.80 \)<br>
+            0.815 = 0.815<br>
+            Order: 0.80 < 0.81 < 0.815.
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">10. Solve and check: \( 6x - 12 = 60 \)</div>
+        <button id="btn-10" class="toggle-btn" onclick="toggleAnswer('10')">Show Answer & Explanation</button>
+        <div id="answer-10" class="answer">
+            <strong>Answer:</strong> \( x = 12 \)<br><br>
+            <strong>Explanation:</strong><br>
+            Add 12 to both sides: \( 6x = 72 \)<br>
+            Divide by 6: \( x = 12 \)<br>
+            Check: \( 6(12) - 12 = 72 - 12 = 60 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">11. Solve and check: \( \frac{9}{15} = \frac{m}{25} \)</div>
+        <button id="btn-11" class="toggle-btn" onclick="toggleAnswer('11')">Show Answer & Explanation</button>
+        <div id="answer-11" class="answer">
+            <strong>Answer:</strong> \( m = 15 \)<br><br>
+            <strong>Explanation:</strong><br>
+            Cross-multiply: \( 15 \times m = 9 \times 25 \)<br>
+            \( 15m = 225 \)<br>
+            \( m = 15 \)<br>
+            Check: \( \frac{9}{15} = \frac{3}{5} \) and \( \frac{15}{25} = \frac{3}{5} \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">12. Six is \( \frac{2}{5} \) of what number?</div>
+        <button id="btn-12" class="toggle-btn" onclick="toggleAnswer('12')">Show Answer & Explanation</button>
+        <div id="answer-12" class="answer">
+            <strong>Answer:</strong> 15<br><br>
+            <strong>Explanation:</strong> Let \( x \) be the number. \( 6 = \frac{2}{5}x \).<br>
+            Multiply both sides by \( \frac{5}{2} \): \( x = 6 \times \frac{5}{2} = \frac{30}{2} = 15 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">13. \( \left(5 - 1\frac{2}{3}\right) - 1\frac{1}{2} \)</div>
+        <button id="btn-13" class="toggle-btn" onclick="toggleAnswer('13')">Show Answer & Explanation</button>
+        <div id="answer-13" class="answer">
+            <strong>Answer:</strong> \( 1\frac{5}{6} \)<br><br>
+            <strong>Explanation:</strong><br>
+            First do the subtraction in parentheses: \( 5 - 1\frac{2}{3} = 4\frac{3}{3} - 1\frac{2}{3} = 3\frac{1}{3} \).<br>
+            Now subtract \( 1\frac{1}{2} \): \( 3\frac{1}{3} - 1\frac{1}{2} \).<br>
+            Find a common denominator (6): \( 3\frac{2}{6} - 1\frac{3}{6} \).<br>
+            Borrow from the 3: \( 2\frac{8}{6} - 1\frac{3}{6} = 1\frac{5}{6} \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">14. \( 2\frac{2}{5} \div 1\frac{1}{2} \)</div>
+        <button id="btn-14" class="toggle-btn" onclick="toggleAnswer('14')">Show Answer & Explanation</button>
+        <div id="answer-14" class="answer">
+            <strong>Answer:</strong> \( 1\frac{3}{5} \)<br><br>
+            <strong>Explanation:</strong> Convert mixed numbers to improper fractions.<br>
+            \( 2\frac{2}{5} = \frac{12}{5} \)<br>
+            \( 1\frac{1}{2} = \frac{3}{2} \)<br>
+            Multiply by the reciprocal: \( \frac{12}{5} \times \frac{2}{3} = \frac{24}{15} \).<br>
+            Simplify: \( \frac{8}{5} = 1\frac{3}{5} \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">15. \( 0.625 \times 2.4 \)</div>
+        <button id="btn-15" class="toggle-btn" onclick="toggleAnswer('15')">Show Answer & Explanation</button>
+        <div id="answer-15" class="answer">
+            <strong>Answer:</strong> 1.5<br><br>
+            <strong>Explanation:</strong><br>
+            Multiply as if they were whole numbers: 625 × 24 = 15000.<br>
+            There are 4 total decimal places (3 in 0.625, 1 in 2.4). <br>
+            Move the decimal 4 places left: 1.5000 = 1.5.
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">16. \( -5 + -5 + -5 \)</div>
+        <button id="btn-16" class="toggle-btn" onclick="toggleAnswer('16')">Show Answer & Explanation</button>
+        <div id="answer-16" class="answer">
+            <strong>Answer:</strong> -15<br><br>
+            <strong>Explanation:</strong> Adding three negative numbers moves further into the negatives: \( -5 - 5 - 5 = -15 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">17. The prime factorization of 24 is \( 2 \cdot 2 \cdot 2 \cdot 3 \), which we can write as \( 2^3 \cdot 3 \). Write the prime factorization of 36 using exponents.</div>
+        <button id="btn-17" class="toggle-btn" onclick="toggleAnswer('17')">Show Answer & Explanation</button>
+        <div id="answer-17" class="answer">
+            <strong>Answer:</strong> \( 2^2 \cdot 3^2 \)<br><br>
+            <strong>Explanation:</strong> Find factors of 36.<br>
+            \( 36 = 4 \times 9 = (2 \times 2) \times (3 \times 3) \).<br>
+            Using exponents: \( 2^2 \cdot 3^2 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">18. What is the total price of a $12.50 item plus 6% sales tax?</div>
+        <button id="btn-18" class="toggle-btn" onclick="toggleAnswer('18')">Show Answer & Explanation</button>
+        <div id="answer-18" class="answer">
+            <strong>Answer:</strong> $13.25<br><br>
+            <strong>Explanation:</strong><br>
+            Tax amount = \( 12.50 \times 0.06 = 0.75 \).<br>
+            Total price = \( 12.50 + 0.75 = \$13.25 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">
+            19. What is the area of this pentagon?
+            <svg width="200" height="150" viewBox="0 0 200 150">
+                <polygon points="10,10 110,10 160,80 160,130 10,130" fill="#a4c2f4" stroke="black" stroke-width="2"/>
+                <line x1="110" y1="10" x2="110" y2="130" stroke="black" stroke-dasharray="5,5"/>
+                <line x1="110" y1="80" x2="160" y2="80" stroke="black" stroke-dasharray="5,5"/>
+                <text x="50" y="8" font-size="12">8 in.</text>
+                <text x="170" y="105" font-size="12">5 in.</text>
+                <text x="80" y="145" font-size="12">12 in.</text>
+                <text x="-15" y="75" font-size="12">9 in.</text>
+            </svg>
+        </div>
+        <button id="btn-19" class="toggle-btn" onclick="toggleAnswer('19')">Show Answer & Explanation</button>
+        <div id="answer-19" class="answer">
+            <strong>Answer:</strong> 100 sq in.<br><br>
+            <strong>Explanation:</strong> Split the composite figure into simpler shapes by dropping a vertical line from the end of the top 8 in. edge. <br>
+            This forms a rectangle on the left with width 8 in. and height 9 in. Area = \( 8 \times 9 = 72 \) sq in.<br>
+            The remaining shape on the right is a trapezoid. Its width is \( 12 - 8 = 4 \) in. Its vertical parallel sides are 9 in. and 5 in.<br>
+            Area of trapezoid = \( \frac{1}{2}(b_1 + b_2)h = \frac{1}{2}(9 + 5) \times 4 = \frac{1}{2}(14) \times 4 = 28 \) sq in.<br>
+            Total area = \( 72 + 28 = 100 \) sq in.
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">20. Write the standard numeral for \( 6 \times 10^5 \).</div>
+        <button id="btn-20" class="toggle-btn" onclick="toggleAnswer('20')">Show Answer & Explanation</button>
+        <div id="answer-20" class="answer">
+            <strong>Answer:</strong> 600,000<br><br>
+            <strong>Explanation:</strong> \( 10^5 \) means 1 followed by 5 zeros (100,000). \( 6 \times 100,000 = 600,000 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">21. Calculate mentally:<br> a. \( \frac{-20}{-4} \) &nbsp;&nbsp;&nbsp; b. \( \frac{-36}{6} \) <br> c. \( (-3)(8) \) &nbsp;&nbsp;&nbsp;&nbsp; d. \( (-4)(-9) \)</div>
+        <button id="btn-21" class="toggle-btn" onclick="toggleAnswer('21')">Show Answer & Explanation</button>
+        <div id="answer-21" class="answer">
+            <strong>Answer:</strong><br>
+            a. 5<br>
+            b. -6<br>
+            c. -24<br>
+            d. 36<br><br>
+            <strong>Explanation:</strong><br>
+            a. Negative divided by negative is positive.<br>
+            b. Negative divided by positive is negative.<br>
+            c. Negative times positive is negative.<br>
+            d. Negative times negative is positive.
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">22. If each small cube has a volume of one cubic inch, then what is the volume of this rectangular solid?</div>
+        <button id="btn-22" class="toggle-btn" onclick="toggleAnswer('22')">Show Answer & Explanation</button>
+        <div id="answer-22" class="answer">
+            <strong>Answer:</strong> 48 cubic inches<br><br>
+            <strong>Explanation:</strong> The solid is composed of cubes. Counting the dimensions reveals it is 4 cubes wide, 3 cubes high, and 4 cubes deep.<br>
+            Volume = length × width × height = \( 4 \times 3 \times 4 = 48 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">23. Draw a triangle in which each angle measures less than 90°. What type of triangle did you draw?</div>
+        <button id="btn-23" class="toggle-btn" onclick="toggleAnswer('23')">Show Answer & Explanation</button>
+        <div id="answer-23" class="answer">
+            <strong>Answer:</strong> Acute triangle<br><br>
+            <strong>Explanation:</strong> A triangle with all three interior angles measuring less than 90 degrees is defined as an acute triangle.
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">24. The mean, median, and mode of student scores on a test were 89, 87, and 92 respectively. About half of the students scored what score or higher?</div>
+        <button id="btn-24" class="toggle-btn" onclick="toggleAnswer('24')">Show Answer & Explanation</button>
+        <div id="answer-24" class="answer">
+            <strong>Answer:</strong> 87<br><br>
+            <strong>Explanation:</strong> The median is the middle value of a sorted dataset. This means approximately 50% of the data falls below the median and 50% falls at or above it. Since the median is 87, about half scored 87 or higher.
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">25. A bank offers an annual percentage rate (APR) of 6.5%.<br>
+        a. By what decimal number do we multiply a deposit to find the total amount in an account after one year at this rate?<br>
+        b. Maria deposited $1000 into an account at this rate. How much money was in the account after three years? (Assume that the account earns compound interest.)</div>
+        <button id="btn-25" class="toggle-btn" onclick="toggleAnswer('25')">Show Answer & Explanation</button>
+        <div id="answer-25" class="answer">
+            <strong>Answer:</strong><br>
+            a. 1.065<br>
+            b. $1207.95<br><br>
+            <strong>Explanation:</strong><br>
+            a. The total amount is the initial deposit (100%) plus the interest (6.5%), which is 106.5%. As a decimal, this is 1.065.<br>
+            b. For compound interest over 3 years, multiply the principal by the rate multiplier raised to the power of 3: \( \$1000 \times (1.065)^3 \approx \$1000 \times 1.207949... \approx \$1207.95 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">26. If the spinner is spun twice, what is the probability that the arrow will stop on a number greater than 1 on both spins? (The spinner has 8 equal sections: 1, 2, 3, 4, 1, 2, 3, 4)</div>
+        <button id="btn-26" class="toggle-btn" onclick="toggleAnswer('26')">Show Answer & Explanation</button>
+        <div id="answer-26" class="answer">
+            <strong>Answer:</strong> \( \frac{9}{16} \)<br><br>
+            <strong>Explanation:</strong><br>
+            Numbers greater than 1 on the spinner are 2, 3, and 4. There are two of each, making 6 favorable sections out of 8 total.<br>
+            Probability on one spin = \( \frac{6}{8} = \frac{3}{4} \).<br>
+            Probability for two consecutive spins = \( \frac{3}{4} \times \frac{3}{4} = \frac{9}{16} \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">27. By rotation and translation, these two congruent right triangles can be arranged to form a:<br>
+        A. square &nbsp;&nbsp; B. parallelogram &nbsp;&nbsp; C. octagon</div>
+        <button id="btn-27" class="toggle-btn" onclick="toggleAnswer('27')">Show Answer & Explanation</button>
+        <div id="answer-27" class="answer">
+            <strong>Answer:</strong> B. parallelogram<br><br>
+            <strong>Explanation:</strong> Two identical right triangles joined along their hypotenuse (with one rotated) will form a rectangle, which is a specific type of parallelogram.
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">28. Draw a ratio box for this problem. Then solve the problem using a proportion.<br>
+        The ratio of cattle to horses on the ranch was 15 to 2. The combined number of cattle and horses was 1020. How many horses were on the ranch?</div>
+        <button id="btn-28" class="toggle-btn" onclick="toggleAnswer('28')">Show Answer & Explanation</button>
+        <div id="answer-28" class="answer">
+            <strong>Answer:</strong> 120 horses<br><br>
+            <strong>Explanation:</strong><br>
+            Ratio: Cattle = 15, Horses = 2, Total parts = 17.<br>
+            Actual Total = 1020.<br>
+            Set up proportion for horses: \( \frac{2}{17} = \frac{H}{1020} \)<br>
+            \( H = \frac{2 \times 1020}{17} = 2 \times 60 = 120 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">29. \( \sqrt{100} + 3^2 \times 5 - \sqrt{81} \div 3 \)</div>
+        <button id="btn-29" class="toggle-btn" onclick="toggleAnswer('29')">Show Answer & Explanation</button>
+        <div id="answer-29" class="answer">
+            <strong>Answer:</strong> 52<br><br>
+            <strong>Explanation:</strong> Use order of operations (PEMDAS):<br>
+            First, evaluate roots and exponents: \( 10 + 9 \times 5 - 9 \div 3 \)<br>
+            Next, multiplication and division from left to right: \( 10 + 45 - 3 \)<br>
+            Finally, addition and subtraction: \( 55 - 3 = 52 \).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">30. a. Which of these figures has the greatest number of lines of symmetry?<br>
+        A (Equilateral Triangle), B (Square), C (Circle)<br>
+        b. Which of these figures has rotational symmetry?</div>
+        <button id="btn-30" class="toggle-btn" onclick="toggleAnswer('30')">Show Answer & Explanation</button>
+        <div id="answer-30" class="answer">
+            <strong>Answer:</strong><br>
+            a. C (Circle)<br>
+            b. A, B, and C<br><br>
+            <strong>Explanation:</strong><br>
+            a. An equilateral triangle has 3 lines of symmetry, a square has 4, and a circle has infinitely many lines of symmetry (any diameter).<br>
+            b. All three have rotational symmetry. A triangle (120°), Square (90°), and Circle (any angle).
+        </div>
+    </div>
+
+    <div class="problem-container">
+        <div class="question">Real-World Connection: You and your friends want to rent go-karts this Saturday. Go-Kart Track A rents go-karts for a flat fee of $10 per driver plus $7 per hour. Go-Kart Track B rents go-karts for a flat fee of $7 per driver plus $8 per hour.<br>
+        a. If you and your friends plan to stay for 2 hours, which track has the better deal? Show all your work.<br>
+        b. Which track is the better value if you stay for four hours?</div>
+        <button id="btn-rwc" class="toggle-btn" onclick="toggleAnswer('rwc')">Show Answer & Explanation</button>
+        <div id="answer-rwc" class="answer">
+            <strong>Answer:</strong><br>
+            a. Track B<br>
+            b. Track A<br><br>
+            <strong>Explanation:</strong><br>
+            <strong>a. For 2 hours:</strong><br>
+            Track A cost: \( \$10 + (\$7 \times 2) = \$10 + \$14 = \$24 \)<br>
+            Track B cost: \( \$7 + (\$8 \times 2) = \$7 + \$16 = \$23 \)<br>
+            Track B is cheaper for 2 hours.<br><br>
+            <strong>b. For 4 hours:</strong><br>
+            Track A cost: \( \$10 + (\$7 \times 4) = \$10 + \$28 = \$38 \)<br>
+            Track B cost: \( \$7 + (\$8 \times 4) = \$7 + \$32 = \$39 \)<br>
+            Track A is cheaper for 4 hours.
+        </div>
+    </div>
+
+</body>
+</html>
