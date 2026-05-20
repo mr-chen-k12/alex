@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Solutions - Practice Set 2</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .section-title {
+            margin-top: 40px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            color: #3498db;
+        }
+        .card {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid #3498db;
+        }
+        .question {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .toggle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.3s;
+        }
+        .toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        .answer {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #fdfdfd;
+            border-top: 1px dashed #ccc;
+            border-radius: 0 0 8px 8px;
+        }
+        .explanation {
+            color: #555;
+            margin-top: 10px;
+            font-size: 0.95em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Saxon Math Course 1 - Similar Practice Problems</h1>
+
+    <h2 class="section-title">Lesson Practice</h2>
+
+    <div class="card">
+        <div class="question">a. ESTIMATE: Mrs. Smith deposits $3000 in an account that grows 5% annually. How much money will be in the account 1. after the fifth year and 2. after the tenth year? Round answers to the nearest cent.</div>
+        <button class="toggle-btn" id="btn-lp-a" onclick="toggleAnswer('lp-a')">Show Answer</button>
+        <div class="answer" id="ans-lp-a">
+            <strong>Answers:</strong> <br>
+            1. $3,828.84 <br>
+            2. $4,886.68
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Mrs. Smith started with $3000. The formula for compound interest is \( A = P(1 + r)^t \), where \( P = 3000 \), \( r = 0.05 \), and \( t \) is the number of years.<br>
+                1. After 5 years: \( A = 3000 \times (1.05)^5 \approx 3000 \times 1.27628 = \$3,828.84 \)<br>
+                2. After 10 years: \( A = 3000 \times (1.05)^{10} \approx 3000 \times 1.62889 = \$4,886.68 \)
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">b. ESTIMATE: Mr. Johnson deposited $3000 in a different account that pays 8% interest per year. If he does not withdraw any money, how much will be in the account 1. after five years, and 2. after 10 years? (Round answers to the nearest cent.)</div>
+        <button class="toggle-btn" id="btn-lp-b" onclick="toggleAnswer('lp-b')">Show Answer</button>
+        <div class="answer" id="ans-lp-b">
+            <strong>Answers:</strong> <br>
+            1. $4,407.98 <br>
+            2. $6,476.77
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Use the formula \( A = 3000(1.08)^t \):<br>
+                1. After 5 years: \( 3000 \times (1.08)^5 \approx 3000 \times 1.46933 = \$4,407.98 \)<br>
+                2. After 10 years: \( 3000 \times (1.08)^{10} \approx 3000 \times 2.15892 = \$6,476.77 \)
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">c. How much more money will be in Mr. Johnson's account than in Mrs. Smith's account 1. after five years, and 2. after 10 years?</div>
+        <button class="toggle-btn" id="btn-lp-c" onclick="toggleAnswer('lp-c')">Show Answer</button>
+        <div class="answer" id="ans-lp-c">
+            <strong>Answers:</strong> <br>
+            1. $579.14 <br>
+            2. $1,590.09
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Subtract Mrs. Smith's balance from Mr. Johnson's balance for each corresponding year:<br>
+                1. Year 5: \( \$4,407.98 - \$3,828.84 = \$579.14 \)<br>
+                2. Year 10: \( \$6,476.77 - \$4,886.68 = \$1,590.09 \)
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Written Practice</h2>
+
+    <div class="card">
+        <div class="question">1. Sarah drew a right triangle with sides 5 inches, 12 inches, and 13 inches long. What was the area of the triangle?</div>
+        <button class="toggle-btn" id="btn-wp-1" onclick="toggleAnswer('wp-1')">Show Answer</button>
+        <div class="answer" id="ans-wp-1">
+            <strong>Answer:</strong> 30 square inches
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                In a right triangle with sides 5, 12, and 13, the hypotenuse is the longest side (13). The base and height are the two shorter legs (5 and 12).<br>
+                Area = \( \frac{1}{2} \times \text{base} \times \text{height} \)<br>
+                Area = \( \frac{1}{2} \times 5 \times 12 = 30 \)
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">2. If 4 yards of fabric costs $6.00, then 12 yards of fabric would cost how much?</div>
+        <button class="toggle-btn" id="btn-wp-2" onclick="toggleAnswer('wp-2')">Show Answer</button>
+        <div class="answer" id="ans-wp-2">
+            <strong>Answer:</strong> $18.00
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                12 yards is exactly three times the length of 4 yards (12 &divide; 4 = 3). Therefore, the cost will also be tripled.<br>
+                \( \$6.00 \times 3 = \$18.00 \)
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">3. a. Eight is what fraction of 40? <br> b. Eight is what percent of 40?</div>
+        <button class="toggle-btn" id="btn-wp-3" onclick="toggleAnswer('wp-3')">Show Answer</button>
+        <div class="answer" id="ans-wp-3">
+            <strong>Answers:</strong> <br>
+            a. \( \frac{1}{5} \) <br>
+            b. 20%
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                a. The fraction is \( \frac{8}{40} \). Dividing the numerator and denominator by 8 reduces it to \( \frac{1}{5} \).<br>
+                b. To convert \( \frac{1}{5} \) to a percent, multiply by 100%: \( \frac{1}{5} \times 100\% = 20\% \).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">4. A multiple-choice question has five choices. Maya knows that one of the choices must be correct, but she has no idea which one. If Maya simply guesses, what is the chance that she will guess the correct answer?</div>
+        <button class="toggle-btn" id="btn-wp-4" onclick="toggleAnswer('wp-4')">Show Answer</button>
+        <div class="answer" id="ans-wp-4">
+            <strong>Answer:</strong> \( \frac{1}{5} \) or 20%
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                There is 1 correct choice out of 5 total choices. The probability is \( \frac{1}{5} \), which is equivalent to 20%.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">5. If 3/8 of the 40 students in the class ride the bus to school, what is the ratio of students who ride the bus to students who use other transportation?</div>
+        <button class="toggle-btn" id="btn-wp-5" onclick="toggleAnswer('wp-5')">Show Answer</button>
+        <div class="answer" id="ans-wp-5">
+            <strong>Answer:</strong> 3:5
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                If \( \frac{3}{8} \) ride the bus, then the remaining \( \frac{5}{8} \) use other transportation. <br>
+                The ratio of bus riders to others is 3 parts to 5 parts, which is written as 3:5 or \( \frac{3}{5} \).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">6. Write \( 4.5 \times 10^7 \) as a standard number.</div>
+        <button class="toggle-btn" id="btn-wp-6" onclick="toggleAnswer('wp-6')">Show Answer</button>
+        <div class="answer" id="ans-wp-6">
+            <strong>Answer:</strong> 45,000,000
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Move the decimal point 7 places to the right: <br>
+                4.5 becomes 45,000,000.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">7. Distance (d) is related to rate (r) and time (t) by the formula: \( d = rt \). Find the distance when \( r \) is 65 miles/hour and \( t \) is 3 hours.</div>
+        <button class="toggle-btn" id="btn-wp-7" onclick="toggleAnswer('wp-7')">Show Answer</button>
+        <div class="answer" id="ans-wp-7">
+            <strong>Answer:</strong> 195 miles
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Substitute the given values into the formula: <br>
+                \( d = 65 \times 3 = 195 \).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">8. Arrange these numbers in order from least to greatest: 7.7, 7.75, 7.725, 7.07</div>
+        <button class="toggle-btn" id="btn-wp-8" onclick="toggleAnswer('wp-8')">Show Answer</button>
+        <div class="answer" id="ans-wp-8">
+            <strong>Answer:</strong> 7.07, 7.7, 7.725, 7.75
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Compare the decimal place values left to right. <br>
+                - 7.07 has a 0 in the tenths place (smallest).<br>
+                - 7.7 can be thought of as 7.700.<br>
+                - 7.725 has a 2 in the hundredths place.<br>
+                - 7.75 can be thought of as 7.750.<br>
+                Order: 7.07 < 7.700 < 7.725 < 7.750.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">9. Complete the table: Fraction \( 2 \frac{1}{4} \). Find a. Decimal and b. Percent.</div>
+        <button class="toggle-btn" id="btn-wp-9" onclick="toggleAnswer('wp-9')">Show Answer</button>
+        <div class="answer" id="ans-wp-9">
+            <strong>Answers:</strong> <br>
+            a. 2.25 <br>
+            b. 225%
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                a. The fraction \( \frac{1}{4} \) equals \( 1 \div 4 = 0.25 \). So, \( 2 \frac{1}{4} = 2.25 \).<br>
+                b. To convert a decimal to a percent, multiply by 100: \( 2.25 \times 100 = 225\% \).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">10. Complete the table: Percent 35%. Find a. Fraction and b. Decimal.</div>
+        <button class="toggle-btn" id="btn-wp-10" onclick="toggleAnswer('wp-10')">Show Answer</button>
+        <div class="answer" id="ans-wp-10">
+            <strong>Answers:</strong> <br>
+            a. \( \frac{7}{20} \) <br>
+            b. 0.35
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                b. 35% means 35 out of 100, which is written as the decimal 0.35.<br>
+                a. As a fraction, it is \( \frac{35}{100} \). Dividing the top and bottom by 5 simplifies it to \( \frac{7}{20} \).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">11. Solve and check: \( 7x + 12 = 54 \)</div>
+        <button class="toggle-btn" id="btn-wp-11" onclick="toggleAnswer('wp-11')">Show Answer</button>
+        <div class="answer" id="ans-wp-11">
+            <strong>Answer:</strong> \( x = 6 \)
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Subtract 12 from both sides: <br>
+                \( 7x = 54 - 12 \) <br>
+                \( 7x = 42 \) <br>
+                Divide by 7: <br>
+                \( x = 6 \)<br>
+                Check: \( 7(6) + 12 = 42 + 12 = 54 \). Correct.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">12. Solve and check: \( \frac{x}{5} = \frac{2.4}{1.5} \)</div>
+        <button class="toggle-btn" id="btn-wp-12" onclick="toggleAnswer('wp-12')">Show Answer</button>
+        <div class="answer" id="ans-wp-12">
+            <strong>Answer:</strong> \( x = 8 \)
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Simplify the fraction on the right by multiplying top and bottom by 10: \( \frac{24}{15} \). <br>
+                Reduce \( \frac{24}{15} \) by dividing by 3: \( \frac{8}{5} \). <br>
+                So, \( \frac{x}{5} = \frac{8}{5} \). <br>
+                Since the denominators are equal, the numerators must be equal. Therefore, \( x = 8 \).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">13. Solve: \( -5 + -2 - +4 - -10 \)</div>
+        <button class="toggle-btn" id="btn-wp-13" onclick="toggleAnswer('wp-13')">Show Answer</button>
+        <div class="answer" id="ans-wp-13">
+            <strong>Answer:</strong> -1
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Simplify the signs first: <br>
+                \( -5 - 2 - 4 + 10 \) <br>
+                Combine negative numbers: \( -5 - 2 - 4 = -11 \) <br>
+                Add the positive number: \( -11 + 10 = -1 \)
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">14. Solve: \( 5 + 2 \frac{1}{2} + 3.8 \) (decimal answer)</div>
+        <button class="toggle-btn" id="btn-wp-14" onclick="toggleAnswer('wp-14')">Show Answer</button>
+        <div class="answer" id="ans-wp-14">
+            <strong>Answer:</strong> 11.3
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Convert the fraction to a decimal: \( 2 \frac{1}{2} = 2.5 \). <br>
+                Add the numbers together: <br>
+                \( 5.0 + 2.5 + 3.8 = 11.3 \)
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">15. A football field is 100 yards long (excluding the end zones). How long is it in feet?</div>
+        <button class="toggle-btn" id="btn-wp-15" onclick="toggleAnswer('wp-15')">Show Answer</button>
+        <div class="answer" id="ans-wp-15">
+            <strong>Answer:</strong> 300 feet
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                There are 3 feet in 1 yard. Multiply the length in yards by 3. <br>
+                \( 100 \times 3 = 300 \) feet.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">16. Use division by primes to find the prime factors of 540. Then write the prime factorization of 540 using exponents.</div>
+        <button class="toggle-btn" id="btn-wp-16" onclick="toggleAnswer('wp-16')">Show Answer</button>
+        <div class="answer" id="ans-wp-16">
+            <strong>Answer:</strong> \( 2^2 \times 3^3 \times 5 \)
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Divide repeatedly by prime numbers: <br>
+                \( 540 \div 2 = 270 \) <br>
+                \( 270 \div 2 = 135 \) <br>
+                \( 135 \div 3 = 45 \) <br>
+                \( 45 \div 3 = 15 \) <br>
+                \( 15 \div 3 = 5 \) <br>
+                \( 5 \div 5 = 1 \) <br>
+                The prime factors are 2, 2, 3, 3, 3, 5. Written with exponents: \( 2^2 \cdot 3^3 \cdot 5 \).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">17. If a 24-ounce box of cereal costs $2.88, what is the cost per ounce?</div>
+        <button class="toggle-btn" id="btn-wp-17" onclick="toggleAnswer('wp-17')">Show Answer</button>
+        <div class="answer" id="ans-wp-17">
+            <strong>Answer:</strong> $0.12 per ounce
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Divide the total cost by the number of ounces. <br>
+                \( \$2.88 \div 24 = \$0.12 \)
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">18. Find the area of a trapezoid that can be split into a rectangle and a right triangle. The rectangle is 5m by 8m. The right triangle attached has a height of 3m and shares the 8m base.</div>
+        <button class="toggle-btn" id="btn-wp-18" onclick="toggleAnswer('wp-18')">Show Answer</button>
+        <div class="answer" id="ans-wp-18">
+            <strong>Answer:</strong> 52 square meters
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Area of the rectangle part = \( 5 \times 8 = 40 \) m\(^2\). <br>
+                Area of the triangle part = \( \frac{1}{2} \times \text{base} \times \text{height} = \frac{1}{2} \times 8 \times 3 = 12 \) m\(^2\). <br>
+                Total area = \( 40 + 12 = 52 \) m\(^2\).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">19. The radius of a circle is 5 cm. Use 3.14 for \( \pi \) to calculate the: <br> a. circumference of the circle. <br> b. area of the circle.</div>
+        <button class="toggle-btn" id="btn-wp-19" onclick="toggleAnswer('wp-19')">Show Answer</button>
+        <div class="answer" id="ans-wp-19">
+            <strong>Answers:</strong> <br>
+            a. 31.4 cm <br>
+            b. 78.5 square cm
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                a. Circumference \( C = 2\pi r = 2 \times 3.14 \times 5 = 31.4 \) cm. <br>
+                b. Area \( A = \pi r^2 = 3.14 \times (5)^2 = 3.14 \times 25 = 78.5 \) cm\(^2\).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">20. The volume of a pyramid is 1/3 the volume of a cube with the same base and height. What is the volume of a pyramid if it fits exactly inside a cube with side lengths of 6 cm?</div>
+        <button class="toggle-btn" id="btn-wp-20" onclick="toggleAnswer('wp-20')">Show Answer</button>
+        <div class="answer" id="ans-wp-20">
+            <strong>Answer:</strong> 72 cubic centimeters
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                First, find the volume of the cube: \( V = s^3 = 6 \times 6 \times 6 = 216 \) cm\(^3\). <br>
+                The pyramid's volume is \( \frac{1}{3} \) of the cube: \( \frac{1}{3} \times 216 = 72 \) cm\(^3\).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">21. Solve: \( 0.4y = 32 \)</div>
+        <button class="toggle-btn" id="btn-wp-21" onclick="toggleAnswer('wp-21')">Show Answer</button>
+        <div class="answer" id="ans-wp-21">
+            <strong>Answer:</strong> \( y = 80 \)
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Divide both sides by 0.4: <br>
+                \( y = \frac{32}{0.4} \). Multiply top and bottom by 10 to remove the decimal: \( \frac{320}{4} = 80 \).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">22. Calculate mentally: a. (-12)(-3)  b. (+12)(-3)  c. \( \frac{+12}{-3} \)  d. \( \frac{-12}{-3} \)</div>
+        <button class="toggle-btn" id="btn-wp-22" onclick="toggleAnswer('wp-22')">Show Answer</button>
+        <div class="answer" id="ans-wp-22">
+            <strong>Answers:</strong> <br>
+            a. 36 <br>
+            b. -36 <br>
+            c. -4 <br>
+            d. 4
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                When multiplying or dividing two numbers with the <em>same</em> sign, the result is positive. <br>
+                When multiplying or dividing two numbers with <em>different</em> signs, the result is negative.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">23. 255 students were assigned to eight rooms so that there were 31 or 32 students in each room. How many rooms had exactly 31 students?</div>
+        <button class="toggle-btn" id="btn-wp-23" onclick="toggleAnswer('wp-23')">Show Answer</button>
+        <div class="answer" id="ans-wp-23">
+            <strong>Answer:</strong> 1 room
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                If all 8 rooms had 31 students, there would be \( 8 \times 31 = 248 \) students. <br>
+                We have 255 students, which is 7 extra students (\( 255 - 248 = 7 \)). <br>
+                To place these 7 extra students, we put 1 extra student in 7 of the rooms (making them rooms of 32). <br>
+                Therefore, 7 rooms have 32 students, and the remaining 1 room has 31 students.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">24. Two angles of a triangle measure 50° and 100°. <br> a. What is the measure of the third angle? <br> b. REPRESENT: Make a rough sketch of the triangle.</div>
+        <button class="toggle-btn" id="btn-wp-24" onclick="toggleAnswer('wp-24')">Show Answer</button>
+        <div class="answer" id="ans-wp-24">
+            <strong>Answers:</strong> <br>
+            a. 30° <br>
+            b. Sketch of an obtuse triangle:
+            <div style="margin-top: 10px; background: #fff; border: 1px solid #ccc; width: 220px; height: 120px; display: flex; align-items: center; justify-content: center;">
+                <svg width="200" height="100">
+                    <polygon points="20,90 180,90 60,30" fill="none" stroke="blue" stroke-width="2"/>
+                    <text x="25" y="85" font-size="12">50°</text>
+                    <text x="150" y="85" font-size="12">30°</text>
+                    <text x="50" y="45" font-size="12">100°</text>
+                </svg>
+            </div>
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                a. The sum of angles in a triangle is 180°. \( 180° - (50° + 100°) = 180° - 150° = 30° \).<br>
+                b. Since one angle is greater than 90° (100°), it is an obtuse triangle.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">25. ESTIMATE: If Anthony spins a spinner 80 times, and a specific sector makes up exactly 1/4 of the spinner's area, about how many times should he expect the arrow to stop in that sector?</div>
+        <button class="toggle-btn" id="btn-wp-25" onclick="toggleAnswer('wp-25')">Show Answer</button>
+        <div class="answer" id="ans-wp-25">
+            <strong>Answer:</strong> 20 times
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                The probability of landing on the sector is \( \frac{1}{4} \). <br>
+                Expected times = \( \frac{1}{4} \times 80 = 20 \).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">26. An equilateral triangle and a square share a common side. If the area of the square is 64 mm², then what is the perimeter of the equilateral triangle?</div>
+        <button class="toggle-btn" id="btn-wp-26" onclick="toggleAnswer('wp-26')">Show Answer</button>
+        <div class="answer" id="ans-wp-26">
+            <strong>Answer:</strong> 24 mm
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                The area of a square is \( s^2 \). If area is 64, then the side length \( s = \sqrt{64} = 8 \) mm. <br>
+                Since the equilateral triangle shares a side, its sides are also 8 mm each. <br>
+                The perimeter of an equilateral triangle is \( 3 \times \text{side} = 3 \times 8 = 24 \) mm.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">27. Write \( 33 \frac{1}{3}\% \) as a reduced fraction.</div>
+        <button class="toggle-btn" id="btn-wp-27" onclick="toggleAnswer('wp-27')">Show Answer</button>
+        <div class="answer" id="ans-wp-27">
+            <strong>Answer:</strong> \( \frac{1}{3} \)
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                First, convert the mixed number to an improper fraction: \( 33 \frac{1}{3} = \frac{100}{3} \). <br>
+                Because it is a percent, divide by 100 (multiply by \( \frac{1}{100} \)): <br>
+                \( \frac{100}{3} \times \frac{1}{100} = \frac{1}{3} \).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">28. The weights of five dogs at a clinic are listed below. Find the mean, median, and range of these measures: 160 lb, 175 lb, 180 lb, 190 lb, 170 lb</div>
+        <button class="toggle-btn" id="btn-wp-28" onclick="toggleAnswer('wp-28')">Show Answer</button>
+        <div class="answer" id="ans-wp-28">
+            <strong>Answers:</strong> <br>
+            Mean: 175 lb <br>
+            Median: 175 lb <br>
+            Range: 30 lb
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                First, order the numbers from least to greatest: 160, 170, 175, 180, 190. <br>
+                <strong>Mean:</strong> Add them up and divide by 5. \( 160 + 170 + 175 + 180 + 190 = 875 \). \( 875 \div 5 = 175 \). <br>
+                <strong>Median:</strong> The middle value in the sorted list is 175. <br>
+                <strong>Range:</strong> Subtract the smallest from the largest. \( 190 - 160 = 30 \).
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">29. A baker used two bags of flour. The smaller bag weighed 2 lb 14 oz. The larger bag weighed 4 lb 10 oz. What was the total weight of the two bags?</div>
+        <button class="toggle-btn" id="btn-wp-29" onclick="toggleAnswer('wp-29')">Show Answer</button>
+        <div class="answer" id="ans-wp-29">
+            <strong>Answer:</strong> 7 lb 8 oz
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                Add the pounds and ounces separately: <br>
+                Pounds: \( 2 + 4 = 6 \) lbs <br>
+                Ounces: \( 14 + 10 = 24 \) oz <br>
+                Since 16 oz = 1 lb, 24 oz is equal to 1 lb 8 oz. <br>
+                Add this back to the pounds: 6 lbs + 1 lb 8 oz = 7 lb 8 oz.
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="question">30. CLASSIFY: Which type of triangle has exactly one line of symmetry? <br> A) equilateral  B) isosceles  C) scalene</div>
+        <button class="toggle-btn" id="btn-wp-30" onclick="toggleAnswer('wp-30')">Show Answer</button>
+        <div class="answer" id="ans-wp-30">
+            <strong>Answer:</strong> B) isosceles
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                An equilateral triangle has 3 lines of symmetry. <br>
+                A standard isosceles triangle has 1 line of symmetry down the middle. <br>
+                A scalene triangle has no lines of symmetry.
+            </div>
+        </div>
+    </div>
+
+    <h2 class="section-title">Real-World Connection</h2>
+
+    <div class="card">
+        <div class="question">Marcus plays basketball on his college team. This season he scored 450 of his team's 1500 points. <br> a. What percent of the points were scored by Marcus's teammates? <br> b. Marcus's team played 15 games. How many points did Marcus average per game?</div>
+        <button class="toggle-btn" id="btn-rw" onclick="toggleAnswer('rw')">Show Answer</button>
+        <div class="answer" id="ans-rw">
+            <strong>Answers:</strong> <br>
+            a. 70% <br>
+            b. 30 points per game
+            <div class="explanation">
+                <strong>Explanation:</strong><br>
+                a. Points scored by teammates = \( 1500 - 450 = 1050 \). To find the percentage, divide by total points and multiply by 100: \( (1050 \div 1500) \times 100 = 0.70 \times 100 = 70\% \).<br>
+                b. Divide Marcus's total points by the number of games: \( 450 \div 15 = 30 \) points/game.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(id) {
+            var answerDiv = document.getElementById('ans-' + id);
+            var btn = document.getElementById('btn-' + id);
+            if (answerDiv.style.display === 'none' || answerDiv.style.display === '') {
+                answerDiv.style.display = 'block';
+                btn.textContent = 'Hide Answer';
+            } else {
+                answerDiv.style.display = 'none';
+                btn.textContent = 'Show Answer';
+            }
+        }
+    </script>
+</body>
+</html>
