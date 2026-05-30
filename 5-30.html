@@ -1,0 +1,999 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice Solutions - Variant 3 (Styled)</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #eff6ff;
+            --accent: #d97706;
+            --accent-light: #fef3c7;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --border: #cbd5e1;
+            --success: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 24pt;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 12pt;
+            opacity: 0.9;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 11pt;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: #64748b;
+        }
+
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+        }
+
+        .btn-accent:hover {
+            background-color: #b45309;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            background-color: var(--primary-light);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-num {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 13pt;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .question-text {
+            font-size: 12pt;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .diagram-container {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #fafafa;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .explanation-panel {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8fafc;
+            border-left: 4px solid var(--accent);
+            border-radius: 0 6px 6px 0;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .answer-highlight {
+            background-color: var(--accent-light);
+            color: #78350f;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-size: 11pt;
+            border: 1px solid #fde68a;
+        }
+
+        .step-list {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .step-list li {
+            margin-bottom: 8px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .math-block {
+            margin: 15px 0;
+            font-size: 1.1em;
+            overflow-x: auto;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 10pt;
+            border-top: 1px solid var(--border);
+        }
+        
+        svg {
+            display: block;
+            margin: 10px 0;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container tex2jax_process">
+    <header>
+        <h1>Math Practice Solutions - Variant 3</h1>
+        <p>Interactive Solutions Guide (Functional Style)</p>
+    </header>
+
+    <div class="controls">
+        <button class="btn" onclick="toggleAll(true)">Show All Answers</button>
+        <button class="btn btn-secondary" onclick="toggleAll(false)">Hide All Answers</button>
+    </div>
+
+    <div class="grid">
+        
+        <!-- Problem d -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem d</span></div>
+            <div class="card-body">
+                <div class="question-text">Thirty is \( \frac{5}{6} \) of what number?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('d')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-d">
+                    <div class="answer-highlight">Answer: 36</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Set up the equation: \( 30 = \frac{5}{6}x \).</li>
+                            <li>To solve for \( x \), multiply both sides by the reciprocal \( \frac{6}{5} \):
+                                <div class="math-block">$$x = 30 \times \frac{6}{5} = \frac{180}{5} = 36$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem e -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem e</span></div>
+            <div class="card-body">
+                <div class="question-text">Five eighths of the students in the class were girls. If there were 20 girls in the class, how many students were in the class altogether?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('e')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-e">
+                    <div class="answer-highlight">Answer: 32 students</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Let \( x \) be the total number of students. We know \( \frac{5}{8}x = 20 \).</li>
+                            <li>Multiply by the reciprocal:
+                                <div class="math-block">$$x = 20 \times \frac{8}{5} = 4 \times 8 = 32$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 1 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 1</span></div>
+            <div class="card-body">
+                <div class="question-text">Three fourths of the townspeople voted. If 240 of the townspeople voted, how many people live in the town?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('1')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-1">
+                    <div class="answer-highlight">Answer: 320 people</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Let \( T \) be the total townspeople. \( \frac{3}{4}T = 240 \).</li>
+                            <li>Solve for \( T \):
+                                <div class="math-block">$$T = 240 \times \frac{4}{3} = 80 \times 4 = 320$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 2 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 2</span></div>
+            <div class="card-body">
+                <div class="question-text">If 155 children are separated as equally as possible into four groups, how many will be in each group? (Write four numbers, one for each of the four groups.)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('2')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-2">
+                    <div class="answer-highlight">Answer: 39, 39, 39, 38</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Divide 155 by 4: \( 155 \div 4 = 38 \) with a remainder of 3.</li>
+                            <li>This means the base group size is 38. Since there is a remainder of 3, three of the groups will have one extra child (38 + 1 = 39).</li>
+                            <li>Therefore, the groups will be 39, 39, 39, and 38.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 3 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 3</span></div>
+            <div class="card-body">
+                <div class="question-text">If the parking lot charges $1.75 per half hour, what is the cost of parking a car from 9:15 a.m. to 1:45 p.m.?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('3')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-3">
+                    <div class="answer-highlight">Answer: $15.75</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>From 9:15 a.m. to 1:45 p.m. is 4.5 hours.</li>
+                            <li>Since there are two half-hours in every hour, 4.5 hours equals 9 half-hours.</li>
+                            <li>Calculate total cost:
+                                <div class="math-block">$$9 \times \$1.75 = \$15.75$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 4 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 4</span></div>
+            <div class="card-body">
+                <div class="question-text">If the area of the square is 64 m², then what is the area of the circle inscribed within it? (Use 3.14 for \( \pi \).)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('4')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-4">
+                    <div class="answer-highlight">Answer: 50.24 m²</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>The area of the square is \( s^2 = 64 \), so the side length \( s \) is 8 m.</li>
+                            <li>The circle fits perfectly inside the square, so its diameter is 8 m, which means its radius \( r \) is 4 m.</li>
+                            <li>Area of the circle:
+                                <div class="math-block">$$\pi r^2 = 3.14 \times (4)^2 = 3.14 \times 16 = 50.24 \text{ m}^2$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 5 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 5</span></div>
+            <div class="card-body">
+                <div class="question-text">Only 6 of the 50 states have names that begin with the letter C. What percent of the states have names that begin with letters other than C?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('5')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-5">
+                    <div class="answer-highlight">Answer: 88%</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>The number of states starting with other letters is \( 50 - 6 = 44 \).</li>
+                            <li>Calculate the percentage:
+                                <div class="math-block">$$\frac{44}{50} = \frac{88}{100} = 88\%$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 6 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 6</span></div>
+            <div class="card-body">
+                <div class="question-text">The coordinates of the vertices of a triangle are (2, 5), (6, 0), and (0, 0). What is the area of the triangle?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('6')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-6">
+                    <div class="answer-highlight">Answer: 15 square units</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>The base of the triangle on the x-axis goes from (0,0) to (6,0), so the base \( b = 6 \).</li>
+                            <li>The height is the y-coordinate of the peak vertex (2,5), so the height \( h = 5 \).</li>
+                            <li>Calculate the area:
+                                <div class="math-block">$$\frac{1}{2}bh = \frac{1}{2}(6)(5) = 15$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 7 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 7</span></div>
+            <div class="card-body">
+                <div class="question-text">Write three hundred five thousandths as a decimal number.</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('7')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-7">
+                    <div class="answer-highlight">Answer: 0.305</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>"Thousandths" means there are three decimal places.</li>
+                            <li>"Three hundred five" is 305. Placed in the decimal form: 0.305.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 8 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 8</span></div>
+            <div class="card-body">
+                <div class="question-text">Round the quotient of $8.00 &divide; 7 to the nearest cent.</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('8')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-8">
+                    <div class="answer-highlight">Answer: $1.14</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Divide the values: \( 8.00 \div 7 = 1.142857... \)</li>
+                            <li>To round to the nearest cent (hundredths place), look at the thousandths digit (2). Since it is less than 5, keep the hundredths digit the same. Result: $1.14.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 9 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 9</span></div>
+            <div class="card-body">
+                <div class="question-text">Arrange in order from least to greatest: 65%, \( \frac{2}{3} \), 0.655</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('9')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-9">
+                    <div class="answer-highlight">Answer: 65%, 0.655, \( \frac{2}{3} \)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Convert all to decimals to compare:</li>
+                            <li>65% = 0.65</li>
+                            <li>\( \frac{2}{3} \approx 0.666... \)</li>
+                            <li>0.655 = 0.655</li>
+                            <li>Order: 0.65 < 0.655 < 0.666...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 10 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 10</span></div>
+            <div class="card-body">
+                <div class="question-text">Solve and check: \( 4x - 10 = 30 \)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('10')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-10">
+                    <div class="answer-highlight">Answer: \( x = 10 \)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Add 10 to both sides:
+                                <div class="math-block">$$4x = 40$$</div>
+                            </li>
+                            <li>Divide by 4:
+                                <div class="math-block">$$x = 10$$</div>
+                            </li>
+                            <li>Check: \( 4(10) - 10 = 40 - 10 = 30 \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 11 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 11</span></div>
+            <div class="card-body">
+                <div class="question-text">Solve and check: \( \frac{6}{15} = \frac{m}{35} \)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('11')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-11">
+                    <div class="answer-highlight">Answer: \( m = 14 \)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Simplify \( \frac{6}{15} \) to \( \frac{2}{5} \).</li>
+                            <li>Now set up: \( \frac{2}{5} = \frac{m}{35} \).</li>
+                            <li>Multiply both sides by 35:
+                                <div class="math-block">$$m = 35 \times \frac{2}{5} = 14$$</div>
+                            </li>
+                            <li>Check: \( \frac{6}{15} = 0.4 \) and \( \frac{14}{35} = 0.4 \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 12 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 12</span></div>
+            <div class="card-body">
+                <div class="question-text">Eighteen is \( \frac{2}{3} \) of what number?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('12')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-12">
+                    <div class="answer-highlight">Answer: 27</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Let \( x \) be the number. \( 18 = \frac{2}{3}x \).</li>
+                            <li>Multiply both sides by \( \frac{3}{2} \):
+                                <div class="math-block">$$x = 18 \times \frac{3}{2} = 9 \times 3 = 27$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 13 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 13</span></div>
+            <div class="card-body">
+                <div class="question-text">\( \left(7 - 3\frac{1}{2}\right) - 1\frac{1}{5} \)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('13')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-13">
+                    <div class="answer-highlight">Answer: \( 2\frac{3}{10} \)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>First do the subtraction in parentheses: \( 7 - 3\frac{1}{2} = 6\frac{2}{2} - 3\frac{1}{2} = 3\frac{1}{2} \).</li>
+                            <li>Now subtract \( 1\frac{1}{5} \): \( 3\frac{1}{2} - 1\frac{1}{5} \).</li>
+                            <li>Find a common denominator (10):
+                                <div class="math-block">$$3\frac{5}{10} - 1\frac{2}{10} = 2\frac{3}{10}$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 14 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 14</span></div>
+            <div class="card-body">
+                <div class="question-text">\( 4\frac{1}{2} \div 1\frac{1}{8} \)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('14')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-14">
+                    <div class="answer-highlight">Answer: 4</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Convert mixed numbers to improper fractions: \( 4\frac{1}{2} = \frac{9}{2} \) and \( 1\frac{1}{8} = \frac{9}{8} \).</li>
+                            <li>Multiply by the reciprocal:
+                                <div class="math-block">$$\frac{9}{2} \times \frac{8}{9}$$</div>
+                            </li>
+                            <li>The 9s cancel out: \( \frac{8}{2} = 4 \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 15 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 15</span></div>
+            <div class="card-body">
+                <div class="question-text">\( 0.875 \times 2.4 \)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('15')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-15">
+                    <div class="answer-highlight">Answer: 2.1</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Multiply as if they were whole numbers: \( 875 \times 24 = 21000 \).</li>
+                            <li>There are 4 total decimal places (3 in 0.875, 1 in 2.4).</li>
+                            <li>Move the decimal 4 places left: 2.1000 = 2.1.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 16 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 16</span></div>
+            <div class="card-body">
+                <div class="question-text">\( -3 + -3 + -3 + -3 + -3 \)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('16')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-16">
+                    <div class="answer-highlight">Answer: -15</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Adding five negative numbers moves further into the negatives. This is the same as:
+                                <div class="math-block">$$5 \times -3 = -15$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 17 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 17</span></div>
+            <div class="card-body">
+                <div class="question-text">The prime factorization of 24 is \( 2^3 \cdot 3 \). Write the prime factorization of 72 using exponents.</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('17')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-17">
+                    <div class="answer-highlight">Answer: \( 2^3 \cdot 3^2 \)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Find factors of 72: \( 72 = 8 \times 9 \).</li>
+                            <li>The prime factorization of 8 is \( 2^3 \) and 9 is \( 3^2 \).</li>
+                            <li>Combined: \( 2^3 \cdot 3^2 \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 18 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 18</span></div>
+            <div class="card-body">
+                <div class="question-text">What is the total price of a $25.00 item plus 7% sales tax?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('18')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-18">
+                    <div class="answer-highlight">Answer: $26.75</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Tax amount:
+                                <div class="math-block">$$25.00 \times 0.07 = 1.75$$</div>
+                            </li>
+                            <li>Total price:
+                                <div class="math-block">$$25.00 + 1.75 = \$26.75$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 19 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 19</span></div>
+            <div class="card-body">
+                <div class="question-text">What is the area of this house-shaped polygon?</div>
+                <div class="diagram-container">
+                    <svg width="200" height="180" viewBox="0 0 200 180">
+                        <polygon points="30,80 100,10 170,80 170,160 30,160" fill="#fde3c6" stroke="black" stroke-width="2"/>
+                        <line x1="30" y1="80" x2="170" y2="80" stroke="black" stroke-dasharray="5,5"/>
+                        <line x1="100" y1="10" x2="100" y2="80" stroke="black" stroke-dasharray="5,5"/>
+                        <text x="180" y="125" font-size="12">8 m</text>
+                        <text x="105" y="55" font-size="12">7 m</text>
+                        <text x="90" y="175" font-size="12">14 m</text>
+                    </svg>
+                </div>
+                <br>
+                <button class="btn btn-accent" onclick="toggleExplanation('19')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-19">
+                    <div class="answer-highlight">Answer: 161 sq m</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Split the composite figure into a triangle on top and a rectangle on the bottom.</li>
+                            <li>The rectangle has a width of 14 m and a height of 8 m. Area:
+                                <div class="math-block">$$14 \times 8 = 112 \text{ sq m}$$</div>
+                            </li>
+                            <li>The triangle has a base of 14 m and a height of 7 m. Area:
+                                <div class="math-block">$$\frac{1}{2}bh = \frac{1}{2}(14)(7) = 7 \times 7 = 49 \text{ sq m}$$</div>
+                            </li>
+                            <li>Total area: \( 112 + 49 = 161 \text{ sq m} \).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 20 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 20</span></div>
+            <div class="card-body">
+                <div class="question-text">Write the standard numeral for \( 7 \times 10^4 \).</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('20')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-20">
+                    <div class="answer-highlight">Answer: 70,000</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>\( 10^4 \) means 1 followed by 4 zeros (10,000).</li>
+                            <li>Calculate:
+                                <div class="math-block">$$7 \times 10,000 = 70,000$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 21 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 21</span></div>
+            <div class="card-body">
+                <div class="question-text">Calculate mentally:<br> a. \( \frac{-24}{-6} \) &nbsp;&nbsp;&nbsp; b. \( \frac{-54}{9} \) <br> c. \( (-5)(7) \) &nbsp;&nbsp;&nbsp;&nbsp; d. \( (-7)(-6) \)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('21')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-21">
+                    <div class="answer-highlight">Answer: a. 4 &nbsp;|&nbsp; b. -6 &nbsp;|&nbsp; c. -35 &nbsp;|&nbsp; d. 42</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>a. Negative divided by negative is positive.</li>
+                            <li>b. Negative divided by positive is negative.</li>
+                            <li>c. Negative times positive is negative.</li>
+                            <li>d. Negative times negative is positive.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 22 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 22</span></div>
+            <div class="card-body">
+                <div class="question-text">If each small cube has a volume of one cubic inch, then what is the volume of a rectangular solid that is 4 cubes wide, 4 cubes high, and 2 cubes deep?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('22')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-22">
+                    <div class="answer-highlight">Answer: 32 cubic inches</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Volume = length &times; width &times; height:
+                                <div class="math-block">$$4 \times 4 \times 2 = 32$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 23 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 23</span></div>
+            <div class="card-body">
+                <div class="question-text">Draw a triangle in which one angle measures more than 90&deg;. What type of triangle did you draw?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('23')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-23">
+                    <div class="answer-highlight">Answer: Obtuse triangle</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>A triangle with one interior angle that is greater than 90 degrees is geometrically defined as an obtuse triangle.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 24 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 24</span></div>
+            <div class="card-body">
+                <div class="question-text">The mean, median, and mode of student scores on a test were 85, 82, and 80 respectively. About half of the students scored what score or higher?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('24')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-24">
+                    <div class="answer-highlight">Answer: 82</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>The median is the middle value of a sorted dataset.</li>
+                            <li>This means approximately 50% of the data falls below the median and 50% falls at or above it. Since the median is 82, about half scored 82 or higher.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 25 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 25</span></div>
+            <div class="card-body">
+                <div class="question-text">A bank offers an annual percentage rate (APR) of 4.0%.<br>
+                a. By what decimal number do we multiply a deposit to find the total amount in an account after one year at this rate?<br>
+                b. Sarah deposited $1500 into an account at this rate. How much money was in the account after two years? (Assume that the account earns compound interest.)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('25')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-25">
+                    <div class="answer-highlight">Answer: a. 1.04 &nbsp;|&nbsp; b. $1622.40</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>a. The total amount is the initial deposit (100%) plus the interest (4.0%), which is 104.0%. As a decimal, this is 1.04.</li>
+                            <li>b. For compound interest over 2 years, multiply the principal by the rate multiplier raised to the power of 2:
+                                <div class="math-block">$$\$1500 \times (1.04)^2 = \$1500 \times 1.0816 = \$1622.40$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 26 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 26</span></div>
+            <div class="card-body">
+                <div class="question-text">If the spinner is spun twice, what is the probability that the arrow will stop on an ODD number on both spins? (The spinner has 8 equal sections: 1, 2, 3, 4, 1, 2, 3, 4)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('26')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-26">
+                    <div class="answer-highlight">Answer: \( \frac{1}{4} \)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Odd numbers on the spinner are 1 and 3. There are two of each, making 4 favorable sections out of 8 total.</li>
+                            <li>Probability on one spin: \( \frac{4}{8} = \frac{1}{2} \).</li>
+                            <li>Probability for two consecutive spins:
+                                <div class="math-block">$$\frac{1}{2} \times \frac{1}{2} = \frac{1}{4}$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 27 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 27</span></div>
+            <div class="card-body">
+                <div class="question-text">By rotation and translation, two congruent equilateral triangles can be arranged sharing one side to form a:<br>
+                A. rhombus &nbsp;&nbsp; B. square &nbsp;&nbsp; C. rectangle</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('27')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-27">
+                    <div class="answer-highlight">Answer: A. rhombus</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Joining two equilateral triangles along one of their sides forms a quadrilateral with four equal-length sides. A quadrilateral with four equal sides is a rhombus.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 28 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 28</span></div>
+            <div class="card-body">
+                <div class="question-text">Draw a ratio box for this problem. Then solve the problem using a proportion.<br>
+                The ratio of dogs to birds at the pet store was 5 to 4. The combined number of dogs and birds was 180. How many dogs were at the store?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('28')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-28">
+                    <div class="answer-highlight">Answer: 100 dogs</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Ratio: Dogs = 5, Birds = 4, Total parts = 9.</li>
+                            <li>Actual Total = 180.</li>
+                            <li>Set up proportion for dogs: \( \frac{5}{9} = \frac{D}{180} \)</li>
+                            <li>Solve for D:
+                                <div class="math-block">$$D = \frac{5 \times 180}{9} = 5 \times 20 = 100$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 29 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 29</span></div>
+            <div class="card-body">
+                <div class="question-text">\( \sqrt{64} + 3^3 \times 2 - \sqrt{36} \div 2 \)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('29')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-29">
+                    <div class="answer-highlight">Answer: 59</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Use order of operations (PEMDAS). First, evaluate roots and exponents:
+                                <div class="math-block">$$8 + 27 \times 2 - 6 \div 2$$</div>
+                            </li>
+                            <li>Next, multiplication and division from left to right:
+                                <div class="math-block">$$8 + 54 - 3$$</div>
+                            </li>
+                            <li>Finally, addition and subtraction:
+                                <div class="math-block">$$62 - 3 = 59$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 30 -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 30</span></div>
+            <div class="card-body">
+                <div class="question-text">a. Which of these figures has the greatest number of lines of symmetry?<br>
+                A (Rhombus), B (Regular Hexagon), C (Scalene Triangle)<br>
+                b. Which of these figures has rotational symmetry?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('30')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-30">
+                    <div class="answer-highlight">Answer: a. B (Regular Hexagon) &nbsp;|&nbsp; b. A and B</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>a. A rhombus generally has 2 lines of symmetry (the diagonals), a regular hexagon has 6, and a scalene triangle has 0.</li>
+                            <li>b. A rhombus has rotational symmetry of 180&deg; (order 2), and a regular hexagon has rotational symmetry of 60&deg; (order 6). A scalene triangle only maps to itself at 360&deg;, which doesn't count as rotational symmetry.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-World Connection -->
+        <div class="card">
+            <div class="card-header"><span class="question-num">Real-World Connection</span></div>
+            <div class="card-body">
+                <div class="question-text">You and your friends are going to a local arcade. Arcade A charges a $12 admission fee but only $0.50 per game. Arcade B charges a $5 admission fee but $1.00 per game.<br>
+                a. If you and your friends plan to play 10 games, which arcade has the better deal? Show all your work.<br>
+                b. Which arcade is the better value if you play 20 games?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation('rwc')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-rwc">
+                    <div class="answer-highlight">Answer: a. Arcade B &nbsp;|&nbsp; b. Arcade A</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li><strong>a. For 10 games:</strong><br>
+                                Arcade A cost: \( \$12 + (\$0.50 \times 10) = \$12 + \$5 = \$17 \)<br>
+                                Arcade B cost: \( \$5 + (\$1.00 \times 10) = \$5 + \$10 = \$15 \)<br>
+                                Arcade B is cheaper for 10 games.
+                            </li>
+                            <li><strong>b. For 20 games:</strong><br>
+                                Arcade A cost: \( \$12 + (\$0.50 \times 20) = \$12 + \$10 = \$22 \)<br>
+                                Arcade B cost: \( \$5 + (\$1.00 \times 20) = \$5 + \$20 = \$25 \)<br>
+                                Arcade A is cheaper for 20 games.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Interactive Solutions Guide &bull; Generated for Saxon Math Framework Alignment</p>
+    </footer>
+</div>
+
+<script>
+    function toggleExplanation(num) {
+        var panel = document.getElementById('exp-' + num);
+        if (panel.style.display === 'block') {
+            panel.style.display = 'none';
+        } else {
+            panel.style.display = 'block';
+        }
+    }
+
+    function toggleAll(show) {
+        var panels = document.getElementsByClassName('explanation-panel');
+        for (var i = 0; i < panels.length; i++) {
+            panels[i].style.display = show ? 'block' : 'none';
+        }
+    }
+
+    window.onload = function() {
+        if (window.MathJax && window.MathJax.typeset) {
+            window.MathJax.typeset();
+        }
+    };
+</script>
+
+</body>
+</html>
