@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Practice Solutions - Version 3</title>
+    <!-- MathJax for rendering LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .question-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        .toggle-btn {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.3s;
+        }
+        .toggle-btn:hover {
+            background-color: #2980b9;
+        }
+        .answer-section {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ccc;
+            background-color: #f1f8ff;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .answer-section.active {
+            display: block;
+        }
+        .svg-container {
+            margin: 10px 0;
+            text-align: center;
+        }
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Printer-friendly styles */
+        @media print {
+            @page {
+                size: letter; /* 8.5in x 11in */
+                margin: 0.75in;
+            }
+            body {
+                background-color: white;
+                padding: 0;
+                margin: 0;
+            }
+            .question-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+                padding: 15px;
+            }
+            h1 {
+                color: #000;
+                border-bottom: 2px solid #000;
+            }
+            /* Crucial: Hide buttons and answers when printing */
+            .toggle-btn {
+                display: none !important;
+            }
+            .answer-section {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Written Practice - Set 3</h1>
+
+    <!-- Q1 -->
+    <div class="question-card">
+        <div class="question-text">1. Divide 810 by 20 and write the quotient<br>a. with a remainder.<br>b. as a mixed number.</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q1')">Show Answer & Explanation</button>
+        <div id="q1" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Perform long division: $810 \div 20$.<br>
+            $20 \times 40 = 800$<br>
+            $810 - 800 = 10$ (This is the remainder).<br>
+            So, the quotient is 40 with a remainder of 10.</p>
+            <p>For the mixed number, write the remainder over the divisor: $40 \frac{10}{20}$, which simplifies to $40 \frac{1}{2}$.</p>
+            <p><strong>Answer:</strong><br>
+            a. 40 R 10<br>
+            b. $40 \frac{1}{2}$</p>
+        </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-card">
+        <div class="question-text">2. Six divers received scores of 9.5, 9.6, 9.65, 9.1, 9.8, and 9.75. The lowest score was not counted. What was the sum of the five highest scores?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q2')">Show Answer & Explanation</button>
+        <div id="q2" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Identify the lowest score: 9.1. Exclude it from the list.<br>
+            The five highest scores are: 9.5, 9.6, 9.65, 9.75, 9.8.<br>
+            Add them together: $9.50 + 9.60 + 9.65 + 9.75 + 9.80 = 48.30$.</p>
+            <p><strong>Answer:</strong> 48.3</p>
+        </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-card">
+        <div class="question-text">3. If 12 students play the flute, and they make up 15% of the school band, how many members does the band have in total?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q3')">Show Answer & Explanation</button>
+        <div id="q3" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Let $x$ be the total number of band members.<br>
+            $15\%$ of $x = 12$<br>
+            $0.15 \times x = 12$<br>
+            $x = 12 \div 0.15$<br>
+            $x = 80$</p>
+            <p><strong>Answer:</strong> 80 members</p>
+        </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-card">
+        <div class="question-text">4. Twenty is $\frac{2}{5}$ of what number?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q4')">Show Answer & Explanation</button>
+        <div id="q4" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Set up an equation where $x$ is the unknown number:<br>
+            $20 = \frac{2}{5}x$<br>
+            To solve for $x$, multiply both sides by the reciprocal ($\frac{5}{2}$):<br>
+            $x = 20 \times \frac{5}{2} = \frac{100}{2} = 50$</p>
+            <p><strong>Answer:</strong> 50</p>
+        </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-card">
+        <div class="question-text">5. Write the standard number for the following: $(3 \times 10^5) + (5 \times 10^3) + (2 \times 10^1)$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q5')">Show Answer & Explanation</button>
+        <div id="q5" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Expand the scientific notation:<br>
+            $3 \times 10^5 = 300,000$<br>
+            $5 \times 10^3 = 5,000$<br>
+            $2 \times 10^1 = 20$<br>
+            Notice there are no $10^4$ or $10^2$ or $10^0$ terms, so their place values are zero.<br>
+            Add them together: $300,000 + 5,000 + 20 = 305,020$.</p>
+            <p><strong>Answer:</strong> 305,020</p>
+        </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="question-card">
+        <div class="question-text">6. On an architect's blueprint, each inch represents 12 feet. A room is drawn $2 \frac{1}{2}$ inches long. How long is the actual room?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q6')">Show Answer & Explanation</button>
+        <div id="q6" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Multiply the drawing length by the scale factor:<br>
+            $2 \frac{1}{2} \text{ inches} \times 12 \text{ feet/inch}$<br>
+            Convert $2 \frac{1}{2}$ to an improper fraction: $\frac{5}{2}$.<br>
+            $\frac{5}{2} \times 12 = \frac{60}{2} = 30$.</p>
+            <p><strong>Answer:</strong> 30 feet</p>
+        </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="question-card">
+        <div class="question-text">7. Two angles of a triangle measure 50&deg; and 60&deg;.<br>a. What is the measure of the third angle?<br>b. Make a rough sketch of the triangle.</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q7')">Show Answer & Explanation</button>
+        <div id="q7" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            a. The sum of angles in a triangle is always 180&deg;. Subtract the two known angles:<br>
+            $180^\circ - 50^\circ - 60^\circ = 70^\circ$.<br>
+            b. A triangle with angles 70&deg;, 60&deg;, and 50&deg; is an acute scalene triangle.</p>
+            <div class="svg-container">
+                <svg width="200" height="150" viewBox="0 0 200 150">
+                    <polygon points="30,130 170,130 80,30" fill="#e1bee7" stroke="#8e24aa" stroke-width="2"/>
+                    <text x="140" y="125" font-size="12">50&deg;</text>
+                    <text x="40" y="125" font-size="12">60&deg;</text>
+                    <text x="75" y="55" font-size="12">70&deg;</text>
+                </svg>
+            </div>
+            <p><strong>Answer:</strong><br>
+            a. 70&deg;<br>
+            b. (See sketch above: an acute scalene triangle)</p>
+        </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="question-card">
+        <div class="question-text">8. Convert $16 \frac{2}{3}\%$ to a fraction.</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q8')">Show Answer & Explanation</button>
+        <div id="q8" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            First, convert the mixed number to an improper fraction: $16 \frac{2}{3} = \frac{50}{3}$.<br>
+            Since it is a percent, multiply by $\frac{1}{100}$:<br>
+            $\frac{50}{3} \times \frac{1}{100} = \frac{50}{300}$.<br>
+            Simplify by dividing numerator and denominator by 50:<br>
+            $\frac{50 \div 50}{300 \div 50} = \frac{1}{6}$.</p>
+            <p><strong>Answer:</strong> $\frac{1}{6}$</p>
+        </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="question-card">
+        <div class="question-text">9. Eighteen dollars is what percent of $24?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q9')">Show Answer & Explanation</button>
+        <div id="q9" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Create a fraction showing the part over the whole: $\frac{18}{24}$.<br>
+            Simplify the fraction by dividing by 6: $\frac{18}{24} = \frac{3}{4}$.<br>
+            Convert $\frac{3}{4}$ to a percentage by multiplying by 100: $\frac{3}{4} \times 100 = 75\%$.</p>
+            <p><strong>Answer:</strong> 75%</p>
+        </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="question-card">
+        <div class="question-text">10. Thirty percent of what number is 27?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q10')">Show Answer & Explanation</button>
+        <div id="q10" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Let $x$ be the unknown number. Convert 30% to a decimal (0.30) or fraction ($\frac{3}{10}$).<br>
+            Using fraction: $\frac{3}{10}x = 27$<br>
+            Multiply both sides by $\frac{10}{3}$:<br>
+            $x = 27 \times \frac{10}{3} = \frac{270}{3} = 90$.</p>
+            <p><strong>Answer:</strong> 90</p>
+        </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="question-card">
+        <div class="question-text">11. Four fifths of what number is 32?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q11')">Show Answer & Explanation</button>
+        <div id="q11" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Set up the equation: $\frac{4}{5}x = 32$.<br>
+            Multiply both sides by the reciprocal ($\frac{5}{4}$):<br>
+            $x = 32 \times \frac{5}{4} = \frac{160}{4} = 40$.</p>
+            <p><strong>Answer:</strong> 40</p>
+        </div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="question-card">
+        <div class="question-text">12. $(-10) - (+5) + (-2)$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q12')">Show Answer & Explanation</button>
+        <div id="q12" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Simplify the signs:<br>
+            $-10 - 5 - 2$<br>
+            Combine from left to right:<br>
+            $(-10 - 5) - 2 = -15 - 2 = -17$.</p>
+            <p><strong>Answer:</strong> -17</p>
+        </div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="question-card">
+        <div class="question-text">13. $(-14)(-3)$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q13')">Show Answer & Explanation</button>
+        <div id="q13" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Multiply the two numbers. A negative times a negative results in a positive.<br>
+            $14 \times 3 = 42$.</p>
+            <p><strong>Answer:</strong> 42</p>
+        </div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="question-card">
+        <div class="question-text">14. Reduce: $\frac{48}{64}$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q14')">Show Answer & Explanation</button>
+        <div id="q14" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Find the greatest common divisor (GCD) of 48 and 64, which is 16.<br>
+            Divide both numerator and denominator by 16:<br>
+            $\frac{48 \div 16}{64 \div 16} = \frac{3}{4}$.</p>
+            <p><strong>Answer:</strong> $\frac{3}{4}$</p>
+        </div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="question-card">
+        <div class="question-text">15. $4 \frac{1}{3} - 2 \frac{3}{4}$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q15')">Show Answer & Explanation</button>
+        <div id="q15" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Convert to improper fractions:<br>
+            $\frac{13}{3} - \frac{11}{4}$<br>
+            Find a common denominator (12):<br>
+            $\frac{13 \times 4}{3 \times 4} - \frac{11 \times 3}{4 \times 3} = \frac{52}{12} - \frac{33}{12}$<br>
+            Subtract the numerators:<br>
+            $\frac{52 - 33}{12} = \frac{19}{12}$.<br>
+            Convert back to mixed number: $1 \frac{7}{12}$.</p>
+            <p><strong>Answer:</strong> $1 \frac{7}{12}$</p>
+        </div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="question-card">
+        <div class="question-text">16. John is practicing for a triathlon segment. The ratio of the distance he runs to the distance he bikes is 1 to 4. If the distance run was 8 kilometers, what was the total length of his practice session?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q16')">Show Answer & Explanation</button>
+        <div id="q16" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Ratio of Run to Bike = $1:4$.<br>
+            Let the run distance be $1x$ and bike distance be $4x$.<br>
+            We are given the run distance is 8 km, so: $x = 8$.<br>
+            The bike distance is $4x = 4(8) = 32$ km.<br>
+            Total length = Run + Bike = $8 \text{ km} + 32 \text{ km} = 40$ km.</p>
+            <p><strong>Answer:</strong> 40 kilometers</p>
+        </div>
+    </div>
+
+    <!-- Q17 -->
+    <div class="question-card">
+        <div class="question-text">17. The area of the shaded triangle is 6.2 cm&sup2;. What is the area of the parallelogram?
+            <div class="svg-container">
+                <svg width="200" height="100" viewBox="0 0 200 100">
+                    <!-- Parallelogram -->
+                    <polygon points="40,90 190,90 160,10 10,10" fill="none" stroke="black" stroke-width="2"/>
+                    <!-- Diagonal -->
+                    <line x1="40" y1="90" x2="160" y2="10" stroke="black" stroke-width="2"/>
+                    <!-- Shaded lower triangle -->
+                    <polygon points="40,90 190,90 160,10" fill="#b2dfdb" stroke="black" stroke-width="1"/>
+                </svg>
+            </div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer('q17')">Show Answer & Explanation</button>
+        <div id="q17" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            A diagonal divides a parallelogram into two congruent triangles. Therefore, the total area of the parallelogram is exactly twice the area of the shaded triangle.<br>
+            Area = $6.2 \text{ cm}^2 \times 2 = 12.4 \text{ cm}^2$.</p>
+            <p><strong>Answer:</strong> 12.4 cm&sup2;</p>
+        </div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="question-card">
+        <div class="question-text">18. A lunch box is 8 in. long, 5 in. wide, and 6 in. deep. What is the volume of the box?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q18')">Show Answer & Explanation</button>
+        <div id="q18" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            The volume of a rectangular prism is calculated as $\text{Length} \times \text{Width} \times \text{Height (Depth)}$.<br>
+            $V = 8 \text{ in.} \times 5 \text{ in.} \times 6 \text{ in.} = 240 \text{ cubic inches}$.</p>
+            <p><strong>Answer:</strong> 240 in.&sup3;</p>
+        </div>
+    </div>
+
+    <!-- Q19 -->
+    <div class="question-card">
+        <div class="question-text">19. A regular hexagon has a total of how many lines of symmetry?
+            <div class="svg-container">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                    <polygon points="50,10 85,30 85,70 50,90 15,70 15,30" fill="none" stroke="black" stroke-width="2"/>
+                </svg>
+            </div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer('q19')">Show Answer & Explanation</button>
+        <div id="q19" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            A regular polygon with $n$ sides has $n$ lines of symmetry. A regular hexagon has 6 sides of equal length and 6 equal interior angles, so it has exactly 6 lines of symmetry.</p>
+            <p><strong>Answer:</strong> 6</p>
+        </div>
+    </div>
+
+    <!-- Q20 -->
+    <div class="question-card">
+        <div class="question-text">20. If this shape were cut out and folded on the dotted lines, would it form a cube, a pyramid, or a prism?
+            <div class="svg-container">
+                <svg width="150" height="150" viewBox="0 0 150 150">
+                    <!-- Center square -->
+                    <rect x="50" y="50" width="50" height="50" fill="none" stroke="black" stroke-width="2" stroke-dasharray="5,5"/>
+                    <!-- Top triangle -->
+                    <polygon points="50,50 100,50 75,10" fill="none" stroke="black" stroke-width="2"/>
+                    <!-- Bottom triangle -->
+                    <polygon points="50,100 100,100 75,140" fill="none" stroke="black" stroke-width="2"/>
+                    <!-- Left triangle -->
+                    <polygon points="50,50 50,100 10,75" fill="none" stroke="black" stroke-width="2"/>
+                    <!-- Right triangle -->
+                    <polygon points="100,50 100,100 140,75" fill="none" stroke="black" stroke-width="2"/>
+                </svg>
+            </div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer('q20')">Show Answer & Explanation</button>
+        <div id="q20" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            This net consists of a square base surrounded by four identical triangles. When folded up along the edges of the square, the points of the triangles meet at a single apex above the base, forming a square-based pyramid.</p>
+            <p><strong>Answer:</strong> a pyramid</p>
+        </div>
+    </div>
+
+    <!-- Q21 -->
+    <div class="question-card">
+        <div class="question-text">21. $5k - 8 = 32$</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q21')">Show Answer & Explanation</button>
+        <div id="q21" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Solve for $k$:<br>
+            Add 8 to both sides: $5k = 32 + 8 \rightarrow 5k = 40$<br>
+            Divide by 5: $k = 40 \div 5 = 8$.</p>
+            <p><strong>Answer:</strong> $k = 8$</p>
+        </div>
+    </div>
+
+    <!-- Q22 -->
+    <div class="question-card">
+        <div class="question-text">22. Write the rule for this function as an equation. Then use the rule to find the missing number.<br>
+            <table border="1" cellpadding="5" cellspacing="0" style="margin-top: 10px;">
+                <tr><th>$x$</th><th>$y$</th></tr>
+                <tr><td>3</td><td>18</td></tr>
+                <tr><td>5</td><td>30</td></tr>
+                <tr><td>8</td><td>48</td></tr>
+                <tr><td></td><td>60</td></tr>
+            </table>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer('q22')">Show Answer & Explanation</button>
+        <div id="q22" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Observe the relationship between $x$ and $y$:<br>
+            $3 \times 6 = 18$<br>
+            $5 \times 6 = 30$<br>
+            $8 \times 6 = 48$<br>
+            The rule is to multiply $x$ by 6 to get $y$. Equation: $y = 6x$.<br>
+            To find the missing $x$ when $y = 60$:<br>
+            $60 = 6x \rightarrow x = 60 \div 6 = 10$.</p>
+            <p><strong>Answer:</strong> Equation: $y = 6x$. Missing number: 10.</p>
+        </div>
+    </div>
+
+    <!-- Q23 -->
+    <div class="question-card">
+        <div class="question-text">23. How many pounds is 7.5 tons?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q23')">Show Answer & Explanation</button>
+        <div id="q23" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            There are 2,000 pounds in 1 US ton.<br>
+            $7.5 \text{ tons} \times 2,000 \text{ pounds/ton} = 15,000 \text{ pounds}$.</p>
+            <p><strong>Answer:</strong> 15,000 pounds</p>
+        </div>
+    </div>
+
+    <!-- Q24 -->
+    <div class="question-card">
+        <div class="question-text">24. Which of these polygons is NOT a quadrilateral?<br>A. trapezoid &nbsp;&nbsp;&nbsp; B. square &nbsp;&nbsp;&nbsp; C. octagon</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q24')">Show Answer & Explanation</button>
+        <div id="q24" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            A quadrilateral is a polygon with exactly 4 sides. A trapezoid and a square both have 4 sides. An octagon has 8 sides, so it is not a quadrilateral.</p>
+            <p><strong>Answer:</strong> C. octagon</p>
+        </div>
+    </div>
+
+    <!-- Q25 -->
+    <div class="question-card">
+        <div class="question-text">25. Compare: area of the square $\bigcirc$ area of the circle
+            <div class="svg-container">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                    <rect x="10" y="10" width="80" height="80" fill="none" stroke="black" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="black" stroke-width="2"/>
+                </svg>
+            </div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer('q25')">Show Answer & Explanation</button>
+        <div id="q25" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Looking at the image, the circle is inscribed entirely within the boundaries of the square. Since the square encompasses the circle and has extra space in its corners, the area of the square must be greater than the area of the circle.</p>
+            <p><strong>Answer:</strong> &gt; (greater than)</p>
+        </div>
+    </div>
+
+    <!-- Q26 -->
+    <div class="question-card">
+        <div class="question-text">26. The coordinates of three points that are on the same line are (-4, -2), (0, 0), and ($x$, 5). What number should replace $x$ in the third set of coordinates?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q26')">Show Answer & Explanation</button>
+        <div id="q26" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Find the slope ($m$) of the line using the first two points: (-4, -2) and (0, 0).<br>
+            $m = \frac{y_2 - y_1}{x_2 - x_1} = \frac{0 - (-2)}{0 - (-4)} = \frac{2}{4} = \frac{1}{2}$.<br>
+            The equation of the line passing through origin is $y = \frac{1}{2}x$.<br>
+            Plug in the third point ($x$, 5) where $y = 5$:<br>
+            $5 = \frac{1}{2}x \rightarrow x = 5 \times 2 = 10$.</p>
+            <p><strong>Answer:</strong> 10</p>
+        </div>
+    </div>
+
+    <!-- Q27 -->
+    <div class="question-card">
+        <div class="question-text">27. Sam flipped a coin three times, and it landed heads up every time. If he flips the coin a fourth time, what is the probability that it will land heads up?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q27')">Show Answer & Explanation</button>
+        <div id="q27" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Coin flips are independent events. The outcomes of previous flips do not influence the next flip. For a fair coin, the probability of getting heads on any single toss is always 1 out of 2.</p>
+            <p><strong>Answer:</strong> $\frac{1}{2}$</p>
+        </div>
+    </div>
+
+    <!-- Q28 -->
+    <div class="question-card">
+        <div class="question-text">28. Emily is going to flip a coin five times in a row. What is the probability that the coin will land heads up all five times?</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q28')">Show Answer & Explanation</button>
+        <div id="q28" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            Since each flip is an independent event with a probability of $\frac{1}{2}$ for getting heads, multiply the probabilities together for the five consecutive events:<br>
+            $P(5 \text{ Heads}) = \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} = \frac{1}{32}$.</p>
+            <p><strong>Answer:</strong> $\frac{1}{32}$</p>
+        </div>
+    </div>
+
+    <!-- Q29 -->
+    <div class="question-card">
+        <div class="question-text">29. The diameter of the circle is 14 cm.<br>a. What is the area of the square?<br>b. What is the area of the circle?
+            <div class="svg-container">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="black" stroke-width="2"/>
+                    <!-- Square in top right quadrant -->
+                    <rect x="60" y="10" width="50" height="50" fill="#e1bee7" stroke="black" stroke-width="1"/>
+                    <line x1="10" y1="60" x2="110" y2="60" stroke="black" stroke-dasharray="3,3"/>
+                    <line x1="60" y1="10" x2="60" y2="110" stroke="black" stroke-dasharray="3,3"/>
+                    <text x="50" y="120" font-size="12">14 cm</text>
+                </svg>
+            </div>
+        </div>
+        <button class="toggle-btn" onclick="toggleAnswer('q29')">Show Answer & Explanation</button>
+        <div id="q29" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            The diameter is 14 cm, so the radius ($r$) is half of that, which is 7 cm. The side length of the shaded square is exactly equal to the radius of the circle (7 cm).<br>
+            a. Area of square = $\text{side} \times \text{side} = 7 \times 7 = 49 \text{ cm}^2$.<br>
+            b. Area of circle = $\pi r^2 = \pi \times 7^2 = 49\pi \text{ cm}^2$.</p>
+            <p><strong>Answer:</strong><br>
+            a. 49 cm&sup2;<br>
+            b. $49\pi \text{ cm}^2$</p>
+        </div>
+    </div>
+
+    <!-- Q30 -->
+    <div class="question-card">
+        <div class="question-text">30. What is the mode and the range of this set of numbers?<br>12, 15, 12, 18, 20, 14, 15, 12, 19</div>
+        <button class="toggle-btn" onclick="toggleAnswer('q30')">Show Answer & Explanation</button>
+        <div id="q30" class="answer-section">
+            <p><strong>Explanation:</strong><br>
+            First, put the numbers in order: 12, 12, 12, 14, 15, 15, 18, 19, 20.<br>
+            <strong>Mode:</strong> The number that appears most frequently. 12 appears three times, which is more than any other number.<br>
+            <strong>Range:</strong> The difference between the highest and lowest numbers. Maximum is 20, Minimum is 12. $20 - 12 = 8$.</p>
+            <p><strong>Answer:</strong><br>
+            Mode = 12<br>
+            Range = 8</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(id) {
+            var element = document.getElementById(id);
+            var button = element.previousElementSibling;
+            if (element.classList.contains('active')) {
+                element.classList.remove('active');
+                button.textContent = "Show Answer & Explanation";
+            } else {
+                element.classList.add('active');
+                button.textContent = "Hide Answer & Explanation";
+            }
+        }
+    </script>
+</body>
+</html>
