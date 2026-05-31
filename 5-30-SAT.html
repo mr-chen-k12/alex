@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice</title>
+<style>
+    /* General Styles - Bluebook App Inspired */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    .question-block {
+        display: none; /* Hidden by default, JS will show active */
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        font-weight: bold;
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 4px;
+        display: none;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #c0392b;
+        display: block;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    #results {
+        display: none;
+        text-align: center;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, .feedback, #results { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } /* Ensure radio buttons print normally */
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <h1>SAT Reading Practice</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="questions-wrapper">
+        </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers below.</p>
+        <button onclick="window.print()" style="margin-top: 20px;">Print / Save as PDF</button>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            passage: "While early critics dismissed Dr. Aris Thorne's theories on subterranean ocean currents as mere conjecture, recent deep-sea probe data has yielded findings that align perfectly with his original models. Far from being a fringe hypothesis, Thorne’s work has been completely ______ by the new telemetry.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["fabricated", "vindicated", "obscured", "supplanted"],
+            correctAnswer: 1
+        },
+        {
+            passage: "Many historians attribute the rapid expansion of the Inca Empire to their formidable military. However, recent anthropological studies highlight the Qhapaq Ñan—a vast, highly organized road network—as the primary catalyst. By allowing swift communication, troop movement, and resource distribution across harsh Andean terrains, the infrastructure proved more decisive than sheer martial prowess.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "The Inca military was less powerful than early historians previously believed.",
+                "The rugged Andean terrain made it difficult for the Inca to expand their empire.",
+                "The Qhapaq Ñan road network was the most crucial factor in the Inca Empire's expansion.",
+                "Anthropological studies often contradict historical accounts of military conquests."
+            ],
+            correctAnswer: 2
+        },
+        {
+            passage: "In a recent study of urban avian populations, researchers found that pigeons nesting in city centers have developed a slightly different digestive enzyme profile compared to their rural counterparts. This urban enzyme variant is highly efficient at breaking down processed starches, a major component of the human food waste prevalent in cities.",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "Therefore, urban pigeons are likely to migrate to rural areas if processed starches become scarce.",
+                "This suggests that dietary availability in urban environments has exerted a selective pressure on pigeon physiology.",
+                "As a result, rural pigeons have a longer lifespan than urban pigeons due to their natural diet.",
+                "Consequently, the researchers conclude that pigeons are the most adaptable bird species in the world."
+            ],
+            correctAnswer: 1
+        },
+        {
+            passage: "Text 1\nThe transition to electric vehicles (EVs) is essential for reducing global greenhouse gas emissions. Governments must heavily subsidize EV manufacturing to make them affordable for the average consumer, accelerating the phase-out of combustion-engine cars.\n\nText 2\nWhile EVs do not produce tailpipe emissions, the mining of lithium and cobalt required for their batteries exacts a massive environmental and human toll. Without a sustainable supply chain for battery components, rapidly scaling up EV production merely shifts the ecological damage from the atmosphere to the earth.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the recommendation made in Text 1?",
+            options: [
+                "By arguing that government subsidies should instead be directed toward improving public transportation.",
+                "By agreeing that EV manufacturing must be subsidized, provided combustion engines are phased out first.",
+                "By cautioning that accelerating EV production without addressing battery sourcing issues will cause severe environmental harm.",
+                "By asserting that the cost of lithium mining makes it impossible for EVs to ever be affordable for the average consumer."
+            ],
+            correctAnswer: 2
+        },
+        {
+            passage: "To document the declining bee population, the photographer employed a highly ______ approach. She spent hundreds of hours in a single meadow, adjusting her macro lenses by fractions of a millimeter to capture the exact iridescence of the insects' wings, refusing to leave until the lighting was mathematically perfect.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["haphazard", "fastidious", "pragmatic", "mercurial"],
+            correctAnswer: 1
+        },
+        {
+            passage: "Astronomers have long observed that certain galaxies spin faster than the visible matter within them should allow, suggesting the presence of invisible 'dark matter' providing extra gravitational pull. Recently, an alternative theory called Modified Newtonian Dynamics (MOND) has proposed that gravity simply behaves differently at massive cosmic scales. However, MOND struggles to explain the gravitational lensing—the bending of light around unseen mass—observed in the Bullet Cluster.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It introduces an established concept, presents a competing theory, and then highlights a specific weakness of that competing theory.",
+                "It outlines a scientific mystery, proposes a novel solution to that mystery, and concludes by proving the novel solution is correct.",
+                "It describes an astronomical phenomenon, questions the validity of the data, and suggests a new method of observation.",
+                "It explains the history of a scientific debate, summarizes the two main arguments, and asserts that neither argument is satisfactory."
+            ],
+            correctAnswer: 0
+        },
+        {
+            passage: "In his 1903 book *The Souls of Black Folk*, W.E.B. Du Bois introduced the concept of 'double consciousness,' describing the internal conflict experienced by marginalized groups in an oppressive society. He defined it as the struggle of 'always looking at one’s self through the eyes of others, of measuring one’s soul by the tape of a world that looks on in amused contempt and pity.'",
+            prompt: "According to the text, what is the defining characteristic of 'double consciousness'?",
+            options: [
+                "The desire to completely assimilate into the dominant culture.",
+                "The psychological burden of evaluating oneself based on the prejudiced views of society.",
+                "The physical separation of different racial groups within a single nation.",
+                "The sense of pride derived from overcoming systemic oppression."
+            ],
+            correctAnswer: 1
+        },
+        {
+            passage: "During the 1930s, the US government commissioned photographers to document rural poverty. The resulting images, featuring stark black-and-white portraits of destitute farmers, were intended to drum up support for New Deal relief programs. Paradoxically, the artistic brilliance of the photographs often ______ their political purpose, as gallery-goers praised the striking compositions rather than focusing on the suffering depicted.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["amplified", "obscured", "vindicated", "instigated"],
+            correctAnswer: 1
+        },
+        {
+            passage: "Researchers studying the acoustic properties of ancient Mayan pyramids noticed that a handclap at the base of the Temple of Kukulcan produces an echo that sounds remarkably like the chirp of a quetzal bird. Some acousticians argue this was an intentional design by Mayan architects. However, others point out that any stepped pyramid with similar dimensions built from limestone will naturally produce a chirping echo due to sound wave diffraction.",
+            prompt: "Which choice best describes the function of the final sentence in the overall structure of the text?",
+            options: [
+                "It provides evidence that proves the Mayan architects intentionally designed the acoustic effect.",
+                "It introduces an alternative explanation that challenges the intentionality of the acoustic effect.",
+                "It criticizes the methods used by acousticians to study the Temple of Kukulcan.",
+                "It explains the specific physics principles required to build a stepped pyramid."
+            ],
+            correctAnswer: 1
+        },
+        {
+            passage: "When engineering the new deep-sea submersible, the design team opted for a spherical titanium hull rather than a cylindrical one. In high-pressure environments, a sphere distributes the external crushing forces perfectly evenly across its entire surface area, whereas a cylinder is prone to stress concentrations at its flat ends. Consequently, ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "a cylindrical hull requires less titanium to manufacture than a spherical hull.",
+                "the submersible can dive to greater depths safely using a spherical hull.",
+                "titanium is an unsuitable material for constructing deep-sea submersibles.",
+                "the external crushing forces in the deep sea are highly unpredictable."
+            ],
+            correctAnswer: 1
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label>
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        userAnswers[qIndex] = optIndex;
+        // Hide feedback if they change their answer so they can check again
+        document.getElementById(`feedback-${qIndex}`).style.display = 'none';
+    }
+
+    function checkAnswer() {
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        
+        if (selected === null) {
+            feedbackDiv.textContent = "Please select an answer first.";
+            feedbackDiv.className = "feedback incorrect";
+            return;
+        }
+
+        if (selected === quizData[currentQuestion].correctAnswer) {
+            feedbackDiv.textContent = "Correct! Well done.";
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.textContent = "Incorrect. Try again.";
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            // Force show all for review
+            qBlock.classList.add('active');
+            
+            if (userAnswers[index] === q.correctAnswer) {
+                score++;
+                feedbackDiv.textContent = "Correct";
+                feedbackDiv.className = "feedback correct";
+            } else {
+                feedbackDiv.innerHTML = `Incorrect. The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>`;
+                feedbackDiv.className = "feedback incorrect";
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        window.scrollTo(0, 0);
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
