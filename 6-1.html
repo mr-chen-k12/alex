@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 23 Review & Additional Math Problems - Solutions</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --primary-light: #f1f5f9;
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --bg: #cbd5e1;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --success: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #1e293b);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 26pt;
+            margin-bottom: 12px;
+            letter-spacing: -0.025em;
+        }
+
+        header p {
+            font-size: 13pt;
+            opacity: 0.85;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 11pt;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .btn:hover {
+            background-color: #1e293b;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: #64748b;
+        }
+
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+        }
+
+        .btn-accent:hover {
+            background-color: #1d4ed8;
+        }
+
+        .grid {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card-header {
+            background-color: var(--primary-light);
+            padding: 18px 25px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-num {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 14pt;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .question-text {
+            font-size: 13pt;
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .diagram-container {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .explanation-panel {
+            display: none;
+            margin-top: 25px;
+            padding: 25px;
+            background-color: #f8fafc;
+            border-left: 5px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .answer-highlight {
+            background-color: var(--accent-light);
+            color: #1e40af;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-size: 12pt;
+            border: 1px solid #bfdbfe;
+        }
+
+        .step-list {
+            margin-left: 24px;
+            margin-top: 12px;
+        }
+
+        .step-list li {
+            margin-bottom: 12px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .math-block {
+            margin: 15px 0;
+            font-size: 1.15em;
+            overflow-x: auto;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 11pt;
+            border-top: 1px solid var(--border);
+        }
+
+        canvas {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            display: block;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container tex2jax_process">
+    <header>
+        <h1>Test 23 Review & Selected Problems</h1>
+        <p>Complete Solutions with Interactive Step-by-Step Explanations</p>
+    </header>
+
+    <div class="controls">
+        <button class="btn" onclick="toggleAll(true)">Show All Answers</button>
+        <button class="btn btn-secondary" onclick="toggleAll(false)">Hide All Answers</button>
+    </div>
+
+    <div class="grid">
+        <!-- Problem 1 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 1</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    In a bag are 3 red marbles and 3 blue marbles. If two marbles are drawn from the bag at the same time, what is the probability that both marbles are red?
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(1)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-1">
+                    <div class="answer-highlight">Answer: \(rac{1}{5}\) (or 20%)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li><strong>Method 1: Sequential Selection without Replacement</strong><br>
+                                Drawing two marbles at the same time is mathematically equivalent to drawing one marble and then drawing a second marble without putting the first one back.
+                            </li>
+                            <li>Find the probability that the first marble drawn is red. There are 3 red marbles out of 6 total marbles:
+                                <div class="math-block">$$P(	ext{First is Red}) = rac{3}{6} = rac{1}{2}$$</div>
+                            </li>
+                            <li>Find the probability that the second marble drawn is red, given that the first was red. Now, 2 red marbles remain out of 5 total remaining marbles:
+                                <div class="math-block">$$P(	ext{Second is Red} \mid 	ext{First is Red}) = rac{2}{5}$$</div>
+                            </li>
+                            <li>Multiply the two probabilities together to get the compound probability:
+                                <div class="math-block">$$P(	ext{Both Red}) = rac{1}{2} 	imes rac{2}{5} = rac{2}{10} = rac{1}{5}$$</div>
+                            </li>
+                            <li><strong>Method 2: Combinations (Alternative)</strong><br>
+                                Find the number of ways to choose 2 red marbles out of 3: \(inom{3}{2} = 3\).<br>
+                                Find the total number of ways to choose any 2 marbles out of 6: \(inom{6}{2} = rac{6 	imes 5}{2} = 15\).<br>
+                                Probability = \(rac{3}{15} = rac{1}{5}\).
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 2 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 2</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Which letter has rotational symmetry?<br>
+                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;E &nbsp;&nbsp;&nbsp;&nbsp; F &nbsp;&nbsp;&nbsp;&nbsp; G &nbsp;&nbsp;&nbsp;&nbsp; H</strong>
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(2)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-2">
+                    <div class="answer-highlight">Answer: H</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>An object has <strong>rotational symmetry</strong> if it looks exactly the same after a rotation of less than \(360^\circ\) around its center.</li>
+                            <li>Let's analyze each letter by rotating it by \(180^\circ\) (upside down):
+                                <ul>
+                                    <li><strong>E</strong> turned upside down becomes <strong>\(\exists\)</strong> (does not look the same).</li>
+                                    <li><strong>F</strong> turned upside down becomes <strong>\(\mathcal{\in}\)</strong> (does not look the same).</li>
+                                    <li><strong>G</strong> turned upside down becomes a completely inverted shape.</li>
+                                    <li><strong>H</strong> turned upside down looks exactly like <strong>H</strong>.</li>
+                                </ul>
+                            </li>
+                            <li>Therefore, the letter <strong>H</strong> possesses order-2 rotational symmetry (at \(180^\circ\)).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 3 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 3</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Simplify each expression:<br>
+                    <strong>(a)</strong> \((-3)(-7)\)<br>
+                    <strong>(b)</strong> \(rac{-8}{+2}\)
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(3)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-3">
+                    <div class="answer-highlight">Answer: (a) 21 &nbsp;|&nbsp; (b) -4</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li><strong>Part (a):</strong> Multiply \((-3)\) by \((-7)\).<br>
+                                The product of two negative numbers is always positive:
+                                <div class="math-block">$$(-3) 	imes (-7) = +21 = 21$$</div>
+                            </li>
+                            <li><strong>Part (b):</strong> Divide \((-8)\) by \((+2)\).<br>
+                                The quotient of a negative number and a positive number is always negative:
+                                <div class="math-block">$$rac{-8}{+2} = -4$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 4 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 4</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Emily and Stacey bought a used bike. Emily paid \$5 and Stacey paid the remaining 80%. What was the total price of the bike?
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(4)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-4">
+                    <div class="answer-highlight">Answer: \$25.00</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Determine the percentage of the price that Emily paid. Since the total percentage must be 100%, and Stacey paid 80%:
+                                <div class="math-block">$$	ext{Emily's Percentage} = 100\% - 80\% = 20\%$$</div>
+                            </li>
+                            <li>This means Emily's share of \$5 represents exactly 20% of the total cost (\(T\)). We can write this as an equation:
+                                <div class="math-block">$$20\% 	ext{ of } T = \$5 ightarrow 0.20 	imes T = 5$$</div>
+                            </li>
+                            <li>Solve for \(T\) by dividing both sides by 0.20 (which is the same as multiplying by 5, since \(20\% = rac{1}{5}\)):
+                                <div class="math-block">$$T = rac{5}{0.20} = 5 	imes 5 = 25$$</div>
+                            </li>
+                            <li>Therefore, the total price of the bike was <strong>\$25.00</strong> (Stacey paid \(80\% 	imes \$25 = \$20\)).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 5 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 5</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Consider the given hexagon with side measurements as marked:<br>
+                    <strong>(a)</strong> What is the perimeter of the hexagon?<br>
+                    <strong>(b)</strong> What is the area of the hexagon?
+                </div>
+                <div class="diagram-container">
+                    <canvas id="canvasQ5" width="260" height="180"></canvas>
+                </div>
+                <br>
+                <button class="btn btn-accent" onclick="toggleExplanation(5)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-5">
+                    <div class="answer-highlight">Answer: (a) 42 cm &nbsp;|&nbsp; (b) 80 cm²</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li><strong>Step 1: Find the missing side lengths.</strong><br>
+                                Let's look at the horizontal components: The total bottom width is \(12	ext{ cm}\). The top-right horizontal edge is \(5	ext{ cm}\). Thus, the top-left horizontal edge must be:
+                                <div class="math-block">$$12	ext{ cm} - 5	ext{ cm} = 7	ext{ cm}$$</div>
+                                Let's look at the vertical components: The left side height is \(5	ext{ cm}\). The inner vertical step drops down by \(4	ext{ cm}\) (indicated by the label). Therefore, the rightmost vertical side height must be:
+                                <div class="math-block">$$5	ext{ cm} + 4	ext{ cm} = 9	ext{ cm}$$</div>
+                            </li>
+                            <li><strong>Part (a): Calculate Perimeter</strong><br>
+                                Sum all 6 side lengths around the perimeter:
+                                <div class="math-block">$$	ext{Perimeter} = 12 + 9 + 5 + 4 + 7 + 5 = 42	ext{ cm}$$</div>
+                            </li>
+                            <li><strong>Part (b): Calculate Area</strong><br>
+                                Split the L-shaped hexagon vertically or horizontally into two separate rectangles.<br>
+                                Let's split it vertically into a <strong>Left Rectangle</strong> and a <strong>Right Rectangle</strong>:
+                                <ul>
+                                    <li><em>Left Rectangle dimensions:</em> Width = \(7	ext{ cm}\), Height = \(5	ext{ cm}\).<br>
+                                        \(	ext{Area}_{	ext{left}} = 7 	imes 5 = 35	ext{ cm}^2\)
+                                    </li>
+                                    <li><em>Right Rectangle dimensions:</em> Width = \(5	ext{ cm}\), Height = \(9	ext{ cm}\).<br>
+                                        \(	ext{Area}_{	ext{right}} = 5 	imes 9 = 45	ext{ cm}^2\)
+                                    </li>
+                                </ul>
+                                Sum the two parts together to get the total combined area:
+                                <div class="math-block">$$	ext{Total Area} = 35	ext{ cm}^2 + 45	ext{ cm}^2 = 80	ext{ cm}^2$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 6 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 6</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Simplify: \(0.6 \div (0.4 	imes 0.5)\)
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(6)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-6">
+                    <div class="answer-highlight">Answer: 3</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Following the Order of Operations (PEMDAS), evaluate the expression enclosed inside parentheses first:
+                                <div class="math-block">$$0.4 	imes 0.5 = 0.20 = 0.2$$</div>
+                            </li>
+                            <li>Now substitute this value back into the division problem:
+                                <div class="math-block">$$0.6 \div 0.2$$</div>
+                            </li>
+                            <li>To divide decimals easily, move the decimal point one place to the right for both values (or multiply both numerator and denominator by 10):
+                                <div class="math-block">$$rac{0.6}{0.2} = rac{6}{2} = 3$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 7 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 7</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    110 students are in a school. They need to be assigned to four classrooms as equally as possible. How many students are in each classroom? (Write 4 numbers to show this)
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(7)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-7">
+                    <div class="answer-highlight">Answer: 28, 28, 27, 27 (in any order)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Divide the total number of students (110) by the number of classrooms (4):
+                                <div class="math-block">$$110 \div 4 = 27 	ext{ with a remainder of } 2$$</div>
+                            </li>
+                            <li>A baseline of 27 students is placed into each of the 4 classrooms:
+                                <div class="math-block">$$4 	imes 27 = 108 	ext{ students}$$</div>
+                            </li>
+                            <li>We have \(110 - 108 = 2\) leftover students who must be distributed as evenly as possible among the classrooms.</li>
+                            <li>Add 1 extra student to 2 of the classrooms, making them have 28 students each. The other 2 classrooms remain at 27 students.</li>
+                            <li>Thus, the size configurations of the four classrooms are: <strong>28, 28, 27, 27</strong>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 8 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 8</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Write \(1rac{1}{2}\) million as a number (#).
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(8)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-8">
+                    <div class="answer-highlight">Answer: 1,500,000</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>One million written in standard numerical value is:
+                                <div class="math-block">$$1,000,000$$</div>
+                            </li>
+                            <li>Half (\(rac{1}{2}\)) of a million is calculated by dividing 1,000,000 by 2:
+                                <div class="math-block">$$rac{1,000,000}{2} = 500,000$$</div>
+                            </li>
+                            <li>Combine the one whole million and the half million together:
+                                <div class="math-block">$$1,000,000 + 500,000 = 1,500,000$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 9 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 9</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Write the prime factorization of 81 using exponents.
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(9)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-9">
+                    <div class="answer-highlight">Answer: \(3^4\)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Break down 81 into its prime factors using a factor tree approach:
+                                <div class="math-block">$$81 = 9 	imes 9$$</div>
+                            </li>
+                            <li>Break down each 9 into its constituent prime numbers:
+                                <div class="math-block">$$9 = 3 	imes 3 ightarrow 81 = (3 	imes 3) 	imes (3 	imes 3)$$</div>
+                            </li>
+                            <li>Collect the factors together as a product of prime numbers:
+                                <div class="math-block">$$81 = 3 	imes 3 	imes 3 	imes 3$$</div>
+                            </li>
+                            <li>Express this repeated multiplication in shorthand exponential form:
+                                <div class="math-block">$$81 = 3^4$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problem 10 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 10</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    What is the area of the shaded triangle inside the rectangle?
+                </div>
+                <div class="diagram-container">
+                    <canvas id="canvasQ10" width="240" height="160"></canvas>
+                </div>
+                <br>
+                <button class="btn btn-accent" onclick="toggleExplanation(10)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-10">
+                    <div class="answer-highlight">Answer: 40 cm²</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Identify the core structural dimensions of the shaded triangle from the bounding rectangle:
+                                <ul>
+                                    <li>The base (\(b\)) of the triangle spans the entire bottom side = \(10	ext{ cm}\).</li>
+                                    <li>The height (\(h\)) of the triangle matches the vertical height of the rectangle = \(8	ext{ cm}\).</li>
+                                </ul>
+                            </li>
+                            <li>Apply the standard geometric formula for the area of a triangle:
+                                <div class="math-block">$$	ext{Area} = rac{1}{2} 	imes 	ext{base} 	imes 	ext{height}$$</div>
+                            </li>
+                            <li>Substitute the dimension values into our equation:
+                                <div class="math-block">$$	ext{Area} = rac{1}{2} 	imes 10	ext{ cm} 	imes 8	ext{ cm} = 5 	imes 8 = 40	ext{ cm}^2$$</div>
+                            </li>
+                            <li><em>Note:</em> The area of a triangle that shares the exact same base and height as a bounding rectangle is always exactly half of that rectangle's total area (\(10 	imes 8 = 80 ightarrow 80 \div 2 = 40	ext{ cm}^2\)).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Interactive Solutions Guide &bull; Designed to Match Structured Homework Explanations</p>
+    </footer>
+</div>
+
+<script>
+    function toggleExplanation(num) {
+        var panel = document.getElementById('exp-' + num);
+        if (panel.style.display === 'block') {
+            panel.style.display = 'none';
+        } else {
+            panel.style.display = 'block';
+        }
+    }
+
+    function toggleAll(show) {
+        var panels = document.getElementsByClassName('explanation-panel');
+        for (var i = 0; i < panels.length; i++) {
+            panels[i].style.display = show ? 'block' : 'none';
+        }
+    }
+
+    window.onload = function() {
+        if (window.MathJax && window.MathJax.typeset) {
+            window.MathJax.typeset();
+        }
+
+        // --- Q5 Hexagon Diagram Canvas ---
+        try {
+            var c5 = document.getElementById("canvasQ5").getContext("2d");
+            // Scale and draw L-shaped polygon
+            c5.strokeStyle = "#1e293b";
+            c5.lineWidth = 3;
+            c5.fillStyle = "#f8fafc";
+            
+            c5.beginPath();
+            c5.moveTo(30, 140);  // Bottom-left corner
+            c5.lineTo(210, 140); // Bottom-right corner (12cm)
+            c5.lineTo(210, 30);  // Top-right corner (9cm up)
+            c5.lineTo(130, 30);  // Inner horizontal corner (5cm left)
+            c5.lineTo(130, 80);  // Inner vertical corner (4cm down)
+            c5.lineTo(30, 80);   // Top-left corner (7cm left)
+            c5.closePath();
+            c5.fill();
+            c5.stroke();
+
+            // Labeling sides
+            c5.font = "bold 13px sans-serif";
+            c5.fillStyle = "#0f172a";
+            c5.fillText("12 cm", 105, 160);
+            c5.fillText("5 cm", 35, 38);   // Top horizontal segment label from original image
+            c5.fillText("4 cm", 138, 70);  // Inner vertical label
+            c5.fillText("5 cm", 145, 23);  // Top-right segment label
+            
+            // Draw visual hint dashes for missing sides
+            c5.strokeStyle = "#94a3b8";
+            c5.lineWidth = 1;
+            c5.setLineDash([4, 4]);
+            // extensions
+            c5.beginPath();
+            c5.moveTo(30, 80);
+            c5.lineTo(30, 140);
+            c5.stroke();
+            c5.fillText("5 cm", 5, 115); // Left vertical label
+        } catch(e) { console.log(e); }
+
+        // --- Q10 Shaded Triangle inside Rectangle Canvas ---
+        try {
+            var c10 = document.getElementById("canvasQ10").getContext("2d");
+            c10.strokeStyle = "#0f172a";
+            c10.lineWidth = 2;
+            
+            // Draw rectangle bounding box
+            c10.strokeRect(30, 20, 180, 110);
+            
+            // Draw shaded triangle inside
+            c10.fillStyle = "#1e293b";
+            c10.beginPath();
+            c10.moveTo(30, 130);  // Bottom-left vertex
+            c10.lineTo(210, 130); // Bottom-right vertex
+            c10.lineTo(170, 20);  // Top vertex
+            c10.closePath();
+            c10.fill();
+            c10.stroke();
+            
+            // Dimension labels
+            c10.font = "bold 13px sans-serif";
+            c10.fillStyle = "#0f172a";
+            c10.fillText("10 cm", 100, 153);
+            c10.fillText("8 cm", 216, 80);
+        } catch(e) { console.log(e); }
+    };
+</script>
+
+</body>
+</html>
