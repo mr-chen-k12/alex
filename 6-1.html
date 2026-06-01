@@ -4,20 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test 23 Review & Additional Math Problems - Solutions</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71bZBTIQHQ" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfPe45x10080zM" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbOxyj0O18TbgG114418//1sLd" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         :root {
-            --primary: #1e3a8a;
-            --primary-light: #eff6ff;
-            --accent: #d97706;
-            --accent-light: #fef3c7;
-            --text-main: #1e293b;
+            --primary: #0f172a;
+            --primary-light: #f1f5f9;
+            --accent: #2563eb;
+            --accent-light: #dbeafe;
+            --text-main: #334155;
             --text-muted: #64748b;
-            --bg: #f1f5f9;
+            --bg: #cbd5e1;
             --card-bg: #ffffff;
-            --border: #cbd5e1;
+            --border: #e2e8f0;
             --success: #16a34a;
         }
 
@@ -32,56 +44,57 @@
             background-color: var(--bg);
             color: var(--text-main);
             line-height: 1.6;
-            padding: 20px;
+            padding: 40px 20px;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 850px;
             margin: 0 auto;
         }
 
         header {
-            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            background: linear-gradient(135deg, var(--primary), #1e293b);
             color: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
         header h1 {
-            font-size: 24pt;
-            margin-bottom: 10px;
+            font-size: 26pt;
+            margin-bottom: 12px;
+            letter-spacing: -0.025em;
         }
 
         header p {
-            font-size: 12pt;
-            opacity: 0.9;
+            font-size: 13pt;
+            opacity: 0.85;
         }
 
         .controls {
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .btn {
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 11pt;
             font-weight: 600;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
         }
 
         .btn:hover {
-            background-color: #1d4ed8;
+            background-color: #1e293b;
             transform: translateY(-1px);
         }
 
@@ -98,31 +111,27 @@
         }
 
         .btn-accent:hover {
-            background-color: #b45309;
+            background-color: #1d4ed8;
         }
 
         .grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
         }
 
         .card {
             background-color: var(--card-bg);
-            border-radius: 8px;
+            border-radius: 12px;
             border: 1px solid var(--border);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             overflow: hidden;
-            transition: box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .card-header {
             background-color: var(--primary-light);
-            padding: 15px 20px;
+            padding: 18px 25px;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
@@ -130,91 +139,94 @@
         }
 
         .question-num {
-            font-weight: bold;
+            font-weight: 700;
             color: var(--primary);
-            font-size: 13pt;
+            font-size: 14pt;
         }
 
         .card-body {
-            padding: 25px;
+            padding: 30px;
         }
 
         .question-text {
-            font-size: 12pt;
+            font-size: 13pt;
             font-weight: 500;
-            margin-bottom: 15px;
+            color: #1e293b;
+            margin-bottom: 20px;
+            line-height: 1.7;
         }
 
         .diagram-container {
-            margin: 15px 0;
-            padding: 15px;
-            background-color: #fafafa;
-            border: 1px dashed var(--border);
-            border-radius: 6px;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
             display: inline-block;
         }
 
         .explanation-panel {
             display: none;
-            margin-top: 20px;
-            padding: 20px;
+            margin-top: 25px;
+            padding: 25px;
             background-color: #f8fafc;
-            border-left: 4px solid var(--accent);
-            border-radius: 0 6px 6px 0;
+            border-left: 5px solid var(--accent);
+            border-radius: 0 8px 8px 0;
             animation: fadeIn 0.3s ease-in-out;
         }
 
         .answer-highlight {
             background-color: var(--accent-light);
-            color: #78350f;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-weight: bold;
+            color: #1e40af;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 700;
             display: inline-block;
-            margin-bottom: 15px;
-            font-size: 11pt;
-            border: 1px solid #fde68a;
+            margin-bottom: 20px;
+            font-size: 12pt;
+            border: 1px solid #bfdbfe;
         }
 
         .step-list {
-            margin-left: 20px;
-            margin-top: 10px;
+            margin-left: 24px;
+            margin-top: 12px;
         }
 
         .step-list li {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .math-block {
             margin: 15px 0;
-            font-size: 1.1em;
-            text-align: center;
+            font-size: 1.15em;
+            overflow-x: auto;
         }
 
         footer {
             text-align: center;
-            margin-top: 40px;
-            padding: 20px;
+            margin-top: 50px;
+            padding: 30px;
             color: var(--text-muted);
-            font-size: 10pt;
+            font-size: 11pt;
             border-top: 1px solid var(--border);
         }
 
         canvas {
             background: #fff;
-            border: 1px solid #ddd;
+            border: 1px solid #e2e8f0;
             display: block;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container tex2jax_process">
     <header>
         <h1>Test 23 Review & Selected Problems</h1>
         <p>Complete Solutions with Interactive Step-by-Step Explanations</p>
@@ -236,7 +248,7 @@
                 </div>
                 <button class="btn btn-accent" onclick="toggleExplanation(1)">Review Answer & Explanation</button>
                 <div class="explanation-panel" id="exp-1">
-                    <div class="answer-highlight">Answer: \( \frac{1}{5} \) (or 20%)</div>
+                    <div class="answer-highlight">Answer: \(\frac{1}{5}\) (or 20%)</div>
                     <div>
                         <strong>Step-by-Step Explanation:</strong>
                         <ul class="step-list">
@@ -253,9 +265,9 @@
                                 <div class="math-block">$$P(\text{Both Red}) = \frac{1}{2} \times \frac{2}{5} = \frac{2}{10} = \frac{1}{5}$$</div>
                             </li>
                             <li><strong>Method 2: Combinations (Alternative)</strong><br>
-                                Find the number of ways to choose 2 red marbles out of 3: \( \binom{3}{2} = 3 \).<br>
-                                Find the total number of ways to choose any 2 marbles out of 6: \( \binom{6}{2} = \frac{6 \times 5}{2} = 15 \).<br>
-                                Probability = \( \frac{3}{15} = \frac{1}{5} \).
+                                Find the number of ways to choose 2 red marbles out of 3: \(\binom{3}{2} = 3\).<br>
+                                Find the total number of ways to choose any 2 marbles out of 6: \(\binom{6}{2} = \frac{6 \times 5}{2} = 15\).<br>
+                                Probability = \(\frac{3}{15} = \frac{1}{5}\).
                             </li>
                         </ul>
                     </div>
@@ -282,7 +294,7 @@
                             <li>Let's analyze each letter by rotating it by \(180^\circ\) (upside down):
                                 <ul>
                                     <li><strong>E</strong> turned upside down becomes <strong>\(\exists\)</strong> (does not look the same).</li>
-                                    <li><strong>F</strong> turned upside down becomes a backward L shape (does not look the same).</li>
+                                    <li><strong>F</strong> turned upside down becomes <strong>\(\mathcal{\in}\)</strong> (does not look the same).</li>
                                     <li><strong>G</strong> turned upside down becomes a completely inverted shape.</li>
                                     <li><strong>H</strong> turned upside down looks exactly like <strong>H</strong>.</li>
                                 </ul>
@@ -330,24 +342,24 @@
             </div>
             <div class="card-body">
                 <div class="question-text">
-                    Emily and Stacey bought a used bike. Emily paid $5 and Stacey paid the remaining 80%. What was the total price of the bike?
+                    Emily and Stacey bought a used bike. Emily paid \$5 and Stacey paid the remaining 80%. What was the total price of the bike?
                 </div>
                 <button class="btn btn-accent" onclick="toggleExplanation(4)">Review Answer & Explanation</button>
                 <div class="explanation-panel" id="exp-4">
-                    <div class="answer-highlight">Answer: $25.00</div>
+                    <div class="answer-highlight">Answer: \$25.00</div>
                     <div>
                         <strong>Step-by-Step Explanation:</strong>
                         <ul class="step-list">
                             <li>Determine the percentage of the price that Emily paid. Since the total percentage must be 100%, and Stacey paid 80%:
                                 <div class="math-block">$$\text{Emily's Percentage} = 100\% - 80\% = 20\%$$</div>
                             </li>
-                            <li>This means Emily's share of $5 represents exactly 20% of the total cost (\(T\)). We can write this as an equation:
-                                <div class="math-block">$$20\% \text{ of } T = 5 \rightarrow 0.20 \times T = 5$$</div>
+                            <li>This means Emily's share of \$5 represents exactly 20% of the total cost (\(T\)). We can write this as an equation:
+                                <div class="math-block">$$20\% \text{ of } T = \$5 \rightarrow 0.20 \times T = 5$$</div>
                             </li>
                             <li>Solve for \(T\) by dividing both sides by 0.20 (which is the same as multiplying by 5, since \(20\% = \frac{1}{5}\)):
                                 <div class="math-block">$$T = \frac{5}{0.20} = 5 \times 5 = 25$$</div>
                             </li>
-                            <li>Therefore, the total price of the bike was <strong>$25.00</strong> (Stacey paid \(80\% \times 25 = 20\)).</li>
+                            <li>Therefore, the total price of the bike was <strong>\$25.00</strong> (Stacey paid \(80\% \times \$25 = \$20\)).</li>
                         </ul>
                     </div>
                 </div>
@@ -375,9 +387,9 @@
                         <strong>Step-by-Step Explanation:</strong>
                         <ul class="step-list">
                             <li><strong>Step 1: Find the missing side lengths.</strong><br>
-                                Let's look at the horizontal components: The total bottom width is 12 cm. The top-right horizontal edge is 5 cm. Thus, the top-left horizontal edge must be:
+                                Let's look at the horizontal components: The total bottom width is \(12\text{ cm}\). The top-right horizontal edge is \(5\text{ cm}\). Thus, the top-left horizontal edge must be:
                                 <div class="math-block">$$12\text{ cm} - 5\text{ cm} = 7\text{ cm}$$</div>
-                                Let's look at the vertical components: The left side height is 5 cm. The inner vertical step drops down by 4 cm (indicated by the label). Therefore, the rightmost vertical side height must be:
+                                Let's look at the vertical components: The left side height is \(5\text{ cm}\). The inner vertical step drops down by \(4\text{ cm}\) (indicated by the label). Therefore, the rightmost vertical side height must be:
                                 <div class="math-block">$$5\text{ cm} + 4\text{ cm} = 9\text{ cm}$$</div>
                             </li>
                             <li><strong>Part (a): Calculate Perimeter</strong><br>
@@ -388,11 +400,11 @@
                                 Split the L-shaped hexagon vertically or horizontally into two separate rectangles.<br>
                                 Let's split it vertically into a <strong>Left Rectangle</strong> and a <strong>Right Rectangle</strong>:
                                 <ul>
-                                    <li><em>Left Rectangle dimensions:</em> Width = 7 cm, Height = 5 cm.<br>
-                                        \( \text{Area}_{\text{left}} = 7 \times 5 = 35\text{ cm}^2 \)
+                                    <li><em>Left Rectangle dimensions:</em> Width = \(7\text{ cm}\), Height = \(5\text{ cm}\).<br>
+                                        \(\text{Area}_{\text{left}} = 7 \times 5 = 35\text{ cm}^2\)
                                     </li>
-                                    <li><em>Right Rectangle dimensions:</em> Width = 5 cm, Height = 9 cm.<br>
-                                        \( \text{Area}_{\text{right}} = 5 \times 9 = 45\text{ cm}^2 \)
+                                    <li><em>Right Rectangle dimensions:</em> Width = \(5\text{ cm}\), Height = \(9\text{ cm}\).<br>
+                                        \(\text{Area}_{\text{right}} = 5 \times 9 = 45\text{ cm}^2\)
                                     </li>
                                 </ul>
                                 Sum the two parts together to get the total combined area:
@@ -543,8 +555,8 @@
                         <ul class="step-list">
                             <li>Identify the core structural dimensions of the shaded triangle from the bounding rectangle:
                                 <ul>
-                                    <li>The base (\(b\)) of the triangle spans the entire bottom side = 10 cm.</li>
-                                    <li>The height (\(h\)) of the triangle matches the vertical height of the rectangle = 8 cm.</li>
+                                    <li>The base (\(b\)) of the triangle spans the entire bottom side = \(10\text{ cm}\).</li>
+                                    <li>The height (\(h\)) of the triangle matches the vertical height of the rectangle = \(8\text{ cm}\).</li>
                                 </ul>
                             </li>
                             <li>Apply the standard geometric formula for the area of a triangle:
@@ -584,14 +596,9 @@
     }
 
     window.onload = function() {
-        // Render Math using KaTeX
-        renderMathInElement(document.body, {
-          delimiters: [
-              {left: '$$', right: '$$', display: true},
-              {left: '\\(', right: '\\)', display: false}
-          ],
-          throwOnError : false
-        });
+        if (window.MathJax && window.MathJax.typeset) {
+            window.MathJax.typeset();
+        }
 
         // --- Q5 Hexagon Diagram Canvas ---
         try {
@@ -619,6 +626,16 @@
             c5.fillText("5 cm", 35, 38);   // Top horizontal segment label from original image
             c5.fillText("4 cm", 138, 70);  // Inner vertical label
             c5.fillText("5 cm", 145, 23);  // Top-right segment label
+            
+            // Draw visual hint dashes for missing sides
+            c5.strokeStyle = "#94a3b8";
+            c5.lineWidth = 1;
+            c5.setLineDash([4, 4]);
+            // extensions
+            c5.beginPath();
+            c5.moveTo(30, 80);
+            c5.lineTo(30, 140);
+            c5.stroke();
             c5.fillText("5 cm", 5, 115); // Left vertical label
         } catch(e) { console.log(e); }
 
