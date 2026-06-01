@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 2</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        /* Default Print Behavior (When printing results) */
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 2</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        <button onclick="window.print()" style="margin-top: 10px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "The architect’s latest building was initially criticized by traditionalists as a disjointed mishmash of classical columns and ultra-modern glass facades. Today, however, it is celebrated as a masterpiece of highly ______ design, seamlessly drawing inspiration from vastly different eras and styles.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["derivative", "eclectic", "homogeneous", "austere"],
+            correctAnswer: 1,
+            explanation: "'Eclectic' means deriving ideas, style, or taste from a broad and diverse range of sources. This perfectly fits the description of a design that draws inspiration from vastly different eras and styles."
+        },
+        {
+            passage: "For decades, biologists viewed the relationships between trees in a forest primarily through the lens of competition for sunlight and soil nutrients. Recent discoveries regarding the 'Wood Wide Web'—a massive underground network of mycorrhizal fungi—have shifted this perspective. It is now understood that fungi actively transport water, carbon, and defensive chemical signals between trees, linking the entire forest into a cooperative system.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Fungi are the primary cause of resource depletion in older forest ecosystems.",
+                "Trees and fungi constantly compete for the same limited nutrients in the soil.",
+                "Fungi play a vital, active role in distributing resources and linking trees cooperatively.",
+                "The scientific classification of fungi as mere decomposers is inaccurate."
+            ],
+            correctAnswer: 2,
+            explanation: "The text highlights a shift from viewing forests as competitive environments to cooperative ones, explicitly stating that fungi actively transport resources and link the forest together."
+        },
+        {
+            passage: "A study on autonomous vehicles found that pedestrians often rely on eye contact with human drivers to ensure they have been seen before crossing the street. Since autonomous vehicles lack a human driver, pedestrians often hesitate, causing traffic delays. To solve this, researchers have begun installing LED light strips on the front of self-driving cars that 'look' directly at pedestrians. Therefore, ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "pedestrians will likely stop crossing streets where autonomous vehicles are present entirely.",
+                "incorporating human-like communication cues may help integrate autonomous vehicles into urban environments safely.",
+                "self-driving cars will eventually require human drivers to ensure pedestrian safety in cities.",
+                "LED light strips are the most cost-effective way to manufacture modern autonomous vehicles."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage notes that pedestrians need a specific communication cue (eye contact). The LED lights mimic this human cue. The logical conclusion is that using these human-like cues will help the cars function better in human environments."
+        },
+        {
+            passage: "Text 1\nA universal basic income (UBI) is the most effective way to alleviate poverty. Giving citizens a guaranteed, unconditional monthly stipend empowers them to meet their basic survival needs. Free from the constant stress of financial ruin, individuals are more likely to pursue higher education or entrepreneurship.\n\nText 2\nWhile the concept of a UBI is noble, implementing it on a national scale is economically perilous. Untargeted cash distributions often cause severe inflation in essential markets like housing and food. Ultimately, the cost of living rises so sharply that the stipend becomes worthless, hurting the very people the program intends to help.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the assertion in Text 1 that UBI empowers citizens to meet basic needs?",
+            options: [
+                "By arguing that the resulting inflation would actually make basic needs harder to afford.",
+                "By agreeing that UBI is the only way to encourage entrepreneurship and higher education.",
+                "By suggesting that UBI should only be given to those who are currently unemployed.",
+                "By pointing out that most citizens would refuse to accept unconditional government stipends."
+            ],
+            correctAnswer: 0,
+            explanation: "Text 1 claims UBI helps people afford survival needs. Text 2 specifically argues that UBI causes 'severe inflation in essential markets like housing and food' (basic needs), making the stipend worthless. Therefore, Text 2 argues it would make basic needs harder, not easier, to afford."
+        },
+        {
+            passage: "During the Victorian era, the rules of social etiquette were incredibly ______. A gentleman could permanently ruin his reputation and face social exile simply by leaving his calling card at the wrong hour of the afternoon or folding the wrong corner of the paper.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["ambiguous", "rigid", "progressive", "superfluous"],
+            correctAnswer: 1,
+            explanation: "'Rigid' means unable to bend or be forced out of shape; strict. The passage describes a society where even a tiny, seemingly insignificant mistake (like folding the wrong corner) leads to social ruin, illustrating a very strict or rigid system."
+        },
+        {
+            passage: "Marie Tharp’s map of the ocean floor, published in 1957, revealed the existence of the Mid-Atlantic Ridge, a continuous mountain range running along the ocean bottom. Before this map, the scientific consensus was that the ocean floor was entirely flat and featureless. Tharp's discovery provided the crucial topographical evidence needed to validate the controversial theory of continental drift, which had languished for decades without a physical mechanism to explain it.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It introduces a controversial scientific figure, explains her methodology, and lists her detractors.",
+                "It states a previous scientific misconception, describes a major discovery that overturned it, and explains the broader impact of that discovery.",
+                "It details the formation of an underwater geological feature and predicts how it will change in the future.",
+                "It outlines the history of continental drift theory and criticizes the scientific community for ignoring it."
+            ],
+            correctAnswer: 1,
+            explanation: "The text explains the old consensus (flat ocean floor), describes Tharp's discovery of the ridge (overturning the old consensus), and then explains how this validated continental drift (the broader impact)."
+        },
+        {
+            passage: "In her novel *The House of Mirth*, Edith Wharton explores the precarious nature of social standing in Gilded Age New York. The protagonist, Lily Bart, discovers that despite her immense beauty and charm, her lack of personal wealth makes her highly vulnerable to the harsh judgments and shifting loyalties of her elite circle.",
+            prompt: "Which quotation from the novel best illustrates the vulnerability described in the text?",
+            options: [
+                "\"She was so evidently the victim of the civilization which had produced her, that the links of her bracelet seemed like manacles chaining her to her fate.\"",
+                "\"The library was a room of magnificent distances, its walls lined with volumes bound in calf and morocco.\"",
+                "\"She had a way of looking at people that made them feel as if they were the only ones in the room.\"",
+                "\"The train glided out of the station, leaving her standing alone on the platform with a sense of sudden liberation.\""
+            ],
+            correctAnswer: 0,
+            explanation: "The prompt asks to illustrate 'vulnerability.' Option A describes her as a 'victim' and compares her jewelry to 'manacles chaining her to her fate,' which perfectly captures a sense of helplessness and vulnerability to her society."
+        },
+        {
+            passage: "Despite the heavy rain and howling winds threatening to tear the research tents from their moorings, the expedition leader remained remarkably ______, calmly organizing the supply crates and issuing instructions in a steady, unshakeable voice.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["perturbed", "stoic", "apathetic", "vindictive"],
+            correctAnswer: 1,
+            explanation: "'Stoic' means enduring pain, hardship, or chaos without showing one's feelings or complaining. Remaining calm and steady in a chaotic storm is a stoic reaction. ('Apathetic' is incorrect because the leader is actively organizing, not uncaring)."
+        },
+        {
+            passage: "When designing the aerodynamics of a race car, engineers must carefully balance downforce and drag. Increased downforce pushes the car heavily into the track, dramatically improving the speed at which it can safely take corners. However, the wings and spoilers used to generate this downforce inherently create more air resistance, significantly reducing the car's top speed on straightaways.",
+            prompt: "Which choice best describes the function of the final sentence in the overall structure of the text?",
+            options: [
+                "It introduces a flaw in modern aerodynamic engineering that cannot be solved.",
+                "It presents a negative trade-off associated with the benefit described in the previous sentence.",
+                "It proves that straightaway speed is more important than cornering speed in racing.",
+                "It explains the physical mechanism by which wings and spoilers generate downforce."
+            ],
+            correctAnswer: 1,
+            explanation: "The second sentence describes a benefit (improved cornering speed). The final sentence introduces 'drag' and 'air resistance' as the downside of generating that downforce, which is a classic trade-off."
+        },
+        {
+            passage: "In linguistic studies, a 'creole' is a stable, fully-fledged language that originates from a mixture of different languages. Creoles typically develop in situations where groups of people who do not share a common language are forced to communicate. Unlike a 'pidgin'—which is a simplified, improvised means of communication with no native speakers—a creole is learned by children as their first language. This suggests that ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "creoles are structurally simpler than the languages they originated from.",
+                "pidgins eventually become obsolete once a dominant colonial language is established.",
+                "children play a critical role in transforming a temporary communication system into a permanent, complex language.",
+                "the vocabulary of a creole is primarily derived from indigenous languages rather than colonial ones."
+            ],
+            correctAnswer: 2,
+            explanation: "The text distinguishes a pidgin (improvised, no native speakers) from a creole (stable, fully-fledged) entirely by the fact that a creole is learned by children as their first language. This implies the process of children acquiring it natively is what transforms it into a stable language."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 2</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
