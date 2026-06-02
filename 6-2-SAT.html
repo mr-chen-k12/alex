@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 3</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        /* Default Print Behavior (When printing results) */
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 3</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        <button onclick="window.print()" style="margin-top: 10px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "Critics of the mayor’s speech noted that she relied far too heavily on emotional appeals rather than addressing the city’s complex budget deficit with hard facts. By deliberately using rhetoric that was ______, she aimed to stir up anger among the crowd rather than provide viable economic solutions.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["pragmatic", "inflammatory", "conciliatory", "esoteric"],
+            correctAnswer: 1,
+            explanation: "'Inflammatory' means intended to arouse angry or violent feelings. Since the passage notes she aimed to 'stir up anger among the crowd,' her rhetoric was inflammatory."
+        },
+        {
+            passage: "In biology, mosses (bryophytes) are unique because they lack true roots. Instead of drawing moisture from deep underground, they absorb water and nutrients directly through their leaves. This biological quirk allows mosses to thrive in harsh environments where rooted plants cannot survive, such as on the surfaces of bare rocks or the rough bark of trees.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Mosses are the most ancient type of plant life currently found on Earth.",
+                "The absence of true roots gives mosses a unique ecological advantage in certain habitats.",
+                "Rooted plants cannot survive in environments that lack nutrient-rich soil.",
+                "Mosses absorb water much more efficiently than traditional rooted plants do."
+            ],
+            correctAnswer: 1,
+            explanation: "The text explains that because mosses lack roots and absorb water through their leaves, they can thrive in places where other plants cannot (bare rocks, bark). Therefore, the absence of roots gives them an ecological advantage in specific habitats."
+        },
+        {
+            passage: "A historian argues that the historical shift from bronze to iron weapons was not because early iron was a superior metal—in fact, early iron was actually softer and less durable than well-made bronze. Instead, the tin required to make bronze became extremely scarce due to the collapse of international trade networks. Consequently, ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "ancient armies deliberately chose weaker weapons to save money during economic crises.",
+                "the adoption of iron was driven by material availability rather than metallurgical superiority.",
+                "bronze weapons were completely abandoned immediately after trade networks collapsed.",
+                "iron weapons eventually became much stronger than bronze weapons."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage notes that early iron was softer than bronze (not metallurgically superior) but that the ingredients for bronze became scarce. The logical conclusion is that people adopted iron because it was available, not because it was better at the time."
+        },
+        {
+            passage: "Text 1\nAsteroid mining holds the key to solving Earth's resource crisis. By capturing near-Earth asteroids and extracting vast quantities of platinum and cobalt, we can dramatically lower the prices of these essential metals. This limitless supply will fuel a new boom in green technology and electronics.\n\nText 2\nFlooding the global market with cheap, space-mined precious metals would cause a catastrophic economic crash on Earth. The sudden and massive oversupply would instantly collapse the terrestrial mining industry, an economic sector that millions of workers worldwide depend on for their livelihoods.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the prediction in Text 1 regarding the prices of metals?",
+            options: [
+                "By agreeing that prices will fall dramatically, but arguing that this outcome is economically dangerous rather than beneficial.",
+                "By denying that near-Earth asteroids contain significant amounts of platinum and cobalt.",
+                "By asserting that the technology to mine asteroids is currently too expensive to ever be profitable.",
+                "By suggesting that the terrestrial mining industry should immediately transition to space mining to survive."
+            ],
+            correctAnswer: 0,
+            explanation: "Text 1 says bringing back metals will 'dramatically lower the prices' and that this is a good thing (fueling a boom). Text 2 also expects a flood of cheap metals ('massive oversupply'), but views this price drop as 'catastrophic' for Earth's economy. Thus, Text 2 agrees prices will drop but views it as dangerous."
+        },
+        {
+            passage: "The renowned composer's final symphony was noted for its ______ pacing; it meandered slowly and thoughtfully through complex harmonic changes, never hurrying to reach a traditional musical resolution.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["frenetic", "deliberate", "spontaneous", "erratic"],
+            correctAnswer: 1,
+            explanation: "'Deliberate' means done consciously and intentionally, often at a careful and unhurried pace. Because the symphony 'meandered slowly and thoughtfully' and was 'never hurrying,' the pacing was deliberate."
+        },
+        {
+            passage: "To understand the incredible migration patterns of monarch butterflies, scientists first tagged thousands of individual insects across North America. Then, they tracked the recovery of these tiny tags in the high mountain forests of central Mexico. Finally, by analyzing the weather patterns during the migration period, the researchers identified the specific high-altitude wind currents the butterflies use to glide south while conserving energy.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It presents a scientific hypothesis, outlines an experiment to test it, and details the final results.",
+                "It recounts a chronological sequence of steps taken by researchers to investigate a biological phenomenon.",
+                "It introduces a biological mystery, describes a failed attempt to solve it, and proposes a new methodology.",
+                "It compares the migration habits of monarch butterflies to those of other migratory insect species."
+            ],
+            correctAnswer: 1,
+            explanation: "The text uses transitional words like 'first,' 'then,' and 'finally' to outline a step-by-step process used by scientists (tagging, tracking, analyzing weather) to understand butterfly migration. This is a chronological sequence of steps."
+        },
+        {
+            passage: "Art historian Clara Vargas argues that Renaissance painter Artemisia Gentileschi used the extreme contrast of light and shadow—a technique known as chiaroscuro—not merely for dramatic visual effect, but specifically to highlight the physical strength and agency of her female subjects.",
+            prompt: "Which quotation from a critique of Gentileschi's work best supports Vargas's claim?",
+            options: [
+                "Gentileschi's mastery of oil paints allowed her to create rich, vibrant colors that easily rivaled those of her male contemporaries.",
+                "In her painting Judith Slaying Holofernes, the brightest illumination falls precisely on the strained, powerful muscles of Judith's arms as she dominates her foe.",
+                "While her use of deep shadows is heavily reminiscent of Caravaggio, Gentileschi's choice of subject matter was deeply personal.",
+                "Many of her portraits feature women in traditional domestic roles, lit softly by candlelight to evoke a sense of quiet, passive contemplation."
+            ],
+            correctAnswer: 1,
+            explanation: "Vargas claims the lighting was used to highlight 'physical strength and agency' of female subjects. Option B directly supports this by describing how the 'brightest illumination' (light) falls on the 'strained, powerful muscles' of Judith as she 'dominates her foe' (strength and agency)."
+        },
+        {
+            passage: "Despite the overwhelming amount of physical evidence and eyewitness testimony presented by the prosecution, the defense attorney remained ______, steadfastly insisting to the jury that his client had been nowhere near the scene of the crime.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["bewildered", "resolute", "indifferent", "apprehensive"],
+            correctAnswer: 1,
+            explanation: "'Resolute' means admirably purposeful, determined, and unwavering. Because the attorney was 'steadfastly insisting' despite overwhelming evidence against him, he was remaining resolute."
+        },
+        {
+            passage: "Many modern tech startups offer their employees unlimited paid time off (PTO) as a premier recruitment perk. Proponents argue this policy fosters trust and prevents employee burnout. However, recent corporate surveys indicate that employees with unlimited PTO actually take fewer days off on average than those with a fixed, limited number of vacation days. Without clear numerical guidelines, workers often feel guilty or fear falling behind their peers, leading to a toxic culture of presenteeism.",
+            prompt: "Which choice best describes the function of the third sentence ('However... days') in the overall structure of the text?",
+            options: [
+                "It provides statistical evidence that contradicts the intended benefit of a corporate policy described earlier.",
+                "It introduces a new, alternative policy that traditional companies are adopting to replace unlimited PTO.",
+                "It supports the proponents' argument by proving that startup employees are highly dedicated to their work.",
+                "It criticizes employees for failing to take advantage of the generous benefits offered to them by management."
+            ],
+            correctAnswer: 0,
+            explanation: "The first two sentences describe the policy and its intended benefit (preventing burnout). The third sentence ('However...') introduces survey data showing employees actually take *less* time off, directly contradicting the intended benefit."
+        },
+        {
+            passage: "In paleontology, trace fossils—such as fossilized footprints—can sometimes reveal more about an extinct animal's active behavior than its skeleton can. For example, a trackway discovered in a Texas riverbed shows the footprints of a massive theropod dinosaur walking perfectly alongside a herd of smaller sauropods, matching their pace exactly without attacking them. This highly unusual pattern strongly implies that ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "the theropod was physically incapable of hunting or killing the smaller sauropods.",
+                "the theropod may have been stalking the herd or migrating alongside them, rather than acting as a frantic, immediate predator.",
+                "theropods and sauropods routinely formed symbiotic relationships to protect each other from other ecological threats.",
+                "the sets of footprints were left by different animals at completely different times, despite appearing together."
+            ],
+            correctAnswer: 1,
+            explanation: "The text describes a predator (theropod) walking alongside potential prey (sauropods) at the exact same pace without attacking. The logical conclusion drawn from this specific trace fossil behavior is that it was stalking or migrating with them, rather than immediately attacking."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 3</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
