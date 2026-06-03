@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 4</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        /* Default Print Behavior (When printing results) */
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 4</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        <button onclick="window.print()" style="margin-top: 10px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "While many of her contemporaries rushed to embrace the new, unverified geological theory, Dr. Arisawa remained famously ______; she refused to form a definitive opinion until a comprehensive, peer-reviewed data set was published.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["impetuous", "dispassionate", "dogmatic", "zealous"],
+            correctAnswer: 1,
+            explanation: "'Dispassionate' means not influenced by strong emotion, able to be rational and impartial. Dr. Arisawa's refusal to rush or form an opinion without peer-reviewed data demonstrates a dispassionate approach."
+        },
+        {
+            passage: "Bioluminescence is common among deep-sea organisms, often thought to serve primarily as a tool for attracting prey or communicating in the dark. However, marine biologist Dr. Elena Vance discovered that several species of hatchetfish use ventral photophores to emit light that perfectly matches the intensity of downwelling sunlight from the surface. This technique, known as counterillumination, effectively masks the fish’s silhouette from predators swimming below them.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Bioluminescence is primarily used by deep-sea predators to lure unsuspecting prey.",
+                "Hatchetfish are the only marine organisms capable of matching the intensity of sunlight.",
+                "Bioluminescence can function as a survival mechanism by concealing organisms from predators.",
+                "Deep-sea creatures rely entirely on counterillumination to navigate underwater barriers."
+            ],
+            correctAnswer: 2,
+            explanation: "The text highlights that hatchetfish use bioluminescence for 'counterillumination,' which masks their silhouette from predators below. This shows that bioluminescence can serve to conceal an organism for survival."
+        },
+        {
+            passage: "Before the 10th century, the Song Dynasty relied entirely on heavy iron and copper coins for commerce. As trade boomed, the sheer weight of these coins made long-distance transactions highly impractical for merchants traveling across the empire. In response, private deposit shops began issuing paper receipts representing value, which merchants readily traded as a substitute for physical metal. Recognizing the immense efficiency of this system, the imperial government eventually monopolized the practice, establishing the world's first official government-issued paper currency. Consequently, ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "the use of metal coins was entirely banned throughout the Song Dynasty.",
+                "the transition to paper currency was driven by a need to overcome the logistical burdens of metallic wealth.",
+                "merchants rejected the government-issued paper money in favor of private receipts.",
+                "long-distance trade declined because paper currency was easily counterfeited."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage outlines how the weight of metal coins caused logistical problems for long-distance trade, prompting the creation of paper substitutes. The logical conclusion is that the adoption of paper currency solved these logistical burdens."
+        },
+        {
+            passage: "Text 1\nDe-extinction efforts targeting the woolly mammoth are an exciting frontier in conservation biology. By reintroducing these megafauna to the Siberian tundra, we could restore ancient grassland ecosystems. The mammoths' heavy trampling would scrape away insulating snow, allowing extreme winter cold to penetrate the permafrost and slow down global carbon emissions.\n\nText 2\nAllocating millions of dollars to resurrect extinct species like the woolly mammoth is an ecological misstep. These funds are desperately needed to protect critically endangered species currently on the brink of extinction. Furthermore, the ancient tundra ecosystem has changed drastically over millennia, meaning a resurrected mammoth might find no viable habitat to support its survival.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the claims made in Text 1 regarding ecosystem restoration?",
+            options: [
+                "By arguing that the environmental benefits of reintroducing the mammoth are speculative and outweighed by immediate conservation needs.",
+                "By agreeing that cloning mammoths is the most effective way to stabilize global carbon emissions.",
+                "By pointing out that the Siberian tundra is completely unaffected by modern climate change.",
+                "By suggesting that de-extinction funding should be sourced entirely from private corporations rather than public grants."
+            ],
+            correctAnswer: 0,
+            explanation: "Text 1 claims mammoths would restore the tundra and slow carbon emissions. Text 2 counters that the ecosystem has changed drastically (making survival speculative) and that funds should go toward existing endangered species instead, showing that the author views Text 1's goals as speculative and secondary to immediate needs."
+        },
+        {
+            passage: "Virginia Woolf's 1925 novel 'Mrs. Dalloway' was initially polarizing due to its rejection of traditional linear plotting in favor of a stream-of-consciousness narrative. Over time, however, literary critics recognized the work as a ______ achievement that permanently altered the trajectory of modernist fiction by proving that internal psychological states could drive a compelling narrative.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["superficial", "seminal", "preliminary", "anachronistic"],
+            correctAnswer: 1,
+            explanation: "'Seminal' means highly influential and original, strongly discouraging or altering later developments. Because the novel 'permanently altered the trajectory of modernist fiction,' it was a seminal achievement."
+        },
+        {
+            passage: "For decades, linguists struggled to decode the ancient Mayan script, operating under the assumption that the glyphs represented purely logographic ideas. The breakthrough came when Soviet linguist Yuri Knorozov proposed that the system was actually logo-syllabic, combining whole words with phonetic syllables. Building on Knorozov’s insight, later researchers painstakingly cataloged the phonetic variations, eventually allowing modern historians to read over 90 percent of surviving Mayan inscriptions.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It outlines a persistent academic obstacle, describes the paradigm shift that resolved it, and notes the subsequent impact.",
+                "It presents two competing theories about an ancient language and demonstrates why both are partially incorrect.",
+                "It details a chronological timeline of Mayan history based on newly translated royal inscriptions.",
+                "It criticizes early linguists for failing to cooperate with international researchers during an investigation."
+            ],
+            correctAnswer: 0,
+            explanation: "The text starts with a persistent obstacle (struggling to decode the script), introduces the paradigm shift (Knorozov's phonetic proposal), and ends with the impact (allowing historians to read 90% of the inscriptions)."
+        },
+        {
+            passage: "Literary scholar Marcus Thorne asserts that Mary Shelley’s 'Frankenstein' is fundamentally an indictment of social ostracization rather than a warning against scientific ambition. According to Thorne, the true tragedy of the novel unfolds not when Victor creates life, but when society repeatedly rejects the Creature based entirely on its monstrous appearance, forcing it into isolation and violence.",
+            prompt: "Which quotation from 'Frankenstein' best supports Thorne's assertion?",
+            options: [
+                "\"I had worked hard for nearly two years, for the sole purpose of infusing life into an inanimate body.\"",
+                "\"I am malicious because I am miserable. Am I not shunned and hated by all mankind? You, my creator, would tear me to pieces and triumph; remember that.\"",
+                "\"Learn from me, if not by my precepts, at least by my example, how dangerous is the acquirement of knowledge.\"",
+                "\"The summer months passed while I was thus engaged, heart and soul, in one pursuit.\""
+            ],
+            correctAnswer: 1,
+            explanation: "Thorne argues the book is an indictment of social ostracization ('shunned and hated by all mankind') and that rejection forces the Creature into violence ('I am malicious because I am miserable'). This choice directly captures that sentiment from the Creature."
+        },
+        {
+            passage: "Following the catastrophic eruption of Mount St. Helens, ecologists expected the surrounding blast zone to remain an unhabitable wasteland for generations. To their surprise, the ecological recovery proved remarkably ______; within a few years, pocket gophers had churned up nutrient-rich soil, facilitating the rapid return of lupine flowers and diverse animal life.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["sluggish", "robust", "capricious", "precarious"],
+            correctAnswer: 1,
+            explanation: "'Robust' means strong, healthy, and vigorous. The passage highlights a 'remarkably' successful and 'rapid return' of life, meaning the recovery was robust."
+        },
+        {
+            passage: "Many astronomers accept the existence of dark matter because it neatly explains why galaxies rotate faster than expected based on visible mass alone. However, a minority of physicists advocate for Modified Newtonian Dynamics (MOND). This alternative framework suggests that our current understanding of gravity is simply flawed at cosmic scales, eliminating the need to posit an invisible, undetected matter particle. While MOND successfully models galactic rotation curves, it struggles to explain larger cosmic structures like galaxy clusters.",
+            prompt: "Which choice best describes the function of the third sentence ('This alternative... particle') in the overall structure of the text?",
+            options: [
+                "It provides concrete evidence supporting the mainstream scientific consensus on dark matter.",
+                "It outlines the core premise of an unconventional scientific theory mentioned in the preceding sentence.",
+                "It details a flaw in current gravitational modeling that dark matter perfectly resolves.",
+                "It refutes the claim that galaxies rotate faster than Newton's laws would predict."
+            ],
+            correctAnswer: 1,
+            explanation: "The second sentence introduces MOND. The third sentence explains what MOND proposes (gravity is flawed at cosmic scales, no need for invisible particles). Therefore, it outlines the core premise of that unconventional theory."
+        },
+        {
+            passage: "Urban planners have long advocated for planting trees to combat the 'urban heat island' effect, a phenomenon where cities experience higher temperatures than surrounding rural areas due to asphalt and concrete. A recent study utilizing thermal satellite imagery revealed that small, isolated clusters of trees provide negligible cooling benefits. Instead, significant temperature reductions were only observed when tree canopies formed continuous, interconnected networks across multiple city blocks. This finding strongly implies that ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "any increase in urban tree planting will automatically resolve the urban heat island effect.",
+                "asphalt and concrete should be completely replaced with natural soil to achieve optimal cooling.",
+                "the spatial arrangement of urban vegetation is critical to its effectiveness in reducing city temperatures.",
+                "isolated clusters of trees are completely useless for wildlife conservation efforts in cities."
+            ],
+            correctAnswer: 2,
+            explanation: "The study reveals that isolated clusters don't help much, but continuous, interconnected networks do. The logical implication is that the layout or 'spatial arrangement' of the trees is crucial to their cooling performance."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 4</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
