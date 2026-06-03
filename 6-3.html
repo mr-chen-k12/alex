@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Test Review - Additional Problems</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-GvrOXuhMATgEsSwCs4smul74iXGOixntILdUW9XmUC6+HX0sLNAK3q71bZBTIQHQ" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js" integrity="sha384-cpW21h6RZv/phavutF+AuVYrr+dA8xD9zs6FwLpaCct6O9ctzYFfPe45x10080zM" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbOxyj0O18TbgG114418//1sLd" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #eff6ff;
+            --accent: #d97706;
+            --accent-light: #fef3c7;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --border: #cbd5e1;
+            --success: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 24pt;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 12pt;
+            opacity: 0.9;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 11pt;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: #64748b;
+        }
+
+        .btn-secondary:hover {
+            background-color: #475569;
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+        }
+
+        .btn-accent:hover {
+            background-color: #b45309;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            background-color: var(--primary-light);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-num {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 13pt;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .question-text {
+            font-size: 12pt;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .diagram-container {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #fafafa;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .explanation-panel {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8fafc;
+            border-left: 4px solid var(--accent);
+            border-radius: 0 6px 6px 0;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .answer-highlight {
+            background-color: var(--accent-light);
+            color: #78350f;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-size: 11pt;
+            border: 1px solid #fde68a;
+        }
+
+        .step-list {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .step-list li {
+            margin-bottom: 8px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .math-block {
+            margin: 15px 0;
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 10pt;
+            border-top: 1px solid var(--border);
+        }
+
+        canvas {
+            background: #fff;
+            border: 1px solid #ddd;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Practice Test: Similar Problems</h1>
+        <p>Complete Solutions with Interactive Step-by-Step Explanations</p>
+    </header>
+
+    <div class="controls">
+        <button class="btn" onclick="toggleAll(true)">Show All Answers</button>
+        <button class="btn btn-secondary" onclick="toggleAll(false)">Hide All Answers</button>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 1</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    In a bag are 4 green marbles and 5 yellow marbles. If two marbles are drawn from the bag at the same time, what is the probability that both marbles are green?
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(1)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-1">
+                    <div class="answer-highlight">Answer: \( \frac{1}{6} \)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li><strong>Method 1: Sequential Selection without Replacement</strong><br>
+                                Drawing two marbles at the same time is the equivalent of drawing one and then drawing a second one without replacing the first.
+                            </li>
+                            <li>Find the probability that the first marble drawn is green. There are 4 green marbles out of 9 total marbles:
+                                <div class="math-block">$$P(\text{First is Green}) = \frac{4}{9}$$</div>
+                            </li>
+                            <li>Find the probability that the second marble drawn is green, given the first was green. Now, 3 green marbles remain out of 8 total marbles:
+                                <div class="math-block">$$P(\text{Second is Green} \mid \text{First is Green}) = \frac{3}{8}$$</div>
+                            </li>
+                            <li>Multiply the probabilities:
+                                <div class="math-block">$$P(\text{Both Green}) = \frac{4}{9} \times \frac{3}{8} = \frac{12}{72} = \frac{1}{6}$$</div>
+                            </li>
+                            <li><strong>Method 2: Combinations</strong><br>
+                                Number of ways to pick 2 green out of 4: \( \binom{4}{2} = 6 \).<br>
+                                Total ways to pick any 2 out of 9: \( \binom{9}{2} = 36 \).<br>
+                                Probability = \( \frac{6}{36} = \frac{1}{6} \).
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 2</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Which letter has rotational symmetry?<br>
+                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;A &nbsp;&nbsp;&nbsp;&nbsp; B &nbsp;&nbsp;&nbsp;&nbsp; N &nbsp;&nbsp;&nbsp;&nbsp; T</strong>
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(2)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-2">
+                    <div class="answer-highlight">Answer: N</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>An object has <strong>rotational symmetry</strong> if it maps onto itself after a rotation of less than \(360^\circ\) around its center.</li>
+                            <li>Let's analyze each letter by rotating it \(180^\circ\) (turning it upside down):
+                                <ul>
+                                    <li><strong>A</strong> upside down looks like <strong>\(\forall\)</strong> (does not look the same).</li>
+                                    <li><strong>B</strong> upside down can look like a distorted 'B' or 'q' depending on the font (asymmetrical lobes mean it doesn't match).</li>
+                                    <li><strong>N</strong> upside down looks exactly like <strong>N</strong>.</li>
+                                    <li><strong>T</strong> upside down looks like <strong>\(\perp\)</strong>.</li>
+                                </ul>
+                            </li>
+                            <li>Therefore, <strong>N</strong> has order-2 rotational symmetry.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 3</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Simplify each expression:<br>
+                    <strong>(a)</strong> \((-4)(-6)\)<br>
+                    <strong>(b)</strong> \(\frac{-15}{+3}\)
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(3)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-3">
+                    <div class="answer-highlight">Answer: (a) 24 &nbsp;|&nbsp; (b) -5</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li><strong>Part (a):</strong> Multiply \((-4)\) by \((-6)\).<br>
+                                The product of two negative numbers is always positive:
+                                <div class="math-block">$$(-4) \times (-6) = +24 = 24$$</div>
+                            </li>
+                            <li><strong>Part (b):</strong> Divide \((-15)\) by \((+3)\).<br>
+                                The quotient of a negative divided by a positive is always negative:
+                                <div class="math-block">$$\frac{-15}{+3} = -5$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 4</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    John and Sarah bought a used game console. John paid $15 and Sarah paid the remaining 75%. What was the total price of the console?
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(4)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-4">
+                    <div class="answer-highlight">Answer: $60.00</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Determine the percentage of the price that John paid. Since the total is 100%, and Sarah paid 75%:
+                                <div class="math-block">$$\text{John's Percentage} = 100\% - 75\% = 25\%$$</div>
+                            </li>
+                            <li>John's contribution of $15 is exactly 25% of the total cost (\(T\)).
+                                <div class="math-block">$$25\% \text{ of } T = 15 \rightarrow 0.25 \times T = 15$$</div>
+                            </li>
+                            <li>Solve for \(T\) by dividing both sides by 0.25 (which is identical to multiplying by 4):
+                                <div class="math-block">$$T = \frac{15}{0.25} = 15 \times 4 = 60$$</div>
+                            </li>
+                            <li>The total price was <strong>$60.00</strong> (Sarah paid \(75\% \times 60 = 45\)).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 5</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Consider the given L-shaped polygon with side measurements as marked:<br>
+                    <strong>(a)</strong> What is the perimeter?<br>
+                    <strong>(b)</strong> What is the area?
+                </div>
+                <div class="diagram-container">
+                    <canvas id="canvasQ5" width="260" height="180"></canvas>
+                </div>
+                <br>
+                <button class="btn btn-accent" onclick="toggleExplanation(5)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-5">
+                    <div class="answer-highlight">Answer: (a) 36 cm &nbsp;|&nbsp; (b) 62 cm²</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li><strong>Step 1: Find the missing side lengths.</strong><br>
+                                Vertical components: Left side is 5 cm. Inner drop is 3 cm. The total rightmost vertical side is:
+                                <div class="math-block">$$5\text{ cm} + 3\text{ cm} = 8\text{ cm}$$</div>
+                                Horizontal components: Bottom is 10 cm. Top-right is 4 cm. The missing inner horizontal length is:
+                                <div class="math-block">$$10\text{ cm} - 4\text{ cm} = 6\text{ cm}$$</div>
+                            </li>
+                            <li><strong>Part (a): Perimeter</strong><br>
+                                Sum all 6 side lengths:
+                                <div class="math-block">$$\text{Perimeter} = 10 + 8 + 4 + 3 + 6 + 5 = 36\text{ cm}$$</div>
+                            </li>
+                            <li><strong>Part (b): Area</strong><br>
+                                Split the shape vertically into two rectangles:
+                                <ul>
+                                    <li><em>Left Rectangle:</em> Width = 6 cm, Height = 5 cm. Area = \( 6 \times 5 = 30\text{ cm}^2 \)</li>
+                                    <li><em>Right Rectangle:</em> Width = 4 cm, Height = 8 cm. Area = \( 4 \times 8 = 32\text{ cm}^2 \)</li>
+                                </ul>
+                                Total combined area:
+                                <div class="math-block">$$30\text{ cm}^2 + 32\text{ cm}^2 = 62\text{ cm}^2$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 6</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Simplify: \(0.9 \div (0.2 \times 1.5)\)
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(6)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-6">
+                    <div class="answer-highlight">Answer: 3</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Evaluate the parentheses first (Order of Operations):
+                                <div class="math-block">$$0.2 \times 1.5 = 0.30 = 0.3$$</div>
+                            </li>
+                            <li>Substitute back into the division problem:
+                                <div class="math-block">$$0.9 \div 0.3$$</div>
+                            </li>
+                            <li>Move the decimal point one place to the right for both:
+                                <div class="math-block">$$\frac{0.9}{0.3} = \frac{9}{3} = 3$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 7</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    130 students need to be assigned to four classrooms as equally as possible. How many students are in each classroom? (Write 4 numbers)
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(7)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-7">
+                    <div class="answer-highlight">Answer: 33, 33, 32, 32</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Divide the 130 students by 4:
+                                <div class="math-block">$$130 \div 4 = 32 \text{ with a remainder of } 2$$</div>
+                            </li>
+                            <li>Put a base of 32 students in each of the 4 classrooms:
+                                <div class="math-block">$$4 \times 32 = 128 \text{ students}$$</div>
+                            </li>
+                            <li>There are \(130 - 128 = 2\) extra students.</li>
+                            <li>Distribute the 2 remaining students into two of the classrooms (adding 1 to each).</li>
+                            <li>The classrooms will have: <strong>33, 33, 32, 32</strong>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 8</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Write \(2\frac{1}{4}\) million as a number.
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(8)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-8">
+                    <div class="answer-highlight">Answer: 2,250,000</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Two million is written as:
+                                <div class="math-block">$$2,000,000$$</div>
+                            </li>
+                            <li>One quarter (\(\frac{1}{4}\)) of a million is:
+                                <div class="math-block">$$\frac{1,000,000}{4} = 250,000$$</div>
+                            </li>
+                            <li>Combine them:
+                                <div class="math-block">$$2,000,000 + 250,000 = 2,250,000$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 9</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Write the prime factorization of 64 using exponents.
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(9)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-9">
+                    <div class="answer-highlight">Answer: \(2^6\)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Break down 64 into factors (like 8 and 8):
+                                <div class="math-block">$$64 = 8 \times 8$$</div>
+                            </li>
+                            <li>Break down each 8 into prime numbers:
+                                <div class="math-block">$$8 = 2 \times 2 \times 2$$</div>
+                            </li>
+                            <li>Substitute these back in:
+                                <div class="math-block">$$64 = (2 \times 2 \times 2) \times (2 \times 2 \times 2)$$</div>
+                            </li>
+                            <li>Count the number of 2s being multiplied (there are 6) and write as an exponent:
+                                <div class="math-block">$$64 = 2^6$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="question-num">Problem 10</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    What is the area of the shaded triangle inside the rectangle?
+                </div>
+                <div class="diagram-container">
+                    <canvas id="canvasQ10" width="260" height="150"></canvas>
+                </div>
+                <br>
+                <button class="btn btn-accent" onclick="toggleExplanation(10)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-10">
+                    <div class="answer-highlight">Answer: 36 cm²</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>The triangle shares its base and height with the rectangle:
+                                <ul>
+                                    <li>Base (\(b\)) = 12 cm</li>
+                                    <li>Height (\(h\)) = 6 cm</li>
+                                </ul>
+                            </li>
+                            <li>Use the area of a triangle formula:
+                                <div class="math-block">$$\text{Area} = \frac{1}{2} \times \text{base} \times \text{height}$$</div>
+                            </li>
+                            <li>Substitute the values:
+                                <div class="math-block">$$\text{Area} = \frac{1}{2} \times 12\text{ cm} \times 6\text{ cm} = 6 \times 6 = 36\text{ cm}^2$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Interactive Solutions Guide &bull; Designed for Practice and Review</p>
+    </footer>
+</div>
+
+<script>
+    function toggleExplanation(num) {
+        var panel = document.getElementById('exp-' + num);
+        if (panel.style.display === 'block') {
+            panel.style.display = 'none';
+        } else {
+            panel.style.display = 'block';
+        }
+    }
+
+    function toggleAll(show) {
+        var panels = document.getElementsByClassName('explanation-panel');
+        for (var i = 0; i < panels.length; i++) {
+            panels[i].style.display = show ? 'block' : 'none';
+        }
+    }
+
+    window.onload = function() {
+        // Render Math using KaTeX
+        renderMathInElement(document.body, {
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '\\(', right: '\\)', display: false}
+          ],
+          throwOnError : false
+        });
+
+        // --- Q5 Canvas ---
+        try {
+            var c5 = document.getElementById("canvasQ5").getContext("2d");
+            c5.strokeStyle = "#1e293b";
+            c5.lineWidth = 3;
+            c5.fillStyle = "#f8fafc";
+            
+            c5.beginPath();
+            c5.moveTo(30, 140);  // Bottom-left
+            c5.lineTo(190, 140); // Bottom-right (10 units)
+            c5.lineTo(190, 12);  // Top-right (8 units)
+            c5.lineTo(126, 12);  // Inner horizontal (4 units)
+            c5.lineTo(126, 60);  // Inner vertical down (3 units)
+            c5.lineTo(30, 60);   // Inner horizontal left (6 units)
+            c5.closePath();
+            c5.fill();
+            c5.stroke();
+
+            // Labels
+            c5.font = "bold 13px sans-serif";
+            c5.fillStyle = "#0f172a";
+            c5.fillText("10 cm", 95, 160); // Bottom
+            c5.fillText("4 cm", 145, 28);  // Top Right
+            c5.fillText("3 cm", 132, 45);  // Inner down
+            c5.fillText("5 cm", 0, 105);   // Left
+        } catch(e) { console.log(e); }
+
+        // --- Q10 Canvas ---
+        try {
+            var c10 = document.getElementById("canvasQ10").getContext("2d");
+            c10.strokeStyle = "#0f172a";
+            c10.lineWidth = 2;
+            
+            // Draw rectangle bounding box (180x90)
+            c10.strokeRect(30, 30, 180, 90);
+            
+            // Draw shaded triangle
+            c10.fillStyle = "#1e293b";
+            c10.beginPath();
+            c10.moveTo(30, 120);  // Bottom-left
+            c10.lineTo(210, 120); // Bottom-right
+            c10.lineTo(150, 30);  // Top vertex
+            c10.closePath();
+            c10.fill();
+            c10.stroke();
+            
+            // Labels
+            c10.font = "bold 13px sans-serif";
+            c10.fillStyle = "#0f172a";
+            c10.fillText("12 cm", 105, 140);
+            c10.fillText("6 cm", 218, 80);
+        } catch(e) { console.log(e); }
+    };
+</script>
+
+</body>
+</html>
