@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 6</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        /* Default Print Behavior (When printing results) */
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 6</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        <button onclick="window.print()" style="margin-top: 10px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected here -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "While the rookie senator's economic proposal was initially lauded by the press as a brilliant, groundbreaking strategy for wealth redistribution, non-partisan analysts quickly revealed its ______ nature, pointing out that it relied on outdated inflation metrics and deeply flawed math.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["specious", "infallible", "immutable", "rigorous"],
+            correctAnswer: 0,
+            explanation: "'Specious' means superficially plausible, but actually wrong. Since the proposal looked brilliant at first glance but was later found to rely on flawed math and outdated metrics, its nature was specious."
+        },
+        {
+            passage: "New Caledonian crows are renowned for their sophisticated tool-manufacturing capabilities, such as fashioning hooks from twigs to extract grubs from tree bark. For a long time, researchers assumed this behavior was purely instinctive, passed down genetically. However, a recent experiment demonstrated that young crows raised in complete isolation from older birds could not recreate these complex hooks, whereas those exposed to experienced peers mastered the craft rapidly.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "New Caledonian crows are the only bird species capable of teaching complex tasks to their offspring.",
+                "The tool-making proficiency of New Caledonian crows is primarily a socially learned behavior rather than a genetic instinct.",
+                "Crows raised in isolation develop better independent problem-solving skills than those raised in groups.",
+                "Genetic pathways dictate the precise shapes of the hooks produced by mature crows."
+            ],
+            correctAnswer: 1,
+            explanation: "The text shifts from an old assumption (that the behavior is instinctive/genetic) to a new experimental finding (isolated crows fail, but socially exposed crows succeed). This indicates tool-making is a socially learned behavior."
+        },
+        {
+            passage: "Literary scholar David Kim argues that Charles Dickens's use of persistent, choking fog in the opening chapters of 'Bleak House' serves as a deliberate material manifestation of the dense, incomprehensible bureaucracy of the British legal system.",
+            prompt: "Which quotation from 'Bleak House' best supports Kim's argument?",
+            options: [
+                "\"The raw afternoon is rawest, and the dense fog is densest, and the muddy streets are muddiest, near that Temple Bar, where sits the Lord High Chancellor in his High Court of Chancery.\"",
+                "\"London. Michaelmas term lately over, and the Lord Chancellor sitting in Lincoln's Inn Hall. Implacable weather.\"",
+                "\"Footpassengers on the swaying boats jostled one another, looking out into the dim gray expanse of the river landscape.\"",
+                "\"It is not a large house, but it has an old-fashioned look that makes it feel immediately comfortable to those who enter.\""
+            ],
+            correctAnswer: 0,
+            explanation: "Kim argues that the fog explicitly manifests the dense bureaucracy of the legal system. Option A directly connects the 'dense fog' to the physical location of the legal system ('where sits the Lord High Chancellor in his High Court of Chancery')."
+        },
+        {
+            passage: "Ocean acidification, driven by rising atmospheric carbon dioxide, significantly lowers the availability of carbonate ions in seawater. Larval Dungeness crabs rely heavily on these ions to construct their protective exoskeletons. Recent field studies indicate that juvenile crabs exposed to current acidity levels exhibit severe shell dissolution and structural deformities. Because these crabs are a foundational food source for commercially vital salmon species, marine biologists warn that ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "salmon will adapt by switching entirely to a plant-based diet in the near future.",
+                "the structural decline of larval crabs could trigger widespread negative economic impacts on the fishing industry.",
+                "ocean acidification will eventually cause carbonate ions to completely vanish from the marine ecosystem.",
+                "juvenile crabs will begin migrating to fresh-water rivers to escape high acidity levels."
+            ],
+            correctAnswer: 1,
+            explanation: "The text establishes a chain reaction: acidification damages larval crabs, and these crabs are the main food source for 'commercially vital' salmon. The logical conclusion is that the crab decline will negatively affect salmon, creating economic issues for the fishing industry."
+        },
+        {
+            passage: "Dr. Lin's investigation into the alleged Viking artifact found in northern Ontario was remarkably ______; she spent three years cross-referencing metal compositions and soil patterns before declaring the item an authentic 11th-century relic rather than a modern forgery.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["impetuous", "meticulous", "indifferent", "perfunctory"],
+            correctAnswer: 1,
+            explanation: "'Meticulous' means showing great attention to detail; very careful and precise. Dr. Lin's three-year effort cross-referencing materials before making a declaration perfectly exemplifies a meticulous investigation."
+        },
+        {
+            passage: "To explore how rapid eye movement (REM) sleep influences creative problem-solving, neuroscientists first trained two groups of participants on a complex word-association puzzle. Group A was then permitted a ninety-minute nap containing verified REM sleep, while Group B rested quietly without sleeping. When retested, Group A successfully solved 40 percent more novel puzzles than Group B, leading researchers to conclude that REM sleep actively restructures associative memory networks.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It introduces a neurological mystery, explains why previous experiments failed, and suggests a future study.",
+                "It describes a chronological sequence of scientific steps taken to investigate a cognitive phenomenon and details the finding.",
+                "It compares two unrelated neurological disorders and outlines the treatments available for each.",
+                "It states a mainstream scientific theory and provides mathematical evidence that refutes it."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage follows a step-by-step chronology ('first trained,' 'was then permitted,' 'When retested') to show how an experiment investigated a cognitive phenomenon (problem-solving during REM sleep) and ends with the resulting conclusion."
+        },
+        {
+            passage: "Text 1\nTerraforming Mars is humanity's ultimate backup plan. By introducing greenhouse gases into the Martian atmosphere, we can artificially warm the planet, melt the polar ice caps, and slowly trigger a thick, breathable atmosphere over several centuries.\n\nText 2\nThe dream of terraforming Mars ignores basic planetary physics. Mars lacks a robust global magnetic field; without this protective shield, any atmosphere we artificially engineer would be relentlessly stripped away by ionizing solar winds almost as fast as it could be produced.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the proposal in Text 1 regarding engineering an atmosphere?",
+            options: [
+                "By arguing that the plan is physically unfeasible because it fails to account for atmospheric erosion by solar wind.",
+                "By agreeing that greenhouse gases are the most efficient tool for warming the Martian surface.",
+                "By suggesting that humans should focus on terraforming Venus before attempting Mars.",
+                "By asserting that melting the polar ice caps would create dangerous, uncontrollable global floods."
+            ],
+            correctAnswer: 0,
+            explanation: "Text 1 proposes engineering an atmosphere. Text 2 explicitly counters this by explaining that because Mars lacks a magnetic shield, solar winds would strip the atmosphere away as fast as it's made, making the plan unfeasible due to this oversight."
+        },
+        {
+            passage: "For decades, early educational theorists viewed 'code-switching'—the practice of alternating between two or more languages in a single conversation—as a sign of linguistic confusion or incomplete vocabulary acquisition in bilingual children. However, modern cognitive linguistics has overturned this deficit model, demonstrating that code-switching requires exceptional executive functioning and a precise, subconscious mastery of two distinct grammatical frameworks simultaneously. Therefore, ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "bilingual children should be discouraged from code-switching to protect their grammatical acquisition.",
+                "code-switching should be viewed as an indicator of advanced cognitive flexibility rather than a language deficiency.",
+                "learning a third language usually eliminates a child's tendency to code-switch entirely.",
+                "early educational theorists were correct in assuming that bilingualism slows down mental development."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage notes that modern science has 'overturned' the old view of code-switching as a deficiency, showing instead that it requires 'exceptional executive functioning.' Therefore, it should be framed positively as advanced cognitive flexibility."
+        },
+        {
+            passage: "Art historian Sofia Rossi claims that the transition from traditional fresco painting to oil on canvas in 15th-century Venice was not merely a matter of artistic preference, but a practical response to the city’s unique, moisture-laden maritime climate, which caused wall plaster to rapidly degrade.",
+            prompt: "Which quotation from a historical treatise best supports Rossi's claim?",
+            options: [
+                "\"Venetian painters found that oil paints allowed for a richer depiction of light and water reflection than ever before.\"",
+                "\"Artists in Venice abandoned wall-bound murals altogether, noting that the humid sea air caused the lime plaster of traditional frescos to crack and peel within a few short years.\"",
+                "\"The popularity of canvas spread quickly from Venice to the mainland, driven by the ease of transporting rolled paintings.\"",
+                "\"While fresco remained the dominant medium in dry climate zones like Florence, oil paint became standard across Northern Europe.\""
+            ],
+            correctAnswer: 1,
+            explanation: "Rossi's claim is that the switch was due to the 'moisture-laden maritime climate' degrading 'wall plaster.' Option B perfectly backs this up by explicitly stating that 'humid sea air' caused the 'lime plaster of traditional frescos to crack and peel.'"
+        },
+        {
+            passage: "The avant-garde sculptor was best known for her ______ choice of materials; rather than working with traditional marble or bronze, she constructed her massive public installations out of discarded electronic circuit boards and recycled industrial plastics.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["idiosyncratic", "uninspired", "orthodox", "anachronistic"],
+            correctAnswer: 0,
+            explanation: "'Idiosyncratic' means peculiar or individual, unique to a particular person or style. Using discarded electronics and industrial plastics instead of marble or bronze represents a highly unconventional, idiosyncratic choice."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 6</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
