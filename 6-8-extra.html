@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Practice - Extensions for Problems 12 & 21</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #eff6ff;
+            --accent: #d97706;
+            --accent-light: #fef3c7;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --border: #cbd5e1;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 24pt;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 12pt;
+            opacity: 0.9;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 18pt;
+            margin-top: 15px;
+            margin-bottom: -5px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 5px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            background-color: var(--primary-light);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-num {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 13pt;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .question-text {
+            font-size: 12pt;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option-btn {
+            background-color: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px 15px;
+            font-size: 11pt;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-btn:hover {
+            background-color: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .option-btn.correct {
+            background-color: var(--success-light);
+            border-color: var(--success);
+            color: #14532d;
+            font-weight: bold;
+        }
+
+        .option-btn.incorrect {
+            background-color: var(--danger-light);
+            border-color: var(--danger);
+            color: #7f1d1d;
+        }
+
+        .feedback-banner {
+            display: none;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .feedback-banner.correct {
+            display: block;
+            background-color: var(--success-light);
+            color: #14532d;
+            border: 1px solid var(--success);
+        }
+
+        .feedback-banner.incorrect {
+            display: block;
+            background-color: var(--danger-light);
+            color: #7f1d1d;
+            border: 1px solid var(--danger);
+        }
+
+        .explanation-panel {
+            display: none;
+            padding: 20px;
+            background-color: #f8fafc;
+            border-left: 4px solid var(--accent);
+            border-radius: 0 6px 6px 0;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .answer-highlight {
+            background-color: var(--accent-light);
+            color: #78350f;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-size: 11pt;
+            border: 1px solid #fde68a;
+        }
+
+        .step-list {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .step-list li {
+            margin-bottom: 8px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .math-block {
+            margin: 15px 0;
+            font-size: 1.1em;
+            overflow-x: auto;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 10pt;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container tex2jax_process">
+    <header>
+        <h1>Interactive Practice Set</h1>
+        <p>Extensions for Problem 12 (Fractions of a Group) & Problem 21 (Double-Digit Multiplication)</p>
+    </header>
+
+    <div class="grid">
+        
+        <div class="section-title">Problem 12 Extensions: Parts of a Group As Fractions</div>
+
+        <div class="card" id="q-12a">
+            <div class="card-header"><span class="question-num">Problem 12 - Variation 1</span></div>
+            <div class="card-body">
+                <div class="question-text">
+                    Two hundred thirty-nine of the one thousand birds in the wildlife sanctuary were flamingos. Flamingos made up what fraction of the birds in the sanctuary?
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" onclick="checkAnswer('12a', 'A', 'C')">A) \(\frac{239}{100}\)</button>
+                    <button class="option-btn" onclick="checkAnswer('12a', 'B', 'C')">B) \(\frac{1000}{239}\)</button>
+                    <button class="option-btn" onclick="checkAnswer('12a', 'C', 'C')">C) \(\frac{239}{1000}\)</button>
+                    <button class="option-btn" onclick="checkAnswer('12a', 'D', 'C')">D) \(\frac{23.9}{1000}\)</button>
+                </div>
+                <div class="feedback-banner" id="feedback-12a"></div>
+                <div class="explanation-panel" id="exp-12a">
+                    <div class="answer-highlight">Correct Answer: C) \(\frac{239}{1000}\)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Identify the targeted part of the group: there are \(239\) flamingos.</li>
+                            <li>Identify the total number of items in the entire group: there are \(1,000\) birds.</li>
+                            <li>Construct the group fraction by placing the subset size over the entire population baseline:
+                                <div class="math-block">$$\text{Fraction} = \frac{\text{Part}}{\text{Whole}} = \frac{239}{1000}$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="q-12b">
+            <div class="card-header"><span class="question-num">Problem 12 - Variation 2</span></div>
+            <div class="card-body">
+                <div class="question-text">
+                    Out of one hundred students surveyed at a middle school, fifty-seven preferred playing soccer over other sports. What fraction of the surveyed students preferred soccer?
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" onclick="checkAnswer('12b', 'A', 'B')">A) \(\frac{100}{57}\)</button>
+                    <button class="option-btn" onclick="checkAnswer('12b', 'B', 'B')">B) \(\frac{57}{100}\)</button>
+                    <button class="option-btn" onclick="checkAnswer('12b', 'C', 'B')">C) \(\frac{57}{1000}\)</button>
+                    <button class="option-btn" onclick="checkAnswer('12b', 'D', 'B')">D) \(\frac{43}{100}\)</button>
+                </div>
+                <div class="feedback-banner" id="feedback-12b"></div>
+                <div class="explanation-panel" id="exp-12b">
+                    <div class="answer-highlight">Correct Answer: B) \(\frac{57}{100}\)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>The size of the specific category group is \(57\) students.</li>
+                            <li>The size of the entire survey collection population is \(100\) students.</li>
+                            <li>Form the fraction matching this information:
+                                <div class="math-block">$$\text{Fraction} = \frac{\text{Students choosing soccer}}{\text{Total students surveyed}} = \frac{57}{100}$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="q-12c">
+            <div class="card-header"><span class="question-num">Problem 12 - Variation 3</span></div>
+            <div class="card-body">
+                <div class="question-text">
+                    Seven hundred three trees out of one thousand in an orchard were apple trees. What fraction of the trees in the orchard were apple trees?
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" onclick="checkAnswer('12c', 'A', 'C')">A) \(\frac{73}{1000}\)</button>
+                    <button class="option-btn" onclick="checkAnswer('12c', 'B', 'C')">B) \(\frac{703}{100}\)</button>
+                    <button class="option-btn" onclick="checkAnswer('12c', 'C', 'C')">C) \(\frac{703}{1000}\)</button>
+                    <button class="option-btn" onclick="checkAnswer('12c', 'D', 'C')">D) \(\frac{1000}{703}\)</button>
+                </div>
+                <div class="feedback-banner" id="feedback-12c"></div>
+                <div class="explanation-panel" id="exp-12c">
+                    <div class="answer-highlight">Correct Answer: C) \(\frac{703}{1000}\)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>The requested fraction must isolate the counts of apple trees against all available trees.</li>
+                            <li>Apple trees count = \(703\). Total orchard baseline count = \(1,000\).</li>
+                            <li>Arrange this data to create a proper rational part-to-whole fraction:
+                                <div class="math-block">$$\text{Fraction} = \frac{703}{1000}$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="section-title">Problem 21 Extensions: Double-Digit Multiplication Practice</div>
+
+        <div class="card" id="q-21a">
+            <div class="card-header"><span class="question-num">Problem 21 - Variation 1</span></div>
+            <div class="card-body">
+                <div class="question-text">
+                    Calculate the product:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;43<br>&nbsp;&times;&nbsp;18<br>&nbsp;&nbsp;&nbsp;&nbsp;---
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" onclick="checkAnswer('21a', 'A', 'A')">A) 774</button>
+                    <button class="option-btn" onclick="checkAnswer('21a', 'B', 'A')">B) 734</button>
+                    <button class="option-btn" onclick="checkAnswer('21a', 'C', 'A')">C) 418</button>
+                    <button class="option-btn" onclick="checkAnswer('21a', 'D', 'A')">D) 814</button>
+                </div>
+                <div class="feedback-banner" id="feedback-21a"></div>
+                <div class="explanation-panel" id="exp-21a">
+                    <div class="answer-highlight">Correct Answer: A) 774</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Multiply \(43\) by the ones place digit (\(8\)):
+                                <div class="math-block">$$43 \times 8 = 344$$</div>
+                            </li>
+                            <li>Multiply \(43\) by the tens place digit (\(1\), which represents \(10\)):
+                                <div class="math-block">$$43 \times 10 = 430$$</div>
+                            </li>
+                            <li>Add the partial products to find the final result:
+                                <div class="math-block">$$\begin{array}{r} 344 \\ + \ 430 \\ \hline 774 \end{array}$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="q-21b">
+            <div class="card-header"><span class="question-num">Problem 21 - Variation 2</span></div>
+            <div class="card-body">
+                <div class="question-text">
+                    Calculate the product:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;25<br>&nbsp;&times;&nbsp;34<br>&nbsp;&nbsp;&nbsp;&nbsp;---
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" onclick="checkAnswer('21b', 'A', 'C')">A) 650</button>
+                    <button class="option-btn" onclick="checkAnswer('21b', 'B', 'C')">B) 820</button>
+                    <button class="option-btn" onclick="checkAnswer('21b', 'C', 'C')">C) 850</button>
+                    <button class="option-btn" onclick="checkAnswer('21b', 'D', 'C')">D) 900</button>
+                </div>
+                <div class="feedback-banner" id="feedback-21b"></div>
+                <div class="explanation-panel" id="exp-21b">
+                    <div class="answer-highlight">Correct Answer: C) 850</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Multiply \(25\) by the ones digit (\(4\)):
+                                <div class="math-block">$$25 \times 4 = 100$$</div>
+                            </li>
+                            <li>Multiply \(25\) by the tens digit (\(3\), which represents \(30\)):
+                                <div class="math-block">$$25 \times 30 = 750$$</div>
+                            </li>
+                            <li>Combine the partial values to find the final total:
+                                <div class="math-block">$$\begin{array}{r} 100 \\ + \ 750 \\ \hline 850 \end{array}$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="q-21c">
+            <div class="card-header"><span class="question-num">Problem 21 - Variation 3</span></div>
+            <div class="card-body">
+                <div class="question-text">
+                    Calculate the product:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;56<br>&nbsp;&times;&nbsp;12<br>&nbsp;&nbsp;&nbsp;&nbsp;---
+                </div>
+                <div class="options-container">
+                    <button class="option-btn" onclick="checkAnswer('21c', 'A', 'C')">A) 572</button>
+                    <button class="option-btn" onclick="checkAnswer('21c', 'B', 'C')">B) 662</button>
+                    <button class="option-btn" onclick="checkAnswer('21c', 'C', 'C')">C) 672</button>
+                    <button class="option-btn" onclick="checkAnswer('21c', 'D', 'C')">D) 712</button>
+                </div>
+                <div class="feedback-banner" id="feedback-21c"></div>
+                <div class="explanation-panel" id="exp-21c">
+                    <div class="answer-highlight">Correct Answer: C) 672</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Multiply \(56\) by the ones place digit (\(2\)):
+                                <div class="math-block">$$56 \times 2 = 112$$</div>
+                            </li>
+                            <li>Multiply \(56\) by the tens place digit (\(1\), which represents \(10\)):
+                                <div class="math-block">$$56 \times 10 = 560$$</div>
+                            </li>
+                            <li>Add the partial sums together:
+                                <div class="math-block">$$\begin{array}{r} 112 \\ + \ 560 \\ \hline 672 \end{array}$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Dynamic Interactive Assessments &bull; Layout Engineering Template Module</p>
+    </footer>
+</div>
+
+<script>
+    function checkAnswer(questionId, selected, correct) {
+        var card = document.getElementById('q-' + questionId);
+        var buttons = card.getElementsByClassName('option-btn');
+        var feedback = document.getElementById('feedback-' + questionId);
+        var explanation = document.getElementById('exp-' + questionId);
+
+        // Disable further clicking on this question card once evaluated
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = true;
+            
+            // Highlight the correct answer button style
+            if (buttons[i].innerText.startsWith(correct)) {
+                buttons[i].classList.add('correct');
+            }
+            
+            // If user selected the wrong button, highlight it as incorrect
+            if (selected !== correct && buttons[i].innerText.startsWith(selected)) {
+                buttons[i].classList.add('incorrect');
+            }
+        }
+
+        // Display targeted evaluation status banner
+        if (selected === correct) {
+            feedback.className = "feedback-banner correct";
+            feedback.innerText = "Excellent! You got it correct right away.";
+        } else {
+            feedback.className = "feedback-banner incorrect";
+            feedback.innerText = "Incorrect. Let's look at the step-by-step explanation below.";
+        }
+
+        // Show explanation immediately in both cases
+        explanation.style.display = 'block';
+        
+        // Trigger MathJax re-render for formulas inside the newly displayed explanation
+        if (window.MathJax && window.MathJax.typeset) {
+            window.MathJax.typeset();
+        }
+    }
+</script>
+
+</body>
+</html>
