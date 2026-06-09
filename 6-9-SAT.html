@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 7</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        /* Default Print Behavior (When printing results) */
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 7</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        <button onclick="window.print()" style="margin-top: 10px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected here -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "Economic historian Dr. Julian Vance demonstrated that while the 19th-century gold rush was popularized as an era of quick, widespread fortune, it was actually economically ______ for the vast majority of individual prospectors, who went deep into debt purchasing supplies only to find nothing.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["lucrative", "devastating", "inconsequential", "predictable"],
+            correctAnswer: 1,
+            explanation: "'Devastating' means causing severe shock, distress, or ruin. The passage contrasts the popular myth ('quick, widespread fortune') with the reality ('went deep into debt... only to find nothing'), indicating the reality was devastating."
+        },
+        {
+            passage: "For years, ornithologists believed that urban birds sang at higher pitches purely to avoid having their songs drowned out by low-frequency city traffic noise. However, biologist Clara Mendonça discovered that urban birds also adjust their song structures depending on the architectural layout of their specific neighborhoods. Glass-heavy modern financial districts reflect sound differently than concrete residential complexes, forcing local populations to alter their vocalizations to ensure their territories remain defended.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Urban birds sing louder in residential neighborhoods than in financial districts.",
+                "Traffic noise is the only environmental factor influencing bird songs in cities.",
+                "The vocal adaptations of urban birds are shaped by architectural features as well as noise levels.",
+                "Birds in rural environments possess more complex song structures than urban birds."
+            ],
+            correctAnswer: 2,
+            explanation: "The text explains that while traffic noise was long thought to be the sole reason for modified songs, bird songs are also adapted to the 'architectural layout' of neighborhoods due to how building materials reflect sound. Thus, adaptations are shaped by both architecture and noise."
+        },
+        {
+            passage: "Historically, deep-sea exploration was severely limited by the crushing hydrostatic pressure of ocean trenches, which quickly imploded traditional steel submersibles. To overcome this, modern engineers developed advanced syntactic foam—a material composed of microscopic, hollow glass spheres embedded in an epoxy resin. Because this foam possesses incredible structural strength under compression while remaining remarkably buoyant, deep-sea vehicles can now descend to the ocean floor without heavy steel hulls. Consequently, ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "submersibles made of steel are completely immune to hydrostatic pressure at shallow depths.",
+                "the development of synthetic materials has allowed researchers to bypass the weight limitations of traditional deep-sea vessels.",
+                "syntactic foam will eventually replace all metal components in commercial surface ships.",
+                "oceanographers have abandoned the exploration of deep-sea trenches due to safety concerns."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage notes that traditional submersibles were constrained by pressure and required heavy hulls, which restricted exploration. Syntactic foam provides strength and buoyancy without needing heavy steel, allowing deep descents and effectively bypassing previous weight limitations."
+        },
+        {
+            passage: "Text 1\nVertical farming represents a revolutionary solution to agricultural land scarcity. By growing crops indoors in stacked layers using hydroponic systems and LED lighting, we can produce food year-round in urban centers. This eliminates the carbon emissions associated with long-distance food transportation and minimizes water waste by recycling 95 percent of the water used.\n\nText 2\nWhile vertical farming sounds environmentally ideal, its current carbon footprint is massive. Relying entirely on artificial LED lights and HVAC systems to mimic natural sunlight and climate control requires a staggering amount of electricity. Unless the local power grid is powered 100 percent by renewable energy, urban vertical farms often generate more greenhouse gases per crop than traditional outdoor farms.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the prediction in Text 1 regarding environmental benefits?",
+            options: [
+                "By arguing that the high energy demands of indoor facilities can negate the environmental benefits highlighted in Text 1.",
+                "By claiming that vertical farming uses far more water than traditional outdoor agriculture.",
+                "By suggesting that traditional outdoor farming should be completely replaced by hydroponic systems.",
+                "By pointing out that vertical farms are unable to produce crops during the winter months."
+            ],
+            correctAnswer: 0,
+            explanation: "Text 1 argues that vertical farming cuts down carbon emissions and saves water. Text 2 points out that the tremendous electrical consumption of indoor lighting and temperature control means these farms produce more greenhouse gases than normal farms unless on clean energy networks, which directly counters Text 1's claim of environmental benefit."
+        },
+        {
+            passage: "The pristine condition of the 2,000-year-old silk scroll surprised the curation team, who expected the delicate fabric to have rotted long ago. Thanks to the ______ tomb environment, which remained completely sealed from oxygen, moisture, and microbial life, the artifact's intricate patterns were perfectly preserved.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["hospitable", "sterile", "volatile", "porous"],
+            correctAnswer: 1,
+            explanation: "'Sterile' means free from living microorganisms or completely clean. Because the tomb environment was entirely sealed off from moisture, oxygen, and microbial life, it was sterile, keeping the delicate scroll intact."
+        },
+        {
+            passage: "To determine whether the ancient Minoans traded directly with kingdoms in the Levant, archaeologists first analyzed the chemical signature of clay pottery excavated from Cretan palace ruins. Next, they compared these signatures to a digital database of soil profiles across the eastern Mediterranean. Finally, by matching the specific mineral composition of the Minoan jars to clay beds unique to the coast of modern-day Lebanon, the researchers confirmed the existence of an established Bronze Age maritime trade route.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It details a chronological series of analytical steps used to verify a historical trade relationship.",
+                "It presents a theoretical dispute among historians and argues in favor of a new hypothesis.",
+                "It describes an archaeological discovery and lists the financial challenges of excavating it.",
+                "It contrasts the seafaring capabilities of the Minoans with those of neighboring civilizations."
+            ],
+            correctAnswer: 0,
+            explanation: "The passage uses logical sequence markers ('first analyzed,' 'Next, they compared,' 'Finally...') to chronologically trace the methodological steps taken by researchers to prove the ancient Minoan trade connection."
+        },
+        {
+            passage: "Historian Dr. Elena Vance argues that Mary Wollstonecraft's 1792 treatise 'A Vindication of the Rights of Woman' was revolutionary not just because it advocated for women's education, but specifically because it framed female education as an absolute prerequisite for a rational, moral society as a whole, rather than an individual luxury.",
+            prompt: "Which quotation from 'A Vindication of the Rights of Woman' best supports Dr. Vance's argument?",
+            options: [
+                "\"Women are, in common with men, placed on this earth to unfold their faculties.\"",
+                "\"If children are to be educated to understand the true principle of patriotism, their mother must be a patriot; and the love of mankind, from which an orderly train of virtues springs, can only be produced by considering the moral and civil interest of mankind.\"",
+                "\"I have sighed when I have seen women educated in a frivolous manner, completely unsuited for the serious duties of life.\"",
+                "\"The most perfect education, in my opinion, is such an exercise of the understanding as is best calculated to strengthen the body and form the heart.\""
+            ],
+            correctAnswer: 1,
+            explanation: "Dr. Vance claims that Wollstonecraft frames female education as a necessity for society's broader moral and civic health. Option B directly argues that educating women is required to successfully raise patriotic children and cultivate an orderly, moral society."
+        },
+        {
+            passage: "Despite her colleagues' repeated warnings that the corporate merger was legally precarious and financially risky, the CEO remained ______; she confidently signed the final acquisition papers, convinced it would secure the company's market dominance.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["undeterred", "ambivalent", "apprehensive", "deceitful"],
+            correctAnswer: 0,
+            explanation: "'Undeterred' means persevering with something despite setbacks or warnings. Since the CEO moved forward confidently with the signing regardless of the multiple warnings she received, she was undeterred."
+        },
+        {
+            passage: "Many environmental advocates champion paper grocery bags as the ideal eco-friendly alternative to single-use plastic bags. However, a comprehensive life-cycle assessment reveals a more complex reality. Manufacturing a paper bag requires four times more water and generates significantly more chemical waste than producing a plastic bag. While paper bags biodegrade far more easily, their production demands a heavy toll on natural resources before they ever reach a consumer.",
+            prompt: "Which choice best describes the function of the third sentence ('Manufacturing... bag') in the overall structure of the text?",
+            options: [
+                "It provides empirical evidence that challenges the initial assumption regarding the environmental friendliness of paper bags.",
+                "It introduces a new manufacturing technique that reduces the water usage of paper factories.",
+                "It supports the advocates' argument by showing that paper bags are entirely harmless to the environment.",
+                "It contrasts the recycling rates of paper bags with those of plastic bags in urban centers."
+            ],
+            correctAnswer: 0,
+            explanation: "The first sentence notes that advocates praise paper bags as eco-friendly. The third sentence presents hard data (using four times more water and emitting higher chemical waste) that complicates and directly challenges that positive environmental reputation."
+        },
+        {
+            passage: "In paleoclimatology, analyzing the width of annual tree rings allows scientists to reconstruct past weather patterns, with wider rings typically indicating warm, wet growing seasons and narrow rings pointing to drought. However, a team studying ancient bristlecone pines in high-altitude environments discovered that severe volcanic eruptions, which spew sulfur dioxide into the stratosphere and cause a global cooling phenomenon known as 'volcanic winter,' produce distinctly distorted, frost-damaged ring structures. This unique structural marker allows researchers to conclude that ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "bristlecone pines grow much faster during periods of heavy volcanic activity than during normal years.",
+                "tree-ring analysis is an unreliable method for determining historical climate variations.",
+                "specific anomalies in tree rings can act as a precise historical record of major volcanic events.",
+                "volcanic eruptions have zero long-term impact on global temperatures or tree growth."
+            ],
+            correctAnswer: 2,
+            explanation: "The passage notes that volcanic winters leave a distinct and 'unique structural marker' (frost damage and distortion) inside the tree rings. The logical inference is that scientists can look for these exact structural anomalies to identify and catalog when major volcanic eruptions happened in the past."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 7</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
