@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 8</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        /* Default Print Behavior (When printing results) */
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 8</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        <button onclick="window.print()" style="margin-top: 10px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected here -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "Dr. Al-Mansoori’s assertion that the ancient stone tablet was a municipal commercial ledger rather than a sacred religious text was initially met with ______ by her peers, who had long accepted the spiritual interpretation; however, her exhaustive breakdown of the numeric tallies eventually forced a consensus.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["skepticism", "reverence", "indifference", "validation"],
+            correctAnswer: 0,
+            explanation: "'Skepticism' means an attitude of doubt. The text notes that her peers 'had long accepted the spiritual interpretation,' indicating they would doubt her new assertion until her exhaustive proof forced them to agree."
+        },
+        {
+            passage: "While standard ecological models treat tree roots as isolated entities competing intensely for localized underground resources, recent research into mycorrhizal networks reveals an alternative subterranean dynamic. Fungal filaments physically bridge disparate tree root systems, allowing older, deep-rooted specimens to actively transport structural sugars and physiological warnings of pest attacks to vulnerable neighboring saplings. This symbiotic grid challenges classic, purely competitive interpretations of forest development.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Fungal networks primarily drain resources from healthy trees to nourish parasitic plants.",
+                "Forest ecosystems are defined by an underground web of mutual support rather than pure individual competition.",
+                "Saplings are entirely independent of older trees for nutrition and environmental defense.",
+                "Traditional ecological models have successfully predicted all behaviors observed in forest networks."
+            ],
+            correctAnswer: 1,
+            explanation: "The text describes how mycorrhizal networks allow trees to share resources and warning signs with one another, concluding that this 'challenges classic, purely competitive interpretations' and highlights a collaborative subterranean dynamic instead."
+        },
+        {
+            passage: "Literary scholar Emily Taylor argues that Anne Elliot’s debate with Captain Harville in Jane Austen's novel 'Persuasion' serves to redefine emotional constancy not as a passive feminine affliction, but as an active, enduring intellectual choice governed by moral reflection.",
+            prompt: "Which quotation from 'Persuasion' best supports Taylor's argument?",
+            options: [
+                "\"We certainly do not forget you so soon as you forget us. It is, perhaps, our fate rather than our merit. We cannot help ourselves.\"",
+                "\"Your feelings may be deeper, but ours are governed by a continuous moral reflection and an unwavering adherence to past attachments, making our constancy a deliberate act of the mind.\"",
+                "\"All the privilege I claim for my own sex... is that of loving longest, when existence or when hope is gone.\"",
+                "\"We live at home, quiet, confined, and our feelings prey upon us. You are forced on exertion.\""
+            ],
+            correctAnswer: 1,
+            explanation: "Taylor claims that emotional constancy is framed as an 'active, enduring intellectual choice governed by moral reflection.' Option B perfectly supports this by using the phrase 'governed by a continuous moral reflection' and calling constancy a 'deliberate act of the mind.'"
+        },
+        {
+            passage: "Economists studying the impact of automation on the manufacturing sector have noted a paradox: while advanced robotics displace low-skilled assembly line workers, they simultaneously increase the overall profitability of the remaining firms. This increased capital allows companies to expand into specialized product design and high-level client consulting—roles that demand complex interpersonal communication and emotional intelligence. Consequently, the rise of automation will likely ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "eliminate all employment opportunities across every sector of the global economy.",
+                "shift the labor market's demand toward positions that require uniquely human cognitive and social skills.",
+                "force manufacturing firms to completely abandon robotic assembly lines to remain profitable.",
+                "reduce the overall revenue generated by tech-heavy corporate entities."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage notes that while robots handle the low-skilled assembly, firms use their higher profits to expand into fields requiring 'complex interpersonal communication and emotional intelligence.' Therefore, automation shifts demand toward those uniquely human skill sets."
+        },
+        {
+            passage: "Although the physics professor’s lectures were notoriously ______—often drifting into dense, highly abstract tangents about multi-dimensional string theory—his underlying research was praised for its absolute clarity and practical utility in material engineering.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["lucid", "convoluted", "concise", "straightforward"],
+            correctAnswer: 1,
+            explanation: "'Convoluted' means extremely complex and difficult to follow. The description of his lectures drifting into 'dense, highly abstract tangents' stands in contrast to the clarity of his research, making 'convoluted' the correct fit."
+        },
+        {
+            passage: "Psychologists investigated the 'choice overload' phenomenon by presenting supermarket shoppers with two different displays of exotic jams: one featuring 24 varieties and another featuring just 6. While the larger display attracted more initial browsers, shoppers who encountered the smaller selection were ten times more likely to actually make a purchase and reported higher long-term satisfaction with their choice. This suggests that an abundance of options can paradoxically paralyze decision-making and diminish consumer happiness.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It proposes an economic solution to a supply chain problem and lists the corporate costs involved.",
+                "It describes an experimental setup, details its surprising behavioral results, and states a psychological conclusion.",
+                "It criticizes a traditional retail business model and offers a completely automated alternative marketing strategy.",
+                "It analyzes a consumer trend using demographic historical data spanning several decades."
+            ],
+            correctAnswer: 2,
+            explanation: "The text details an experiment (the jam displays), reports the findings (smaller display led to more purchases and higher satisfaction), and finishes with a psychological conclusion about choice abundance paralyzing decision-making."
+        },
+        {
+            passage: "Text 1\nThe hypothesis that dark matter consists of Weakly Interacting Massive Particles (WIMPs) has long dominated astrophysics. WIMPs are theoretically elegant because they emerge naturally from supersymmetry models, and massive underground detectors have been finely tuned for decades to capture the rare, faint collisions of these heavy particles with ordinary matter.\n\nText 2\nDecades of silence from WIMP detectors suggest that astrophysicists have been chasing a ghost. The scientific community must urgently pivot its resources toward axions—hypothetical, ultra-light particles that solve both the dark matter problem and structural puzzles within quantum mechanics. Obsessing over WIMPs out of historical inertia is stalling cosmic discovery.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely characterize the ongoing focus on WIMPs described in Text 1?",
+            options: [
+                "As a necessary and pragmatic strategy that will soon yield definitive experimental data.",
+                "As an outdated obsession driven more by institutional habit than by current empirical success.",
+                "As a revolutionary scientific pursuit that completely invalidates quantum mechanics.",
+                "As a collaborative effort that successfully integrates the search for ultra-light particles."
+            ],
+            correctAnswer: 1,
+            explanation: "Text 2 states that WIMP detectors have yielded 'decades of silence' and accuses the community of focusing on them due to 'historical inertia,' which aligns perfectly with characterizing the focus as an outdated obsession driven by institutional habit."
+        },
+        {
+            passage: "Arctic permafrost acts as a massive global carbon sink, trapping vast quantities of organic matter frozen for millennia. As global temperatures rise, this ground thaws, allowing subterranean microbes to decompose the newly thawed organic material. This decomposition releases immense amounts of methane and carbon dioxide into the atmosphere, which further accelerates global warming. Scientists refer to this self-reinforcing loop as a feedback mechanism, warning that ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "global warming will spontaneously stop once the Arctic permafrost completely melts.",
+                "the release of greenhouse gases from natural sinks could override human efforts to stabilize the global climate.",
+                "microbial decomposition in Arctic regions decreases sharply as atmospheric carbon increases.",
+                "frozen organic matter will safely solidify if atmospheric temperatures continue to climb."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage outlines a 'self-reinforcing loop' where warming melts permafrost, releasing more gases, which causes more warming. The logical warning is that this natural, runaway release could overpower or drastically undermine human efforts to control climate stability."
+        },
+        {
+            passage: "In 1994, explorers in southeastern France discovered the Chauvet Cave, which contains some of the best-preserved figurative cave paintings in the world, dating back over 30,000 years. Unlike later Paleolithic art sites that primarily feature hunted animals like horses and bison, the artists of Chauvet predominantly depicted dangerous apex predators, such as cave lions, panthers, and bears. This striking thematic preference suggests that early human art was not merely a magical ritual to ensure a successful hunt, but a complex symbolic engagement with the dangerous forces of the natural world.",
+            prompt: "Which choice best describes the function of the final sentence ('This striking... world') in the overall structure of the text?",
+            options: [
+                "It introduces a piece of raw data that contradicts the dating of the Chauvet Cave paintings.",
+                "It outlines a traditional anthropological theory that the rest of the passage seeks to defend.",
+                "It offers an interpretive conclusion that redefines the understood purpose of Paleolithic cave art.",
+                "It contrasts the artistic techniques of Chauvet with those used in modern abstract painting."
+            ],
+            correctAnswer: 2,
+            explanation: "The final sentence uses the evidence of apex predators to move away from the traditional view (art as a hunting ritual) and offers a new interpretive conclusion (art as a symbolic engagement with dangerous natural forces)."
+        },
+        {
+            passage: "The city council's approach to urban zoning was remarkably ______; instead of strictly adhering to a rigid master plan developed decades ago, they dynamically adjusted regulations based on real-time traffic data, neighborhood feedback, and shifting economic conditions.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["dogmatic", "pragmatic", "stagnant", "arbitrary"],
+            correctAnswer: 1,
+            explanation: "'Pragmatic' means dealing with things sensibly and realistically in a way that is based on practical rather than theoretical considerations. Adjusting rules dynamically based on real data and feedback rather than sticking to a rigid plan is a pragmatic approach."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 8</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
