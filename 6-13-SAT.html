@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 10</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        /* Default Print Behavior (When printing results) */
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 10</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        <button onclick="window.print()" style="margin-top: 10px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected here -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "Although many art critics dismissed the street artist's early murals as crude, unauthorized vandalism, a closer analysis reveals that her choice of imagery was deeply ______; she explicitly juxtaposed historical iconography with modern political graffiti to subtly critique urban gentrification.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["capricious", "deliberate", "submissive", "amateurish"],
+            correctAnswer: 1,
+            explanation: "'Deliberate' means done consciously and intentionally. Since the passage notes she 'explicitly juxtaposed' precise elements to construct a subtle critique, her actions were intentional and thought-out rather than random or unskilled."
+        },
+        {
+            passage: "In evolutionary biology, the \"Red Queen hypothesis\" suggests that organisms must constantly adapt and evolve not merely to gain a reproductive advantage, but simply to survive against ever-evolving parasites and competitors. To test this, researchers monitored populations of microscopic roundworms exposed to a deadly pathogenic bacteria. They observed that roundworms restricted to asexual reproduction—which severely limits genetic variation—suffered total extinction within a few generations, whereas those capable of sexual reproduction adapted dynamically and maintained stable numbers.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Pathogenic bacteria evolve much slower than host organisms in marine environments.",
+                "Microscopic roundworms prefer asexual reproduction when food resources are plentiful.",
+                "Genetic variation driven by sexual reproduction is essential for species survival against co-evolving threats.",
+                "The Red Queen hypothesis has been widely refuted by modern genetic mapping techniques."
+            ],
+            correctAnswer: 2,
+            explanation: "The text outlines the Red Queen hypothesis (evolving to survive threats) and presents an experiment where roundworms with limited variation (asexual) went extinct, while those with genetic variation (sexual) survived by adapting to the bacteria. This highlights that variation is crucial for fighting evolving threats."
+        },
+        {
+            passage: "Literary critic Dr. Maya Lin claims that in her 1918 novel 'My Ántonia', Willa Cather utilizes the vast, unyielding Nebraskan landscape not just as a static setting, but as an active psychological mirror reflecting the profound internal isolation and emotional resilience of the immigrant pioneers.",
+            prompt: "Which quotation from 'My Ántonia' best supports Dr. Maya Lin's claim?",
+            options: [
+                "\"The road from the north came down through the pasture, and then went across the creek by a wooden bridge.\"",
+                "\"There was nothing but land: not a country at all, but the material out of which countries are made... I had a feeling that the world was left behind, that we had got over the edge of it, and yet my heart swelled with a strange, fierce strength against that empty sky.\"",
+                "\"Ántonia was a bright, energetic girl who loved to run through the tall grass and help her father with the afternoon chores.\"",
+                "\"The winter winds were cold, and the small wooden houses scattered across the plains offered very little protection from the elements.\""
+            ],
+            correctAnswer: 1,
+            explanation: "Dr. Lin argues that the landscape mirrors internal isolation and resilience. Option B directly shows this: the vast land gives a feeling that 'the world was left behind' (isolation), yet triggers a 'strange, fierce strength against that empty sky' (resilience)."
+        },
+        {
+            passage: "Standard lithium-ion batteries rely on liquid electrolytes to transport ions between electrodes. However, these liquid layers are highly volatile and prone to dangerous thermal runaway if the battery punctures. To resolve this, engineers developed solid-state ceramic electrolytes, which are entirely non-flammable. Despite these benefits, ceramic layers are brittle and prone to developing microscopic cracks—known as dendrites—under high-speed charging conditions, which can short-circuit the cell. Therefore, for solid-state batteries to become commercially viable for electric vehicles, manufacturers must ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "completely abandon the use of ceramic materials and revert back to traditional liquid electrolytes.",
+                "discover a method to improve the fracture toughness and dendrite resistance of the solid electrolyte layer.",
+                "design electric vehicles that operate entirely without rechargeable battery units.",
+                "ensure that solid-state batteries are only charged at extremely low temperatures to prevent all cracking."
+            ],
+            correctAnswer: 1,
+            explanation: "The text introduces solid-state ceramics as a solution to liquid safety issues, but identifies a key structural limitation: they form microscopic cracks under rapid charging. Logically, resolving this structural fragility (improving fracture toughness and preventing dendrites) is the hurdle manufacturers must cross."
+        },
+        {
+            passage: "Although the newly appointed director inherited a department notorious for its bureaucratic inertia, her management style proved remarkably ______; within six months, she eliminated redundant reporting layers, automated routine data compliance, and cut project turnaround times in half.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["collaborative", "efficacious", "lackadaisical", "theoretical"],
+            correctAnswer: 1,
+            explanation: "'Efficacious' means successful in producing a desired or intended result; effective. The passage documents an immediate turnaround from inertia to optimized efficiency, proving her style was effective."
+        },
+        {
+            passage: "For over a century, neuroscientists adhered to the doctrine of 'neural fixity,' believing that the adult human brain was structurally static and incapable of generating new neurons. However, the discovery of adult neurogenesis in the hippocampus completely upended this paradigm. Studies showed that physical exercise and cognitively stimulating environments actively trigger the birth of new brain cells and strengthen synaptic connections throughout adulthood. This revelation fundamentally shifted the medical approach to neurodegenerative diseases, moving from purely palliative care toward active neurorehabilitative therapies.",
+            prompt: "Which choice best describes the function of the second sentence ('However... paradigm') in the overall structure of the text?",
+            options: [
+                "It introduces a major scientific breakthrough that directly refutes the long-held belief described in the first sentence.",
+                "It provides empirical data that supports the historical consensus mentioned earlier in the passage.",
+                "It outlines a theoretical problem that modern neuroscientists have been unable to solve.",
+                "It transitions the discussion from human neuroanatomy to an analysis of avian brain structures."
+            ],
+            correctAnswer: 0,
+            explanation: "The first sentence establishes the traditional, long-held doctrine of neural fixity. The second sentence uses 'However' to introduce adult neurogenesis, which 'completely upended' (refuted) that baseline assumption."
+        },
+        {
+            passage: "Text 1\nThe rapid expansion of commercial space tourism promises to democratize space exploration, allowing private individuals to experience the profound perspective shift of orbit. By shifting the financial burden of aerospace innovation to wealthy consumers, private corporations can rapidly iterate rocket reusability, ultimately lowering the long-term costs of scientific missions.\n\nText 2\nThe framing of space tourism as a net positive for humanity is deeply deceptive. Launching super-heavy rockets solely for elite recreational joyrides injects massive quantities of black carbon directly into the stratosphere, accelerating localized ozone depletion and global warming. Pouring vast private capital into luxury space flights diverts critical engineering talent away from pressing environmental crises on Earth.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the assertion in Text 1 that space tourism 'lowers the long-term costs of scientific missions'?",
+            options: [
+                "By pointing out that the ecological and environmental costs caused by frequent rocket launches outweigh the projected financial efficiencies.",
+                "By agreeing that scientific missions are the single most important component of modern aerospace engineering.",
+                "By suggesting that corporate entities should face zero taxation when building scientific satellites.",
+                "By arguing that stratospheric black carbon actually improves rocket fuel economy over time."
+            ],
+            correctAnswer: 0,
+            explanation: "Text 1 champions space tourism for bringing down financial costs. Text 2 focuses heavily on environmental degradation (black carbon, ozone damage, diverted resources), showing that the author of Text 2 views these ecological and planetary damages as severe hidden costs that override Text 1's monetary gains."
+        },
+        {
+            passage: "Entomologists monitoring monarch butterfly migrations have observed that the insects navigate across thousands of miles using a complex 'time-compensated sun compass.' This biological mechanism combines visual inputs from their compound eyes with circadian rhythms regulated by antennae clocks, allowing them to maintain a precise southward heading even as the sun's position shifts throughout the day. However, laboratory experiments demonstrated that when monarchs are exposed to constant, artificial electromagnetic noise, their internal compass system becomes completely disoriented, causing them to fly in erratic circles. Given that urban centers feature high concentrations of anthropogenic electromagnetic interference, scientists hypothesize that ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "monarch butterflies will begin migrating exclusively during the night to avoid solar radiation.",
+                "urban expansion along migration corridors could significantly disrupt the navigational accuracy of migrating monarchs.",
+                "butterflies traveling through cities will automatically develop stronger compound eyes to compensate for noise.",
+                "electromagnetic interference will cause monarchs to completely stop reproducing in northern habitats."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage notes that electromagnetic noise disrupts the internal compass systems of monarchs, causing erratic flight. Since cities have high levels of this noise, a logical hypothesis is that urban areas along their migration path will disrupt their navigation."
+        },
+        {
+            passage: "To evaluate how consumer perception of food quality is influenced by branding, researchers conducted a blind taste test of identical organic yogurts. When the yogurt was presented in plain, unbranded packaging, participants rated its flavor profile as average. However, when the exact same yogurt was served in containers featuring luxury typography and eco-friendly imagery, participants reported significantly higher scores for creaminess and freshness, and indicated a willingness to pay a 40 percent premium.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It details a corporate marketing strategy, lists the financial losses incurred by a company, and proposes a new product design.",
+                "It describes an empirical experiment, contrasts the participants' reactions under two different packaging conditions, and highlights the impact of visual framing.",
+                "It presents a historical timeline of agricultural developments and defends organic farming practices.",
+                "It identifies a statistical error in a previous study and provides a mathematical formula to correct it."
+            ],
+            correctAnswer: 1,
+            explanation: "The text explains an experiment (testing yogurt perception), contrasts how people reacted when it was plain versus when it featured luxury/eco branding, and shows that visual presentation shapes consumer scores and price tolerance."
+        },
+        {
+            passage: "While the defense attorney's opening argument was characterized by fiery, dramatic rhetoric designed to sway the jury's emotions, her subsequent cross-examination of the forensic expert was remarkably ______; she calmly, systematically dismantled the prosecution's DNA timeline using undisputed statistical probabilities.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["analytical", "ostentatious", "erratic", "impassioned"],
+            correctAnswer: 0,
+            explanation: "'Analytical' means using logical reasoning and systematic analysis. The description of her calmly and systematically breaking down a timeline using statistical probabilities fits 'analytical' perfectly, contrasting with her initial fiery rhetoric."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 10</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
