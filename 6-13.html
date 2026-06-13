@@ -3,640 +3,927 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 101: Grading & Solutions Sheet (Printer Friendly)</title>
-    
+    <title>Saxon Math Course 2 - Lesson 3 Solutions (Parallel Practice)</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
     <style>
-        /* Base Styling optimized for both clean screen reading and printing */
-        body {
-            font-family: 'Times New Roman', Times, serif, Arial, sans-serif;
-            line-height: 1.5;
-            background-color: #ffffff;
-            color: #000000;
+        :root {
+            --primary: #0f766e;
+            --primary-light: #f0fdfa;
+            --accent: #b45309;
+            --accent-light: #fef3c7;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --border: #d1d5db;
+            --success: #047857;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
             padding: 20px;
         }
-        .header-area {
-            border-bottom: 3px double #000000;
-            padding-bottom: 10px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .header-area h1 {
-            margin: 0;
-            font-size: 26px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .header-area p {
-            margin: 5px 0 0 0;
-            font-size: 16px;
-        }
+
         .container {
-            max-width: 850px;
+            max-width: 1000px;
             margin: 0 auto;
         }
-        .problem-card {
-            page-break-inside: avoid;
-            border-bottom: 1px solid #cccccc;
-            padding: 15px 0;
-            margin-bottom: 15px;
-        }
-        .problem-header {
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 6px;
-        }
-        .student-box {
-            background-color: #fafafa;
-            border: 1px dashed #666666;
-            padding: 10px;
-            margin: 10px 0;
-            font-style: italic;
-            font-size: 14px;
-        }
-        .btn-action {
-            background-color: #ffffff;
-            color: #000000;
-            border: 1px solid #000000;
-            padding: 6px 12px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 3px;
-            transition: background-color 0.1s;
-        }
-        .btn-action:hover {
-            background-color: #eeeeee;
-        }
-        .solution-box {
-            display: none; /* Interactive mode default */
-            margin-top: 12px;
-            background-color: #fcfcfc;
-            border: 1px solid #999999;
-            padding: 12px;
-        }
-        .badge {
-            display: inline-block;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 12px;
-            border: 1px solid #000000;
-            padding: 1px 6px;
-            margin-bottom: 8px;
-        }
-        canvas {
-            background: #ffffff;
-            border: 1px solid #333333;
-            margin: 10px 0;
-            display: block;
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #0d9488);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
-        /* PRINTER OPTIMIZATIONS 
-           Automatically strips out interactive UI and expands all solutions 
-           to cleanly format onto physical printed paper records.
-        */
-        @media print {
-            body {
-                padding: 0;
-                font-size: 12pt;
-            }
-            .btn-action {
-                display: none !important; /* Strip interactive elements */
-            }
-            .solution-box {
-                display: block !important; /* Force all solutions open when printing */
-                border: none;
-                padding: 5px 0 0 0;
-                margin-top: 5px;
-                background-color: transparent;
-            }
-            .student-box {
-                background-color: transparent;
-                border: 1px solid #aaaaaa;
-            }
-            .problem-card {
-                border-bottom: 1px solid #666666;
-            }
+        header h1 {
+            font-size: 24pt;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 12pt;
+            opacity: 0.9;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 11pt;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .btn:hover {
+            background-color: #115e59;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: #4b5563;
+        }
+
+        .btn-secondary:hover {
+            background-color: #374151;
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+        }
+
+        .btn-accent:hover {
+            background-color: #92400e;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            background-color: var(--primary-light);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-num {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 13pt;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .question-text {
+            font-size: 12pt;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .diagram-container {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #fafafa;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .explanation-panel {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9fafb;
+            border-left: 4px solid var(--accent);
+            border-radius: 0 6px 6px 0;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .answer-highlight {
+            background-color: var(--accent-light);
+            color: #78350f;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-size: 11pt;
+            border: 1px solid #fde68a;
+        }
+
+        .step-list {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .step-list li {
+            margin-bottom: 8px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .math-block {
+            margin: 15px 0;
+            font-size: 1.1em;
+            overflow-x: auto;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 10pt;
+            border-top: 1px solid var(--border);
+        }
+
+        canvas {
+            background: #fff;
+            border: 1px solid #ddd;
+            display: block;
         }
     </style>
 </head>
 <body>
 
-<div class="header-area">
-    <h1>Lesson 101: Evaluation Matrix</h1>
-    <p>Student Performance Ledger & Solutions Pipeline — Student: <strong>Miriam</strong></p>
-</div>
+<div class="container tex2jax_process">
+    <header>
+        <h1>Saxon Math Course 2 Parallel Practice Set</h1>
+        <p>Lesson 3 Variant: Extra Practice & Application Questions (Problems 1–30)</p>
+    </header>
 
-<div class="container">
-
-    <div class="problem-card">
-        <div class="problem-header">Question 1</div>
-        <p>Four quarts equals how many fluid ounces?</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 64 fluid ounces</div>
-        <button class="btn-action" onclick="toggleDisplay(1)">Toggle Answer Sheet</button>
-        <div id="sol-1" class="solution-box">
-            <span class="badge">Incorrect Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>1. Identify intermediate baseline scale flags:</p>
-            $$1 \text{ quart} = 2 \text{ pints} = 4 \text{ cups}$$
-            $$1 \text{ cup} = 8 \text{ fluid ounces} \implies 1 \text{ quart} = 32 \text{ fluid ounces}$$
-            <p>2. Multiply by target quantity:</p>
-            $$4 \text{ quarts} \times 32 \text{ fluid ounces} = 128 \text{ fluid ounces}$$
-            <p><strong>Analysis:</strong> Miriam calculated the volume of exactly 2 quarts instead of 4 quarts.</p>
-        </div>
+    <div class="controls">
+        <button class="btn" onclick="toggleAll(true)">Show All Answers</button>
+        <button class="btn btn-secondary" onclick="toggleAll(false)">Hide All Answers</button>
     </div>
 
-    <div class="problem-card">
-        <div class="problem-header">Question 2</div>
-        <p>Nadia gave the clerk a $10 bill to pay for a movie ticket. She received $1.55 in change. If the sales tax was 65¢, what was the base price of the ticket?</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> $7.80</div>
-        <button class="btn-action" onclick="toggleDisplay(2)">Toggle Answer Sheet</button>
-        <div id="sol-2" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>1. Calculate total checkout costs:</p>
-            $$\$10.00 - \$1.55 = \$8.45$$
-            <p>2. Isolate pre-tax value by extracting assigned sales tax metrics:</p>
-            $$\$8.45 - \$0.65 = \$7.80$$
+    <div class="grid">
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 1</span></div>
+            <div class="card-body">
+                <div class="question-text">When the product of 6 and 6 is divided by the sum of 6 and 6, what is the quotient?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(1)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-1">
+                    <div class="answer-highlight">Answer: 3</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Find the product of 6 and 6: <div class="math-block">$$6 \times 6 = 36$$</div></li>
+                            <li>Find the sum of 6 and 6: <div class="math-block">$$6 + 6 = 12$$</div></li>
+                            <li>Divide the product by the sum to determine the quotient: <div class="math-block">$$36 \div 12 = 3$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 2</span></div>
+            <div class="card-body">
+                <div class="question-text"><strong>SUMMARIZE</strong> If you know the minuend and the difference, how can you find the subtrahend? Write a complete sentence to answer the question.</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(2)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-2">
+                    <div class="answer-highlight">Answer: You can find the subtrahend by subtracting the difference from the minuend.</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Recall the relationship components of a subtraction sequence: <div class="math-block">$$\text{Minuend} - \text{Subtrahend} = \text{Difference}$$</div></li>
+                            <li>Rearrange components via algebraic inverse properties to solve for the missing term: <div class="math-block">$$\text{Subtrahend} = \text{Minuend} - \text{Difference}$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 3</span></div>
+            <div class="card-body">
+                <div class="question-text"><strong>ANALYZE</strong> Which property of multiplication is stated by this equation?<br>$$\quad (x \cdot y) \cdot z = x \cdot (y \cdot z)$$</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(3)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-3">
+                    <div class="answer-highlight">Answer: Associative Property of Multiplication</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Observe that the structural position sequence remains identical, while grouping configurations change.</li>
+                            <li>The mathematical principle which permits factors to be regrouped without modifying the final product is the <strong>Associative Property of Multiplication</strong>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 4</span></div>
+            <div class="card-body">
+                <div class="question-text"><strong>ANALYZE</strong> If one addend is 9 and the sum is 33, what is the other addend?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(4)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-4">
+                    <div class="answer-highlight">Answer: 24</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Model the scenario as a basic equation: <div class="math-block">$$9 + n = 33$$</div></li>
+                            <li>Isolate the unknown value by subtracting the given addend from the combined sum: <div class="math-block">$$n = 33 - 9 = 24$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 5</span></div>
+            <div class="card-body">
+                <div class="question-text"><strong>GENERALIZE</strong> Use the numbers 2 and 5 to illustrate the Commutative Property of Multiplication. Use a center dot to indicate multiplication.</div>
+                <div class="diagram-container">
+                    <canvas id="canvasQ5" width="260" height="110"></canvas>
+                </div>
+                <br>
+                <button class="btn btn-accent" onclick="toggleExplanation(5)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-5">
+                    <div class="answer-highlight">Answer: \(2 \cdot 5 = 5 \cdot 2\)</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>The property asserts that altering factor distribution order does not alter evaluated numerical products.</li>
+                            <li>Express this fact mathematically using center dot notation: <div class="math-block">$$2 \cdot 5 = 10 \quad \text{and} \quad 5 \cdot 2 = 10 \implies 2 \cdot 5 = 5 \cdot 2$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 6</span></div>
+            <div class="card-body">
+                <div class="question-text">
+                    <strong>JUSTIFY</strong> List the properties used in the first and second steps to simplify the expression \(8 + (y + 4)\).
+                    <div style="margin-top:10px; padding-left:20px; font-family:monospace;">
+                        Step:<br>
+                        \(8 + (y + 4)\) &mdash; Given expression<br>
+                        \(8 + (4 + y)\) &mdash; <strong>a. _________</strong><br>
+                        \((8 + 4) + y\) &mdash; <strong>b. _________</strong><br>
+                        \(12 + y\) &mdash; \(8 + 4 = 12\)
+                    </div>
+                </div>
+                <button class="btn btn-accent" onclick="toggleExplanation(6)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-6">
+                    <div class="answer-highlight">Answer: a. Commutative Property of Addition | b. Associative Property of Addition</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li><strong>Step a:</strong> The components inside the parentheses are flipped in order. This rearrangement is supported by the <strong>Commutative Property of Addition</strong>.</li>
+                            <li><strong>Step b:</strong> Parentheses move position to group the initial two quantities while keeping element order identical. This matches the <strong>Associative Property of Addition</strong>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 7</span></div>
+            <div class="card-body">
+                <div class="question-text">Find the value of the variable: \(y + 67 = 131\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(7)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-7">
+                    <div class="answer-highlight">Answer: 64</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>To isolate variable \(y\), apply inverse operations and perform subtraction: <div class="math-block">$$y = 131 - 67$$</div></li>
+                            <li>Calculate the difference: <div class="math-block">$$y = 64$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 8</span></div>
+            <div class="card-body">
+                <div class="question-text">Find the value of the variable: \(84 - x = 39\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(8)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-8">
+                    <div class="answer-highlight">Answer: 45</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Find an unknown subtrahend by subtracting the given difference from the initial minuend amount: <div class="math-block">$$x = 84 - 39$$</div></li>
+                            <li>Perform the math operation: <div class="math-block">$$x = 45$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 9</span></div>
+            <div class="card-body">
+                <div class="question-text">Find the value of the variable: \(6m = 138\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(9)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-9">
+                    <div class="answer-highlight">Answer: 23</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Divide both sides of the mathematical equation by 6 to isolate variable \(m\): <div class="math-block">$$m = 138 \div 6$$</div></li>
+                            <li>Evaluate the resulting quotient: <div class="math-block">$$6 \times 20 = 120, \quad 138 - 120 = 18 \implies 6 \times 3 = 18 \implies m = 23$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 10</span></div>
+            <div class="card-body">
+                <div class="question-text">Find the value of the variable: \(146 + w = 400\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(10)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-10">
+                    <div class="answer-highlight">Answer: 254</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Isolate variable \(w\) by subtracting the known constant addend from the total: <div class="math-block">$$w = 400 - 146$$</div></li>
+                            <li>Calculate value units across place columns: <div class="math-block">$$w = 254$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 11</span></div>
+            <div class="card-body">
+                <div class="question-text">Find the value of the variable: \(p - 245 = 542\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(11)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-11">
+                    <div class="answer-highlight">Answer: 787</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Determine the initial value by adding the difference and subtrahend via inverse functions: <div class="math-block">$$p = 542 + 245$$</div></li>
+                            <li>Combine quantities to yield the answer: <div class="math-block">$$p = 787$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 12</span></div>
+            <div class="card-body">
+                <div class="question-text">Find the value of the variable: \(20k = 600\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(12)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-12">
+                    <div class="answer-highlight">Answer: 30</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Isolate coefficient terms using structural step division properties: <div class="math-block">$$k = 600 \div 20$$</div></li>
+                            <li>Simplify calculation by reducing common base-10 metrics: <div class="math-block">$$60 \div 2 = 30 \implies k = 30$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 13</span></div>
+            <div class="card-body">
+                <div class="question-text">Find the value of the variable: \(\frac{900}{V} = 30\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(13)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-13">
+                    <div class="answer-highlight">Answer: 30</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>In division formats, find the divisor by dividing the original dividend by the quotient: <div class="math-block">$$V = 900 \div 30$$</div></li>
+                            <li>Evaluate the relationship expression: <div class="math-block">$$30 \times 30 = 900 \implies V = 30$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 14</span></div>
+            <div class="card-body">
+                <div class="question-text">Find the value of the variable: \(\frac{Y}{40} = 800\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(14)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-14">
+                    <div class="answer-highlight">Answer: 32,000</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Solve for numerator variable \(Y\) by performing a balanced cross-multiplication sequence: <div class="math-block">$$Y = 800 \times 40$$</div></li>
+                            <li>Multiply base components and carry over zero placement placeholders: <div class="math-block">$$8 \times 4 = 32 \implies 800 \times 40 = 32,000$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 15</span></div>
+            <div class="card-body">
+                <div class="question-text">Evaluate each expression for \(x = 24\) and \(y = 6\):<br><strong>a.</strong> \(\frac{x}{y}\) &nbsp;|&nbsp; <strong>b.</strong> \(x - y\) &nbsp;|&nbsp; <strong>c.</strong> \(xy\) &nbsp;|&nbsp; <strong>d.</strong> \(x + y\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(15)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-15">
+                    <div class="answer-highlight">Answer: a. 4 &nbsp;|&nbsp; b. 18 &nbsp;|&nbsp; c. 144 &nbsp;|&nbsp; d. 30</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Substitute \(x = 24\) and \(y = 6\) into each statement:</li>
+                            <li><strong>a.</strong> \(\frac{24}{6} = 4\)</li>
+                            <li><strong>b.</strong> \(24 - 6 = 18\)</li>
+                            <li><strong>c.</strong> \(24 \times 6 = 144\)</li>
+                            <li><strong>d.</strong> \(24 + 6 = 30\)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 16</span></div>
+            <div class="card-body">
+                <div class="question-text">Simplify: \(120 \div (20 \div 2)\)</div>
+                <div class="diagram-container">
+                    <canvas id="canvasQ16" width="300" height="70"></canvas>
+                </div>
+                <br>
+                <button class="btn btn-accent" onclick="toggleExplanation(16)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-16">
+                    <div class="answer-highlight">Answer: 12</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Follow the standard order of operations (PEMDAS) and resolve terms within parentheses first: <div class="math-block">$$20 \div 2 = 10$$</div></li>
+                            <li>Evaluate the final expression with the intermediate result: <div class="math-block">$$120 \div 10 = 12$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 17</span></div>
+            <div class="card-body">
+                <div class="question-text">Simplify: \((120 \div 20) \div 2\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(17)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-17">
+                    <div class="answer-highlight">Answer: 3</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Simplify the expressions encapsulated by grouping markers first: <div class="math-block">$$120 \div 20 = 6$$</div></li>
+                            <li>Apply the remaining outer division scale element: <div class="math-block">$$6 \div 2 = 3$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 18</span></div>
+            <div class="card-body">
+                <div class="question-text">Simplify: \(\$24.35 + \$12 + 75\text{¢}\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(18)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-18">
+                    <div class="answer-highlight">Answer: \$37.10</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Convert each distinct item value into identical dollar decimal layouts: <div class="math-block">$$\$12 \rightarrow \$12.00 \quad \text{and} \quad 75\text{¢} \rightarrow \$0.75$$</div></li>
+                            <li>Align monetary decimals and calculate sum units: <div class="math-block">$$\$24.35 + \$12.00 + \$0.75 = \$37.10$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 19</span></div>
+            <div class="card-body">
+                <div class="question-text">Simplify: \(\$60.00 - (\$8.65 + \$42.45)\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(19)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-19">
+                    <div class="answer-highlight">Answer: \$8.90</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Evaluate the compound subset value contained inside the parenthesis container first: <div class="math-block">$$\$8.65 + \$42.45 = \$51.10$$</div></li>
+                            <li>Subtract this accumulated total from the principal baseline value: <div class="math-block">$$\$60.00 - \$51.10 = \$8.90$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 20</span></div>
+            <div class="card-body">
+                <div class="question-text">Multiply:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;56<br>&nbsp;&times;&nbsp;28<br>&nbsp;&nbsp;&nbsp;&nbsp;---</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(20)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-20">
+                    <div class="answer-highlight">Answer: 1568</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Calculate individual partial products: <div class="math-block">$$56 \times 8 = 448$$</div><div class="math-block">$$56 \times 20 = 1120$$</div></li>
+                            <li>Add partial components together: <div class="math-block">$$448 + 1120 = 1568$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 21</span></div>
+            <div class="card-body">
+                <div class="question-text">Multiply:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;\$7.46<br>&nbsp;&times;&nbsp;&nbsp;&nbsp;&nbsp;60<br>&nbsp;&nbsp;&nbsp;&nbsp;-----</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(21)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-21">
+                    <div class="answer-highlight">Answer: \$447.60</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Isolate core base figures to evaluate multiplication independently of decimals: <div class="math-block">$$746 \times 6 = 4476$$</div></li>
+                            <li>Incorporate the trailing ten multiplier and restore the decimal balance two places to the left for currency formatting: <div class="math-block">$$746 \times 60 = 44760 \rightarrow \$447.60$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 22</span></div>
+            <div class="card-body">
+                <div class="question-text">Simplify: \(1300 - (425 - 68)\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(22)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-22">
+                    <div class="answer-highlight">Answer: 943</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Resolve intermediate operations situated inside the parenthesis first: <div class="math-block">$$425 - 68 = 357$$</div></li>
+                            <li>Complete calculations by subtracting this result from the initial value: <div class="math-block">$$1300 - 357 = 943$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 23</span></div>
+            <div class="card-body">
+                <div class="question-text">Simplify: \((1300 - 425) - 68\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(23)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-23">
+                    <div class="answer-highlight">Answer: 807</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Evaluate the first grouping subtraction sequence component: <div class="math-block">$$1300 - 425 = 875$$</div></li>
+                            <li>Perform the remaining deduction step: <div class="math-block">$$875 - 68 = 807$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 24</span></div>
+            <div class="card-body">
+                <div class="question-text">Simplify: \(5824 + 162 + 8 + 44\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(24)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-24">
+                    <div class="answer-highlight">Answer: 6038</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Group values to simplify addition steps or add sequentially from left to right: <div class="math-block">$$162 + 8 = 170$$</div><div class="math-block">$$5824 + 170 = 5994$$</div><div class="math-block">$$5994 + 44 = 6038$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 25</span></div>
+            <div class="card-body">
+                <div class="question-text">Simplify: \(40,236 - 5388\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(25)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-25">
+                    <div class="answer-highlight">Answer: 34,848</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Align place columns properly and execute subtraction with borrowing steps: <div class="math-block">$$\begin{array}{r} 40236 \\ - \phantom{0}5388 \\ \hline 34848 \end{array}$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 26</span></div>
+            <div class="card-body">
+                <div class="question-text">Simplify: \(\frac{5880}{40}\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(26)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-26">
+                    <div class="answer-highlight">Answer: 147</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Simplify calculation layout by dividing out matching base-10 factor components: <div class="math-block">$$\frac{5880}{40} = \frac{588}{4}$$</div></li>
+                            <li>Calculate long division steps: <div class="math-block">$$588 \div 4 = 147$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 27</span></div>
+            <div class="card-body">
+                <div class="question-text">Simplify: \(\frac{\$60.00}{48}\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(27)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-27">
+                    <div class="answer-highlight">Answer: \$1.25</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Divide total dollar metrics systematically into uniform structural partitions: <div class="math-block">$$\$60.00 \div 48 = \$1.25$$</div></li>
+                            <li>Check calculation steps through inverse expansion: <div class="math-block">$$48 \times \$1.00 = \$48.00 \quad \text{and} \quad 48 \times \$0.25 = \$12.00 \implies \$48.00 + \$12.00 = \$60.00$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 28</span></div>
+            <div class="card-body">
+                <div class="question-text">Simplify: \(45 \overline{) 2709}\)</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(28)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-28">
+                    <div class="answer-highlight">Answer: 60 R 9 (or \(60 \frac{9}{45} = 60 \frac{1}{5}\))</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Determine factor counts for initial digit columns: <div class="math-block">$$45 \times 6 = 270$$</div></li>
+                            <li>Carry over the remaining 9. Since 45 goes into 9 zero times, write 0 in the ones place: <div class="math-block">$$\text{Quotient} = 60, \quad \text{Remainder} = 9$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 29</span></div>
+            <div class="card-body">
+                <div class="question-text">Multiply:<br><br>&nbsp;&nbsp;&nbsp;&nbsp;\$0.73<br>&nbsp;&times;&nbsp;&nbsp;&nbsp;&nbsp;30<br>&nbsp;&nbsp;&nbsp;&nbsp;-----</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(29)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-29">
+                    <div class="answer-highlight">Answer: \$21.90</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>Multiply the base integers while temporarily ignoring decimal places: <div class="math-block">$$73 \times 3 = 219$$</div></li>
+                            <li>Scale up by 10 and return the decimal point two places left to fit proper currency presentation: <div class="math-block">$$73 \times 30 = 2190 \rightarrow \$21.90$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><span class="question-num">Problem 30</span></div>
+            <div class="card-body">
+                <div class="question-text"><strong>VERIFY</strong> Why is 0 called the additive identity?</div>
+                <button class="btn btn-accent" onclick="toggleExplanation(30)">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-30">
+                    <div class="answer-highlight">Answer: Adding 0 to any number yields a sum equal to that original number.</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li>An identity operation preserves a value's original state.</li>
+                            <li>Demonstrate this property algebraically: <div class="math-block">$$n + 0 = n$$</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="border: 2px solid var(--primary);">
+            <div class="card-header" style="background-color: var(--primary); color: white;">
+                <span class="question-num" style="color: white;">Real-World Connection</span>
+            </div>
+            <div class="card-body">
+                <div class="question-text">
+                    Ryan and his brother went to the community swimming pool. The price of admission was \$5.50 each. They each bought a snack bar combo for \$2.25 and a souvenir keychain. Together they spent a total of \$18.50.<br><br>
+                    <strong>a.</strong> Find the cost of each keychain.<br>
+                    <strong>b.</strong> Ryan brought a \$15 gift card to use at the pool entrance. How much should he have left after paying for his own individual costs (admission, snack bar combo, and keychain)?
+                </div>
+                <div class="diagram-container">
+                    <canvas id="canvasRWC" width="340" height="100"></canvas>
+                </div>
+                <br>
+                <button class="btn btn-accent" onclick="toggleExplanation('rwc')">Review Answer & Explanation</button>
+                <div class="explanation-panel" id="exp-rwc">
+                    <div class="answer-highlight">Answer: a. \$1.50 per keychain &nbsp;|&nbsp; b. \$5.75 remaining</div>
+                    <div>
+                        <strong>Step-by-Step Explanation:</strong>
+                        <ul class="step-list">
+                            <li><strong>Part a:</strong> Sum the entry fees and snack costs for both individuals:
+                                <div class="math-block">$$\text{Admission} = 2 \times \$5.50 = \$11.00$$</div>
+                                <div class="math-block">$$\text{Snacks} = 2 \times \$2.25 = \$4.50$$</div>
+                                <div class="math-block">$$\text{Combined Subtotal} = \$11.00 + \$4.50 = \$15.50$$</div>
+                            </li>
+                            <li>Deduct this subtotal from the grand total to find the cost of both keychains:
+                                <div class="math-block">$$\$18.50 - \$15.50 = \$3.00 \text{ (for 2 keychains)} \implies \$3.00 \div 2 = \$1.50 \text{ each}$$</div>
+                            </li>
+                            <li><strong>Part b:</strong> Sum Ryan's individual expenditures:
+                                <div class="math-block">$$\text{Individual Spending} = \$5.50 + \$2.25 + \$1.50 = \$9.25$$</div>
+                            </li>
+                            <li>Subtract his personal spending total from his \$15 gift card balance to find the remaining funds:
+                                <div class="math-block">$$\$15.00 - \$9.25 = \$5.75$$</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="problem-card">
-        <div class="problem-header">Question 3</div>
-        <p>Clara is 5 years younger than Evan. Evan is three times as old as Leo. Clara is 10 years old. How old is Leo?</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 5 years old</div>
-        <button class="btn-action" onclick="toggleDisplay(3)">Toggle Answer Sheet</button>
-        <div id="sol-3" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>1. Determine Evan's absolute age marker from Clara's tracking baseline:</p>
-            $$\text{Evan} = 10 + 5 = 15 \text{ years old}$$
-            <p>2. Extract Leo's scalar metrics based on proportional aging ratios:</p>
-            $$\text{Leo} = 15 \div 3 = 5 \text{ years old}$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 4</div>
-        <p>Write each decimal configuration as a simplified mixed number or fraction: (a) 4.05 &nbsp; (b) 12.75 &nbsp; (c) 0.125</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> (a) \(4\frac{5}{100}\) &nbsp; (b) \(12\frac{3}{4}\) &nbsp; (c) \(\frac{125}{1000}\)</div>
-        <button class="btn-action" onclick="toggleDisplay(4)">Toggle Answer Sheet</button>
-        <div id="sol-4" class="solution-box">
-            <span class="badge">Partially Correct</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>(a) $$4.05 = 4\frac{5}{100} = 4\frac{1}{20}$$</p>
-            <p>(b) $$12.75 = 12\frac{75}{100} = 12\frac{3}{4}$$</p>
-            <p>(c) $$0.125 = \frac{125}{1000} = \frac{1}{8}$$</p>
-            <p><strong>Analysis:</strong> Miriam extracted raw conversion parameters perfectly but omitted executing the final prime factor simplification step for (a) and (c).</p>
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 5</div>
-        <p>Two-thirds of the 45 students voted for a class pet. How many students voted for a class pet?</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 30</div>
-        <button class="btn-action" onclick="toggleDisplay(5)">Toggle Answer Sheet</button>
-        <div id="sol-5" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>1. Evaluate one base fraction index step:</p>
-            $$45 \div 3 = 15$$
-            <p>2. Compound via actual numerator parameters:</p>
-            $$15 \times 2 = 30 \text{ students}$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 6</div>
-        <p>What percent of the students in problem 5 did <strong>not</strong> vote for a class pet?</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 15%</div>
-        <button class="btn-action" onclick="toggleDisplay(6)">Toggle Answer Sheet</button>
-        <div id="sol-6" class="solution-box">
-            <span class="badge">Incorrect Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>If \(\frac{2}{3}\) voted affirmatively, the remaining subset is exactly \(\frac{1}{3}\):</p>
-            $$\frac{1}{3} = 33\frac{1}{3}\% \approx 33.33\%$$
-            <p><strong>Analysis:</strong> Miriam confused the absolute number of non-voting students (15) directly with the percentage scale indicator value.</p>
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 7</div>
-        <p>Find the total perimeter boundary dimension tracking for this geometric plane profile:</p>
-        <canvas id="canvas-q7" width="280" height="120"></canvas>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 26 cm</div>
-        <button class="btn-action" onclick="toggleDisplay(7)">Toggle Answer Sheet</button>
-        <div id="sol-7" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>Combine parallel dimensional components across bounding rectangular lines:</p>
-            $$\text{Perimeter} = 8\text{ cm} + 5\text{ cm} + 8\text{ cm} + 5\text{ cm} = 26\text{ cm}$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 8</div>
-        <p>Use structural word notation to transcribe the numerical value 12.045.</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> twelve and forty-five thousandths</div>
-        <button class="btn-action" onclick="toggleDisplay(8)">Toggle Answer Sheet</button>
-        <div id="sol-8" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Analysis:</strong> The three tracking spaces right of the decimal point map accurately onto thousandths position indices, making Miriam's string translation correct.</p>
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 9</div>
-        <p>Estimate the product of 78 and 41. Then find the actual product.</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> Estimate: 3200; Actual: 3198</div>
-        <button class="btn-action" onclick="toggleDisplay(9)">Toggle Answer Sheet</button>
-        <div id="sol-9" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>1. <strong>Estimation:</strong> Scale to nearest base-10 coordinates:</p>
-            $$78 \approx 80, \quad 41 \approx 40 \implies 80 \times 40 = 3200$$
-            <p>2. <strong>Actual Product:</strong> Execute complete matrix multiplication:</p>
-            $$78 \times 41 = 3198$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 10</div>
-        <p>Find the mean, median, and mode of this data set: 4, 8, 5, 8, 10.</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> Mean = 7, Median = 5, Mode = 8</div>
-        <button class="btn-action" onclick="toggleDisplay(10)">Toggle Answer Sheet</button>
-        <div id="sol-10" class="solution-box">
-            <span class="badge">Partially Correct</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>• <strong>Mean:</strong> $$\frac{4 + 8 + 5 + 8 + 10}{5} = \frac{35}{5} = 7$$</p>
-            <p>• <strong>Median:</strong> Sort chronological index positions to isolate structural midpoint:</p>
-            $$[4, 5, \mathbf{8}, 8, 10] \implies \text{Median} = 8$$
-            <p>• <strong>Mode:</strong> Most frequently observed value = 8</p>
-            <p><strong>Analysis:</strong> Miriam found the mean and mode correctly, but failed to sort the array before picking the median midpoint.</p>
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 11</div>
-        <p>What three-dimensional geometric shape is a standard unsharpened pencil before it has been carved?</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> cylinder</div>
-        <button class="btn-action" onclick="toggleDisplay(11)">Toggle Answer Sheet</button>
-        <div id="sol-11" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Analysis:</strong> Hexagonal prism formulations are also technically true for architectural variants, but standard round raw blanks or smoothed templates correspond to a <strong>cylinder</strong>.</p>
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 12</div>
-        <p>Identify which of the following canvas angle models is classified as an <strong>obtuse angle</strong>:</p>
-        <canvas id="canvas-q12" width="400" height="100"></canvas>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> C</div>
-        <button class="btn-action" onclick="toggleDisplay(12)">Toggle Answer Sheet</button>
-        <div id="sol-12" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Analysis:</strong> Angle C displays a spatial vector divergence mapping explicitly wider than a standard \(90^\circ\) normal vector, confirming an obtuse configuration.</p>
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 13</div>
-        <p>Calculate: \(\$20.00 - (\$8.45 + \$2.10)\)</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> $9.45</div>
-        <button class="btn-action" onclick="toggleDisplay(13)">Toggle Answer Sheet</button>
-        <div id="sol-13" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>1. Evaluate priority operations grouped within parentheses:</p>
-            $$\$8.45 + \$2.10 = \$10.55$$
-            <p>2. Execute remaining linear matrix difference transformations:</p>
-            $$\$20.00 - \$10.55 = \$9.45$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 14</div>
-        <p>Calculate: \(4 \times 8 \times 15\)</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 480</div>
-        <button class="btn-action" onclick="toggleDisplay(14)">Toggle Answer Sheet</button>
-        <div id="sol-14" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>Apply associative multiplication restructuring:</p>
-            $$(4 \times 15) \times 8 = 60 \times 8 = 480$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 15</div>
-        <p>Calculate: \(\$6.42 \times 7\)</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> $44.94</div>
-        <button class="btn-action" onclick="toggleDisplay(15)">Toggle Answer Sheet</button>
-        <div id="sol-15" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            $$\begin{array}{r} 6.42 \\ \times \quad 7 \\ \hline 44.94 \end{array}$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 16</div>
-        <p>Calculate: \(145 \times 100\)</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 14500</div>
-        <button class="btn-action" onclick="toggleDisplay(16)">Toggle Answer Sheet</button>
-        <div id="sol-16" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Analysis:</strong> Shifting the integer matrix rightward by two base-10 indices yields exactly 14,500.</p>
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 17</div>
-        <p>Calculate: \(36 \times 24\)</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 864</div>
-        <button class="btn-action" onclick="toggleDisplay(17)">Toggle Answer Sheet</button>
-        <div id="sol-17" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            $$\begin{array}{r} 36 \\ \times \, 24 \\ \hline 144 \\ + 720 \\ \hline 864 \end{array}$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 18</div>
-        <p>Calculate: \(45 \times 30\)</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 135</div>
-        <button class="btn-action" onclick="toggleDisplay(18)">Toggle Answer Sheet</button>
-        <div id="sol-18" class="solution-box">
-            <span class="badge">Incorrect Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            $$45 \times 3 = 135 \implies 135 \times 10 = 1350$$
-            <p><strong>Analysis:</strong> Miriam dropped the trailing base-10 zero place tracker entirely during processing.</p>
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 19</div>
-        <p>Calculate: \(52 \times 48\)</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 2496</div>
-        <button class="btn-action" onclick="toggleDisplay(19)">Toggle Answer Sheet</button>
-        <div id="sol-19" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>Using the difference of squares identity:</p>
-            $$(50 + 2)(50 - 2) = 50^2 - 2^2 = 2500 - 4 = 2496$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 20</div>
-        <p>Calculate: \(4216 \div 7\)</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 62 R 2</div>
-        <button class="btn-action" onclick="toggleDisplay(20)">Toggle Answer Sheet</button>
-        <div id="sol-20" class="solution-box">
-            <span class="badge">Incorrect Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>• \(42 \div 7 = 6\)</p>
-            <p>• Bring down 1; \(1 \div 7 = 0\), remainder 1</p>
-            <p>• Bring down 6 to form 16; \(16 \div 7 = 2\) remainder 2</p>
-            $$\text{Correct Quotient: } 602 \text{ R } 2$$
-            <p><strong>Analysis:</strong> Miriam omitted the structural zero place tracker in the tens position column.</p>
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 21</div>
-        <p>Calculate: \(4000 \div 8\)</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 500</div>
-        <button class="btn-action" onclick="toggleDisplay(21)">Toggle Answer Sheet</button>
-        <div id="sol-21" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            $$40 \div 8 = 5 \implies 4000 \div 8 = 500$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 22</div>
-        <p>Calculate: \(825 \div 3\)</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 275</div>
-        <button class="btn-action" onclick="toggleDisplay(22)">Toggle Answer Sheet</button>
-        <div id="sol-22" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>• \(8 \div 3 = 2\) R 2</p>
-            <p>• \(22 \div 3 = 7\) R 1</p>
-            <p>• \(15 \div 3 = 5\)</p>
-            $$\text{Result: } 275$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 23</div>
-        <p>Evaluate the given index expression: \(\frac{6^2}{\sqrt{16}}\)</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 3</div>
-        <button class="btn-action" onclick="toggleDisplay(23)">Toggle Answer Sheet</button>
-        <div id="sol-23" class="solution-box">
-            <span class="badge">Incorrect Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>1. Evaluate exponent configurations:</p>
-            $$6^2 = 36$$
-            <p>2. Resolve radical operators:</p>
-            $$\sqrt{16} = 4$$
-            <p>3. Process the remaining fractional ratio division:</p>
-            $$\frac{36}{4} = 9$$
-            <p><strong>Analysis:</strong> Miriam incorrectly computed \(6^2\) as 12 (\(6 \times 2\)) instead of squaring the base number.</p>
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 24</div>
-        <p>Calculate: \(\$18.90 \div 6\)</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> $3.15</div>
-        <button class="btn-action" onclick="toggleDisplay(24)">Toggle Answer Sheet</button>
-        <div id="sol-24" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            $$\begin{array}{r} 3.15 \\ 6 \overline{\smash{)} 18.90 } \end{array}$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 25</div>
-        <p>Calculate: \(\frac{345}{6}\)</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 57 R 3</div>
-        <button class="btn-action" onclick="toggleDisplay(25)">Toggle Answer Sheet</button>
-        <div id="sol-25" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            $$345 \div 6 = 57 \text{ with a remainder of 3, or } 57\frac{3}{6} = 57\frac{1}{2}$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 26</div>
-        <p>Analyze the shaded visual grid box. What specific numerical fraction value is indicated?</p>
-        <canvas id="canvas-q26" width="200" height="60"></canvas>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> \(\frac{3}{5}\)</div>
-        <button class="btn-action" onclick="toggleDisplay(26)">Toggle Answer Sheet</button>
-        <div id="sol-26" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Analysis:</strong> The shape displays 3 distinctly filled segments out of 5 identical structural spaces, yielding exactly \(\frac{3}{5}\).</p>
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 27</div>
-        <p>The total area enclosed by a perfect square geometry measures 64 sq inches. What is the total perimeter boundary distance of this square?</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> 32 inches</div>
-        <button class="btn-action" onclick="toggleDisplay(27)">Toggle Answer Sheet</button>
-        <div id="sol-27" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>1. Find individual edge boundaries using the square area formula (\(\text{Side}^2 = \text{Area}\)):</p>
-            $$\text{Side} = \sqrt{64} = 8 \text{ inches}$$
-            <p>2. Calculate perimeter length across all 4 equal edges:</p>
-            $$\text{Perimeter} = 8 \text{ inches} \times 4 = 32 \text{ inches}$$
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 28</div>
-        <p>Examine the canvas illustration charting spatial reflection symmetries across a central axis baseline:</p>
-        <canvas id="canvas-q28" width="260" height="120"></canvas>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> (Drawn mapping matches the vertical mirror projection perfectly)</div>
-        <button class="btn-action" onclick="toggleDisplay(28)">Toggle Answer Sheet</button>
-        <div id="sol-28" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Analysis:</strong> The right-side canvas vector tracks mirrored Cartesian coordinates accurately across the central vertical symmetry line.</p>
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 29</div>
-        <p>Compute relative values to insert appropriate comparison operator logic (\(&gt;\), \(&lt;\), or \(=\)): <br>
-        (a) 0.60 [ ] 0.060 &nbsp;&nbsp;&nbsp;&nbsp; (b) \(\frac{1}{2}\) [ ] 0.51</p>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> (a) \(&gt;\) &nbsp;&nbsp; (b) \(&gt;\)</div>
-        <button class="btn-action" onclick="toggleDisplay(29)">Toggle Answer Sheet</button>
-        <div id="sol-29" class="solution-box">
-            <span class="badge">Partially Correct</span>
-            <p><strong>Step-by-Step Proof:</strong></p>
-            <p>(a) Compare position decimals starting at tenths place: \(0.6 > 0.0 \implies 0.60 &gt; 0.060\)</p>
-            <p>(b) Convert to uniform decimal formats: \(\frac{1}{2} = 0.50 \implies 0.50 &lt; 0.51\)</p>
-            <p><strong>Analysis:</strong> Miriam processed task (a) accurately but flipped her comparator direction marker on task (b).</p>
-        </div>
-    </div>
-
-    <div class="problem-card">
-        <div class="problem-header">Question 30</div>
-        <p>Which layout template configuration can be completely cutout and folded to create a structurally sound box with <strong>no top lid</strong> (5 complete faces)?</p>
-        <canvas id="canvas-q30" width="400" height="130"></canvas>
-        <div class="student-box"><strong>Miriam's Tracked Answer:</strong> Map Y</div>
-        <button class="btn-action" onclick="toggleDisplay(30)">Toggle Answer Sheet</button>
-        <div id="sol-30" class="solution-box">
-            <span class="badge">Correct Result</span>
-            <p><strong>Analysis:</strong> Map Y forms a cross configuration of 5 connecting squares that fold up safely without spatial overlap to create an open box. Map X's structural placement forces a panel collision overlap, leaving an empty wall space.</p>
-        </div>
-    </div>
-
+    <footer>
+        <p>Interactive Solutions Guide &bull; Saxon Math Course 2 Layout Engineering</p>
+    </footer>
 </div>
 
 <script>
-    // Standard visibility matrix toggle logic
-    function toggleDisplay(id) {
-        var el = document.getElementById('sol-' + id);
-        if (el.style.display === 'block') {
-            el.style.display = 'none';
+    function toggleExplanation(num) {
+        var panel = document.getElementById('exp-' + num);
+        if (panel.style.display === 'block') {
+            panel.style.display = 'none';
         } else {
-            el.style.display = 'block';
+            panel.style.display = 'block';
         }
     }
 
-    // High contrast canvas lines generation block
+    function toggleAll(show) {
+        var panels = document.getElementsByClassName('explanation-panel');
+        for (var i = 0; i < panels.length; i++) {
+            panels[i].style.display = show ? 'block' : 'none';
+        }
+    }
+
     window.onload = function() {
-        // Q7 Plane Geometry Rectangle
-        var c7 = document.getElementById('canvas-q7');
-        var ctx7 = c7.getContext('2d');
-        ctx7.lineWidth = 2;
-        ctx7.strokeStyle = "#000000";
-        ctx7.strokeRect(40, 30, 180, 60);
-        ctx7.font = "13px Arial";
-        ctx7.fillStyle = "#000000";
-        ctx7.fillText("8 cm", 115, 23);
-        ctx7.fillText("5 cm", 225, 65);
-
-        // Q12 Vector Divergence Angles
-        var c12 = document.getElementById('canvas-q12');
-        var ctx12 = c12.getContext('2d');
-        ctx12.lineWidth = 2;
-        ctx12.strokeStyle = "#000000";
-        ctx12.font = "13px Arial";
-        ctx12.fillStyle = "#000000";
-        
-        // Acute
-        ctx12.beginPath(); ctx12.moveTo(20,70); ctx12.lineTo(70,70); ctx12.moveTo(20,70); ctx12.lineTo(55,35); ctx12.stroke();
-        ctx12.fillText("A", 42, 88);
-        // Right Angle
-        ctx12.beginPath(); ctx12.moveTo(130,70); ctx12.lineTo(180,70); ctx12.moveTo(130,70); ctx12.lineTo(130,25); ctx12.stroke();
-        ctx12.strokeRect(130,62,8,8);
-        ctx12.fillText("B", 152, 88);
-        // Obtuse Angle
-        ctx12.beginPath(); ctx12.moveTo(270,70); ctx12.lineTo(330,70); ctx12.moveTo(270,70); ctx12.lineTo(230,35); ctx12.stroke();
-        ctx12.fillText("C", 282, 88);
-
-        // Q26 Shaded Fraction Profile
-        var c26 = document.getElementById('canvas-q26');
-        var ctx26 = c26.getContext('2d');
-        var w = 35;
-        ctx26.lineWidth = 2;
-        ctx26.strokeStyle = "#000000";
-        for(var b=0; b<5; b++) {
-            if(b < 3) {
-                ctx26.fillStyle = "#dddddd"; // High-contrast clean grey pattern for print stability
-                ctx26.fillRect(15 + (b*w), 15, w, 30);
-            }
-            ctx26.strokeRect(15 + (b*w), 15, w, 30);
+        if (window.MathJax && window.MathJax.typeset) {
+            window.MathJax.typeset();
         }
 
-        // Q28 Cartesian Plane Symmetry Projection
-        var c28 = document.getElementById('canvas-q28');
-        var ctx28 = c28.getContext('2d');
-        ctx28.lineWidth = 2;
-        ctx28.strokeStyle = "#000000";
-        // Symmetry axis tracking
-        ctx28.setLineDash([4, 4]);
-        ctx28.beginPath(); ctx28.moveTo(130, 10); ctx28.lineTo(130, 110); ctx28.stroke();
-        ctx28.setLineDash([]);
-        // Left original triangle
-        ctx28.beginPath(); ctx28.moveTo(100,100); ctx28.lineTo(40,100); ctx28.lineTo(100,30); ctx28.closePath(); ctx28.stroke();
-        // Right reflected mirror shape
-        ctx28.beginPath(); ctx28.moveTo(160,100); ctx28.lineTo(220,100); ctx28.lineTo(160,30); ctx28.closePath(); ctx28.stroke();
+        // --- Q5 Array Diagram ---
+        var ctx5 = document.getElementById("canvasQ5").getContext("2d");
+        ctx5.font = "bold 13px sans-serif";
+        ctx5.fillStyle = "#0f766e";
+        ctx5.fillText("2 rows of 5 (2 · 5)", 15, 20);
+        for(let r=0; r<2; r++) {
+            for(let c=0; c<5; c++) {
+                ctx5.beginPath();
+                ctx5.arc(25 + c*22, 45 + r*22, 6, 0, 2*Math.PI);
+                ctx5.fill();
+            }
+        }
+        ctx5.fillStyle = "#b45309";
+        ctx5.fillText("5 rows of 2 (5 · 2)", 145, 20);
+        for(let r=0; r<5; r++) {
+            for(let c=0; c<2; c++) {
+                ctx5.beginPath();
+                ctx5.arc(165 + c*22, 40 + r*15, 6, 0, 2*Math.PI);
+                ctx5.fill();
+            }
+        }
 
-        // Q30 Spatial 2D Flat Nets
-        var c30 = document.getElementById('canvas-q30');
-        var ctx30 = c30.getContext('2d');
-        ctx30.font = "13px Arial";
-        ctx30.fillStyle = "#000000";
-        ctx30.lineWidth = 1.5;
-        var u = 18;
-        
-        // Map X Layout
-        var xOff = 40, yOff = 30;
-        ctx30.strokeRect(xOff, yOff, u, u); ctx30.strokeRect(xOff+u, yOff, u, u); ctx30.strokeRect(xOff+2*u, yOff, u, u);
-        ctx30.strokeRect(xOff+1*u, yOff+u, u, u);
-        ctx30.strokeRect(xOff+1*u, yOff+2*u, u, u);
-        ctx30.fillText("Map X", xOff+8, yOff+4*u);
+        // --- Q16 Order Tree ---
+        var ctx16 = document.getElementById("canvasQ16").getContext("2d");
+        ctx16.font = "14px monospace";
+        ctx16.fillStyle = "#1f2937";
+        ctx16.fillText("120  ÷  (20  ÷  2)", 80, 25);
+        ctx16.strokeStyle = "#d1d5db";
+        ctx16.lineWidth = 2;
+        ctx16.beginPath();
+        ctx16.moveTo(150, 35); ctx16.lineTo(170, 48);
+        ctx16.moveTo(190, 35); ctx16.lineTo(170, 48);
+        ctx16.stroke();
+        ctx16.fillStyle = "#b45309";
+        ctx16.fillText("10", 162, 62);
+        ctx16.fillStyle = "#1f2937";
+        ctx16.fillText("120  ÷", 30, 62);
 
-        // Map Y Layout
-        var bxOff = 240, byOff = 30;
-        ctx30.strokeRect(bxOff+u, byOff, u, u);
-        ctx30.strokeRect(bxOff, byOff+u, u, u); ctx30.strokeRect(bxOff+u, byOff+u, u, u); ctx30.strokeRect(bxOff+2*u, byOff+u, u, u);
-        ctx30.strokeRect(bxOff+u, byOff+2*u, u, u);
-        ctx30.fillText("Map Y", bxOff+8, byOff+4*u);
-    }
+        // --- RWC Cost Partition Chart ---
+        var ctxRwc = document.getElementById("canvasRWC").getContext("2d");
+        ctxRwc.lineWidth = 1;
+        ctxRwc.strokeStyle = "#4b5563";
+        ctxRwc.strokeRect(10, 15, 310, 40);
+        ctxRwc.fillStyle = "#f0fdfa"; ctxRwc.fillRect(11, 16, 183, 38); 
+        ctxRwc.fillStyle = "#fef3c7"; ctxRwc.fillRect(195, 16, 75, 38);
+        ctxRwc.fillStyle = "#ccfbf1"; ctxRwc.fillRect(271, 16, 48, 38);
+        ctxRwc.beginPath();
+        ctxRwc.moveTo(194, 15); ctxRwc.lineTo(194, 55);
+        ctxRwc.moveTo(270, 15); ctxRwc.lineTo(270, 55);
+        ctxRwc.stroke();
+        ctxRwc.font = "11px sans-serif";
+        ctxRwc.fillStyle = "#0f766e"; ctxRwc.fillText("Admission (\$11.00)", 50, 38);
+        ctxRwc.fillStyle = "#92400e"; ctxRwc.fillText("Snacks (\$4.50)", 200, 38);
+        ctxRwc.fillStyle = "#0d9488"; ctxRwc.fillText("Keychains", 273, 38);
+        ctxRwc.font = "bold 12px sans-serif";
+        ctxRwc.fillStyle = "#1f2937";
+        ctxRwc.fillText("Total Spending Partition: \$18.50", 10, 80);
+    };
 </script>
 
 </body>
