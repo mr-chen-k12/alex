@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 11</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        /* Default Print Behavior (When printing results) */
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 11</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        <button onclick="window.print()" style="margin-top: 10px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected here -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "Neuroscience research indicates that neural pathways in the human brain are highly malleable; repeating a physical or cognitive action continuously reinforces specific synaptic connections, while prolonged disuse or lack of stimulation gradually renders them ______.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["robust", "permanent", "dormant", "chaotic"],
+            correctAnswer: 2,
+            explanation: "'Dormant' means temporarily inactive or inoperative. The text establishes a contrast between pathways that are continuously reinforced and those experiencing a 'lack of stimulation,' making them inactive or dormant over time."
+        },
+        {
+            passage: "Historical analysis of the Silk Road often focuses on high-value luxury items like silk, glass, and spices, which obscures the critical role played by more mundane agricultural commodities. Historian Dr. Kenji Sato highlights that the trans-Eurasian transmission of drought-resistant alfalfa varieties was arguably more impactful than the textile trade. Alfalfa allowed nomadic pastoralists to sustain much larger herds of cavalry horses through harsh steppe winters, fundamentally altering the geopolitical balance of military power across medieval Eurasia.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Luxury items traded along the Silk Road were entirely irrelevant to Eurasian economies.",
+                "The dissemination of alfalfa had significant geopolitical consequences that are frequently overlooked in standard histories.",
+                "Nomadic pastoralists deliberately avoided trading textiles in favor of cultivating agricultural crops.",
+                "Alfalfa was the only crop capable of surviving the extreme climate variations of the Eurasian steppe."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage notes that traditional histories obscure mundane commodities by focusing on luxury goods, and goes on to show how the spread of alfalfa altered the military balance of power. Thus, its geopolitical consequences are frequently overlooked."
+        },
+        {
+            passage: "To protect depleted marine ecosystems from commercial overfishing, governments frequently establish Marine Protected Areas (MPAs) where fishing is strictly prohibited. Critics have long argued that MPAs simply displace fishing fleets to adjacent, unprotected waters, merely consolidating and intensifying ecological pressure in those areas. However, a long-term study revealed an unexpected dynamic: fish populations inside a well-managed MPA multiplied so rapidly that they naturally spilled over into neighboring zones, significantly increasing total fish density in the surrounding unprotected waters. Consequently, ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "the creation of MPAs ultimately causes an unavoidable net decline in the global seafood supply.",
+                "commercial fishing fleets will completely avoid waters located anywhere near designated MPAs.",
+                "the ecological benefits generated by MPAs can extend well beyond their official geographic boundaries.",
+                "governments should eliminate MPAs to alleviate environmental pressures in unprotected zones."
+            ],
+            correctAnswer: 2,
+            explanation: "The text explains that fish spill over from MPAs into adjacent unprotected zones, increasing fish density there. This demonstrates that the positive ecological impact of MPAs extends past their legal boundaries."
+        },
+        {
+            passage: "Text 1\nBehavioral economists argue that \"nudging\"—altering choice architecture to subtly steer consumer decisions without banning any options or changing economic incentives—is an ethical tool for public good. For instance, placing healthier food choices at eye level in public cafeterias dramatically increases nutritious selections while entirely preserving individual liberty.\n\nText 2\nWhile \"nudges\" are frequently praised for preserving freedom of choice, they actually represent an insidious form of psychological manipulation. By intentionally exploiting subconscious cognitive biases below the level of conscious awareness, nudging purposefully circumvents rational decision-making. Governments and corporations that employ these techniques are implicitly choosing what they believe is best for citizens, thereby undermining authentic human autonomy.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the characterization of nudging in Text 1 as an ethical tool that \"preserves individual liberty\"?",
+            options: [
+                "By claiming that nudging completely fails to alter consumer behavior in real-world environments.",
+                "By arguing that nudging subtly compromises personal freedom by bypassing conscious, rational choice.",
+                "By suggesting that healthy food options should be legally mandated rather than encouraged through architecture.",
+                "By agreeing that nudging is ethical only when deployed by public institutions rather than private corporations."
+            ],
+            correctAnswer: 1,
+            explanation: "Text 1 asserts that nudging preserves individual liberty. Text 2 argues that because nudging exploits subconscious biases and circumvents rational decision-making, it is a form of manipulation that 'undermines authentic human autonomy,' thereby compromising personal freedom."
+        },
+        {
+            passage: "The unexpected discovery of persistent liquid water oceans beneath the icy crust of Saturn’s moon Enceladus has transformed it into a ______ target for astrobiologists, who believe its subterranean hydrothermal vents closely mimic the primordial environments that originally gave rise to life on Earth.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["paramount", "peripheral", "contentious", "hazardous"],
+            correctAnswer: 0,
+            explanation: "'Paramount' means more important than anything else; supreme. Given that Enceladus mimics the environments that gave rise to life on Earth, it makes it a top-tier, supreme target for astrobiologists."
+        },
+        {
+            passage: "In her seminal 1977 essay collection *On Photography*, Susan Sontag investigates how the mass proliferation of photographic images alters our relationship with reality. Sontag argues that by capturing and isolating a specific moment, a photograph inevitably detaches it from its broader historical and emotional continuum, transforming a complex historical event into a consumable aesthetic object. Rather than merely documenting the world as it exists, photography actively mediates how we experience it, often distancing us from the very subjects we seek to comprehend.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It introduces a prominent author's core thesis and elaborates on the conceptual mechanism behind her argument.",
+                "It presents an artistic technique, details its historical evolution, and criticizes its modern execution.",
+                "It outlines an empirical psychological study, lists its structural flaws, and proposes an alternative experimental design.",
+                "It contrasts two opposing literary theories and argues in favor of a synthesis between them."
+            ],
+            correctAnswer: 0,
+            explanation: "The text starts by introducing Susan Sontag's thesis regarding photography and reality, and then explains *how* photography achieves this effect (detaching moments from context, transforming events into consumer objects), which elaborates on the conceptual mechanism."
+        },
+        {
+            passage: "Literary scholar Dr. Aris Thorne contends that in his epic poem *Paradise Lost*, John Milton deliberately constructs the character of Satan not as a simple caricature of pure evil, but as a tragic, deeply conflicted figure whose profound hubris is continuously undermined by an agonizing self-awareness.",
+            prompt: "Which quotation from *Paradise Lost* best supports Dr. Thorne's contention?",
+            options: [
+                "\"Better to reign in Hell, then serve in Heav'n.\"",
+                "\"Me miserable! which way shall I flie / Infinite wraath, and infinite despaire? / Which way I flie is Hell; my self am Hell; / And in the lowest deep a lower deep / Still threatning to devour me opens wide.\"",
+                "\"To do ought good never will be our task, / But ever to do ill our sole delight.\"",
+                "\"Th' infernal Serpent; he it was, whose guile / Stird up with Envy and Revenge, deceiv'd / The Mother of Mankinde.\""
+            ],
+            correctAnswer: 1,
+            explanation: "Dr. Thorne asserts that Satan is tragic and conflicted, with his pride undermined by 'agonizing self-awareness.' Option B directly captures this agonizing internal conflict, desperation, and acute self-reflection ('my self am Hell')."
+        },
+        {
+            passage: "Although the remote archaeological excavation yielded thousands of pottery shards, the site director noted that the historical insights they provided were ultimately ______; they merely confirmed the exact trade relationships that had already been extensively documented in existing civic tax ledgers.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["revolutionary", "redundant", "ambiguous", "invaluable"],
+            correctAnswer: 1,
+            explanation: "'Redundant' means not or no longer needed or useful; superfluous. Because the artifacts 'merely confirmed' facts that were already 'extensively documented,' the insights they provided were redundant."
+        },
+        {
+            passage: "Many commercial winemakers rely heavily on sulfur dioxide additions to prevent oxidation and inhibit wild yeast growth during fermentation. However, proponents of the \"natural wine\" movement completely eschew these chemical interventions, choosing instead to allow indigenous microflora to drive the fermentation process. **This hands-off methodology results in highly unpredictable flavor profiles that can vary wildly from bottle to bottle.** While some mainstream critics dismiss these wines as technically flawed, natural wine enthusiasts celebrate them as the absolute purest expression of a vineyard's unique terroir.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+            options: [
+                "It provides a specific example of how natural winemaking practices lead to distinct and variable sensory characteristics.",
+                "It introduces a scientific formula used to stabilize sulfur dioxide levels in commercial wines.",
+                "It outlines a compromise between traditional and industrial agricultural techniques.",
+                "It refutes the claim that natural wines express a vineyard's unique environmental conditions."
+            ],
+            correctAnswer: 0,
+            explanation: "The text contrasts commercial and natural winemaking. The highlighted sentence notes that the natural 'hands-off methodology results in highly unpredictable flavor profiles,' which serves to illustrate the distinct and variable sensory traits that result from this practice."
+        },
+        {
+            passage: "Linguists studying the \"critical period hypothesis\" have long observed that while young children naturally acquire native fluency in a second language through casual immersion, adults typically struggle and require explicit, structured instruction. Brain imaging studies offer a biological explanation: children utilize the procedural memory system—the same unconscious system used to learn motor skills like riding a bicycle—whereas adults rely heavily on declarative memory, an analytical system used to deliberately memorize facts. Because declarative processing requires conscious cognitive effort to retrieve grammatical rules, it follows that adults ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "will process language structures more rapidly and accurately than young children do.",
+                "are physically incapable of memorizing new vocabulary words after reaching maturity.",
+                "are less likely to achieve effortless, automatic language production compared to child learners.",
+                "should entirely avoid explicit grammar instruction when attempting to learn a new language."
+            ],
+            correctAnswer: 2,
+            explanation: "The text explains that children use an unconscious, automatic memory system (procedural), whereas adults rely on an analytical system (declarative) that requires 'conscious cognitive effort.' This contrast means adults are less likely to achieve the effortless, automatic language production typical of children."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 11</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
