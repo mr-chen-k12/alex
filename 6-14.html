@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Assignment - Practice Set B</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #27ae60;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            background-color: #2c3e50;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            margin-top: 40px;
+            font-size: 1.2em;
+        }
+        .problem-card {
+            background: #fafafa;
+            border-left: 4px solid #27ae60;
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-radius: 0 4px 4px 0;
+        }
+        .question {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .toggle-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.2s;
+        }
+        .toggle-btn:hover {
+            background-color: #219653;
+        }
+        .answer-container {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+            background-color: #f9fff9;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .solution-step {
+            margin-bottom: 8px;
+        }
+        .final-ans {
+            font-weight: bold;
+            color: #27ae60;
+            background: #e8f8f5;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        .number-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+    </style>
+    <script>
+        function toggleAnswer(id) {
+            var ans = document.getElementById('ans-' + id);
+            var btn = document.getElementById('btn-' + id);
+            if (ans.style.display === 'none' || ans.style.display === '') {
+                ans.style.display = 'block';
+                btn.textContent = 'Hide Answer';
+                btn.style.backgroundColor = '#e74c3c';
+            } else {
+                ans.style.display = 'none';
+                btn.textContent = 'Reveal Answer';
+                btn.style.backgroundColor = '#27ae60';
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Math Assignment - Practice Set B</h1>
+
+    <div class="section-title">Part 1: Word Problems & Variable Equations</div>
+
+    <div class="problem-card">
+        <div class="question">1. If the product of 12 and 15 is divided by the sum of 14 and 16, what is the quotient?</div>
+        <button class="toggle-btn" id="btn-1" onclick="toggleAnswer('1')">Reveal Answer</button>
+        <div class="answer-container" id="ans-1">
+            <div class="solution-step">Product of 12 and 15: \(12 \times 15 = 180\)</div>
+            <div class="solution-step">Sum of 14 and 16: \(14 + 16 = 30\)</div>
+            <div class="solution-step">Quotient: \(\frac{180}{30} = 6\)</div>
+            <div class="final-ans">Answer: 6</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">2. <br>a. List all the common factors of 24 and 36.<br>b. Find the greatest common factor of 24 and 36.</div>
+        <button class="toggle-btn" id="btn-2" onclick="toggleAnswer('2')">Reveal Answer</button>
+        <div class="answer-container" id="ans-2">
+            <div class="solution-step">Factors of 24: \(\{1, 2, 3, 4, 6, 8, 12, 24\}\)</div>
+            <div class="solution-step">Factors of 36: \(\{1, 2, 3, 4, 6, 9, 12, 18, 36\}\)</div>
+            <div class="solution-step"><strong>a. Common Factors:</strong> \(\{1, 2, 3, 4, 6, 12\}\)</div>
+            <div class="solution-step"><strong>b. Greatest Common Factor (GCF):</strong> \(12\)</div>
+            <div class="final-ans">Answer: a) 1, 2, 3, 4, 6, 12 | b) 12</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">3. Use braces, an ellipsis, and digits to illustrate the set of negative even numbers.</div>
+        <button class="toggle-btn" id="btn-3" onclick="toggleAnswer('3')">Reveal Answer</button>
+        <div class="answer-container" id="ans-3">
+            <div class="solution-step">Negative even numbers extend infinitely backward dynamically:</div>
+            <div class="final-ans">Answer: \(\{\dots, -6, -4, -2\}\)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">4. Use digits to write: three hundred five million, twenty thousand, eight hundred forty-one.</div>
+        <button class="toggle-btn" id="btn-4" onclick="toggleAnswer('4')">Reveal Answer</button>
+        <div class="answer-container" id="ans-4">
+            <div class="solution-step">Millions section: \(305,000,000\)</div>
+            <div class="solution-step">Thousands section: \(020,000\)</div>
+            <div class="solution-step">Ones section: \(841\)</div>
+            <div class="final-ans">Answer: 305,020,841</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">5. List the whole numbers from 1 to 10 that are divisors of 15,600.</div>
+        <button class="toggle-btn" id="btn-5" onclick="toggleAnswer('5')">Reveal Answer</button>
+        <div class="answer-container" id="ans-5">
+            <div class="solution-step">Testing conditions for 1 through 10:</div>
+            <ul>
+                <li><strong>1:</strong> Yes</li>
+                <li><strong>2:</strong> Yes (even)</li>
+                <li><strong>3:</strong> Yes (\(1+5+6+0+0 = 12\), which is divisible by 3)</li>
+                <li><strong>4:</strong> Yes (ends in 00)</li>
+                <li><strong>5:</strong> Yes (ends in 0)</li>
+                <li><strong>6:</strong> Yes (divisible by 2 and 3)</li>
+                <li><strong>7:</strong> No (\(15600 \div 7 = 2228.57\))</li>
+                <li><strong>8:</strong> Yes (last three digits 600 divisible by 8: \(600 \div 8 = 75\))</li>
+                <li><strong>9:</strong> No (digit sum 12 is not a multiple of 9)</li>
+                <li><strong>10:</strong> Yes (ends in 0)</li>
+            </ul>
+            <div class="final-ans">Answer: 1, 2, 3, 4, 5, 6, 8, 10</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">6. Replace the circle with the proper comparison symbol. Then write the comparison as a complete sentence using words to write the numbers: \(-9 \bigcirc -6\)</div>
+        <button class="toggle-btn" id="btn-6" onclick="toggleAnswer('6')">Reveal Answer</button>
+        <div class="answer-container" id="ans-6">
+            <div class="solution-step">\(-9\) sits further left than \(-6\) on a standard number line.</div>
+            <div class="solution-step">Symbol Layout: \(-9 < -6\)</div>
+            <div class="final-ans">Sentence: Negative nine is less than negative six.</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">7. The number 4320 is divisible by which single-digit numbers?</div>
+        <button class="toggle-btn" id="btn-7" onclick="toggleAnswer('7')">Reveal Answer</button>
+        <div class="answer-container" id="ans-7">
+            <div class="solution-step">Divisibility validation:</div>
+            <ul>
+                <li><strong>1, 2, 5, 10:</strong> Yes (Even, ends in 0)</li>
+                <li><strong>3:</strong> Yes (\(4+3+2+0 = 9\))</li>
+                <li><strong>4:</strong> Yes (last two digits 20 are divisible by 4)</li>
+                <li><strong>6:</strong> Yes (divisible by 2 and 3)</li>
+                <li><strong>7:</strong> No (\(4320 \div 7 = 617.14\))</li>
+                <li><strong>8:</strong> Yes (last three digits 320 are divisible by 8)</li>
+                <li><strong>9:</strong> Yes (digit sum is exactly 9)</li>
+            </ul>
+            <div class="final-ans">Answer: 1, 2, 3, 4, 5, 6, 8, 9</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">8. Show this subtraction problem on a number line: \(3 - 7\)</div>
+        <button class="toggle-btn" id="btn-8" onclick="toggleAnswer('8')">Reveal Answer</button>
+        <div class="answer-container" id="ans-8">
+            <div class="solution-step">Start at 0, transition right 3 units to \(+3\), then head left 7 units to arrive at \(-4\).</div>
+            <div class="number-line">
+                &lt;---|-5---|-4---|-3---|-2---|-1---|---0---|---1---|---2---|---3---|---4---&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^&lt;==============================================[start at 3]
+            </div>
+            <div class="final-ans">Answer: -4</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">9. Write 7300 in expanded notation.</div>
+        <button class="toggle-btn" id="btn-9" onclick="toggleAnswer('9')">Reveal Answer</button>
+        <div class="answer-container" id="ans-9">
+            <div class="solution-step">Place values broken down:</div>
+            <div class="final-ans">Answer: \((7 \times 1000) + (3 \times 100)\)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">10. Find the value of the variable: \(x + \$3.40 = \$10.00\)</div>
+        <button class="toggle-btn" id="btn-10" onclick="toggleAnswer('10')">Reveal Answer</button>
+        <div class="answer-container" id="ans-10">
+            <div class="solution-step">\(x = \$10.00 - \$3.40\)</div>
+            <div class="final-ans">Answer: x = $6.60</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">11. Find the value of the variable: \(p - 2450 = 5100\)</div>
+        <button class="toggle-btn" id="btn-11" onclick="toggleAnswer('11')">Reveal Answer</button>
+        <div class="answer-container" id="ans-11">
+            <div class="solution-step">\(p = 5100 + 2450\)</div>
+            <div class="final-ans">Answer: p = 7550</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">12. Find the value of the variable: \(6z = \$45.00\)</div>
+        <button class="toggle-btn" id="btn-12" onclick="toggleAnswer('12')">Reveal Answer</button>
+        <div class="answer-container" id="ans-12">
+            <div class="solution-step">\(z = \frac{\$45.00}{6}\)</div>
+            <div class="final-ans">Answer: z = $7.50</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">13. Find the value of \(n\) in the column addition problem where the total is 50. Numbers: \(6, 3, 9, 5, 1, 7, 4, 8, 2, n\)</div>
+        <button class="toggle-btn" id="btn-13" onclick="toggleAnswer('13')">Reveal Answer</button>
+        <div class="answer-container" id="ans-13">
+            <div class="solution-step">Sum up known components: \(6 + 3 + 9 + 5 + 1 + 7 + 4 + 8 + 2 = 45\)</div>
+            <div class="solution-step">Set up equation: \(45 + n = 50\)</div>
+            <div class="final-ans">Answer: n = 5</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">14. Find the value of the variable: \(1534 - k = 95\)</div>
+        <button class="toggle-btn" id="btn-14" onclick="toggleAnswer('14')">Reveal Answer</button>
+        <div class="answer-container" id="ans-14">
+            <div class="solution-step">\(k = 1534 - 95\)</div>
+            <div class="final-ans">Answer: k = 1439</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">15. Find the value of the variable: \(\frac{840}{p} = 35\)</div>
+        <button class="toggle-btn" id="btn-15" onclick="toggleAnswer('15')">Reveal Answer</button>
+        <div class="answer-container" id="ans-15">
+            <div class="solution-step">\(p = \frac{840}{35}\)</div>
+            <div class="final-ans">Answer: p = 24</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">16. Find the value of the variable: \(\frac{z}{6} = 42\)</div>
+        <button class="toggle-btn" id="btn-16" onclick="toggleAnswer('16')">Reveal Answer</button>
+        <div class="answer-container" id="ans-16">
+            <div class="solution-step">\(z = 42 \times 6\)</div>
+            <div class="final-ans">Answer: z = 252</div>
+        </div>
+    </div>
+
+
+    <div class="section-title">Part 2: Computation & Simplification</div>
+
+    <div class="problem-card">
+        <div class="question">17. Simplify: \(\frac{1125}{45}\)</div>
+        <button class="toggle-btn" id="btn-17" onclick="toggleAnswer('17')">Reveal Answer</button>
+        <div class="answer-container" id="ans-17">
+            <div class="solution-step">Long division calculation: \(1125 \div 45 = 25\)</div>
+            <div class="final-ans">Answer: 25</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">18. Simplify: \(700 \times 60\)</div>
+        <button class="toggle-btn" id="btn-18" onclick="toggleAnswer('18')">Reveal Answer</button>
+        <div class="answer-container" id="ans-18">
+            <div class="solution-step">\(7 \times 6 = 42\), add three zero place-holders.</div>
+            <div class="final-ans">Answer: 42,000</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">19. Simplify: \(\$100.00 - \$36.42\)</div>
+        <button class="toggle-btn" id="btn-19" onclick="toggleAnswer('19')">Reveal Answer</button>
+        <div class="answer-container" id="ans-19">
+            <div class="solution-step">Regrouping subtraction subtraction: \(100.00 - 36.42 = 63.58\)</div>
+            <div class="final-ans">Answer: $63.58</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">20. Simplify: \(37,485 + 52,515\)</div>
+        <button class="toggle-btn" id="btn-20" onclick="toggleAnswer('20')">Reveal Answer</button>
+        <div class="answer-container" id="ans-20">
+            <div class="solution-step">Addition configuration: \(37485 + 52515 = 90000\)</div>
+            <div class="final-ans">Answer: 90,000</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">21. Simplify: \(\$65.00 \div 20\)</div>
+        <button class="toggle-btn" id="btn-21" onclick="toggleAnswer('21')">Reveal Answer</button>
+        <div class="answer-container" id="ans-21">
+            <div class="solution-step">\(\frac{65}{20} = 3.25\)</div>
+            <div class="final-ans">Answer: $3.25</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">22. Simplify: \(3 \cdot 7 \cdot 11\)</div>
+        <button class="toggle-btn" id="btn-22" onclick="toggleAnswer('22')">Reveal Answer</button>
+        <div class="answer-container" id="ans-22">
+            <div class="solution-step">\(3 \times 7 = 21\)</div>
+            <div class="solution-step">\(21 \times 11 = 231\)</div>
+            <div class="final-ans">Answer: 231</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">23. Simplify: \(8 \overline{)34,581}\)</div>
+        <button class="toggle-btn" id="btn-23" onclick="toggleAnswer('23')">Reveal Answer</button>
+        <div class="answer-container" id="ans-23">
+            <div class="solution-step">\(34581 \div 8 = 4322\) with a remainder of \(5\)</div>
+            <div class="final-ans">Answer: 4322 R 5 (or \(4322 \frac{5}{8}\))</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">24. Simplify: \(62\phi + \$5.75 + \$18\)</div>
+        <button class="toggle-btn" id="btn-24" onclick="toggleAnswer('24')">Reveal Answer</button>
+        <div class="answer-container" id="ans-24">
+            <div class="solution-step">Standardize values: \(\$0.62 + \$5.75 + \$18.00 = \$24.37\)</div>
+            <div class="final-ans">Answer: $24.37</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">25. Simplify: \(1000 - (520 - 64)\)</div>
+        <button class="toggle-btn" id="btn-25" onclick="toggleAnswer('25')">Reveal Answer</button>
+        <div class="answer-container" id="ans-25">
+            <div class="solution-step">Calculate terms inside parenthesis: \(520 - 64 = 456\)</div>
+            <div class="solution-step">Final subtraction: \(1000 - 456 = 544\)</div>
+            <div class="final-ans">Answer: 544</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">26. Simplify: \(150(14)\)</div>
+        <button class="toggle-btn" id="btn-26" onclick="toggleAnswer('26')">Reveal Answer</button>
+        <div class="answer-container" id="ans-26">
+            <div class="solution-step">Multiplication execution: \(150 \times 14 = 2100\)</div>
+            <div class="final-ans">Answer: 2100</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">27. Simplify: \(35\phi \times 12\)</div>
+        <button class="toggle-btn" id="btn-27" onclick="toggleAnswer('27')">Reveal Answer</button>
+        <div class="answer-container" id="ans-27">
+            <div class="solution-step">\(35 \times 12 = 420\phi\)</div>
+            <div class="final-ans">Answer: $4.20 (or 420&cent;)</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">28. Simplify: \(\frac{\$58.20}{10}\)</div>
+        <button class="toggle-btn" id="btn-28" onclick="toggleAnswer('28')">Reveal Answer</button>
+        <div class="answer-container" id="ans-28">
+            <div class="solution-step">Shift the base decimal point left one index position.</div>
+            <div class="final-ans">Answer: $5.82</div>
+        </div>
+    </div>
+
+
+    <div class="section-title">Part 3: Mathematical Properties</div>
+
+    <div class="problem-card">
+        <div class="question">
+            29. <br>
+            <strong>a. ANALYZE:</strong> Name the property illustrated by the following equation: \(y \cdot 4 = 4y\)<br>
+            <strong>b. SUMMARIZE:</strong> In your own words explain the meaning of this property.
+        </div>
+        <button class="toggle-btn" id="btn-29" onclick="toggleAnswer('29')">Reveal Answer</button>
+        <div class="answer-container" id="ans-29">
+            <div class="solution-step"><strong>a. Property Named:</strong> Commutative Property of Multiplication</div>
+            <div class="solution-step"><strong>b. Explanation:</strong> Reordering values in a multiplication step does not affect the answer.</div>
+            <div class="final-ans">Answer: Commutative Property of Multiplication</div>
+        </div>
+    </div>
+
+    <div class="problem-card">
+        <div class="question">
+            30. <strong>JUSTIFY:</strong> List the properties used in the first three steps to simplify the expression \((6 \times 9) \times 4\).
+            <div style="margin-left: 20px; font-family: 'Times New Roman', Times, serif; margin-top: 5px;">
+                \((6 \times 9) \times 4\) &nbsp;&nbsp;&nbsp;&nbsp; Given expression <br>
+                \(6 \times (9 \times 4)\) &nbsp;&nbsp;&nbsp;&nbsp; a. ___________________ <br>
+                \(6 \times (4 \times 9)\) &nbsp;&nbsp;&nbsp;&nbsp; b. ___________________ <br>
+                \((6 \times 4) \times 9\) &nbsp;&nbsp;&nbsp;&nbsp; c. ___________________
+            </div>
+        </div>
+        <button class="toggle-btn" id="btn-30" onclick="toggleAnswer('30')">Reveal Answer</button>
+        <div class="answer-container" id="ans-30">
+            <div class="solution-step"><strong>a.</strong> Associative Property of Multiplication <i>(Parentheses changed grouping structures)</i></div>
+            <div class="solution-step"><strong>b.</strong> Commutative Property of Multiplication <i>(Internal positions swapped from 9 &times; 4 to 4 &times; 9)</i></div>
+            <div class="solution-step"><strong>c.</strong> Associative Property of Multiplication <i>(Re-grouped brackets)</i></div>
+            <div class="final-ans">Answer: a. Associative | b. Commutative | c. Associative</div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
