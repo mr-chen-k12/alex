@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 12</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        /* Default Print Behavior (When printing results) */
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 12</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        <button onclick="window.print()" style="margin-top: 10px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected here -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "Initial observations of the variable star KIC 8462852 revealed irregular, steep drops in luminosity that struck astronomers as highly ______; standard stellar models could not easily account for such unpredictable fluctuations, prompting hypotheses ranging from fragmented comets to alien megastructures.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["anomalous", "monotonous", "predictable", "inconsequential"],
+            correctAnswer: 0,
+            explanation: "'Anomalous' means deviating from what is standard, normal, or expected. The passage notes that the drops were irregular and that 'standard stellar models could not easily account for' them, signifying that the fluctuations were highly unusual or anomalous."
+        },
+        {
+            passage: "Explanations of the Inca Empire's architectural mastery often emphasize the defensive utility of landmarks like Machu Picchu, positioned high atop steep, mountainous ridges. However, anthropologist Dr. Elena Silva argues that this military framing oversimplifies the structures' primary function. By examining the precise orientation of windows and stone pillars relative to solstice alignments, Silva demonstrates that these complexes were built fundamentally as astronomical sanctuaries. To the Inca, anchoring administrative nodes to the movements of celestial deities was vital for validating imperial authority.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Machu Picchu was constructed primarily as a military fortress to defend the Inca Empire against external invasions.",
+                "Inca architecture served a deeply symbolic and astronomical purpose that is obscured by exclusive focus on its defensive traits.",
+                "The Inca Empire failed to develop sophisticated administrative systems due to an obsession with celestial movements.",
+                "Dr. Silva's research proves that the Inca lacked the structural engineering tools needed to build durable lowland cities."
+            ],
+            correctAnswer: 1,
+            explanation: "The text contrasts the traditional defensive interpretation of Inca landmarks with Dr. Silva's findings that their architectural positioning aligned with the solstices, concluding that they served as astronomical sanctuaries to validate imperial authority."
+        },
+        {
+            passage: "Literary scholar Dr. Raymond Vance argues that in Charlotte Brontë's novel 'Jane Eyre', the character of Bertha Mason—the hidden wife locked in the attic—should not be viewed merely as a literal, antagonistic villain. Instead, Vance posits that Bertha functions as a psychological manifestation of Jane's own repressed anger and structural helplessness within Victorian society, acting out the violent rebellions that Jane herself must consciously suppress.",
+            prompt: "Which quotation from a literary analysis of 'Jane Eyre' best supports Vance's argument?",
+            options: [
+                "\"Bertha Mason represents a dangerous external threat to the moral stability of Thornfield Hall and the safety of its inhabitants.\"",
+                "\"Brontë highlights Bertha's foreign origins to introduce themes of colonial anxiety and the exoticized unknown directly into the English countryside.\"",
+                "\"The striking synchronization between Jane's internal crises of fury and Bertha's subsequent external outbursts of violence suggests that the 'madwoman' is a literalized extension of the heroine's forbidden rage.\"",
+                "\"Through her ultimate demise, Bertha clears the narrative path for Jane to achieve a conventional marital resolution with Mr. Rochester.\""
+            ],
+            correctAnswer: 2,
+            explanation: "Vance argues that Bertha is a psychological manifestation of Jane's repressed anger. Option C explicitly connects Jane's internal fury with Bertha's external outbursts, calling her a 'literalized extension of the heroine's forbidden rage,' which directly mirrors Vance's claim."
+        },
+        {
+            passage: "Cephalopods, such as octopuses and cuttlefish, alter their skin coloration and texture instantly using organs called chromatophores, which are controlled directly by the central nervous system. While scientists previously believed this camouflage was a passive response to background environments, laboratory trials showed that cuttlefish dynamically alter their patterns based on the visual field of potential predators. When exposed to a predator with sharp edge-detection vision, cuttlefish produce high-contrast disruptive patterns, but when exposed to predators that track motion over shape, they rely on uniform, low-contrast blending. This suggests that cephalopod camouflage is ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "an active, targeted cognitive strategy rather than a generic reflexive reaction.",
+                "entirely ineffective against marine predators that rely on chemical cues instead of vision.",
+                "limited to matching the literal color palettes of surrounding coral reefs and sand beds.",
+                "a physiological trait that develops only after a cephalopod reaches physical maturity."
+            ],
+            correctAnswer: 0,
+            explanation: "The text shows that cuttlefish don't just reflexively copy the background; they actively change their camouflage style depending on the specific visual mechanics of the predator watching them. This makes it an active, targeted strategy rather than a generic reflexive reaction."
+        },
+        {
+            passage: "Although the early fluctuations in the value of the digital asset were dismissed by traditional financial analysts as completely ______ and unworthy of serious regulatory oversight, those minor variations eventually triggered a cascading liquidity crisis across major global banking networks.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["negligible", "unprecedented", "catastrophic", "fraudulent"],
+            correctAnswer: 0,
+            explanation: "'Negligible' means so small or unimportant as to be not worth considering. The phrase 'dismissed... as completely [negligible] and unworthy of serious regulatory oversight' pairs perfectly with the subsequent contrast to 'minor variations' that later caused a crisis."
+        },
+        {
+            passage: "In the early twentieth century, the Dada art movement emerged as a direct response to the horrors of World War I. Artists like Marcel Duchamp rejected traditional aesthetic values of beauty and technical craftsmanship, which they believed had led society into ruin. Instead, they championed anti-art—utilizing everyday, mass-produced objects, or \"readymades,\" to challenge the very definition of creative authorship. By stripping objects of their practical functions and exhibiting them in formal museum settings, Dadaists aimed to shock the public out of complacent conformity and force a radical re-evaluation of cultural values.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It introduces an artistic movement's historical context, outlines its core philosophical rejection, and explains its deliberate method for challenging societal norms.",
+                "It describes a popular aesthetic technique, details its flaws, and proposes a modern alternative to improve it.",
+                "It analyzes the economic factors behind an art market shift and compares the revenues of different artistic eras.",
+                "It presents an art historical biography of a single creator and traces his influence on architectural design."
+            ],
+            correctAnswer: 0,
+            explanation: "The text starts with the context (early 20th century, response to WWI), outlines the core rejection (rejecting traditional aesthetics/beauty), and explains the method used to challenge norms (exhibiting readymades to shock the public into re-evaluating values)."
+        },
+        {
+            passage: "Text 1\nThe prospect of de-extinction—using advanced genetic cloning to resurrect extinct species like the woolly mammoth—offers a profound opportunity to repair damaged Arctic ecosystems. Introducing herds of mammoths back to the tundra would help scrape away insulating snow layers, exposing the ground to freezing air and preventing the catastrophic thawing of underground permafrost. Embracing this biotechnology allows humanity to actively undo historical ecological damage.\n\nText 2\nDe-extinction initiatives are a dangerous, hubristic distraction from urgent conservation priorities. Resurrecting a proxy species requires hundreds of millions of dollars that would be far better spent protecting currently endangered flora and fauna from imminent extinction. Furthermore, our modern ecosystems have evolved dramatically since the Pleistocene epoch; introducing a resurrected megafauna species could unpredictably destabilize existing food webs, exacerbating the very biodiversity crisis we seek to solve.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely characterize the argument presented in Text 1 regarding the environmental benefits of woolly mammoth reintroduction?",
+            options: [
+                "As a pragmatic strategy that should be implemented immediately alongside traditional conservation methods.",
+                "As an overly optimistic assessment that overlooks serious financial tradeoffs and potential ecological disruptions.",
+                "As a scientifically impossible concept that relies on outdated genetic cloning methodologies.",
+                "As an unoriginal proposal that merely repeats well-established protocols from successful avian reintroduction programs."
+            ],
+            correctAnswer: 1,
+            explanation: "Text 1 argues optimistically that mammoths will repair the ecosystem. Text 2 counters that this takes critical funding away from endangered species (financial tradeoffs) and could unpredictably destabilize modern food webs (ecological disruptions), making it a dangerous and hubristic distraction."
+        },
+        {
+            passage: "Linguists studying dialect leveling have noted that regional accents across the United Kingdom are losing their highly localized phonetic distinctions at an unprecedented rate. Historically maintained by geographic isolation and limited inter-community mobility, unique regional features are being rapidly subsumed by broader regional standards. However, researchers emphasize that this trend is not a simple erosion of linguistic diversity; rather, younger speakers are actively adopting decentralized online slang and unique digital intonations, forging novel socio-linguistic identities across virtual spaces. Therefore, modern telecommunications will likely ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "cause all human languages to converge into a single, identical global vocabulary within a generation.",
+                "completely eliminate the need for spoken communication in professional and educational environments.",
+                "redefine how linguistic communities form and evolve by replacing geographical boundaries with digital networks.",
+                "force younger generations to completely abandon virtual spaces to preserve historical regional dialects."
+            ],
+            correctAnswer: 2,
+            explanation: "The passage notes that while geographical dialects are blending (due to less isolation), young people are creating new patterns based on online communities. Logically, this means telecommunications are replacing physical/geographical boundaries with digital ones for linguistic community building."
+        },
+        {
+            passage: "For decades, the dominant Copenhagen interpretation of quantum mechanics asserted that physical systems do not possess definite properties prior to being measured; the act of observation forces a wave function to collapse into a single reality. **This perspective was challenged by the Many-Worlds interpretation, which posits that a wave function never collapses, but instead branches out, meaning every possible outcome of a quantum event occurs across an infinite web of parallel universes.** While once dismissed as philosophical science fiction, the Many-Worlds framework has gained significant traction among modern theoretical physicists seeking to reconcile quantum mechanics with cosmological models.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+            options: [
+                "It provides statistical evidence that directly disproves the validity of quantum wave functions.",
+                "It introduces an alternative scientific hypothesis to contrast with the traditional interpretation described previously.",
+                "It outlines a historical consensus that modern physicists have completely abandoned.",
+                "It summarizes a mathematical formula used to measure the mass of parallel realities."
+            ],
+            correctAnswer: 1,
+            explanation: "The text starts by introducing the long-dominant Copenhagen interpretation. The highlighted sentence introduces the Many-Worlds framework as an alternative that directly challenged that baseline perspective, serving as a conceptual contrast."
+        },
+        {
+            passage: "The cultural practice of sharing highly stylized, ephemeral digital memes might appear completely ______ to outside observers unfamiliar with online subcultures; however, anthropologists argue these rapid visual exchanges serve as crucial social currency that establishes group boundaries and fosters generational solidarity.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["frivolous", "integral", "sophisticated", "venerable"],
+            correctAnswer: 0,
+            explanation: "'Frivolous' means not having any serious purpose or value. The word is set up in contrast ('might appear completely [frivolous]... however... anthropologists argue these... serve as crucial social currency'). This establishes the tension between an appearance of worthlessness and an underlying structural value."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 12</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
