@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saxon Math Course 2 - Lesson 7 Solutions</title>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f9fa;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .lesson-header {
+            background-color: #34495e;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .question-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid #3498db;
+        }
+        .question-card.star {
+            border-left-color: #f1c40f;
+        }
+        .question-card.rwc {
+            border-left-color: #2ecc71;
+        }
+        .question-num {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .reveal-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+        .reveal-btn:hover {
+            background-color: #2980b9;
+        }
+        .answer-content {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+            color: #27ae60;
+            background-color: #f9fff9;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        canvas {
+            background: #fff;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lesson-header">
+        <h1>Saxon Math Course 2</h1>
+        <h2>Lesson 7 — Written Practice Solutions</h2>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*1.</div>
+        <p>If the product of two one-digit whole numbers is 35, what is the sum of the same two numbers?</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans1')">Reveal Answer</button>
+        <div id="ans1" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>The only two one-digit whole numbers that multiply to give 35 are $5$ and $7$ ($5 \times 7 = 35$).</p>
+            <p>Their sum is: $5 + 7 = \mathbf{12}$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*2. [ANALYZE]</div>
+        <p>Name the property illustrated by this equation:</p>
+        <p style="text-align: center;">$-5 \cdot 1 = -5$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans2')">Reveal Answer</button>
+        <div id="ans2" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p><strong>Identity Property of Multiplication</strong> (or the Multiplicative Identity Property).</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*3.</div>
+        <p>List the factor pairs of 50.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans3')">Reveal Answer</button>
+        <div id="ans3" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>The factor pairs of 50 are:</p>
+            <ul>
+                <li>$1$ and $50$</li>
+                <li>$2$ and $25$</li>
+                <li>$5$ and $10$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*4.</div>
+        <p>Use digits and symbols to write "Two minus five equals negative three."</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans4')">Reveal Answer</button>
+        <div id="ans4" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$2 - 5 = -3$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">5.</div>
+        <p>Use only digits and commas to write 90 million.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans5')">Reveal Answer</button>
+        <div id="ans5" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{90,000,000}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">6.</div>
+        <p>List the single-digit factors of 924.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans6')">Reveal Answer</button>
+        <div id="ans6" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>Test digits from 1 to 9:</p>
+            <ul>
+                <li><strong>1:</strong> Always a factor $\rightarrow$ Yes</li>
+                <li><strong>2:</strong> Ends in an even digit (4) $\rightarrow$ Yes</li>
+                <li><strong>3:</strong> Sum of digits ($9+2+4=15$) is divisible by 3 $\rightarrow$ Yes</li>
+                <li><strong>4:</strong> Last two digits (24) are divisible by 4 $\rightarrow$ Yes</li>
+                <li><strong>5:</strong> Does not end in 0 or 5 $\rightarrow$ No</li>
+                <li><strong>6:</strong> Divisible by both 2 and 3 $\rightarrow$ Yes</li>
+                <li><strong>7:</strong> $924 \div 7 = 132$ $\rightarrow$ Yes</li>
+                <li><strong>8:</strong> $924 \div 8 = 115.5$ $\rightarrow$ No</li>
+                <li><strong>9:</strong> Sum of digits (15) is not divisible by 9 $\rightarrow$ No</li>
+            </ul>
+            <p>The single-digit factors are: $\mathbf{1, 2, 3, 4, 6, 7}$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">7.</div>
+        <p>Arrange these numbers in order from least to greatest:</p>
+        <p style="text-align: center;">$-10, 5, -7, 8, 0, -2$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans7')">Reveal Answer</button>
+        <div id="ans7" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{-10, -7, -2, 0, 5, 8}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*8. [GENERALIZE]</div>
+        <p>Use words to describe the following sequence. Then find the next three numbers in the sequence.</p>
+        <p style="text-align: center;">$\dots, 49, 64, 81, 100, \dots$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans8')">Reveal Answer</button>
+        <div id="ans8" class="answer-content">
+            <p><strong>Description:</strong></p>
+            <p>The sequence features consecutive perfect squares beginning with $7^2$ ($49, 64, 81, 100$).</p>
+            <p><strong>Next three numbers:</strong></p>
+            <ul>
+                <li>$11^2 = \mathbf{121}$</li>
+                <li>$12^2 = \mathbf{144}$</li>
+                <li>$13^2 = \mathbf{169}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*9.</div>
+        <p>To build a fence, Megan dug holes in the ground to hold the posts upright. Then she attached rails to connect the posts. Which fence parts were vertical, the posts or the rails?</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans9')">Reveal Answer</button>
+        <div id="ans9" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>The <strong>posts</strong> were vertical.</p>
+            <canvas id="canvasFence" width="200" height="120"></canvas>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*10.</div>
+        <p><strong>a.</strong> List the common factors of 24 and 32.<br>
+           <strong>b.</strong> Find the greatest common factor of 24 and 32.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans10')">Reveal Answer</button>
+        <div id="ans10" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>Factors of 24: $1, 2, 3, 4, 6, 8, 12, 24$<br>
+               Factors of 32: $1, 2, 4, 8, 16, 32$</p>
+            <p><strong>a. Common Factors:</strong> $\mathbf{1, 2, 4, 8}$</p>
+            <p><strong>b. Greatest Common Factor (GCF):</strong> $\mathbf{8}$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">11. [CONNECT]</div>
+        <p>The temperature at noon was $3^\circ\text{C}$. The temperature at 5:00 p.m. was $-4^\circ\text{C}$. Did the temperature rise or fall between noon and 5:00 p.m.? By how many degrees?</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans11')">Reveal Answer</button>
+        <div id="ans11" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>The temperature changed from a positive value to a negative value, so it <strong>fell</strong>.</p>
+            <p>$$3^\circ\text{C} - (-4^\circ\text{C}) = 7^\circ\text{C}$$</p>
+            <p>The temperature <strong>fell by $7^\circ\text{C}$</strong>.</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*12.</div>
+        <p>Find the value of each variable: $6 \cdot 6 \cdot z = 1224$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans12')">Reveal Answer</button>
+        <div id="ans12" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$36 \cdot z = 1224$$</p>
+            <p>$$z = \frac{1224}{36}$$</p>
+            <p>$$z = \mathbf{34}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">13.</div>
+        <p>Find the value of each variable: $\$100.00 - k = \$17.54$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans13')">Reveal Answer</button>
+        <div id="ans13" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$k = \$100.00 - \$17.54$$</p>
+            <p>$$k = \mathbf{\$82.46}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">14.</div>
+        <p>Find the value of each variable: $w - 98 = 432$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans14')">Reveal Answer</button>
+        <div id="ans14" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$w = 432 + 98$$</p>
+            <p>$$w = \mathbf{530}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">15.</div>
+        <p>Find the value of each variable: $20x = \$36.00$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans15')">Reveal Answer</button>
+        <div id="ans15" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$x = \frac{\$36.00}{20}$$</p>
+            <p>$$x = \mathbf{\$1.80}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*16.</div>
+        <p>Find the value of each variable: $\frac{w}{20} = 200$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans16')">Reveal Answer</button>
+        <div id="ans16" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$w = 200 \cdot 20$$</p>
+            <p>$$w = \mathbf{4000}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*17.</div>
+        <p>Find the value of each variable: $\frac{300}{x} = 30$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans17')">Reveal Answer</button>
+        <div id="ans17" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$x = \frac{300}{30}$$</p>
+            <p>$$x = \mathbf{10}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">18. [EXPLAIN]</div>
+        <p>Does the quotient of $4554 \div 9$ have a remainder? How can you tell without dividing?</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans18')">Reveal Answer</button>
+        <div id="ans18" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p><strong>No</strong>, it does not have a remainder.</p>
+            <p><strong>Explanation:</strong> According to the divisibility rule for 9, if the sum of the digits of a number is divisible by 9, the number itself is divisible by 9. Here, $4 + 5 + 5 + 4 = 18$. Since 18 is perfectly divisible by 9, $4554$ can be divided by 9 with no remainder.</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">19.</div>
+        <p>Simplify: $36,475 + 55,984$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans19')">Reveal Answer</button>
+        <div id="ans19" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{92,459}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">20.</div>
+        <p>Simplify: $476 \times 38$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans20')">Reveal Answer</button>
+        <div id="ans20" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{18,088}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">21.</div>
+        <p>Simplify: $\$80.00 - \$72.45$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans21')">Reveal Answer</button>
+        <div id="ans21" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{\$7.55}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">22.</div>
+        <p>Simplify: $\$68.00 \div 40$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans22')">Reveal Answer</button>
+        <div id="ans22" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{\$1.70}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*23. [JUSTIFY]</div>
+        <p>Show the steps and the properties that make this multiplication easier to perform mentally: $8 \cdot 7 \cdot 5$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans23')">Reveal Answer</button>
+        <div id="ans23" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$8 \cdot 7 \cdot 5 = 8 \cdot 5 \cdot 7 \quad \text{(Commutative Property of Multiplication)}$$</p>
+            <p>$$= (8 \cdot 5) \cdot 7 \quad \text{(Associative Property of Multiplication)}$$</p>
+            <p>$$= 40 \cdot 7 = \mathbf{280}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">24.</div>
+        <p>Compare: $4000 \div (200 \div 10) \bigcirc (4000 \div 200) \div 10$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans24')">Reveal Answer</button>
+        <div id="ans24" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>Left Side: $4000 \div 20 = 200$</p>
+            <p>Right Side: $20 \div 10 = 2$</p>
+            <p>Since $200 > 2$:</p>
+            <p>$$4000 \div (200 \div 10) \mathbf{\Huge >} (4000 \div 200) \div 10$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">25.</div>
+        <p>Evaluate each expression for $a = 200$ and $b = 400$:</p>
+        <p><strong>a.</strong> $ab$<br>
+           <strong>b.</strong> $a - b$<br>
+           <strong>c.</strong> $\frac{b}{a}$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans25')">Reveal Answer</button>
+        <div id="ans25" class="answer-content">
+            <p><strong>Answers:</strong></p>
+            <p><strong>a.</strong> $200 \times 400 = \mathbf{80,000}$</p>
+            <p><strong>b.</strong> $200 - 400 = \mathbf{-200}$</p>
+            <p><strong>c.</strong> $\frac{400}{200} = \mathbf{2}$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*26.</div>
+        <p>Refer to the figure to answer <strong>a</strong> and <strong>b</strong>:</p>
+        <canvas id="canvasAngles" width="300" height="150"></canvas>
+        <p><strong>a.</strong> Which angle is an acute angle?<br>
+           <strong>b.</strong> Which angle is a straight angle?</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans26')">Reveal Answer</button>
+        <div id="ans26" class="answer-content">
+            <p><strong>Answers:</strong></p>
+            <p><strong>a. Acute angle:</strong> $\mathbf{\angle BMC}$ (or $\angle CMB$)</p>
+            <p><strong>b. Straight angle:</strong> $\mathbf{\angle AMC}$ (or $\angle CMA$)</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*27.</div>
+        <p>What type of angle is formed by perpendicular lines?</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans27')">Reveal Answer</button>
+        <div id="ans27" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>A <strong>right angle</strong> ($90^\circ$).</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*28.</div>
+        <p>Refer to the figure below to answer problems 28 and 29.</p>
+        <canvas id="canvasLine" width="300" height="80"></canvas>
+        <p>Name three segments in this figure.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans28')">Reveal Answer</button>
+        <div id="ans28" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{\overline{XY}, \overline{YZ}, \overline{XZ}}$$</p>
+            <p><em>(Note: $\overline{YX}, \overline{ZY}, \overline{ZX}$ are also acceptable names for the same segments)</em></p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*29. [CONCLUDE]</div>
+        <p>If you knew $m\overline{XY}$ and $m\overline{YZ}$, describe how you would find $m\overline{XZ}$.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans29')">Reveal Answer</button>
+        <div id="ans29" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>You would <strong>add</strong> the lengths of segment $XY$ and segment $YZ$ together.</p>
+            <p>$$m\overline{XZ} = m\overline{XY} + m\overline{YZ}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*30. [MODEL]</div>
+        <p>Sketch two intersecting planes.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans30')">Reveal Answer</button>
+        <div id="ans30" class="answer-content">
+            <p><strong>Visual Model:</strong></p>
+            <canvas id="canvasPlanes" width="300" height="200"></canvas>
+        </div>
+    </div>
+
+    <div class="question-card rwc">
+        <div class="question-num">Real-World Connection</div>
+        <p>Lindy and seven friends played miniature golf at a new course. Par for the course is 63. The players' scores were recorded as numbers above or below par. The recorded scores were:</p>
+        <p style="text-align: center;">$1, -1, 3, -3, 5, 0, -2, 3$</p>
+        <p><strong>a.</strong> What were the eight scores?<br>
+           <strong>b.</strong> Arrange the scores in order from least to greatest.<br>
+           <strong>c.</strong> How many of the scores are par or under par? List the scores.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ansRWC')">Reveal Answer</button>
+        <div id="ansRWC" class="answer-content">
+            <p><strong>Solutions:</strong></p>
+            <p><strong>a. Actual Scores (Relative to Par of 63):</strong></p>
+            <ul>
+                <li>$63 + 1 = \mathbf{64}$</li>
+                <li>$63 - 1 = \mathbf{62}$</li>
+                <li>$63 + 3 = \mathbf{66}$</li>
+                <li>$63 - 3 = \mathbf{60}$</li>
+                <li>$63 + 5 = \mathbf{68}$</li>
+                <li>$63 + 0 = \mathbf{63}$</li>
+                <li>$63 - 2 = \mathbf{61}$</li>
+                <li>$63 + 3 = \mathbf{66}$</li>
+            </ul>
+            <p>The scores are: <strong>64, 62, 66, 60, 68, 63, 61, 66</strong></p>
+            
+            <p><strong>b. Least to Greatest:</strong></p>
+            <p>$$\mathbf{60, 61, 62, 63, 64, 66, 66, 68}$$</p>
+
+            <p><strong>c. Par or Under Par (Relative score $\le 0$):</strong></p>
+            <p>Scores that are 63 or lower: 60, 61, 62, 63.</p>
+            <p>Total: <strong>4 scores</strong> ($\mathbf{60, 61, 62, 63}$)</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(id) {
+            var element = document.getElementById(id);
+            if (element.style.display === "none" || element.style.display === "") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+        }
+
+        // Draw Q9 Fence
+        const cFence = document.getElementById("canvasFence");
+        const ctxF = cFence.getContext("2d");
+        ctxF.fillStyle = "#8d6e63";
+        // Vertical Posts
+        ctxF.fillRect(30, 10, 15, 100);
+        ctxF.fillRect(150, 10, 15, 100);
+        // Horizontal Rails
+        ctxF.fillStyle = "#bcaaa4";
+        ctxF.fillRect(45, 30, 105, 15);
+        ctxF.fillRect(45, 70, 105, 15);
+        ctxF.fillStyle = "#000";
+        ctxF.font = "12px Arial";
+        ctxF.fillText("Post (Vertical)", 10, 118);
+        ctxF.fillText("Rail (Horizontal)", 60, 25);
+
+        // Draw Q26 Angles
+        const cAngles = document.getElementById("canvasAngles");
+        const ctxA = cAngles.getContext("2d");
+        ctxA.lineWidth = 2;
+        // Main Line AC
+        ctxA.beginPath();
+        ctxA.moveTo(20, 100);
+        ctxA.lineTo(280, 100);
+        ctxA.stroke();
+        // Ray MB
+        ctxA.beginPath();
+        ctxA.moveTo(150, 100);
+        ctxA.lineTo(230, 30);
+        ctxA.stroke();
+        // Points
+        ctxA.fillStyle = "black";
+        ctxA.beginPath(); ctxA.arc(50, 100, 4, 0, 2*Math.PI); ctxA.fill();
+        ctxA.beginPath(); ctxA.arc(150, 100, 4, 0, 2*Math.PI); ctxA.fill();
+        ctxA.beginPath(); ctxA.arc(250, 100, 4, 0, 2*Math.PI); ctxA.fill();
+        ctxA.beginPath(); ctxA.arc(210, 47, 4, 0, 2*Math.PI); ctxA.fill();
+        // Labels
+        ctxA.font = "14px Arial";
+        ctxA.fillText("A", 45, 120);
+        ctxA.fillText("M", 145, 120);
+        ctxA.fillText("C", 245, 120);
+        ctxA.fillText("B", 215, 40);
+
+        // Draw Q28 Line Segments
+        const cLine = document.getElementById("canvasLine");
+        const ctxL = cLine.getContext("2d");
+        ctxL.lineWidth = 2;
+        ctxL.beginPath();
+        ctxL.moveTo(30, 40);
+        ctxL.lineTo(270, 40);
+        ctxL.stroke();
+        // Dots
+        ctxL.fillStyle = "black";
+        ctxL.beginPath(); ctxL.arc(50, 40, 4, 0, 2*Math.PI); ctxL.fill();
+        ctxL.innerHTML = "X";
+        ctxL.beginPath(); ctxL.arc(150, 40, 4, 0, 2*Math.PI); ctxL.fill();
+        ctxL.beginPath(); ctxL.arc(230, 40, 4, 0, 2*Math.PI); ctxL.fill();
+        // Labels
+        ctxL.font = "14px Arial";
+        ctxL.fillText("X", 45, 25);
+        ctxL.fillText("Y", 145, 25);
+        ctxL.fillText("Z", 225, 25);
+
+        // Draw Q30 Intersecting Planes
+        const cPlanes = document.getElementById("canvasPlanes");
+        const ctxP = cPlanes.getContext("2d");
+        // Plane 1 (Horizontal tilt)
+        ctxP.fillStyle = "rgba(52, 152, 219, 0.4)";
+        ctxP.beginPath();
+        ctxP.moveTo(30, 120);
+        ctxP.lineTo(180, 120);
+        ctxP.lineTo(250, 60);
+        ctxP.lineTo(100, 60);
+        ctxP.closePath();
+        ctxP.fill();
+        ctxP.stroke();
+        // Intersecting Line
+        ctxP.strokeStyle = "red";
+        ctxP.lineWidth = 2;
+        ctxP.beginPath();
+        ctxP.moveTo(80, 90);
+        ctxP.lineTo(210, 90);
+        ctxP.stroke();
+        // Plane 2 (Vertical tilt)
+        ctxP.fillStyle = "rgba(231, 76, 60, 0.3)";
+        ctxP.strokeStyle = "black";
+        ctxP.lineWidth = 1;
+        ctxP.beginPath();
+        ctxP.moveTo(110, 20);
+        ctxP.lineTo(160, 40);
+        ctxP.lineTo(130, 170);
+        ctxP.lineTo(80, 150);
+        ctxP.closePath();
+        ctxP.fill();
+        ctxP.stroke();
+    </script>
+</body>
+</html>
