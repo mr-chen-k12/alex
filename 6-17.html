@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 20px auto; padding: 0 10px; }
+        .question { border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+        .answer { display: none; margin-top: 10px; padding: 10px; background-color: #f0f8ff; border-left: 5px solid #007bff; }
+        button { cursor: pointer; padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <h1>Math Problem Solutions</h1>
+
+    <script>
+        function toggleAnswer(id) {
+            var x = document.getElementById(id);
+            if (x.style.display === "block") { x.style.display = "none"; } 
+            else { x.style.display = "block"; }
+        }
+    </script>
+
+    <div id="solutions-container"></div>
+
+    <script>
+        const problems = [
+            { id: 13, q: "13. $d + \$5.60 = \$20.00$", a: "$d = \$14.40$" },
+            { id: 14, q: "14. $e \\times 12 = \$30.00$", a: "$e = \$2.50$" },
+            { id: 15, q: "15. $f - \$98.03 = \$12.47$", a: "$f = \$110.50$" },
+            { id: 16, q: "16. $5 + 7 + 5 + 7 + 6 + n + 1 + 2 + 3 + 4 = 40$", a: "$40 + n = 40 \\implies n = 0$" },
+            { id: 17, q: "17. Simplify: $3 \\frac{11}{15} - 1 \\frac{3}{15}$", a: "$2 \\frac{8}{15}$" },
+            { id: 18, q: "18. Simplify: $1 \\frac{3}{8} + 1 \\frac{4}{8}$", a: "$2 \\frac{7}{8}$" },
+            { id: 19, q: "19. Simplify: $\\frac{3}{4} \\times \\frac{1}{4}$", a: "$\\frac{3}{16}$" },
+            { id: 20, q: "20. Simplify: $\\frac{1802}{17}$", a: "$106$" },
+            { id: 21, q: "21. $\$60.00 - \$49.49$", a: "$\$10.51$" },
+            { id: 22, q: "22. $607 \\times 78$", a: "$47,346$" },
+            { id: 23, q: "23. $\\frac{4}{5} \\times \\frac{2}{3} \\times \\frac{1}{3}$", a: "$\\frac{8}{45}$" },
+            { id: 24, q: "24. $\\frac{1}{9} + \\frac{2}{9} + \\frac{4}{9}$", a: "$\\frac{7}{9}$" },
+            { id: 25, q: "25. Mental Math: $50 \\times 36 \\times 20$", a: "Use Associative Property: $(50 \\times 20) \\times 36 = 1000 \\times 36 = 36,000$" },
+            { id: 26, q: "26. Property for $\\frac{4}{5} \\times \\frac{5}{4} = 1$?", a: "Inverse Property of Multiplication (or Reciprocal Property)" },
+            { id: 27, q: "27. Lines $AB$ and $XY$ in different planes:", a: "B (Skew)" },
+            { id: 28, q: "28a/b. Acute angles and perpendicular segment?", a: "a. $\\angle A$ and $\\angle B$; b. $\\overline{AC}$" },
+            { id: 29, q: "29. Next number in sequence: $\\frac{1}{2}, \\frac{1}{4}, \\frac{1}{8}, \\dots$", a: "$\\frac{1}{16}$ (Each term is half the previous)" },
+            { id: 30, q: "30. How many $\\frac{2}{5}$s are in $1$?", a: "$1 \\div \\frac{2}{5} = 1 \\times \\frac{5}{2} = 2.5$" }
+        ];
+
+        const container = document.getElementById('solutions-container');
+        problems.forEach(p => {
+            container.innerHTML += `
+                <div class="question">
+                    <p>${p.q}</p>
+                    <button onclick="toggleAnswer('ans${p.id}')">Show/Hide Answer</button>
+                    <div id="ans${p.id}" class="answer">${p.a}</div>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
