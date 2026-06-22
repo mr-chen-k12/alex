@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 14</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #harvard-reward {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff;
+        border: 3px double #a51c30;
+        border-radius: 8px;
+        animation: pullUp 0.5s ease-out;
+    }
+    #harvard-reward img {
+        width: 160px;
+        height: auto;
+        margin: 15px auto;
+        display: block;
+    }
+    .harvard-text {
+        color: #a51c30;
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    @keyframes pullUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        #harvard-reward {
+            display: block !important;
+            border: 2px solid #a51c30 !important;
+        }
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 14</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        
+        <div id="harvard-reward">
+            <div class="harvard-text">★ FLAWLESS ACADEMIC EXCELLENCE ★</div>
+            <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard University Crest">
+            <p style="color: #555; font-style: italic; font-weight: bold; margin-top: 5px;">You have successfully earned the Harvard University verification crest for achieving a perfect 10/10 score.</p>
+        </div>
+
+        <button onclick="window.print()" style="margin-top: 15px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected here -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "Although many early twentieth-century urban planners dismissed community gardens as mere ______ undertakings that disrupted the grand architectural symmetries of modern cities, contemporary researchers argue that these green spaces are critical nodes of social resilience and ecological stability.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["indispensable", "ephemeral", "monolithic", "subterranean"],
+            correctAnswer: 1,
+            explanation: "'Ephemeral' means lasting for a very short time or transient. The contrast transition 'Although' sets up a shift from the historic view of these gardens as insignificant or temporary ('mere ephemeral undertakings') to the modern view that they are highly critical nodes."
+        },
+        {
+            passage: "Biomimetic engineers often study the structural architecture of the Venus flower basket sponge, a deep-sea organism whose glass skeleton possesses extraordinary structural integrity. Despite being composed of brittle silica, the sponge features a complex hierarchical lattice of crossed struts that distributes mechanical stress evenly throughout the cylinder. Researchers demonstrated that copying this specific lattice layout allowed them to construct ultra-lightweight aerospace hulls that withstand extreme physical pressures without fracturing, circumventing the need for heavy metal reinforcements.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Deep-sea sponges are highly vulnerable to physical stress unless they adapt to shallow waters.",
+                "Replicating the structural geometry of a specific sponge allows engineers to build stronger, lighter aerospace materials.",
+                "Brittle silica is completely unsuited for modern industrial manufacturing processes.",
+                "Aerospace hulls must rely exclusively on heavy metal reinforcements to maintain structural integrity."
+            ],
+            correctAnswer: 1,
+            explanation: "The text explains how the specific structural lattice layout of the Venus flower basket sponge distributes stress efficiently, and goes on to show that mimicking this design lets engineers build stronger, lighter aerospace hulls without metals."
+        },
+        {
+            passage: "Literary scholar Dr. Clara Vance contends that in her 1818 novel *Frankenstein*, Mary Shelley utilizes the Creature's eloquent, highly articulate speech not merely to evoke sympathy, but as a sophisticated rhetorical mirror that exposes the deep moral corruption and intellectual hypocrisy of his creator, Victor Frankenstein.",
+            prompt: "Which quotation from *Frankenstein* best supports Dr. Vance's contention?",
+            options: [
+                "\"The monster was a composite of mismatched features gathered from the dissecting rooms and slaughterhouses.\"",
+                "\"You accuse me of murder, and yet you would, with a satisfied conscience, destroy your own creature. Oh, praise the eternal justice of man! You hate me, yet you owe me a duty which you refuse to perform.\"",
+                "\"A human being in perfection ought always to preserve a calm and peaceful mind and never to allow passion or a transitory desire to disturb his tranquillity.\"",
+                "\"The winter was unusually cold, and I spent many nights shivering in a small, abandoned hovel near the village.\""
+            ],
+            correctAnswer: 1,
+            explanation: "Dr. Vance highlights that the Creature uses eloquent language to expose Victor's hypocrisy. Option B captures the Creature explicitly pointing out Victor's double standard (condemning murder while wanting to destroy his own creation out of spite), directly mirroring the claim."
+        },
+        {
+            passage: "To study how environmental noise affects marine communication, marine biologists monitored pods of bottlenose dolphins swimming through busy commercial shipping lanes. They found that dolphins significantly increased the vocal pitch and duration of their signature whistles when large container ships passed nearby. However, this acoustic adaptation came at a high physiological cost, requiring up to 30 percent more metabolic energy than baseline whistles. Consequently, prolonged exposure to heavy maritime traffic could severely limit the energy dolphins have available for foraging and predator avoidance. Therefore, a sustained expansion of shipping lanes near dolphin habitats will likely ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "cause dolphins to migrate exclusively to inland freshwater river systems.",
+                "compromise the long-term survival and reproductive success of dolphin populations in high-traffic areas.",
+                "force commercial shipping companies to completely abandon oceanic transit corridors.",
+                "allow dolphins to develop immune defenses against chemical pollution in the water."
+            ],
+            correctAnswer: 1,
+            explanation: "The text shows that ship noise forces dolphins to expend 30 percent more energy on communication, leaving them with less energy for critical tasks like foraging and predator avoidance. Logically, this structural energy drain compromises their long-term survival and fitness."
+        },
+        {
+            passage: "The unexpected resurgence of the pristine ancient woodland ecosystem after decades of industrial logging surprised conservationists, who had long feared that the damage to the topsoil was entirely ______ and could never be naturally repaired.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["transient", "localized", "immutable", "superficial"],
+            correctAnswer: 2,
+            explanation: "'Immutable' means unchanging or unable to be changed. The text pairs this idea with the phrase 'could never be naturally repaired,' making immutable the most precise and contextual fit."
+        },
+        {
+            passage: "Text 1\nThe rise of generative AI art software empowers millions of non-artists to manifest their creative visions, democratizing visual expression. Because these algorithms analyze millions of public images to learn abstract stylistic patterns rather than directly copying pixels, their training process constitutes classic fair use under copyright law, fostering a new era of open-source human ingenuity.\n\nText 2\nThe framing of AI art models as 'democratizing' expression deliberately obscures a system of mass intellectual property theft. These commercial software engines are trained on copyrighted works without the consent, credit, or compensation of the original human creators. By converting protected artistic styles into automated commodities, AI corporations actively devalue human labor and threaten the economic viability of the entire creative class.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the assertion in Text 1 that AI training processes 'constitute classic fair use'?",
+            options: [
+                "By pointing out that AI models do not replicate exact pixels, meaning they have no financial impact on the art market.",
+                "By arguing that the unauthorized use of copyrighted works for commercial training exploits human creators and devalues their labor.",
+                "By suggesting that human artists should stop using digital tools and return entirely to physical canvas mediums.",
+                "By claiming that generative AI will eventually teach human artists how to paint more accurately."
+            ],
+            correctAnswer: 1,
+            explanation: "Text 1 asserts that AI training is 'fair use' because it just learns abstract patterns. Text 2 explicitly refutes this positive characterization, labeling it 'mass intellectual property theft' that exploits human creators without consent or compensation, thus directly countering Text 1."
+        },
+        {
+            passage: "In psychological research, the \"choice overload effect\" suggests that while consumers believe a vast array of product options provides greater freedom, an excessive number of choices actually induces cognitive paralysis and post-purchase regret. To test this, market researchers set up a tasting display featuring either 6 or 24 varieties of artisan jam. While the larger display attracted more initial browsers, consumers exposed to the smaller selection were ten times more likely to actually purchase a jar, reporting significantly higher satisfaction with their choices.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It presents a historical timeline of retail practices and argues for the complete elimination of artisan food manufacturing.",
+                "It describes a psychological concept, outlines an empirical experiment designed to test it, and highlights the results.",
+                "It identifies a statistical flaw in a major economic theory and offers a mathematical correction.",
+                "It details a corporate marketing strategy, lists its financial losses, and proposes a new logo layout."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage sets up a psychological concept (choice overload), details an experiment designed to evaluate it (the 6 vs 24 varieties of jam experiment), and finishes by describing the empirical outcome."
+        },
+        {
+            passage: "Linguists studying the preservation of endangered languages argue that traditional dictionary compilation is an incomplete strategy for revitalization. While recording vocabulary preserves raw data, it fails to capture the intricate pragmatic features—such as tone, humor, and contextual social hierarchies—that can only be maintained through live, intergenerational conversation. **Consequently, language programs are shifting funding away from static archives and toward 'language nests,' where fluent elders interact natively with toddlers in immersive daycare settings.** This strategy treats language not as an artifact to be preserved in a museum, but as a living social ecosystem.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+            options: [
+                "It provides a specific example of how a shift in practical methodology applies the core argument about language revitalization.",
+                "It introduces a scientific formula used to analyze the acoustic pitch of vocal patterns.",
+                "It refutes the claim that fluent elders are capable of teaching young children a language.",
+                "It summarizes a historical conflict between corporate funding agencies and public universities."
+            ],
+            correctAnswer: 0,
+            explanation: "The text argues that dictionary building is insufficient and that language must be preserved dynamically. The highlighted sentence shows a real-world, practical example of how programs are actively redirecting funds into 'language nests' to put that philosophy into practice."
+        },
+        {
+            passage: "While the lead actor's off-screen persona was notoriously tempestuous and erratic, his on-stage performances were remarkably ______; he executed every intricate movement and complex emotional transition with a flawless, calculated precision that left theater critics spellbound.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["volatile", "disciplined", "unpredictable", "amateurish"],
+            correctAnswer: 1,
+            explanation: "'Disciplined' means showing a controlled form of behavior or styling. The sentence establishes a sharp contrast with his off-screen 'tempestuous and erratic' persona, noting that his on-stage performances featured 'flawless, calculated precision,' which corresponds cleanly to being disciplined."
+        },
+        {
+            passage: "Agricultural scientists testing the resilience of heirloom crop varieties observed that certain ancient strains of maize produce a dense, sticky root mucilage that attracts a unique consortium of nitrogen-fixing bacteria. This symbiotic relationship allows the maize to naturally extract vital nutrients directly from the atmosphere, completely bypassing the need for artificial, synthetic fertilizers. However, modern industrial hybrid maize varieties, bred exclusively for high yield under heavily fertilized conditions, have completely lost the genetic pathway required to secrete this specialized mucilage. Therefore, reintroducing these ancient heirloom genes into modern agricultural strains could ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "allow commercial farms to drastically reduce their dependence on environmentally harmful chemical fertilizers.",
+                "force maize crops to grow exclusively in deep-sea hydroponic systems.",
+                "completely eliminate the need for water and sunlight during the seasonal germination process.",
+                "cause modern hybrid maize to become highly vulnerable to common insect pests."
+            ],
+            correctAnswer: 0,
+            explanation: "The text explains that ancient maize can fix its own nitrogen using bacteria via mucilage, eliminating the need for synthetic fertilizer, whereas modern hybrids have lost this trait. Reintroducing these genes would logically allow farms to use less synthetic fertilizer."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 14</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        if (score === quizData.length) {
+            document.getElementById('harvard-reward').style.display = 'block';
+        }
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
