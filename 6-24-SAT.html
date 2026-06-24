@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 16</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #harvard-reward {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff;
+        border: 3px double #a51c30;
+        border-radius: 8px;
+        animation: pullUp 0.5s ease-out;
+    }
+    #harvard-reward img {
+        width: 160px;
+        height: auto;
+        margin: 15px auto;
+        display: block;
+    }
+    .harvard-text {
+        color: #a51c30;
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    @keyframes pullUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        #harvard-reward {
+            display: block !important;
+            border: 2px solid #a51c30 !important;
+        }
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 16</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        
+        <div id="harvard-reward">
+            <div class="harvard-text">★ FLAWLESS ACADEMIC EXCELLENCE ★</div>
+            <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard University Crest">
+            <p style="color: #555; font-style: italic; font-weight: bold; margin-top: 5px;">You have successfully earned the Harvard University verification crest for achieving a perfect 10/10 score.</p>
+        </div>
+
+        <button onclick="window.print()" style="margin-top: 15px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "Art historians specializing in the European avant-garde argue that groundbreaking movements are rarely born out of isolated genius; rather, they are the product of a _______ cultural matrix where writers, painters, and composers continuously exchange and reshape one another's structural ideas.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["monolithic", "symbiotic", "peripheral", "transient"],
+            correctAnswer: 1,
+            explanation: "'Symbiotic' refers to a relationship of mutual dependence or cooperative interaction. The sentence highlights that artistic movements stem from an interconnected system where creators 'continuously exchange and reshape one another's ideas,' which aligns perfectly with a symbiotic matrix."
+        },
+        {
+            passage: "Astrophysicists analyzing the atmospheric signatures of distant exoplanets have historically struggled with stellar interference, as intense flares from a host star can mask the chemical footprint of nearby planetary bodies. To resolve this, Dr. Evelyn Vance deployed a novel technique called high-resolution transit spectroscopy. By capturing ambient light frequencies at multiple points during a planet's orbital transition and filtering out known stellar oscillations, Vance's team successfully identified trace levels of water vapor and methane in the atmosphere of exoplanet HD-209458b. This breakthrough demonstrates that masking limitations can be systematically bypassed to evaluate target planets.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Stellar flares completely prevent scientists from ever observing exoplanets in distant galaxies.",
+                "Dr. Evelyn Vance's research confirms that exoplanet HD-209458b is fully capable of supporting human colonization.",
+                "A new observational technique successfully filters out stellar interference to identify atmospheric markers on distant exoplanets.",
+                "High-resolution transit spectroscopy has been abandoned by modern researchers due to mathematical inaccuracies."
+            ],
+            correctAnswer: 2,
+            explanation: "The text describes an observational problem (stellar interference masking planetary data) and details how Dr. Vance solved it using a new technique (high-resolution transit spectroscopy) to successfully identify atmospheric markers, making option C the best summary."
+        },
+        {
+            passage: "Literary scholar Dr. Aris Thorne contends that in her 19th-century poetry, Emily Dickinson explicitly repurposes domestic imagery—such as the acts of knitting, sewing, or stitching—not to celebrate traditional domesticity, but to construct a sharp critique of the patriarchal boundaries that restricted women's intellectual and creative autonomy.",
+            prompt: "Which quotation from a literary analysis of Dickinson’s poems best supports Dr. Thorne's contention?",
+            options: [
+                "\"Dickinson frequently sent handwritten poems along with baked goods to her close neighbors, reinforcing a shared community network.\"",
+                "\"In several poems, the speaker describes a needle and thread not as tools of domestic comfort, but as iron bonds that confine the hand, explicitly stating that her mind must drop its forced 'homely labor' to seek a wilder, unmeasured ink.\"",
+                "\"The rhythmic structure of Dickinson's stanzas often mimics the steady, metronomic cadence of traditional New England hymns and folk songs.\"",
+                "\"Dickinson kept detailed botanical journals where she cataloged and pressed hundreds of regional flower specimens over two decades.\""
+            ],
+            correctAnswer: 1,
+            explanation: "Dr. Thorne claims Dickinson uses sewing/stitching imagery as a metaphor for patriarchal confinement and restriction of freedom. Option B directly matches this claim by characterizing the needle and thread as 'iron bonds' that restrict the speaker from pursuing creative writing ('unmeasured ink')."
+        },
+        {
+            passage: "In behavioral economics, the concept of loss aversion demonstrates that consumers are structurally more motivated to avoid losing a specific resource than they are to gain an equivalent reward. Seeking to apply this insight to digital user engagement, software designers tested an educational application that reframed progress metrics. Instead of rewarding users with standard points for logging in daily, the app provided a baseline pool of points at the start of each month and systematically deducted points whenever a user missed a lesson. Because the psychological discomfort of losing accumulated points is intense, it follows that users subjected to the deduction framework will likely ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "demonstrate significantly higher rates of task compliance and daily log-ins than those under standard reward frameworks.",
+                "completely delete the application due to an inability to comprehend the interface mechanics.",
+                "demand that all software applications remove numerical tracking metrics entirely.",
+                "prefer to earn physical currency rather than digital points for completing academic assignments."
+            ],
+            correctAnswer: 0,
+            explanation: "The text explains that loss aversion makes people more motivated to avoid losing things than to gain them. If the app capitalizes on this by deducting points for missing tasks, users will logically work harder to avoid that loss, resulting in higher task compliance and daily log-ins."
+        },
+        {
+            passage: "Although the initial laboratory results were prematurely dismissed as _______ by the senior researchers, subsequent independent replications confirmed that the anomalous data points were entirely valid and heralded a new breakthrough in superconductor physics.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["incontestable", "spurious", "pioneering", "comprehensive"],
+            correctAnswer: 1,
+            explanation: "'Spurious' means false, fake, or invalid. The contrast word 'Although' signals a shift from how the results were originally viewed (as fake or invalid, meaning 'spurious') to the realization that they were 'entirely valid' breakthroughs."
+        },
+        {
+            passage: "Kinetic architecture—a structural philosophy that integrates moving elements into facades—presents a compelling solution to modern urban heating challenges. Traditional skyscrapers rely on static glass panels that absorb massive solar radiation, forcing mechanical HVAC units to consume exorbitant energy. Kinetic facades, conversely, utilize automated, geometric panels that physically expand, contract, or tilt in real time based on the changing angle of the sun. By continuously shading building surfaces and optimizing natural ventilation, these dynamic envelopes drastically lower internal temperatures. Consequently, this engineering approach dramatically decreases a building's carbon footprint while preserving architectural aesthetics.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It introduces an architectural framework, contrasts it with a traditional model to demonstrate its efficiency, and outlines its environmental advantages.",
+                "It details a real estate investment strategy, chronicles its financial failures, and demands immediate tax adjustments.",
+                "It profiles a historic conflict between two famous engineers and proposes a structural compromise.",
+                "It traces the evolutionary history of concrete production across multiple centuries and continents."
+            ],
+            correctAnswer: 0,
+            explanation: "The passage introduces kinetic architecture, contrasts its real-time panel system against traditional static glass panels to show why it is better, and concludes with its environmental benefits (lowering carbon footprint)."
+        },
+        {
+            passage: "Text 1\nThe implementation of a Universal Basic Income (UBI)—unconditional monthly cash transfers to every citizen—represents a profound milestone for poverty eradication. By establishing a guaranteed economic baseline, UBI eliminates structural poverty, empowers workers to decline exploitative wages, and injects liquid capital directly into local economies, stimulating widespread grass-roots entrepreneurship.\n\nText 2\nProponents of a Universal Basic Income operate under a flawed economic model that ignores immediate systemic feedback loops. Injecting massive, unchecked volumes of cash into the money supply inevitably triggers rapid localized inflation, prompting landlords and merchants to raise prices proportionately. Ultimately, the artificial expansion of purchasing power is completely nullified by skyrocketing living costs, leaving vulnerable populations trapped in the same financial precarity.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the assertion in Text 1 that UBI 'eliminates structural poverty'?",
+            options: [
+                "By arguing that UBI is too computationally complex for modern banking infrastructures to distribute effectively.",
+                "By claiming that human workers prefer to receive corporate equity stocks rather than monthly cash transfers.",
+                "By demonstrating that the cash injections would spark localized inflation, raising living costs and nullifying the intended poverty relief.",
+                "By suggesting that basic income should be provided exclusively to international shipping corporations."
+            ],
+            correctAnswer: 2,
+            explanation: "Text 1 asserts that UBI eliminates structural poverty. Text 2 explicitly counters this by stating that cash injections cause localized inflation, driving up rent and food prices, which completely 'nullifies' the purchasing power gains and leaves people in the same precarity."
+        },
+        {
+            passage: "Mycologists testing the bioremediation capabilities of specific wood-decay fungi observed that certain strains of *Pestalotiopsis microspora* possess the rare capacity to survive exclusively on polyurethane, a resilient synthetic plastic material. The fungi secrete specialized enzymes that efficiently break down the polymer's complex chemical bonds, converting toxic plastic waste into harmless organic matter. Crucially, this metabolic pathway functions efficiently in both aerobic and anaerobic conditions, meaning the fungi can thrive deep beneath compressed layers of waste. Given these structural attributes, the long-term deployment of these fungal colonies in plastic-clogged urban landfills would likely ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "have zero impact on the decomposition rates of synthetic polymers.",
+                "accelerate the structural degradation and remediation of synthetic waste deposits.",
+                "force landfill operators to burn all organic materials to prevent fungal contamination.",
+                "cause deep-sea marine currents to shift focus toward freshwater purification."
+            ],
+            correctAnswer: 1,
+            explanation: "The text establishes that *Pestalotiopsis microspora* can break down resilient plastic polymers into harmless matter, even in anaerobic landfill environments. Therefore, deploying these colonies in plastic-heavy landfills will logically accelerate the degradation and remediation of that synthetic waste."
+        },
+        {
+            passage: "In cartographic history, Renaissance mapmaking is frequently analyzed as an intersection of geographical science and raw geopolitical messaging. Cartographers did not merely catalog physical coordinates; they operated under the direct patronage of royal courts, which heavily influenced visual design choices. **By intentionally enlarging the borders of their patrons' territories and utilizing opulent iconography to mark natural resources, these mapmakers transformed simple spatial charts into potent declarations of imperial dominance.** This strategic manipulation of scale was designed to cultivate domestic pride and intimidate foreign emissaries, anchoring political legitimacy directly into the perceived objectivity of a map.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+            options: [
+                "It introduces a statistical critique of modern satellite navigation accuracy.",
+                "It explains specific visual and scaling methods used by Renaissance cartographers to advance their patrons' political agendas.",
+                "It outlines a historical decline in paper manufacturing across Mediterranean trading hubs.",
+                "It contrasts the tools used by ocean navigators with those favored by land surveyors."
+            ],
+            correctAnswer: 1,
+            explanation: "The text discusses how Renaissance maps served as political messaging for royal patrons. The highlighted sentence shows exactly how cartographers did this (enlarging borders, using opulent icons) to turn charts into 'declarations of imperial dominance,' which matches option B."
+        },
+        {
+            passage: "While the software application's user interface was widely praised by critics for its clean, streamlined, and intuitive design, the underlying backend database architecture was notoriously _______; it consisted of a convoluted patchwork of legacy code and redundant servers that required constant debugging.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["Byzantine", "transparent", "subterranean", "innovative"],
+            correctAnswer: 0,
+            explanation: "'Byzantine' means excessively complex, intricate, or convoluted. The sentence sets up a contrast using 'While' between the clean, streamlined front-end interface and the backend architecture, which is described as a 'convoluted patchwork'—making Byzantine the ideal descriptor."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 16</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        if (score === quizData.length) {
+            document.getElementById('harvard-reward').style.display = 'block';
+        }
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
