@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Homework Assignment — Lesson 7 Parallel Practice</title>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-blue: #2980b9;
+            --accent-gold: #d35400;
+            --accent-green: #27ae60;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 25px;
+            background-color: var(--bg-color);
+        }
+
+        h1, h2 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .assignment-header {
+            background: linear-gradient(135deg, var(--primary-color), #34495e);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 35px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .assignment-header h2 {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-top: 8px;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            padding: 24px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+            border-left: 6px solid var(--accent-blue);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.06);
+        }
+
+        .question-card.star {
+            border-left-color: var(--accent-gold);
+        }
+
+        .question-card.rwc {
+            border-left-color: var(--accent-green);
+            background-color: #fcfdfd;
+        }
+
+        .question-num {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 14px;
+            font-size: 1.2rem;
+            display: inline-block;
+        }
+
+        .question-label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            background: #eaeaea;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-left: 6px;
+            color: #555;
+            vertical-align: middle;
+        }
+
+        .reveal-btn {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 9px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 15px;
+            display: block;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .reveal-btn:hover {
+            background-color: #1f6391;
+        }
+
+        .reveal-btn:active {
+            transform: scale(0.98);
+        }
+
+        .answer-content {
+            display: none;
+            margin-top: 20px;
+            padding: 18px;
+            border-top: 2px dashed #e2e8f0;
+            color: #1c5230;
+            background-color: #f4fff6;
+            border-radius: 6px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        canvas {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            margin: 15px 0 5px 0;
+            display: block;
+            border-radius: 6px;
+            max-width: 100%;
+        }
+
+        ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="assignment-header">
+        <h1>Mathematics Written Practice</h1>
+        <h2>Lesson 7 Parallel Worksheet — Form C</h2>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*1.</div>
+        <p>If the product of two one-digit whole numbers is 45, what is the sum of the same two numbers?</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans1')">Reveal Answer</button>
+        <div id="ans1" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>The single-digit whole numbers that can multiply to give 45 are $5$ and $9$ ($5 \times 9 = 45$).</p>
+            <p>Their sum is: $5 + 9 = \mathbf{14}$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*2.</div><span class="question-label">ANALYZE</span>
+        <p>Name the property illustrated by this equation:</p>
+        <p style="text-align: center; font-size: 1.15rem;">$1 \cdot (-8) = -8$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans2')">Reveal Answer</button>
+        <div id="ans2" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p><strong>Identity Property of Multiplication</strong> (or Multiplicative Identity Property).</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*3.</div>
+        <p>List the factor pairs of 60.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans3')">Reveal Answer</button>
+        <div id="ans3" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>The complete factor pairs of 60 are:</p>
+            <ul>
+                <li>$1$ and $60$</li>
+                <li>$2$ and $30$</li>
+                <li>$3$ and $20$</li>
+                <li>$4$ and $15$</li>
+                <li>$5$ and $12$</li>
+                <li>$6$ and $10$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*4.</div>
+        <p>Use digits and symbols to write "Three minus eight equals negative five."</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans4')">Reveal Answer</button>
+        <div id="ans4" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$3 - 8 = -5$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">5.</div>
+        <p>Use only digits and commas to write 45 million.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans5')">Reveal Answer</button>
+        <div id="ans5" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{45,000,000}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">6.</div>
+        <p>List the single-digit factors of 756.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans6')">Reveal Answer</button>
+        <div id="ans6" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>Evaluating divisibility rules for numbers 1 through 9:</p>
+            <ul>
+                <li><strong>1:</strong> Every integer is divisible by 1 $\rightarrow$ <strong>Yes</strong></li>
+                <li><strong>2:</strong> Ends in an even digit (6) $\rightarrow$ <strong>Yes</strong></li>
+                <li><strong>3:</strong> Sum of digits ($7+5+6=18$) is divisible by 3 $\rightarrow$ <strong>Yes</strong></li>
+                <li><strong>4:</strong> Last two digits (56) are divisible by 4 ($56 \div 4 = 14$) $\rightarrow$ <strong>Yes</strong></li>
+                <li><strong>5:</strong> Does not end in 0 or 5 $\rightarrow$ No</li>
+                <li><strong>6:</strong> Completely divisible by both 2 and 3 $\rightarrow$ <strong>Yes</strong></li>
+                <li><strong>7:</strong> $756 \div 7 = 108$ exactly $\rightarrow$ <strong>Yes</strong></li>
+                <li><strong>8:</strong> Last three digits ($756 \div 8 = 94.5$) leave a remainder $\rightarrow$ No</li>
+                <li><strong>9:</strong> Sum of digits (18) is divisible by 9 $\rightarrow$ <strong>Yes</strong></li>
+            </ul>
+            <p>The single-digit factors are: $\mathbf{1, 2, 3, 4, 6, 7, 9}$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">7.</div>
+        <p>Arrange these numbers in order from least to greatest:</p>
+        <p style="text-align: center; font-size: 1.1rem;">$-15, 6, -9, 12, 0, -3$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans7')">Reveal Answer</button>
+        <div id="ans7" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{-15, -9, -3, 0, 6, 12}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*8.</div><span class="question-label">GENERALIZE</span>
+        <p>Use words to describe the following sequence. Then find the next three numbers in the sequence.</p>
+        <p style="text-align: center; font-size: 1.15rem;">$\dots, 64, 81, 100, 121, \dots$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans8')">Reveal Answer</button>
+        <div id="ans8" class="answer-content">
+            <p><strong>Description:</strong></p>
+            <p>The sequence consists of consecutive perfect squares, starting from $8^2$ ($8^2=64$, $9^2=81$, $10^2=100$, $11^2=121$).</p>
+            <p><strong>Next three numbers:</strong></p>
+            <ul>
+                <li>$12^2 = \mathbf{144}$</li>
+                <li>$13^2 = \mathbf{169}$</li>
+                <li>$14^2 = \mathbf{196}$</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*9.</div>
+        <p>To hang a promotional banner, Ms. Davis stretched a long rope tightly and horizontally between two trees. She then pinned vertical streamers along the line dropping straight down toward the ground. Which layout component is horizontal, the rope or the streamers?</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans9')">Reveal Answer</button>
+        <div id="ans9" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>The <strong>rope</strong> is horizontal.</p>
+            <canvas id="canvasBanner" width="220" height="130"></canvas>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*10.</div>
+        <p><strong>a.</strong> List the common factors of 36 and 48.<br>
+           <strong>b.</strong> Find the greatest common factor of 36 and 48.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans10')">Reveal Answer</button>
+        <div id="ans10" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>Factors of 36: $1, 2, 3, 4, 6, 9, 12, 18, 36$<br>
+               Factors of 48: $1, 2, 3, 4, 6, 8, 12, 16, 24, 48$</p>
+            <p><strong>a. Common Factors:</strong> $\mathbf{1, 2, 3, 4, 6, 12}$</p>
+            <p><strong>b. Greatest Common Factor (GCF):</strong> $\mathbf{12}$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">11.</div><span class="question-label">CONNECT</span>
+        <p>The outside temperature at 6:00 a.m. was $-6^\circ\text{C}$. By 3:00 p.m., the temperature had risen to $5^\circ\text{C}$. Did the temperature rise or fall between dawn and mid-afternoon? By how many degrees?</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans11')">Reveal Answer</button>
+        <div id="ans11" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>Because the value moved from negative values to a higher positive integer, the temperature <strong>rose</strong>.</p>
+            <p>Finding the change: $$5^\circ\text{C} - (-6^\circ\text{C}) = 5 + 6 = 11^\circ\text{C}$$</p>
+            <p>The temperature <strong>rose by $11^\circ\text{C}$</strong>.</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*12.</div>
+        <p>Find the value of the variable: $5 \cdot 5 \cdot x = 850$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans12')">Reveal Answer</button>
+        <div id="ans12" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$25 \cdot x = 850$$</p>
+            <p>$$x = \frac{850}{25}$$</p>
+            <p>$$x = \mathbf{34}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">13.</div>
+        <p>Find the value of the variable: $\$200.00 - y = \$42.75$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans13')">Reveal Answer</button>
+        <div id="ans13" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$y = \$200.00 - \$42.75$$</p>
+            <p>$$y = \mathbf{\$157.25}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">14.</div>
+        <p>Find the value of the variable: $m - 64 = 528$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans14')">Reveal Answer</button>
+        <div id="ans14" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$m = 528 + 64$$</p>
+            <p>$$m = \mathbf{592}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">15.</div>
+        <p>Find the value of the variable: $30k = \$45.00$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans15')">Reveal Answer</button>
+        <div id="ans15" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$k = \frac{\$45.00}{30}$$</p>
+            <p>$$k = \mathbf{\$1.50}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*16.</div>
+        <p>Find the value of the variable: $\frac{p}{40} = 150$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans16')">Reveal Answer</button>
+        <div id="ans16" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$p = 150 \cdot 40$$</p>
+            <p>$$p = \mathbf{6000}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*17.</div>
+        <p>Find the value of the variable: $\frac{500}{w} = 25$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans17')">Reveal Answer</button>
+        <div id="ans17" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$w = \frac{500}{25}$$</p>
+            <p>$$w = \mathbf{20}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">18.</div><span class="question-label">EXPLAIN</span>
+        <p>Does the quotient of $7245 \div 9$ have a remainder? How can you tell without performing long division?</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans18')">Reveal Answer</button>
+        <div id="ans18" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p><strong>No</strong>, it does not leave a remainder.</p>
+            <p><strong>Explanation:</strong> Sum the individual digits of the number: $7 + 2 + 4 + 5 = 18$. Because the sum ($18$) is perfectly divisible by 9, the absolute value $7245$ is guaranteed to be divisible by 9 with zero remainder.</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">19.</div>
+        <p>Simplify: $48,296 + 37,854$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans19')">Reveal Answer</button>
+        <div id="ans19" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{86,150}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">20.</div>
+        <p>Simplify: $538 \times 24$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans20')">Reveal Answer</button>
+        <div id="ans20" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{12,912}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">21.</div>
+        <p>Simplify: $\$90.00 - \$64.35$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans21')">Reveal Answer</button>
+        <div id="ans21" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{\$25.65}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">22.</div>
+        <p>Simplify: $\$84.00 \div 60$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans22')">Reveal Answer</button>
+        <div id="ans22" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{\$1.40}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*23.</div><span class="question-label">JUSTIFY</span>
+        <p>Show the factoring steps and algebraic properties that make this product quick to solve mentally: $5 \cdot 13 \cdot 20$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans23')">Reveal Answer</button>
+        <div id="ans23" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>$$5 \cdot 13 \cdot 20 = 5 \cdot 20 \cdot 13 \quad \text{(Commutative Property of Multiplication)}$$</p>
+            <p>$$= (5 \cdot 20) \cdot 13 \quad \text{(Associative Property of Multiplication)}$$</p>
+            <p>$$= 100 \cdot 13 = \mathbf{1300}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">24.</div>
+        <p>Compare: $8000 \div (400 \div 20) \bigcirc (8000 \div 400) \div 20$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans24')">Reveal Answer</button>
+        <div id="ans24" class="answer-content">
+            <p><strong>Solution:</strong></p>
+            <p>Left side evaluation: $8000 \div 20 = 400$</p>
+            <p>Right side evaluation: $20 \div 20 = 1$</p>
+            <p>Since $400 > 1$:</p>
+            <p>$$8000 \div (400 \div 20) \mathbf{\Huge >} (8000 \div 400) \div 20$$</p>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <div class="question-num">25.</div>
+        <p>Evaluate each expression for $m = 300$ and $n = 600$:</p>
+        <p><strong>a.</strong> $mn$<br>
+           <strong>b.</strong> $m - n$<br>
+           <strong>c.</strong> $\frac{n}{m}$</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans25')">Reveal Answer</button>
+        <div id="ans25" class="answer-content">
+            <p><strong>Answers:</strong></p>
+            <p><strong>a.</strong> $300 \times 600 = \mathbf{180,000}$</p>
+            <p><strong>b.</strong> $300 - 600 = \mathbf{-300}$</p>
+            <p><strong>c.</strong> $\frac{600}{300} = \mathbf{2}$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*26.</div>
+        <p>Refer to the graphic line to answer parts <strong>a</strong> and <strong>b</strong>:</p>
+        <canvas id="canvasAngles3" width="310" height="150"></canvas>
+        <p><strong>a.</strong> Which angle is an acute angle?<br>
+           <strong>b.</strong> Which angle is a straight angle?</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans26')">Reveal Answer</button>
+        <div id="ans26" class="answer-content">
+            <p><strong>Answers:</strong></p>
+            <p><strong>a. Acute angle:</strong> $\mathbf{\angle FEG}$ (or $\angle GEF$)</p>
+            <p><strong>b. Straight angle:</strong> $\mathbf{\angle DEF}$ (or $\angle FED$)</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*27.</div>
+        <p>What specific name is given to the geometry angle created by a perfectly horizontal line intersecting a perfectly vertical line?</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans27')">Reveal Answer</button>
+        <div id="ans27" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>A <strong>right angle</strong> ($90^\circ$).</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*28.</div>
+        <p>Refer to the figure below to solve problems 28 and 29.</p>
+        <canvas id="canvasLine3" width="300" height="75"></canvas>
+        <p>Name three unique line segments located in this figure.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans28')">Reveal Answer</button>
+        <div id="ans28" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>$$\mathbf{\overline{PQ}, \overline{QR}, \overline{PR}}$$</p>
+            <p><em>(Reversed combinations like $\overline{QP}, \overline{RQ}, \overline{RP}$ are also correct)</em></p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*29.</div><span class="question-label">CONCLUDE</span>
+        <p>If you were given the total measure of segment $PR$ ($m\overline{PR}$) and the specific segment measure of $QR$ ($m\overline{QR}$), explain how you would calculate the unknown segment length of $PQ$ ($m\overline{PQ}$).</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans29')">Reveal Answer</button>
+        <div id="ans29" class="answer-content">
+            <p><strong>Answer:</strong></p>
+            <p>You would <strong>subtract</strong> the length of segment $QR$ from the entire system length $PR$.</p>
+            <p>$$m\overline{PQ} = m\overline{PR} - m\overline{QR}$$</p>
+        </div>
+    </div>
+
+    <div class="question-card star">
+        <div class="question-num">*30.</div><span class="question-label">MODEL</span>
+        <p>Sketch a geometric schematic containing two parallel planes (similar to how a level floor tracks beneath a level ceiling).</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ans30')">Reveal Answer</button>
+        <div id="ans30" class="answer-content">
+            <p><strong>Visual Diagram:</strong></p>
+            <canvas id="canvasParallelPlanes" width="300" height="190"></canvas>
+        </div>
+    </div>
+
+    <div class="question-card rwc">
+        <div class="question-num">Real-World Connection</div>
+        <p>The high school bowling squad uses a target baseline score of 150 for team evaluations. During matches, 6 players recorded performance spreads above or below this average as follows:</p>
+        <p style="text-align: center; font-size: 1.15rem;">$+25, -12, +8, 0, -5, +18$</p>
+        <p><strong>a.</strong> What were the six actual game scores achieved by the players?<br>
+           <strong>b.</strong> Arrange these actual scores in numerical order from least to greatest.<br>
+           <strong>c.</strong> How many players matched or exceeded the standard team baseline index of 150? List those qualifying scores.</p>
+        <button class="reveal-btn" onclick="toggleAnswer('ansRWC')">Reveal Answer</button>
+        <div id="ansRWC" class="answer-content">
+            <p><strong>Solutions:</strong></p>
+            <p><strong>a. Real Performance Calculations (Relative to 150 baseline):</strong></p>
+            <ul>
+                <li>$150 + 25 = \mathbf{175}$</li>
+                <li>$150 - 12 = \mathbf{138}$</li>
+                <li>$150 + 8 = \mathbf{158}$</li>
+                <li>$150 + 0 = \mathbf{150}$</li>
+                <li>$150 - 5 = \mathbf{145}$</li>
+                <li>$150 + 18 = \mathbf{168}$</li>
+            </ul>
+            <p>The actual scores are: <strong>175, 138, 158, 150, 145, 168</strong></p>
+            
+            <p><strong>b. Ordered Set (Least to Greatest):</strong></p>
+            <p>$$\mathbf{138, 145, 150, 158, 168, 175}$$</p>
+
+            <p><strong>c. Scores matching or exceeding baseline ($\ge 150$):</strong></p>
+            <p>Scores that are 150 or higher: 150, 158, 168, 175.</p>
+            <p>Total: <strong>4 scores</strong> ($\mathbf{150, 158, 168, 175}$)</p>
+        </div>
+    </div>
+
+    <script>
+        // Simple DOM toggle utility
+        function toggleAnswer(id) {
+            const element = document.getElementById(id);
+            if (!element) return;
+            element.style.display = (element.style.display === "none" || element.style.display === "") ? "block" : "none";
+        }
+
+        // Standardized canvas safe wrapper to run after layout structure loads
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Q9: Banner Layout Canvas ---
+            const cBanner = document.getElementById("canvasBanner");
+            if (cBanner) {
+                const ctxB = cBanner.getContext("2d");
+                // Left & Right Supports (Trees)
+                ctxB.fillStyle = "#8e44ad";
+                ctxB.fillRect(25, 30, 8, 90);
+                ctxB.fillRect(185, 30, 8, 90);
+                // Horizontal Connecting Rope
+                ctxB.strokeStyle = "#2c3e50";
+                ctxB.lineWidth = 3;
+                ctxB.beginPath();
+                ctxB.moveTo(25, 45);
+                ctxB.lineTo(193, 45);
+                ctxB.stroke();
+                // Vertical Streamers Hanging Down
+                ctxB.strokeStyle = "#e74c3c";
+                ctxB.lineWidth = 2;
+                for (let x = 50; x <= 170; x += 30) {
+                    ctxB.beginPath();
+                    ctxB.moveTo(x, 46);
+                    ctxB.lineTo(x, 95);
+                    ctxB.stroke();
+                }
+                // Text Annotations
+                ctxB.fillStyle = "#000";
+                ctxB.font = "11px sans-serif";
+                ctxB.fillText("Horizontal Rope", 65, 35);
+                ctxB.fillText("Vertical Streamers", 55, 115);
+            }
+
+            // --- Q26: Angle Vector System Canvas ---
+            const cAngles = document.getElementById("canvasAngles3");
+            if (cAngles) {
+                const ctxA = cAngles.getContext("2d");
+                ctxA.lineWidth = 2;
+                ctxA.strokeStyle = "#000000";
+                // Main Horizon Vector
+                ctxA.beginPath();
+                ctxA.moveTo(25, 100);
+                ctxA.lineTo(285, 100);
+                ctxA.stroke();
+                // Terminal Ray Splitting Angles
+                ctxA.beginPath();
+                ctxA.moveTo(155, 100);
+                ctxA.lineTo(235, 40);
+                ctxA.stroke();
+                // Anchor Coordinates
+                ctxA.fillStyle = "#000000";
+                const points = [[55, 100], [155, 100], [255, 100], [208, 60]];
+                points.forEach(p => {
+                    ctxA.beginPath();
+                    ctxA.arc(p[0], p[1], 4, 0, 2 * Math.PI);
+                    ctxA.fill();
+                });
+                // Character Identifiers
+                ctxA.font = "14px Georgia";
+                ctxA.fillText("D", 50, 122);
+                ctxA.fillText("E", 150, 122);
+                ctxA.fillText("F", 250, 122);
+                ctxA.fillText("G", 218, 55);
+            }
+
+            // --- Q28: Vector Segment Canvas ---
+            const cLine = document.getElementById("canvasLine3");
+            if (cLine) {
+                const ctxL = cLine.getContext("2d");
+                ctxL.lineWidth = 2;
+                ctxL.strokeStyle = "#000000";
+                // Continuous Line segment
+                ctxL.beginPath();
+                ctxL.moveTo(35, 40);
+                ctxL.lineTo(265, 40);
+                ctxL.stroke();
+                // Points markers
+                ctxL.fillStyle = "#000000";
+                const nodes = [65, 150, 235];
+                nodes.forEach(n => {
+                    ctxL.beginPath();
+                    ctxL.arc(n, 40, 4, 0, 2 * Math.PI);
+                    ctxL.fill();
+                });
+                // Labels 
+                ctxL.font = "14px Georgia";
+                ctxL.fillText("P", 60, 25);
+                ctxL.fillText("Q", 145, 25);
+                ctxL.fillText("R", 230, 25);
+            }
+
+            // --- Q30: Shaded Parallel Planes Canvas ---
+            const cPlanes = document.getElementById("canvasParallelPlanes");
+            if (cPlanes) {
+                const ctxP = cPlanes.getContext("2d");
+                ctxP.lineWidth = 2;
+                ctxP.strokeStyle = "#2c3e50";
+
+                // Function to isolate polygon renders
+                const drawPlane = (yOffset, fillColor, text) => {
+                    ctxP.fillStyle = fillColor;
+                    ctxP.beginPath();
+                    ctxP.moveTo(50, 35 + yOffset);
+                    ctxP.lineTo(210, 35 + yOffset);
+                    ctxP.lineTo(250, 85 + yOffset);
+                    ctxP.lineTo(90, 85 + yOffset);
+                    ctxP.closePath();
+                    ctxP.fill();
+                    ctxP.stroke();
+
+                    ctxP.fillStyle = "#2c3e50";
+                    ctxP.font = "12px sans-serif";
+                    ctxP.fillText(text, 115, 65 + yOffset);
+                };
+
+                // Render Plane 1 (Top Layer)
+                drawPlane(0, "rgba(52, 152, 219, 0.15)", "Plane Alpha (Top)");
+                // Render Plane 2 (Bottom Layer)
+                drawPlane(85, "rgba(46, 204, 113, 0.15)", "Plane Beta (Bottom)");
+            }
+        });
+    </script>
+</body>
+</html>
