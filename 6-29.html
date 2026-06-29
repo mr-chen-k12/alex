@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 17</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #harvard-reward {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff;
+        border: 3px double #a51c30;
+        border-radius: 8px;
+        animation: pullUp 0.5s ease-out;
+    }
+    #harvard-reward img {
+        width: 160px;
+        height: auto;
+        margin: 15px auto;
+        display: block;
+    }
+    .harvard-text {
+        color: #a51c30;
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    @keyframes pullUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        #harvard-reward {
+            display: block !important;
+            border: 2px solid #a51c30 !important;
+        }
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 17</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        
+        <div id="harvard-reward">
+            <div class="harvard-text">★ FLAWLESS ACADEMIC EXCELLENCE ★</div>
+            <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard University Crest">
+            <p style="color: #555; font-style: italic; font-weight: bold; margin-top: 5px;">You have successfully earned the Harvard University verification crest for achieving a perfect 10/10 score.</p>
+        </div>
+
+        <button onclick="window.print()" style="margin-top: 15px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "While many nineteenth-century music critics characterized the composer's late symphonies as hopelessly ______ and inaccessible to the general public, modern musicologists revere these complex arrangements as brilliant premonitions of twentieth-century avant-garde tonal systems.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["pedestrian", "ubiquitous", "collaborative", "esoteric"],
+            correctAnswer: 3,
+            explanation: "'Esoteric' means intended for or likely to be understood by only a small number of people with a specialized knowledge or interest. The passage establishes a contrast using 'While' between the early view of the symphonies as inaccessible and difficult ('hopelessly esoteric') and the modern view celebrating their brilliant complexity."
+        },
+        {
+            passage: "Evolutionary biology often explores the mechanisms of convergent evolution, where unrelated species independently evolve similar traits as adaptations to comparable environments. A classic example is the streamlined body shape shared by sharks, which are cartilaginous fish, and dolphins, which are marine mammals. Although their evolutionary lineages diverged hundreds of millions of years ago, both organisms developed torpedo-shaped silhouettes and powerful stabilizing fins to minimize drag while navigating dense aquatic mediums. Researchers argue that this structural convergence underscores the profound role of environmental pressures in shaping morphology across disparate biological classes.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Sharks and dolphins share an identical genetic ancestor that lived hundreds of millions of years ago.",
+                "Comparable environmental pressures can cause unrelated species to independently develop similar physical adaptations.",
+                "Marine mammals are structurally superior to cartilaginous fish when moving through dense aquatic mediums.",
+                "Convergent evolution occurs exclusively within species that occupy shallow coastal habitats."
+            ],
+            correctAnswer: 1,
+            explanation: "The text explains the concept of convergent evolution where unrelated species (like sharks and dolphins) independently develop similar physical traits (streamlined body shapes) because they face comparable environmental pressures, directly matching option B."
+        },
+        {
+            passage: "Literary scholar Dr. Julian Mercer asserts that in her 1925 novel *Mrs. Dalloway*, Virginia Woolf uses the recurring chime of Big Ben not merely to mark the chronological passage of time, but as an intrusive structural anchor that forces characters out of their subjective, fluid internal monologues and back into the rigid reality of post-war British society.",
+            prompt: "Which quotation from *Mrs. Dalloway* best supports Dr. Mercer's assertion?",
+            options: [
+                "\"The compensation of growing old was simply this; that the passions remain as fierce as ever, but one has gained the power which adds supreme flavour to existence.\"",
+                "\"June had drawn out every leaf on the trees. The park keepers were grooming the paths; the small girls were feeding the ducks with bits of stale bun.\"",
+                "\"The leaden circles dissolved in the air. This striking of the clock always shattered her fragile reverie, rudely snatching her from memories of Bourton and dropping her back onto the cold, factual pavement of London.\"",
+                "\"She had the oddest sense of being herself invisible; unseen; unknown; there being no more marrying, no more having of children.\""
+            ],
+            correctAnswer: 2,
+            explanation: "Dr. Mercer claims the clock's chime acts as an intrusive structural anchor that breaks fluid internal thoughts ('reverie') and forces characters into external reality. Option C directly supports this by illustrating the clock shattering a character's reverie and snatching her back onto the 'factual pavement of London.'"
+        },
+        {
+            passage: "To evaluate the impact of ocean acidification on marine calcifiers, biogeochemists monitored colonies of pteropods—small sea snails known as \"sea butterflies\"—in the subarctic Pacific Ocean. They observed that as atmospheric carbon dioxide emissions increase, the oceans absorb more gas, lowering the water's pH and reducing the availability of carbonate ions, which pteropods require to synthesize their protective aragonite shells. Without adequate carbonate, the snails' shells become increasingly thin, brittle, and prone to dissolution within a matter of weeks. Because pteropods serve as a foundational prey species for salmon, herring, and seabirds, a sustained decline in their population will likely ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "disrupt the trophic stability and ecological balance of the entire subarctic marine food web.",
+                "induce pteropods to migrate to terrestrial freshwater lake systems.",
+                "force commercial shipping companies to completely halt international transport lanes.",
+                "cause salmon and herring to synthesize their own protective aragonite shells."
+            ],
+            correctAnswer: 0,
+            explanation: "The text establishes that pteropods are a foundational prey species for major marine animals like salmon, herring, and birds. If ocean acidification decimates the pteropod population, it follows logically that the predators depending on them will be affected, disrupting the entire marine food web."
+        },
+        {
+            passage: "Although the director's early independent films were celebrated for their raw, improvisational energy, her latest big-budget studio release was criticized by critics as thoroughly ______; the plot followed a highly predictable formula that lacked any artistic risk-taking.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["erratic", "formulaic", "innovative", "capricious"],
+            correctAnswer: 1,
+            explanation: "'Formulaic' means constituting or following a formula; predictable or unoriginal. The context notes a contrast between the 'improvisational energy' of her early work and her latest film, which followed a 'highly predictable formula,' making formulaic the most precise fit."
+        },
+        {
+            passage: "Deep-sea hydrothermal vents, found along tectonic plate boundaries, support unique ecosystems completely divorced from solar energy. Instead of relying on photosynthesis, the foundational organisms in these environments—chemoautotrophic bacteria—utilize hydrogen sulfide emitted from the vents to synthesize organic molecules through chemosynthesis. These bacteria form thick mats that sustain specialized fauna, such as giant tube worms and vent shrimp, which possess no mouths or digestive tracts and rely entirely on symbiotic relationships with the bacteria. This extraordinary food web demonstrates that complex biological communities can thrive in absolute darkness under extreme hydrostatic pressure.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It introduces a unique ecological environment, explains the chemical process that drives its primary production, and details the biological relationships that sustain its food web.",
+                "It lists a series of environmental hazards, blames a specific industrial industry for causing them, and demands federal intervention.",
+                "It profiles a historic debate between two oceanographers and offers a mathematical compromise.",
+                "It traces the chronological evolution of deep-sea diving technology over multiple decades."
+            ],
+            correctAnswer: 0,
+            explanation: "The text starts by introducing hydrothermal vents, explains chemosynthesis (the primary production chemical process), and details the symbiotic relationships sustaining fauna like tube worms and shrimp within that food web. Thus, option A perfectly describes the structure."
+        },
+        {
+            passage: "Text 1\nThe prospect of space-based solar power (SBSP)—collecting solar energy in orbit via massive satellite arrays and beaming it to Earth using microwave frequencies—presents an ultimate fix for global clean energy. Free from atmospheric interference and the nocturnal interruptions that plague terrestrial solar farms, orbital arrays can harvest sunlight continuously, providing an inexhaustible, baseload supply of green electricity anywhere on the planet.\n\nText 2\nWhile space-based solar power sounds appealing, the structural and financial hurdles are currently insurmountable. Launching and assembling gigawatt-scale satellite arrays requires thousands of rocket flights, generating localized atmospheric pollution and orbital debris risks. Furthermore, the massive energy loss during wireless microwave transmission, combined with the exorbitant capital required to construct rectifying antennas on Earth, makes SBSP economically non-viable compared to rapidly cheapening terrestrial battery and solar systems.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the assertion in Text 1 that SBSP 'presents an ultimate fix for global clean energy'?",
+            options: [
+                "By arguing that solar energy is structurally inferior to fossil fuels for powering public transit grids.",
+                "By suggesting that orbital arrays should be constructed out of lightweight deep-sea polymers.",
+                "By pointing out that the environmental costs of rocket launches and economic inefficiency of wireless transmission make SBSP impractical compared to terrestrial options.",
+                "By asserting that microwave transmissions from space would completely eliminate atmospheric pollution."
+            ],
+            correctAnswer: 2,
+            explanation: "Text 1 claims SBSP is the ultimate clean energy solution. Text 2 refutes this optimism by detailing the structural downside: rocket pollution, orbital debris risks, massive energy losses during wireless transmission, and exorbitant costs compared to terrestrial alternatives. Option C captures this counterargument perfectly."
+        },
+        {
+            passage: "Historians examining the rapid collapse of the Bronze Age civilizations in the Eastern Mediterranean around 1177 BCE have traditionally attributed the catastrophe to sudden invasions by the enigmatic \"Sea Peoples.\" However, recent pollen and sediment analyses from ancient agricultural sites suggest that a severe, multi-century drought struck the region during the exact same period, causing widespread crop failures and subsequent famine. This ecological stress likely triggered internal civil unrest, trade route disruptions, and the eventual fracturing of centralized palace economies. Therefore, rather than being caused solely by external military incursions, the collapse was likely ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "completely fabricated by ancient scribes to justify a transition to modern currency systems.",
+                "the result of a systemic internal crisis accelerated by prolonged environmental degradation.",
+                "easily avoided if palace leaders had imported food from deep-sea automated greenhouses.",
+                "unrelated to any climate changes or agricultural production metrics."
+            ],
+            correctAnswer: 1,
+            explanation: "The text introduces new evidence showing that a multi-century drought caused crop failures and internal unrest, indicating that the Bronze Age collapse was not just about outside invaders ('Sea Peoples') but was heavily driven by internal, environmental, and systemic failures."
+        },
+        {
+            passage: "In cognitive psychology, the \"spacing effect\" demonstrates that individuals retain information significantly better when study sessions are distributed over time rather than crammed into a single block. To investigate the underlying neurological mechanisms, neuroscientists tracked the brain activity of participants learning foreign vocabulary pairs. **Using functional MRI scans, the researchers discovered that spaced repetition consistently reactivated the neural pathways in the prefrontal cortex associated with long-term memory consolidation, whereas massed cramming resulted in rapidly diminishing neural responses.** This difference explains why distributed learning leads to stronger structural encoding and superior memory durability over extended durations.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+            options: [
+                "It introduces a statistical error in a previous psychological framework.",
+                "It provides a historical timeline of when the spacing effect was first discovered.",
+                "It suggests that foreign vocabulary acquisition is impossible for adult learners.",
+                "It describes the specific empirical neuroimaging findings that explain the biological mechanism behind the spacing effect."
+            ],
+            correctAnswer: 3,
+            explanation: "The passage sets up an inquiry into the neurological mechanism of the spacing effect. The highlighted sentence outlines the specific neuroimaging (fMRI) data gathered (prefrontal cortex reactivation vs. diminished responses), explaining the biological mechanism behind why spacing works."
+        },
+        {
+            passage: "While the ocean surface during the summer doldrums appeared remarkably ______ and undisturbed to the naked eye, oceanographers revealed that beneath this glassy exterior lay a chaotic system of powerful internal waves and turbulent thermal currents that actively remixed nutrients across the water column.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["placid", "volatile", "dynamic", "frenetic"],
+            correctAnswer: 0,
+            explanation: "'Placid' means calm and peaceful, with little movement or activity. The sentence uses the contrast word 'While' to set up a conflict between the visible surface, which looked completely 'undisturbed' and 'glassy' (placid), and the 'chaotic,' turbulent currents hiding underneath."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 17</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        if (score === quizData.length) {
+            document.getElementById('harvard-reward').style.display = 'block';
+        }
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
