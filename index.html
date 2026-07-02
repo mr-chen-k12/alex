@@ -3,101 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index.html Generator for Mobile</title>
-    <style>
-        body { font-family: -apple-system, sans-serif; padding: 30px; max-width: 700px; margin: 0 auto; background: #f4f4f9; }
-        h2 { margin-top: 0; color: #333; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
-        select, button { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; }
-        button { cursor: pointer; font-weight: bold; }
-        #btn-generate { background-color: #2da44e; color: white; border: none; }
-        #btn-copy { background-color: #0969da; color: white; border: none; display: none; }
-        textarea { width: 100%; height: 300px; font-family: monospace; padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 13px; background: #fff; }
-        .hint { font-size: 0.9rem; color: #666; margin-bottom: 10px; font-style: italic;}
-    </style>
-</head>
-<body>
-
-    <h2>📱 Index.html Generator</h2>
-
-    <label>1. Which folder did you just update?</label>
-    <select id="repoSelect">
-        <option value="miriam">Miriam</option>
-        <option value="alex">Alex</option>
-        <option value="math">Math</option>
-        <option value="books">Books</option>
-        <option value="piano">Piano</option>
-    </select>
-
-    <button id="btn-generate" onclick="generateIndexHtml()">🚀 Build Updated index.html</button>
-
-    <label>2. Copy this completed HTML code:</label>
-    <textarea id="output" readonly="" placeholder="(Click the button above to build the page)"></textarea>
-
-    <button id="btn-copy" onclick="copyToClipboard()">📋 Copy Code to Clipboard</button>
-    
-    <p class="hint"><strong>Next Step:</strong> Go to your <strong>index.html</strong> file inside that folder on GitHub, click the Edit (pencil icon), select everything, delete it, and paste this fresh code right over it!</p>
-
-    <script>
-        const USERNAME = "mr-chen-k12";
-
-        function generateIndexHtml() {
-            const repo = document.getElementById('repoSelect').value;
-            const output = document.getElementById('output');
-            const btnCopy = document.getElementById('btn-copy');
-
-            output.value = "⏳ Scanning your GitHub repository files...";
-
-            fetch(`https://api.github.com/repos/${USERNAME}/${repo}/contents/`)
-                .then(res => {
-                    if (!res.ok) throw new Error("Could not fetch repo contents. Check repository name.");
-                    return res.json();
-                })
-                .then(data => {
-                    // Filter: HTML files only, exclude index.html, hidden files, or the generator itself
-                    const files = data
-                        .filter(f => f.name.endsWith('.html') && !f.name.startsWith('index') && !f.name.startsWith('_') && f.name !== 'generator.html')
-                        .map(f => f.name)
-                        .sort();
-
-                    let cardsHtml = "";
-
-                    if (files.length === 0) {
-                        cardsHtml = '        <div style="color:white; font-size:1.5rem; grid-column: 1/-1; text-align:center;">All clear! No homework today. 🎉</div>';
-                    } else {
-                        // Dynamically build the text blocks for every card matching your style guidelines
-                        cardsHtml = files.map((filename, index) => {
-                            // Assign sequential color rotation style (1-4)
-                            const styleNum = (index % 4) + 1;
-
-                            // Match the correct icon using your naming rules
-                            let icon = "📄"; 
-                            const lowerName = filename.toLowerCase();
-                            if (lowerName.includes("math")) icon = "📐";
-                            else if (lowerName.includes("quiz")) icon = "🏆";
-                            else if (lowerName.includes("extra")) icon = "🌟";
-                            else if (lowerName.includes("study")) icon = "🧠";
-                            else if (lowerName.includes("game")) icon = "🎮";
-                            else if (lowerName.includes("reading")) icon = "📚";
-                            else if (lowerName.includes("test")) icon = "📝";
-
-                            // Strip out .html extensions and clean up dashes for clean text layout
-                            const cleanName = filename.replace('.html', '').replace(/-/g, ' ');
-
-                            return `        <a href="https://mr-chen-k12.github.io/${repo}/${filename}" class="card style-${styleNum}">
-            <div class="card-icon">${icon}</div>
-            <div class="card-title">${cleanName}</div>
-        </a>`;
-                        }).join('\n');
-                    }
-
-                    // Assemble the entire structural layout of your target index.html layout statically!
-                    // Note: Changed local font path to live Google Fonts web link so it loads beautifully everywhere.
-                    const finalHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homework Zone</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -118,7 +23,7 @@
         header {
             text-align: center;
             color: white;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
             animation: float 3s ease-in-out infinite;
         }
@@ -140,6 +45,33 @@
             display: inline-block;
         }
 
+        /* Update Button Styling */
+        .update-btn {
+            background-color: #ffd700;
+            color: #333;
+            border: none;
+            padding: 12px 24px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .update-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            background-color: #ffea4a;
+        }
+        .update-btn:active {
+            transform: scale(0.95);
+        }
+
         /* The Grid of Cards */
         .card-grid {
             display: grid;
@@ -147,6 +79,7 @@
             gap: 20px;
             width: 100%;
             max-width: 1000px;
+            margin-top: 20px;
         }
 
         /* Individual Card Design */
@@ -188,7 +121,16 @@
             word-break: break-word;
         }
 
-        /* Different Colors for cards */
+        /* Loading & Status States */
+        #loading {
+            color: white;
+            font-size: 1.4rem;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Color rotations (Assigned by JS) */
         .style-1 { border-bottom: 8px solid #FF6B6B; }
         .style-2 { border-bottom: 8px solid #4ECDC4; }
         .style-3 { border-bottom: 8px solid #FFE66D; }
@@ -204,30 +146,89 @@
 <body>
 
     <header>
-        <h1 id="repo-name">${repo}</h1>
+        <h1 id="repo-name">Loading...</h1>
         <p class="subtitle">Select a mission to begin!</p>
+        <br>
+        <button class="update-btn" onclick="fetchLatestFiles()">🔄 Update Homework Grid</button>
     </header>
 
+    <div id="loading" style="display: none;">🚀 Syncing files...</div>
+    
     <div class="card-grid" id="file-list">
-${cardsHtml}
-    </div>
+        </div>
 
-</body>
-</html>`;
+    <script>
+        const USERNAME = "mr-chen-k12";
+        
+        // 1. Get the folder name dynamically from the URL path (e.g. "alex" or "miriam")
+        const folderName = window.location.pathname.split('/').filter(Boolean).pop() || "alex";
+        document.getElementById('repo-name').innerText = folderName;
 
-                    output.value = finalHtml;
-                    btnCopy.style.display = "block";
-                })
-                .catch(err => {
-                    output.value = "❌ Error occurred: " + err.message;
+        // 2. Main function that hits GitHub directly to update your icons dynamically
+        async function fetchLatestFiles() {
+            const list = document.getElementById('file-list');
+            const loading = document.getElementById('loading');
+            
+            loading.style.display = 'block';
+            loading.innerText = "⏳ Scanning your GitHub directory...";
+            
+            try {
+                // Fetch the real-time file tree straight from GitHub's API
+                const response = await fetch(`https://api.github.com/repos/${USERNAME}/${folderName}/contents/`);
+                if (!response.ok) throw new Error("Could not load files from GitHub API.");
+                
+                const data = await response.json();
+                
+                // Filter: HTML files only, exclude layout configurations or administrative tools
+                const files = data
+                    .filter(f => f.name.endsWith('.html') && !f.name.startsWith('index') && !f.name.startsWith('_') && f.name !== 'generator.html')
+                    .map(f => f.name)
+                    .sort();
+                
+                loading.style.display = 'none';
+                list.innerHTML = ''; // Clear out the old static layout cards
+                
+                if (files.length === 0) {
+                    list.innerHTML = '<div style="color:white; font-size:1.5rem; grid-column: 1/-1; text-align:center;">All clear! No homework files found. 🎉</div>';
+                    return;
+                }
+                
+                // 3. Rebuild and propagate every layout card dynamically on click
+                files.forEach((filename, index) => {
+                    const a = document.createElement('a');
+                    a.href = filename; // Relative directory link matches beautifully
+                    
+                    // Assign a repeating sequential color pattern style (1-4)
+                    const styleNum = (index % 4) + 1;
+                    a.className = `card style-${styleNum}`;
+                    
+                    // Guess and match the rule-based icon assignment
+                    let icon = "📄"; // Default
+                    const lowerName = filename.toLowerCase();
+                    if (lowerName.includes("math")) icon = "📐";
+                    else if (lowerName.includes("quiz")) icon = "🏆";
+                    else if (lowerName.includes("extra")) icon = "🌟";
+                    else if (lowerName.includes("study")) icon = "🧠";
+                    else if (lowerName.includes("game")) icon = "🎮";
+                    else if (lowerName.includes("reading")) icon = "📚";
+                    else if (lowerName.includes("test")) icon = "📝";
+                    
+                    a.innerHTML = `
+                        <div class="card-icon">${icon}</div>
+                        <div class="card-title">${cleanName(filename)}</div>
+                    `;
+                    
+                    list.appendChild(a);
                 });
+                
+            } catch (error) {
+                loading.innerHTML = `⚠️ Error connecting to GitHub: <br><span style="font-size:1.1rem; color:#ffdddd;">${error.message}</span>`;
+            }
         }
 
-        function copyToClipboard() {
-            const output = document.getElementById('output');
-            output.select();
-            document.execCommand('copy');
-            alert("Copied code! Now paste it directly into your index.html file on GitHub.");
+        // Helper: Format string structure cleanly for UI layout card titles
+        function cleanName(name) {
+            return name.replace('.html', '').replace(/-/g, ' ');
         }
     </script>
 
