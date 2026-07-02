@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index.html Generator for Mobile</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; padding: 30px; max-width: 700px; margin: 0 auto; background: #f4f4f9; }
+        h2 { margin-top: 0; color: #333; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
+        select, button { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; }
+        button { cursor: pointer; font-weight: bold; }
+        #btn-generate { background-color: #2da44e; color: white; border: none; }
+        #btn-copy { background-color: #0969da; color: white; border: none; display: none; }
+        textarea { width: 100%; height: 300px; font-family: monospace; padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 13px; background: #fff; }
+        .hint { font-size: 0.9rem; color: #666; margin-bottom: 10px; font-style: italic;}
+    </style>
+</head>
+<body>
+
+    <h2>📱 Index.html Generator</h2>
+
+    <label>1. Which folder did you just update?</label>
+    <select id="repoSelect">
+        <option value="miriam">Miriam</option>
+        <option value="alex">Alex</option>
+        <option value="math">Math</option>
+        <option value="books">Books</option>
+        <option value="piano">Piano</option>
+    </select>
+
+    <button id="btn-generate" onclick="generateIndexHtml()">🚀 Build Updated index.html</button>
+
+    <label>2. Copy this completed HTML code:</label>
+    <textarea id="output" readonly="" placeholder="(Click the button above to build the page)"></textarea>
+
+    <button id="btn-copy" onclick="copyToClipboard()">📋 Copy Code to Clipboard</button>
+    
+    <p class="hint"><strong>Next Step:</strong> Go to your <strong>index.html</strong> file inside that folder on GitHub, click the Edit (pencil icon), select everything, delete it, and paste this fresh code right over it!</p>
+
+    <script>
+        const USERNAME = "mr-chen-k12";
+
+        function generateIndexHtml() {
+            const repo = document.getElementById('repoSelect').value;
+            const output = document.getElementById('output');
+            const btnCopy = document.getElementById('btn-copy');
+
+            output.value = "⏳ Scanning your GitHub repository files...";
+
+            fetch(`https://api.github.com/repos/${USERNAME}/${repo}/contents/`)
+                .then(res => {
+                    if (!res.ok) throw new Error("Could not fetch repo contents. Check repository name.");
+                    return res.json();
+                })
+                .then(data => {
+                    // Filter: HTML files only, exclude index.html, hidden files, or the generator itself
+                    const files = data
+                        .filter(f => f.name.endsWith('.html') && !f.name.startsWith('index') && !f.name.startsWith('_') && f.name !== 'generator.html')
+                        .map(f => f.name)
+                        .sort();
+
+                    let cardsHtml = "";
+
+                    if (files.length === 0) {
+                        cardsHtml = '        <div style="color:white; font-size:1.5rem; grid-column: 1/-1; text-align:center;">All clear! No homework today. 🎉</div>';
+                    } else {
+                        // Dynamically build the text blocks for every card matching your style guidelines
+                        cardsHtml = files.map((filename, index) => {
+                            // Assign sequential color rotation style (1-4)
+                            const styleNum = (index % 4) + 1;
+
+                            // Match the correct icon using your naming rules
+                            let icon = "📄"; 
+                            const lowerName = filename.toLowerCase();
+                            if (lowerName.includes("math")) icon = "📐";
+                            else if (lowerName.includes("quiz")) icon = "🏆";
+                            else if (lowerName.includes("extra")) icon = "🌟";
+                            else if (lowerName.includes("study")) icon = "🧠";
+                            else if (lowerName.includes("game")) icon = "🎮";
+                            else if (lowerName.includes("reading")) icon = "📚";
+                            else if (lowerName.includes("test")) icon = "📝";
+
+                            // Strip out .html extensions and clean up dashes for clean text layout
+                            const cleanName = filename.replace('.html', '').replace(/-/g, ' ');
+
+                            return `        <a href="https://mr-chen-k12.github.io/${repo}/${filename}" class="card style-${styleNum}">
+            <div class="card-icon">${icon}</div>
+            <div class="card-title">${cleanName}</div>
+        </a>`;
+                        }).join('\n');
+                    }
+
+                    // Assemble the entire structural layout of your target index.html layout statically!
+                    // Note: Changed local font path to live Google Fonts web link so it loads beautifully everywhere.
+                    const finalHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework Zone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- FUN STYLING STARTS HERE --- */
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Title Area */
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            letter-spacing: 2px;
+            text-transform: capitalize;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-top: 10px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* The Grid of Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* Individual Card Design */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            text-decoration: none;
+            color: #444;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        /* Fun Hover Effects */
+        .card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+            border-color: #ffd700;
+        }
+
+        /* The Big Icon inside the card */
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        /* Different Colors for cards */
+        .style-1 { border-bottom: 8px solid #FF6B6B; }
+        .style-2 { border-bottom: 8px solid #4ECDC4; }
+        .style-3 { border-bottom: 8px solid #FFE66D; }
+        .style-4 { border-bottom: 8px solid #1A535C; }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 id="repo-name">${repo}</h1>
+        <p class="subtitle">Select a mission to begin!</p>
+    </header>
+
+    <div class="card-grid" id="file-list">
+${cardsHtml}
+    </div>
+
+</body>
+</html>`;
+
+                    output.value = finalHtml;
+                    btnCopy.style.display = "block";
+                })
+                .catch(err => {
+                    output.value = "❌ Error occurred: " + err.message;
+                });
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('output');
+            output.select();
+            document.execCommand('copy');
+            alert("Copied code! Now paste it directly into your index.html file on GitHub.");
+        }
+    </script>
+
+</body>
+</html>
