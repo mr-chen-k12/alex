@@ -6,7 +6,7 @@
     <title>Homework Zone</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- FUN STYLING STARTS HERE --- */
+        /* --- FUN STYLING --- */
         body {
             font-family: 'Fredoka', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -19,7 +19,6 @@
             align-items: center;
         }
 
-        /* Title Area */
         header {
             text-align: center;
             color: white;
@@ -45,7 +44,12 @@
             display: inline-block;
         }
 
-        /* Update Button Styling */
+        /* Update Button Area */
+        .controls {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
         .update-btn {
             background-color: #ffd700;
             color: #333;
@@ -58,7 +62,6 @@
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             transition: transform 0.2s, box-shadow 0.2s;
-            margin-top: 15px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -72,6 +75,14 @@
             transform: scale(0.95);
         }
 
+        #status-msg {
+            color: #ffd700;
+            font-size: 0.95rem;
+            margin-top: 8px;
+            font-style: italic;
+            height: 20px;
+        }
+
         /* The Grid of Cards */
         .card-grid {
             display: grid;
@@ -79,7 +90,7 @@
             gap: 20px;
             width: 100%;
             max-width: 1000px;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         /* Individual Card Design */
@@ -102,14 +113,12 @@
             box-sizing: border-box;
         }
 
-        /* Fun Hover Effects */
         .card:hover {
             transform: translateY(-10px) scale(1.05);
             box-shadow: 0 20px 30px rgba(0,0,0,0.2);
             border-color: #ffd700;
         }
 
-        /* The Big Icon inside the card */
         .card-icon {
             font-size: 3rem;
             margin-bottom: 10px;
@@ -121,16 +130,7 @@
             word-break: break-word;
         }
 
-        /* Loading & Status States */
-        #loading {
-            color: white;
-            font-size: 1.4rem;
-            margin-top: 20px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        /* Color rotations (Assigned by JS) */
+        /* Color rotations */
         .style-1 { border-bottom: 8px solid #FF6B6B; }
         .style-2 { border-bottom: 8px solid #4ECDC4; }
         .style-3 { border-bottom: 8px solid #FFE66D; }
@@ -148,11 +148,12 @@
     <header>
         <h1 id="repo-name">Loading...</h1>
         <p class="subtitle">Select a mission to begin!</p>
-        <br>
-        <button class="update-btn" onclick="fetchLatestFiles()">🔄 Update Homework Grid</button>
     </header>
 
-    <div id="loading" style="display: none;">🚀 Syncing files...</div>
+    <div class="controls">
+        <button class="update-btn" onclick="fetchLatestFiles()">🔄 Check for New Updates</button>
+        <div id="status-msg"></div>
+    </div>
     
     <div class="card-grid" id="file-list">
         </div>
@@ -160,73 +161,100 @@
     <script>
         const USERNAME = "mr-chen-k12";
         
-        // 1. Get the folder name dynamically from the URL path (e.g. "alex" or "miriam")
+        // 1. Get folder name dynamically from URL (e.g. "alex" or "miriam")
         const folderName = window.location.pathname.split('/').filter(Boolean).pop() || "alex";
         document.getElementById('repo-name').innerText = folderName;
 
-        // 2. Main function that hits GitHub directly to update your icons dynamically
-        async function fetchLatestFiles() {
+        // Form unique storage key based on current folder context
+        const STORAGE_KEY = `homework_files_${folderName}`;
+
+        // 2. RUN IMMEDIATELY ON LOAD: Look for saved files in Local Storage
+        window.addEventListener('DOMContentLoaded', () => {
+            const cachedData = localStorage.getItem(STORAGE_KEY);
+            const statusMsg = document.getElementById('status-msg');
+
+            if (cachedData) {
+                const files = JSON.parse(cachedData);
+                renderCards(files);
+                statusMsg.innerText = "Loaded cached assignments instantly! ✨";
+            } else {
+                // If the app runs for the very first time with no cache, run a fallback sync automatically
+                statusMsg.innerText = "First-time setup: Fetching initial homework files...";
+                fetchLatestFiles();
+            }
+        });
+
+        // 3. CORE RENDERING ENGINE: Builds layout cards dynamically
+        function renderCards(files) {
             const list = document.getElementById('file-list');
-            const loading = document.getElementById('loading');
-            
-            loading.style.display = 'block';
-            loading.innerText = "⏳ Scanning your GitHub directory...";
+            list.innerHTML = ''; // Wipe current elements
+
+            if (files.length === 0) {
+                list.innerHTML = '<div style="color:white; font-size:1.5rem; grid-column: 1/-1; text-align:center;">All clear! No homework files found. 🎉</div>';
+                return;
+            }
+
+            files.forEach((filename, index) => {
+                const a = document.createElement('a');
+                a.href = filename; // Points cleanly to homework file
+                
+                // Color iteration calculation (loops 1 to 4)
+                const styleNum = (index % 4) + 1;
+                a.className = `card style-${styleNum}`;
+                
+                // Icon picker assignments
+                let icon = "📄"; 
+                const lowerName = filename.toLowerCase();
+                if (lowerName.includes("math")) icon = "📐";
+                else if (lowerName.includes("quiz")) icon = "🏆";
+                else if (lowerName.includes("extra")) icon = "🌟";
+                else if (lowerName.includes("study")) icon = "🧠";
+                else if (lowerName.includes("game")) icon = "🎮";
+                else if (lowerName.includes("reading")) icon = "📚";
+                else if (lowerName.includes("test")) icon = "📝";
+                
+                a.innerHTML = `
+                    <div class="card-icon">${icon}</div>
+                    <div class="card-title">${cleanName(filename)}</div>
+                `;
+                
+                list.appendChild(a);
+            });
+        }
+
+        // 4. MANUAL FORCE SYNC BUTTON FUNCTION
+        async function fetchLatestFiles() {
+            const statusMsg = document.getElementById('status-msg');
+            statusMsg.innerText = "⏳ Checking GitHub for new changes...";
             
             try {
-                // Fetch the real-time file tree straight from GitHub's API
                 const response = await fetch(`https://api.github.com/repos/${USERNAME}/${folderName}/contents/`);
-                if (!response.ok) throw new Error("Could not load files from GitHub API.");
+                if (!response.ok) throw new Error("Could not load repository folder structure.");
                 
                 const data = await response.json();
                 
-                // Filter: HTML files only, exclude layout configurations or administrative tools
+                // Filter down to active homework documents
                 const files = data
                     .filter(f => f.name.endsWith('.html') && !f.name.startsWith('index') && !f.name.startsWith('_') && f.name !== 'generator.html')
                     .map(f => f.name)
                     .sort();
                 
-                loading.style.display = 'none';
-                list.innerHTML = ''; // Clear out the old static layout cards
+                // Save updated array to user's browser local storage
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(files));
                 
-                if (files.length === 0) {
-                    list.innerHTML = '<div style="color:white; font-size:1.5rem; grid-column: 1/-1; text-align:center;">All clear! No homework files found. 🎉</div>';
-                    return;
-                }
+                // Build fresh structural nodes onto grid
+                renderCards(files);
+                statusMsg.innerText = "🚀 UI Grid Updated & Saved successfully!";
                 
-                // 3. Rebuild and propagate every layout card dynamically on click
-                files.forEach((filename, index) => {
-                    const a = document.createElement('a');
-                    a.href = filename; // Relative directory link matches beautifully
-                    
-                    // Assign a repeating sequential color pattern style (1-4)
-                    const styleNum = (index % 4) + 1;
-                    a.className = `card style-${styleNum}`;
-                    
-                    // Guess and match the rule-based icon assignment
-                    let icon = "📄"; // Default
-                    const lowerName = filename.toLowerCase();
-                    if (lowerName.includes("math")) icon = "📐";
-                    else if (lowerName.includes("quiz")) icon = "🏆";
-                    else if (lowerName.includes("extra")) icon = "🌟";
-                    else if (lowerName.includes("study")) icon = "🧠";
-                    else if (lowerName.includes("game")) icon = "🎮";
-                    else if (lowerName.includes("reading")) icon = "📚";
-                    else if (lowerName.includes("test")) icon = "📝";
-                    
-                    a.innerHTML = `
-                        <div class="card-icon">${icon}</div>
-                        <div class="card-title">${cleanName(filename)}</div>
-                    `;
-                    
-                    list.appendChild(a);
-                });
+                // Clear success toast indicator after a short delay
+                setTimeout(() => { statusMsg.innerText = ""; }, 4000);
                 
             } catch (error) {
-                loading.innerHTML = `⚠️ Error connecting to GitHub: <br><span style="font-size:1.1rem; color:#ffdddd;">${error.message}</span>`;
+                statusMsg.innerHTML = `⚠️ Sync Failed: <span style="color:#ffaeae;">${error.message}</span>`;
             }
         }
 
-        // Helper: Format string structure cleanly for UI layout card titles
+        // Helper string utility
         function cleanName(name) {
             return name.replace('.html', '').replace(/-/g, ' ');
         }
