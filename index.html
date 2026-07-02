@@ -178,7 +178,6 @@
                 renderCards(files);
                 statusMsg.innerText = "Loaded cached assignments instantly! ✨";
             } else {
-                // If the app runs for the very first time with no cache, run a fallback sync automatically
                 statusMsg.innerText = "First-time setup: Fetching initial homework files...";
                 fetchLatestFiles();
             }
@@ -233,11 +232,12 @@
                 
                 const data = await response.json();
                 
-                // Filter down to active homework documents
+                // Filter down to active homework documents, sort, and REVERSE it!
                 const files = data
                     .filter(f => f.name.endsWith('.html') && !f.name.startsWith('index') && !f.name.startsWith('_') && f.name !== 'generator.html')
                     .map(f => f.name)
-                    .sort();
+                    .sort()
+                    .reverse(); // <--- Added here to put the highest number/latest date at the top!
                 
                 // Save updated array to user's browser local storage
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(files));
@@ -256,7 +256,9 @@
 
         // Helper string utility
         function cleanName(name) {
-            return name.replace('.html', '').replace(/-/g, ' ');
+            // Optional: If you use numeric prefixes like "05-", this line hides them from the card titles
+            let displayName = name.replace(/^\d+[-_]*/, ''); 
+            return displayName.replace('.html', '').replace(/-/g, ' ');
         }
     </script>
 
