@@ -37,11 +37,28 @@ let currentSession = {
   quizAttempts: {} // word -> count of attempts
 };
 
+let cardGesture = {
+  pointerId: null,
+  startX: 0,
+  startY: 0,
+  currentX: 0,
+  currentY: 0,
+  dragging: false
+};
+let suppressNextCardClick = false;
+
 // Elements DOM Cache
 const elements = {
   themeToggle: document.getElementById("theme-toggle"),
   themeIcon: document.getElementById("theme-icon"),
   headerWordCount: document.getElementById("header-word-count"),
+  syncStatus: document.getElementById("sync-status"),
+  syncPassword: document.getElementById("sync-password"),
+  rememberPassword: document.getElementById("remember-password"),
+  btnSavePassword: document.getElementById("btn-save-password"),
+  btnSyncNow: document.getElementById("btn-sync-now"),
+  btnPushNow: document.getElementById("btn-push-now"),
+  btnClearPassword: document.getElementById("btn-clear-password"),
   
   // Scoreboard
   streakCount: document.getElementById("streak-count"),
@@ -52,11 +69,13 @@ const elements = {
   // Dashboard Action Triggers
   btnStartLearn: document.getElementById("btn-start-learn"),
   btnStartReview: document.getElementById("btn-start-review"),
+  btnSmartReview: document.getElementById("btn-smart-review"),
   btnOpenAddModal: document.getElementById("btn-open-add-modal"),
   
   // Queue Dynamic Counts
   learnQueueCount: document.getElementById("learn-queue-count"),
   reviewQueueCount: document.getElementById("review-queue-count"),
+  smartReviewCount: document.getElementById("smart-review-count"),
   
   // Views
   dashboardView: document.getElementById("dashboard-view"),
@@ -81,6 +100,9 @@ const elements = {
   btnCorrect: document.getElementById("btn-correct"),
   btnIncorrect: document.getElementById("btn-incorrect"),
   btnNext: document.getElementById("btn-next"),
+  btnPrevCard: document.getElementById("btn-prev-card"),
+  btnSessionFlip: document.getElementById("btn-session-flip"),
+  btnSessionNext: document.getElementById("btn-session-next"),
   btnExitSession: document.getElementById("btn-exit-session"),
   
   // Management View Table Elements
@@ -109,7 +131,7 @@ async function initializeState() {
     const cloudState = await SheetsService.fetchState();
     
     if (cloudState && cloudState.words && cloudState.words.length > 0) {
-      state = cloudState;
+      state = normalizeLoadedState(cloudState);
       
       // Inject safety updates for standard built-in vocab terms
       const existingWordSet = new Set(state.words.map(w => w.word.toLowerCase()));
@@ -131,12 +153,15 @@ async function initializeState() {
       if (typeof showToast === 'function') {
         showToast("Cloud profile loaded successfully!", "cloud-check", "var(--success)");
       }
+      updateSyncStatus(true);
     } else {
       await fallbackToLocalOrReset();
+      updateSyncStatus(false);
     }
   } catch (e) {
     console.warn("Cloud infrastructure unreachable, defaulting to offline cache:", e);
     await fallbackToLocalOrReset();
+    updateSyncStatus(false);
   }
   
   validateStreak();
@@ -146,7 +171,7 @@ async function fallbackToLocalOrReset() {
   const savedState = localStorage.getItem("sat_vocab_state");
   if (savedState) {
     try {
-      state = JSON.parse(savedState);
+      state = normalizeLoadedState(JSON.parse(savedState));
     } catch(err) {
       resetToDefaultState();
     }
@@ -175,13 +200,149 @@ function resetToDefaultState() {
   localStorage.setItem("sat_vocab_state", JSON.stringify(state));
 }
 
+function normalizeLoadedState(loadedState) {
+  const loadedWords = Array.isArray(loadedState.words) ? loadedState.words : [];
+  return {
+    words: loadedWords.map(normalizeWordRecord).filter(word => word.word && word.definition),
+    settings: {
+      dailyGoal: Number(loadedState.settings?.dailyGoal) || 5,
+      theme: loadedState.settings?.theme === "light" ? "light" : "dark"
+    },
+    history: {
+      streak: Number(loadedState.history?.streak) || 0,
+      lastStudyDate: loadedState.history?.lastStudyDate || null,
+      reviewsToday: Number(loadedState.history?.reviewsToday) || 0,
+      correctToday: Number(loadedState.history?.correctToday) || 0,
+      incorrectToday: Number(loadedState.history?.incorrectToday) || 0,
+      completedDates: Array.isArray(loadedState.history?.completedDates) ? loadedState.history.completedDates : []
+    }
+  };
+}
+
+function normalizeWordRecord(word) {
+  const stage = Number(word.stage ?? word.Stage ?? 0);
+  return {
+    word: String(word.word ?? word.Word ?? "").trim(),
+    pos: String(word.pos ?? word.partOfSpeech ?? word["Part of Speech"] ?? "noun").trim(),
+    definition: String(word.definition ?? word.Definition ?? "").trim(),
+    example: String(word.example ?? word.Example ?? word["Example Sentence"] ?? "").trim(),
+    stage: Number.isFinite(stage) ? Math.max(0, Math.min(stage, 5)) : 0,
+    lastReviewed: normalizeDateValue(word.lastReviewed ?? word["Last Reviewed"]),
+    nextReviewDate: normalizeDateValue(word.nextReviewDate ?? word["Next Review Date"]),
+    custom: parseBooleanValue(word.custom)
+  };
+}
+
+function parseBooleanValue(value) {
+  return value === true || String(value).toLowerCase() === "true" || String(value) === "1";
+}
+
+function normalizeDateValue(value) {
+  if (!value) return null;
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    return formatDateString(value);
+  }
+  
+  const text = String(value).trim();
+  if (!text) return null;
+  if (/^\d{4}-\d{2}-\d{2}/.test(text)) {
+    return text.slice(0, 10);
+  }
+  
+  const parsedDate = new Date(text);
+  if (!Number.isNaN(parsedDate.getTime())) {
+    return formatDateString(parsedDate);
+  }
+  
+  return null;
+}
+
 // Saves local runtime frame instantaneously and silently syncs sheet in background
 function saveState() {
   localStorage.setItem("sat_vocab_state", JSON.stringify(state));
   
-  SheetsService.saveState(state)
-    .then(() => console.log("Google Sheets database synchronized fully."))
-    .catch(err => console.error("Google Sheets database sync deferred:", err));
+  return SheetsService.saveState(state)
+    .then((didSync) => {
+      updateSyncStatus(Boolean(didSync));
+      if (didSync) console.log("Google Sheets database synchronized fully.");
+      return didSync;
+    })
+    .catch(err => {
+      updateSyncStatus(false);
+      console.error("Google Sheets database sync deferred:", err);
+      return false;
+    });
+}
+
+async function syncNow() {
+  if (!unlockFromPasswordInput()) return;
+  
+  try {
+    showToast("Syncing Google Sheet...", "refresh-cw", "var(--primary)");
+    const cloudState = await SheetsService.fetchState();
+    if (cloudState && cloudState.words) {
+      state = normalizeLoadedState(cloudState);
+      localStorage.setItem("sat_vocab_state", JSON.stringify(state));
+      validateStreak();
+      applySettings();
+      updateUI();
+      updateSyncStatus(true);
+      showToast("Google Sheet synced.", "cloud-check", "var(--success)");
+    }
+  } catch (error) {
+    updateSyncStatus(false);
+    showToast("Could not sync Google Sheet. Check the password.", "alert-triangle", "var(--danger)");
+  }
+}
+
+async function pushLocalNow() {
+  if (!unlockFromPasswordInput()) return;
+  
+  showToast("Pushing local vocabulary to Google Sheet...", "upload-cloud", "var(--primary)");
+  const didSync = await saveState();
+  if (didSync) {
+    showToast("Local vocabulary pushed to Google Sheet.", "cloud-check", "var(--success)");
+  } else {
+    showToast("Push failed. Check the saved password and Apps Script deployment.", "alert-triangle", "var(--danger)");
+  }
+}
+
+function unlockFromPasswordInput() {
+  const password = elements.syncPassword.value.trim();
+  const remember = elements.rememberPassword.checked;
+  
+  if (!password) {
+    showToast("Enter the sheet password first.", "lock", "var(--warning)");
+    return false;
+  }
+  
+  if (!SheetsService.unlockWithPassword(password, remember)) {
+    updateSyncStatus(false);
+    showToast("Password did not unlock the Sheet connection.", "lock-keyhole", "var(--danger)");
+    return false;
+  }
+  
+  if (remember) {
+    elements.syncPassword.value = password;
+  }
+  updateSyncStatus(true);
+  showToast(remember ? "Password saved for this device." : "Sheet unlocked for this session.", "unlock", "var(--success)");
+  return true;
+}
+
+function hydrateSyncControls() {
+  const savedPassword = SheetsService.getSavedPassword();
+  if (savedPassword) {
+    elements.syncPassword.value = savedPassword;
+    elements.rememberPassword.checked = true;
+  }
+  updateSyncStatus(SheetsService.isUnlocked());
+}
+
+function updateSyncStatus(isOnline) {
+  if (!elements.syncStatus) return;
+  elements.syncStatus.textContent = isOnline ? "Sheet connected" : "Offline";
+  elements.syncStatus.classList.toggle("online", Boolean(isOnline));
 }
 
 // Check and maintain streaks across daily calendar logs
@@ -210,6 +371,18 @@ function validateStreak() {
 // CORE DOM EVENT LISTENERS
 // ==========================================
 function setupEventListeners() {
+  // Google Sheet password controls
+  elements.btnSavePassword.addEventListener("click", unlockFromPasswordInput);
+  elements.btnSyncNow.addEventListener("click", syncNow);
+  elements.btnPushNow.addEventListener("click", pushLocalNow);
+  elements.btnClearPassword.addEventListener("click", () => {
+    SheetsService.clearSavedPassword();
+    elements.syncPassword.value = "";
+    elements.rememberPassword.checked = false;
+    updateSyncStatus(false);
+    showToast("Saved sheet password cleared.", "lock-keyhole", "var(--warning)");
+  });
+  
   // Theme Toggle Listener
   elements.themeToggle.addEventListener("change", () => {
     state.settings.theme = elements.themeToggle.checked ? "light" : "dark";
@@ -220,17 +393,30 @@ function setupEventListeners() {
   // Dashboard Action Session Triggers
   elements.btnStartLearn.addEventListener("click", () => startSession("learning"));
   elements.btnStartReview.addEventListener("click", () => startSession("review"));
+  elements.btnSmartReview.addEventListener("click", startSmartReview);
   
   // Flashcard Control Hooks
   elements.btnFlip.addEventListener("click", flipCard);
+  elements.btnSessionFlip.addEventListener("click", flipCard);
   elements.flashcard.addEventListener("click", (e) => {
-    if (!e.target.closest('button')) flipCard();
+    if (suppressNextCardClick) {
+      suppressNextCardClick = false;
+      return;
+    }
+    if (!cardGesture.dragging && !e.target.closest('button')) flipCard();
   });
+  elements.flashcard.addEventListener("pointerdown", handleCardPointerDown);
+  elements.flashcard.addEventListener("pointermove", handleCardPointerMove);
+  elements.flashcard.addEventListener("pointerup", handleCardPointerUp);
+  elements.flashcard.addEventListener("pointercancel", resetCardGesture);
   
   elements.btnCorrect.addEventListener("click", () => handleAnswer(true));
   elements.btnIncorrect.addEventListener("click", () => handleAnswer(false));
   elements.btnNext.addEventListener("click", nextCard);
+  elements.btnPrevCard.addEventListener("click", previousCard);
+  elements.btnSessionNext.addEventListener("click", nextCard);
   elements.btnExitSession.addEventListener("click", exitSession);
+  document.addEventListener("keydown", handleKeyboardShortcuts);
   
   // Filtering & Search Listeners
   elements.searchWords.addEventListener("input", updateWordsTable);
@@ -283,8 +469,30 @@ function getQueues() {
   return { learnQueue, reviewQueue };
 }
 
+function getSmartReviewQueue() {
+  const { reviewQueue } = getQueues();
+  if (reviewQueue.length > 0) {
+    return reviewQueue.slice(0, 10);
+  }
+  
+  const activeWords = state.words
+    .filter(word => word.stage > 0 && word.stage < 5)
+    .sort((a, b) => {
+      const stageDiff = (a.stage || 0) - (b.stage || 0);
+      if (stageDiff !== 0) return stageDiff;
+      return String(a.lastReviewed || "").localeCompare(String(b.lastReviewed || ""));
+    });
+  
+  if (activeWords.length > 0) {
+    return activeWords.slice(0, 10);
+  }
+  
+  return state.words.filter(word => word.stage === 0).slice(0, state.settings.dailyGoal || 5);
+}
+
 function updateUI() {
   const { learnQueue, reviewQueue } = getQueues();
+  const smartReviewQueue = getSmartReviewQueue();
   
   elements.headerWordCount.textContent = state.words.length;
   elements.streakCount.textContent = state.history.streak || 0;
@@ -292,9 +500,11 @@ function updateUI() {
   
   elements.learnQueueCount.textContent = `${learnQueue.length} words left`;
   elements.reviewQueueCount.textContent = `${reviewQueue.length} words left`;
+  elements.smartReviewCount.textContent = `${smartReviewQueue.length} suggested`;
   
   elements.btnStartLearn.disabled = learnQueue.length === 0;
   elements.btnStartReview.disabled = reviewQueue.length === 0;
+  elements.btnSmartReview.disabled = smartReviewQueue.length === 0;
   
   // Progress computation metrics
   const goal = state.settings.dailyGoal || 5;
@@ -336,6 +546,33 @@ function startSession(type) {
   elements.sessionTitle.textContent = type === "learning" ? "New Terms Learning Block" : "Spaced Repetition Review Deck";
   elements.dashboardView.classList.add("hidden");
   elements.sessionView.classList.remove("hidden");
+  elements.dashboardView.style.display = "none";
+  elements.sessionView.style.display = "flex";
+  
+  renderCurrentCard();
+}
+
+function startSmartReview() {
+  const targetWords = getSmartReviewQueue();
+  if (targetWords.length === 0) {
+    showToast("No words are ready for smart review.", "check-circle", "var(--success)");
+    return;
+  }
+  
+  currentSession = {
+    type: "smart",
+    words: shuffleArray([...targetWords]),
+    currentIndex: 0,
+    flashcardFlipped: false,
+    answers: {},
+    quizAttempts: {}
+  };
+  
+  elements.sessionTitle.textContent = "Smart Review Deck";
+  elements.dashboardView.classList.add("hidden");
+  elements.sessionView.classList.remove("hidden");
+  elements.dashboardView.style.display = "none";
+  elements.sessionView.style.display = "flex";
   
   renderCurrentCard();
 }
@@ -346,11 +583,12 @@ function renderCurrentCard() {
   
   currentSession.flashcardFlipped = false;
   elements.flashcard.classList.remove("flipped");
+  setFlashcardBackVisible(false);
   
   // Inject details into front element panels
   elements.cardWord.textContent = wordObj.word;
-  elements.cardPos.textContent = wordObj.pos;
-  elements.cardDefinition.textContent = wordObj.definition;
+  elements.cardPos.textContent = wordObj.pos || "";
+  elements.cardDefinition.textContent = wordObj.definition || "";
   elements.cardExample.textContent = wordObj.example ? `"${wordObj.example}"` : "";
   
   // Render Stage Badging labels
@@ -366,33 +604,66 @@ function renderCurrentCard() {
   elements.sessionProgressBar.style.width = `${progressPercent}%`;
   
   elements.btnFlip.classList.remove("hidden");
+  elements.btnFlip.textContent = "Show Answer";
   elements.actionButtons.classList.add("hidden");
+  elements.actionButtons.style.display = "none";
   elements.btnNext.classList.add("hidden");
+  elements.btnPrevCard.disabled = currentSession.currentIndex === 0;
+  elements.btnSessionNext.disabled = currentSession.currentIndex >= currentSession.words.length - 1;
 }
 
 function flipCard() {
-  if (currentSession.flashcardFlipped) return;
+  if (!currentSession.type) return;
+  setFlashcardBackVisible(!currentSession.flashcardFlipped);
+}
+
+function setFlashcardBackVisible(isVisible) {
+  currentSession.flashcardFlipped = Boolean(isVisible);
+  elements.flashcard.classList.toggle("flipped", isVisible);
+  const wordObj = currentSession.words[currentSession.currentIndex];
+  const alreadyAnswered = Boolean(wordObj && currentSession.answers[wordObj.word] !== undefined);
   
-  currentSession.flashcardFlipped = true;
-  elements.flashcard.classList.add("flipped");
+  const backContent = elements.flashcard.querySelector(".back-content");
+  if (backContent) {
+    backContent.style.display = isVisible ? "block" : "none";
+    backContent.style.transform = "none";
+    backContent.style.opacity = isVisible ? "1" : "0";
+  }
   
-  elements.btnFlip.classList.add("hidden");
-  elements.actionButtons.classList.remove("hidden");
+  elements.cardWord.style.display = isVisible ? "none" : "";
+  elements.cardPos.style.display = isVisible ? "none" : "";
+  elements.btnFlip.classList.remove("hidden");
+  elements.btnFlip.textContent = isVisible ? "Show Term" : "Show Answer";
+  
+  if (isVisible && !alreadyAnswered) {
+    elements.actionButtons.classList.remove("hidden");
+    elements.actionButtons.style.display = "flex";
+  } else {
+    elements.actionButtons.classList.add("hidden");
+    elements.actionButtons.style.display = "none";
+  }
+  
+  elements.btnNext.classList.add("hidden");
 }
 
 function handleAnswer(isCorrect) {
   const wordObj = currentSession.words[currentSession.currentIndex];
+  if (!wordObj || currentSession.answers[wordObj.word] !== undefined) return;
   currentSession.answers[wordObj.word] = isCorrect;
   
   elements.actionButtons.classList.add("hidden");
+  elements.actionButtons.style.display = "none";
   elements.btnNext.classList.remove("hidden");
   
-  // Automatic processing if choice matches criteria directly
-  nextCard();
+  processCurrentAnswer();
 }
 
-function nextCard() {
+function processCurrentAnswer() {
   const wordObj = currentSession.words[currentSession.currentIndex];
+  if (!wordObj) {
+    finishSession();
+    return;
+  }
   const isCorrect = currentSession.answers[wordObj.word];
   
   // Leitner SRS calculation core logic
@@ -412,9 +683,9 @@ function nextCard() {
   wordObj.nextReviewDate = formatDateString(nextDate);
   
   // Increment history totals
-  state.history.reviewsToday += 1;
-  if (isCorrect) state.history.correctToday += 1;
-  else state.history.incorrectToday += 1;
+  state.history.reviewsToday = (state.history.reviewsToday || 0) + 1;
+  if (isCorrect) state.history.correctToday = (state.history.correctToday || 0) + 1;
+  else state.history.incorrectToday = (state.history.incorrectToday || 0) + 1;
   
   currentSession.currentIndex += 1;
   
@@ -425,9 +696,126 @@ function nextCard() {
   }
 }
 
+function nextCard() {
+  if (!currentSession.type) return;
+  if (currentSession.currentIndex < currentSession.words.length - 1) {
+    currentSession.currentIndex += 1;
+    renderCurrentCard();
+  } else {
+    showToast("You are on the last card. Mark it correct or incorrect to finish.", "info", "var(--primary)");
+  }
+}
+
+function previousCard() {
+  if (!currentSession.type || currentSession.currentIndex === 0) return;
+  currentSession.currentIndex -= 1;
+  renderCurrentCard();
+}
+
+function answerCurrentCard(isCorrect) {
+  if (!currentSession.type) return;
+  if (!currentSession.flashcardFlipped) {
+    flipCard();
+    return;
+  }
+  handleAnswer(isCorrect);
+}
+
+function handleKeyboardShortcuts(event) {
+  if (!currentSession.type) return;
+  const activeTag = document.activeElement?.tagName?.toLowerCase();
+  if (["input", "textarea", "select"].includes(activeTag)) return;
+  
+  if (event.key === " " || event.key.toLowerCase() === "f") {
+    event.preventDefault();
+    flipCard();
+  } else if (event.key === "ArrowUp" || event.key === "2") {
+    event.preventDefault();
+    answerCurrentCard(true);
+  } else if (event.key === "ArrowDown" || event.key === "1") {
+    event.preventDefault();
+    answerCurrentCard(false);
+  } else if (event.key === "ArrowLeft") {
+    event.preventDefault();
+    previousCard();
+  } else if (event.key === "ArrowRight" || event.key === "Enter") {
+    event.preventDefault();
+    nextCard();
+  } else if (event.key === "Escape") {
+    event.preventDefault();
+    exitSession();
+  }
+}
+
+function handleCardPointerDown(event) {
+  if (!currentSession.type) return;
+  cardGesture = {
+    pointerId: event.pointerId,
+    startX: event.clientX,
+    startY: event.clientY,
+    currentX: event.clientX,
+    currentY: event.clientY,
+    dragging: false
+  };
+  elements.flashcard.setPointerCapture(event.pointerId);
+}
+
+function handleCardPointerMove(event) {
+  if (cardGesture.pointerId !== event.pointerId) return;
+  
+  const deltaX = event.clientX - cardGesture.startX;
+  const deltaY = event.clientY - cardGesture.startY;
+  cardGesture.currentX = event.clientX;
+  cardGesture.currentY = event.clientY;
+  
+  if (Math.abs(deltaX) > 12 || Math.abs(deltaY) > 12) {
+    cardGesture.dragging = true;
+    const rotate = deltaX / 28;
+    elements.flashcard.style.transform = `translate(${deltaX * 0.22}px, ${deltaY * 0.12}px) rotate(${rotate}deg)`;
+    elements.flashcard.classList.toggle("swipe-correct", deltaX > 70);
+    elements.flashcard.classList.toggle("swipe-again", deltaX < -70);
+  }
+}
+
+function handleCardPointerUp(event) {
+  if (cardGesture.pointerId !== event.pointerId) return;
+  
+  const deltaX = cardGesture.currentX - cardGesture.startX;
+  const deltaY = cardGesture.currentY - cardGesture.startY;
+  const wasDragging = cardGesture.dragging;
+  resetCardGesture();
+  
+  if (!wasDragging) return;
+  suppressNextCardClick = true;
+  
+  if (Math.abs(deltaX) > 90 && Math.abs(deltaX) > Math.abs(deltaY)) {
+    answerCurrentCard(deltaX > 0);
+  } else if (deltaY < -80 || deltaY > 80) {
+    flipCard();
+  }
+  
+  setTimeout(() => {
+    suppressNextCardClick = false;
+  }, 250);
+}
+
+function resetCardGesture() {
+  elements.flashcard.style.transform = "";
+  elements.flashcard.classList.remove("swipe-correct", "swipe-again");
+  cardGesture = {
+    pointerId: null,
+    startX: 0,
+    startY: 0,
+    currentX: 0,
+    currentY: 0,
+    dragging: false
+  };
+}
+
 function finishSession() {
   const todayStr = getTodayDateString();
   state.history.lastStudyDate = todayStr;
+  if (!state.history.completedDates) state.history.completedDates = [];
   
   if (!state.history.completedDates.includes(todayStr)) {
     const dailyGoal = state.settings.dailyGoal || 5;
@@ -449,6 +837,9 @@ function exitSession() {
   currentSession = { type: null, words: [], currentIndex: 0, flashcardFlipped: false, answers: {}, quizAttempts: {} };
   elements.sessionView.classList.add("hidden");
   elements.dashboardView.classList.remove("hidden");
+  elements.sessionView.style.display = "none";
+  elements.dashboardView.style.display = "";
+  setFlashcardBackVisible(false);
   saveState();
   updateUI();
 }
@@ -506,7 +897,7 @@ function updateWordsTable() {
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
-function handleAddWord(e) {
+async function handleAddWord(e) {
   e.preventDefault();
   
   const wordInput = document.getElementById("new-word-name").value.trim();
@@ -538,12 +929,20 @@ function handleAddWord(e) {
   };
   
   state.words.push(newWordObj);
-  saveState();
   updateUI();
   
   elements.addWordForm.reset();
   elements.addWordDialog.close();
-  if (typeof showToast === 'function') showToast(`"${wordInput}" successfully introduced to bank.`, "plus-circle", "var(--success)");
+  if (typeof showToast === 'function') showToast(`"${wordInput}" added locally. Syncing Sheet...`, "plus-circle", "var(--primary)");
+  
+  const didSync = await saveState();
+  if (typeof showToast === 'function') {
+    if (didSync) {
+      showToast(`"${wordInput}" added and sent to Google Sheet.`, "cloud-check", "var(--success)");
+    } else {
+      showToast(`"${wordInput}" is local only. Save the Sheet password, then press Sync Now.`, "cloud-off", "var(--warning)");
+    }
+  }
 }
 
 function deleteWord(wordName) {
@@ -572,6 +971,8 @@ window.showToast = function(message, iconName = "info", color = "var(--primary)"
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  hydrateSyncControls();
+  
   if (typeof showToast === 'function') {
     showToast("Syncing database profiles...", "refresh-cw", "var(--primary)");
   }

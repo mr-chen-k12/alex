@@ -18,6 +18,7 @@
       </div>
       <div class="header-stats flex-center gap-md">
         <span>Total Words: <strong id="header-word-count">0</strong></span>
+        <span id="sync-status" class="sync-status">Offline</span>
         <label class="theme-switch flex-center">
           <input type="checkbox" id="theme-toggle">
           <i id="theme-icon" data-lucide="sun"></i>
@@ -29,6 +30,23 @@
   <main style="padding: 2rem; max-width: 1200px; margin: 0 auto;">
     
     <div id="dashboard-view">
+      <section class="sync-panel">
+        <div>
+          <h2>Google Sheet Sync</h2>
+          <p>Enter the sheet password once. It can be remembered on this device and reused automatically.</p>
+        </div>
+        <div class="sync-controls">
+          <input type="password" id="sync-password" placeholder="Sheet password" autocomplete="current-password">
+          <label class="remember-row">
+            <input type="checkbox" id="remember-password">
+            <span>Remember</span>
+          </label>
+          <button id="btn-save-password">Save</button>
+          <button id="btn-sync-now">Sync Now</button>
+          <button id="btn-push-now">Push Local</button>
+          <button id="btn-clear-password" title="Forget the saved sync password"><i data-lucide="lock-keyhole"></i></button>
+        </div>
+      </section>
       
       <section class="scoreboard" style="display: flex; gap: 2rem; margin-bottom: 2rem;">
         <div class="stat-card" style="flex: 1; padding: 1.5rem; background: var(--card-bg); border-radius: 8px;">
@@ -55,6 +73,11 @@
           <h2>Daily Review</h2>
           <p id="review-queue-count">0 words left</p>
           <button id="btn-start-review" style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: var(--secondary); color: white; border: none; border-radius: 4px; cursor: pointer;">Start Review</button>
+        </div>
+        <div class="panel" style="flex: 1; padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
+          <h2>Smart Review</h2>
+          <p id="smart-review-count">0 suggested</p>
+          <button id="btn-smart-review" style="margin-top: 1rem; padding: 0.75rem 1.5rem; background: var(--warning); color: #111827; border: none; border-radius: 4px; cursor: pointer;">Smart Review</button>
         </div>
       </section>
 
@@ -105,8 +128,11 @@
         <div id="session-progress-bar" style="width: 0%; height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.3s;"></div>
       </div>
       <p id="session-progress-text" style="margin-bottom: 2rem; color: var(--text-muted);">Card 0 of 0</p>
+      <p class="shortcut-hint">Space/F: flip. 1 or Down: again. 2 or Up: correct. Left/Right: previous/next.</p>
 
       <div id="flashcard" style="width: 100%; max-width: 600px; min-height: 350px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2rem; cursor: pointer; transition: transform 0.3s;">
+        <div class="swipe-label swipe-label-left">Again</div>
+        <div class="swipe-label swipe-label-right">Correct</div>
         <span id="card-stage-badge" class="stage-badge stage-0" style="position: absolute; top: 1rem; right: 1rem; font-size: 0.8rem; padding: 0.2rem 0.5rem; border-radius: 12px; background: rgba(255,255,255,0.1);">Stage 0</span>
         
         <h1 id="card-word" style="font-size: 3.5rem; margin-bottom: 0.5rem;">Word</h1>
@@ -128,6 +154,11 @@
         </div>
         
         <button id="btn-next" class="hidden" style="display: none; padding: 1rem 3rem; font-size: 1.1rem; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; width: 100%;">Next Card</button>
+      </div>
+      <div class="session-nav">
+        <button id="btn-prev-card"><i data-lucide="chevron-left"></i> Previous</button>
+        <button id="btn-session-flip"><i data-lucide="rotate-3d"></i> Flip</button>
+        <button id="btn-session-next">Next <i data-lucide="chevron-right"></i></button>
       </div>
 
     </div>
@@ -172,7 +203,6 @@
   <style>
     .hidden { display: none !important; }
     #flashcard.flipped .back-content { display: block; }
-    #flashcard.flipped { transform: rotateX(0deg); /* Or add actual 3d transforms in styles.css */ }
     dialog::backdrop { background: rgba(0,0,0,0.7); }
     .toast.show { opacity: 1; }
   </style>
