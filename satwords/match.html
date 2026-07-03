@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAT VocabMaster - Drag Match</title>
+  <meta name="description" content="Drag and drop SAT vocabulary words to their matching definitions.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container flex-center" style="justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid var(--border-color);">
+      <div class="logo flex-center gap-sm">
+        <i data-lucide="layout-dashboard"></i>
+        <h2>Drag Match</h2>
+      </div>
+      <div class="header-stats flex-center gap-md">
+        <a href="index.html" class="page-link">Flashcards</a>
+        <span id="sync-status" class="sync-status">Offline</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="match-main">
+    <section class="sync-panel" id="match-init-panel">
+      <div>
+        <h2>Initialize Matching Sync</h2>
+        <p>This creates a one-time <strong>MatchStats</strong> tab in your Google Sheet for game scores, attempts, and word-level matching history.</p>
+      </div>
+      <div class="sync-controls">
+        <input type="password" id="sync-password" placeholder="Sheet password" autocomplete="current-password">
+        <label class="remember-row">
+          <input type="checkbox" id="remember-password">
+          <span>Remember</span>
+        </label>
+        <button id="btn-initialize-match">Initialize</button>
+        <button id="btn-skip-init">Use Local</button>
+      </div>
+    </section>
+
+    <section class="match-toolbar">
+      <div>
+        <h1>Vocabulary Match</h1>
+        <p>Match each word to its definition. Drag cards, or tap a word and then tap a definition on mobile.</p>
+      </div>
+      <div class="match-actions">
+        <select id="match-source">
+          <option value="mastered">Mastered Words</option>
+          <option value="smart">Smart Mix</option>
+          <option value="custom">Custom Words</option>
+          <option value="learning">Learning Words</option>
+          <option value="all">All Words</option>
+        </select>
+        <button id="btn-new-round"><i data-lucide="shuffle"></i> New Round</button>
+        <button id="btn-sync-results"><i data-lucide="upload-cloud"></i> Push Results</button>
+      </div>
+    </section>
+
+    <section class="match-scoreboard">
+      <div class="match-stat">
+        <span id="match-correct-count">0</span>
+        <small>Correct</small>
+      </div>
+      <div class="match-stat">
+        <span id="match-attempt-count">0</span>
+        <small>Attempts</small>
+      </div>
+      <div class="match-stat">
+        <span id="match-round-size">0</span>
+        <small>Cards</small>
+      </div>
+      <div class="match-stat">
+        <span id="match-sync-state">Local</span>
+        <small>Sync</small>
+      </div>
+    </section>
+
+    <section class="match-board">
+      <div class="match-column">
+        <h2>Words</h2>
+        <div id="word-card-list" class="match-card-list"></div>
+      </div>
+      <div class="match-column">
+        <h2>Definitions</h2>
+        <div id="definition-drop-list" class="match-card-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="notification-toast" style="position: fixed; bottom: 20px; right: 20px; background: var(--card-bg); border: 1px solid var(--border-color); padding: 1rem 1.5rem; border-radius: 8px; display: flex; align-items: center; gap: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.3s;">
+    <i id="toast-icon" data-lucide="info"></i>
+    <span id="toast-message">Notification message</span>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="words.js"></script>
+  <script src="sheetsService.js"></script>
+  <script src="match.js"></script>
+</body>
+</html>
