@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 21</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #harvard-reward {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff;
+        border: 3px double #a51c30;
+        border-radius: 8px;
+        animation: pullUp 0.5s ease-out;
+    }
+    #harvard-reward img {
+        width: 160px;
+        height: auto;
+        margin: 15px auto;
+        display: block;
+    }
+    .harvard-text {
+        color: #a51c30;
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    @keyframes pullUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        #harvard-reward {
+            display: block !important;
+            border: 2px solid #a51c30 !important;
+        }
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 21</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        
+        <div id="harvard-reward">
+            <div class="harvard-text">★ FLAWLESS ACADEMIC EXCELLENCE ★</div>
+            <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard University Crest">
+            <p style="color: #555; font-style: italic; font-weight: bold; margin-top: 5px;">You have successfully earned the Harvard University verification crest for achieving a perfect 10/10 score.</p>
+        </div>
+
+        <button onclick="window.print()" style="margin-top: 15px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "Economic historians traditionally viewed the rapid expansion of early merchant guilds as an unregulated, haphazard phenomenon driven solely by speculative self-interest. However, Dr. Alistair Vance's recent review of archival ledger systems suggests that these networks were remarkably _______; guild leadership meticulously cross-referenced transaction weights and enforced uniform credit caps across disparate regions.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["volatile", "structured", "circuitous", "arbitrary"],
+            correctAnswer: 1,
+            explanation: "'Structured' means organized, orderly, or arranged according to a plan. The contrast word 'However' sets up an opposition to the traditional view of the guilds as 'unregulated' and 'haphazard.' The description that leadership 'meticulously cross-referenced' and 'enforced uniform credit caps' directly confirms that the networks were structured."
+        },
+        {
+            passage: "For decades, urban ecologists assumed that green roofs—vegetated rooftop surfaces—served primarily to lower building cooling costs through insulation. However, a recent comprehensive study across multiple temperate cities revealed that these installations function primarily as crucial bio-corridors for migratory invertebrates. The researchers recorded an unexpectedly diverse array of pollinator species nesting on roofs hundreds of feet above the ground, maintaining genetic connectivity between isolated urban parks. This finding reframes the ecological valuation of sustainable urban architecture.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Green roofs are structurally fragile and require frequent chemical interventions.",
+                "New research indicates that green roofs provide vital connectivity for migratory insects rather than merely serving as building insulation.",
+                "Invertebrates are incapable of surviving in ecosystems lacking direct soil access.",
+                "Sustainable architecture has completely eliminated the urban heat island effect."
+            ],
+            correctAnswer: 1,
+            explanation: "The text shifts from an old assumption (green roofs are mainly for thermal building insulation) to a new ecological discovery (they serve as bio-corridors that support nesting and genetic connectivity for migratory insects). Option B accurately presents this central idea."
+        },
+        {
+            passage: "Art historian Dr. Chloe Mercer contends that in his late-career landscapes, J.M.W. Turner uses dramatic brushstroke textures—rather than precise figurative outlines—to evoke the overwhelming chaos of industrial pollution, deliberately blurring the boundaries between mechanical smoke and natural fog whenever steamships appear.",
+            prompt: "Which quotation from a literary analysis of Turner's work best supports Dr. Mercer's contention?",
+            options: [
+                "\"An analysis of Turner's youthful sketches reveals a rigid conformity to the classical, geometric principles of architectural drafting.\"",
+                "\"In *Rain, Steam, and Speed*, the geometric form of the locomotive dissolves entirely into a thick, impasto swirl of gray and ochre paint, physically merging the engine’s exhaust with the storm clouds before the eye can distinguish the metal framework.\"",
+                "\"Turner's private correspondence indicates a profound, lifelong disdain for the rapidly expanding factories of northern England.\"",
+                "\"Critics of the period routinely praised Turner for his clear, lifelike depictions of historical maritime battles and traditional rigging.\""
+            ],
+            correctAnswer: 1,
+            explanation: "Dr. Mercer asserts that Turner relies on texture instead of clear outlines to blur the line between industrial smoke and natural elements. Option B provides specific, matching evidence by describing how a train's geometric form dissolves into a thick swirl of paint that physically merges exhaust smoke with clouds."
+        },
+        {
+            passage: "In behavioral biology, the \"cognitive buffer\" hypothesis proposes that a larger brain relative to body size evolved to help species manage environmental volatility by facilitating flexible behavior. To evaluate this, a team analyzed survival rates during severe droughts across various bird species. They discovered that species with higher brain-to-body mass ratios exhibited novel foraging techniques—such as dropping hard nuts onto rocks or digging for dormant insects—and maintained stable populations, while small-brained species experienced precipitous declines. Because adapting behavior to extract hidden resources during crises directly mitigates environmental shocks, it follows that an elevated relative brain size likely ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "confers a distinct survival advantage during periods of severe ecological disruption.",
+                "causes a metabolic vulnerability that leads to rapid extinction in arid climates.",
+                "prevents avian species from accurately navigating long-distance seasonal migrations.",
+                "requires individuals to completely abandon complex social group structures."
+            ],
+            correctAnswer: 0,
+            explanation: "The passage notes that birds with higher relative brain sizes used flexible foraging to survive severe droughts and keep their populations stable, whereas small-brained species died off. Therefore, it logically follows that a larger relative brain size provides a survival advantage during ecological shocks."
+        },
+        {
+            passage: "Although the political candidate publicly dismissed her opponent's economic recovery plan as completely _______, her senior advisors privately admitted that its core provisions were based on highly credible data from the central bank.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["fallacious", "meticulous", "prophetic", "unalterable"],
+            correctAnswer: 0,
+            explanation: "'Fallacious' means based on a mistaken belief; false or misleading. The contrast word 'Although' balances the candidate's public criticism against her advisors' private admission that the plan was actually based on 'highly credible data'—meaning she publicly alleged it was false."
+        },
+        {
+            passage: "Conservation aquaculture—the practice of breeding endangered marine life for wild release—has emerged as a vital tool for restoring depleted coral reef fisheries. Traditional conservation strategies rely on strict fishing bans, which often fail due to weak enforcement and local economic pushback. Aquaculture initiatives, conversely, cultivate juvenile white abalone in land-based nurseries before strategically placing them on reefs. These captive-reared individuals actively graze on overgrowing algae, clearing benthic space for coral larvae to attach and thrive. Consequently, this targeted intervention directly accelerates habitat recovery while bypassing the socio-political friction of restrictive zoning.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It outlines a conservation strategy, contrasts it with a traditional method to illustrate its efficacy, and explains its ecological mechanism and benefits.",
+                "It lists several coastal pollution hazards, blames commercial shipping, and calls for heavier taxation.",
+                "It documents a historical disagreement between two marine biologists and presents a political compromise.",
+                "It details the chronological evolution of commercial fishing equipment over the past century."
+            ],
+            correctAnswer: 0,
+            explanation: "The text introduces conservation aquaculture, contrasts it against traditional fishing bans to demonstrate why it works better, and describes the biological mechanism (abalone eating algae to clear reef space) along with its structural benefits. This matches option A."
+        },
+        {
+            passage: "Text 1\nThe introduction of universal basic income (UBI)—regular cash transfers distributed to all citizens regardless of employment status—would provide an uncompromised foundation for economic resilience. By directly empowering individuals, UBI eliminates the administrative costs of traditional welfare systems and guarantees financial security, allowing citizens to pursue higher education or entrepreneurship free from the immediate threat of poverty.\n\nText 2\nProponents of universal basic income champion its simplicity while completely overlooking the macroeconomic imbalances it risks triggering. Distributing massive, unconditional cash injections across an entire population can rapidly fuel consumer demand far beyond production capacity, driving up the costs of essential goods and services. Ultimately, rather than alleviating poverty, an unmitigated UBI model could catalyze chronic inflation that disproportionately erodes the purchasing power of the exact low-income households it was designed to support.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the assertion in Text 1 that UBI 'guarantees financial security'?",
+            options: [
+                "By claiming that cash transfers are too logistically complex to distribute digitally.",
+                "By pointing out that the resulting market inflation could drive up the cost of living, thereby undermining the actual financial security of low-income recipients.",
+                "By suggesting that welfare programs should be replaced with physical food vouchers rather than currency.",
+                "By asserting that citizen entrepreneurship has no measurable impact on a nation's gross domestic product."
+            ],
+            correctAnswer: 1,
+            explanation: "Text 1 states that UBI guarantees financial security. Text 2 opposes this by explaining that unconditional cash transfers will fuel excess demand and cause chronic inflation, driving up the costs of basic goods. Thus, the inflation would erode purchasing power and undermine that promised security, as stated in option B."
+        },
+        {
+            passage: "Planetary scientists analyzing data from the James Webb Space Telescope examined the atmospheric composition of a distant exoplanet. Unlike older spectroscopic methods, which struggled to filter out starlight contamination and could only identify abundant gases like hydrogen, the advanced observatory isolates high-resolution infrared signatures to detect trace chemical components. The telescope successfully identified distinct traces of water vapor, methane, and carbon dioxide in the planet’s upper atmosphere without requiring direct imaging. Because this precise methodology allows scientists to characterize complex atmospheric chemistry on distant worlds with unprecedented clarity, it follows that future exoplanetary atmospheric surveys will likely ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "revert to ground-based visual telescopes to save operational costs.",
+                "rely increasingly on high-resolution infrared spectroscopy to assess habitability indicators on remote planets.",
+                "conclude that all exoplanets share an identical chemical composition.",
+                "rely entirely on fictional simulations rather than empirical observational data."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage notes that the advanced infrared spectroscopy technique cleanly filters out starlight contamination to identify chemical indicators like water vapor and methane on far-away worlds. It follows logically that future surveys will rely more on this specific technology to find habitability indicators, matching option B."
+        },
+        {
+            passage: "In organizational sociology, the \"innovation paradox\" describes how established corporations often fail to develop groundbreaking products because their rigid, optimized operational workflows actively suppress experimental risk-taking. To explore this phenomenon, researchers tracked product development pipelines across dozens of tech firms. **Using internal performance metrics, the sociologists observed that teams evaluated on strict quarterly efficiency targets consistently abandoned novel, unproven concepts in favor of minor updates to existing products, whereas teams with flexible, long-term timelines successfully launched highly disruptive technologies.** This clear divergence underscores how traditional corporate management structures can inadvertently stifle creative breakthroughs.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+            options: [
+                "It identifies a statistical error in a previous study on corporate finance.",
+                "It presents specific empirical evidence from the tracking study to demonstrate how short-term efficiency pressures lead teams to avoid innovation.",
+                "It provides a historical timeline of when operational workflows were first automated.",
+                "It argues that quarterly performance reviews are beneficial for overall employee morale."
+            ],
+            correctAnswer: 2,
+            explanation: "The text outlines a theory about how corporate workflows kill innovation. The bolded sentence provides the concrete empirical results of the study (comparing teams with quarterly efficiency metrics vs. teams with long-term flexibility), proving the hypothesis true. Option B correctly identifies this function."
+        },
+        {
+            passage: "While the archaeologist's public lectures were notoriously _______, often spending hours describing a single pottery shard or parsing minute variations in soil layer color, his summary articles were exceptionally concise, highlighting only the overarching historical significance of the site.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["verbose", "laconic", "superficial", "erratic"],
+            correctAnswer: 0,
+            explanation: "'Verbose' means using or expressed in more words than are needed; wordy. The sentence relies on a contrast using 'While' to balance his summary articles (which were 'exceptionally concise') against his public lectures, which were long-winded and exhaustively detailed (verbose)."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 21</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${(score/quizData.length)*100}%)`;
+        
+        if (score === quizData.length) {
+            document.getElementById('harvard-reward').style.display = 'block';
+        }
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
