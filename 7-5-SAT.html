@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 22 (Comprehensive 15-Question Prep)</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #harvard-reward {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff;
+        border: 3px double #a51c30;
+        border-radius: 8px;
+        animation: pullUp 0.5s ease-out;
+    }
+    #harvard-reward img {
+        width: 160px;
+        height: auto;
+        margin: 15px auto;
+        display: block;
+    }
+    .harvard-text {
+        color: #a51c30;
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    @keyframes pullUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        #harvard-reward {
+            display: block !important;
+            border: 2px solid #a51c30 !important;
+        }
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 22</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 15</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        
+        <div id="harvard-reward">
+            <div class="harvard-text">★ FLAWLESS ACADEMIC EXCELLENCE ★</div>
+            <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard University Crest">
+            <p style="color: #555; font-style: italic; font-weight: bold; margin-top: 5px;">You have successfully earned the Harvard University verification crest for achieving a perfect 15/15 score.</p>
+        </div>
+
+        <button onclick="window.print()" style="margin-top: 15px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "While superficial ocean layers are teeming with highly dynamic, solar-dependent life, the abyssal zones present an environmental framework traditionally deemed entirely _______ to complex biological structures, characterized by crushing pressures and absolute aphotic isolation.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["salubrious", "inimical", "ubiquitous", "attenuated"],
+            correctAnswer: 1,
+            explanation: "'Inimical' means harmful, hostile, or unfriendly. The contrast indicator 'While' pairs the 'highly dynamic, solar-dependent life' of top ocean layers against the brutal, life-threatening conditions of the deep sea ('crushing pressures and absolute aphotic isolation'), indicating that the deep-sea framework is hostile or inimical to life."
+        },
+        {
+            passage: "Linguists historically inferred that the rate of vocabulary shift in isolated indigenous communities was exceptionally accelerated due to the absence of codifying written systems. However, a recent computational comparative study of several unwritten Amazonian dialects led by Dr. Elena Silva mapped semantic divergences across multi-generational phonological records. Silva’s team discovered that core functional vocabulary remained structurally immutable over four centuries, preserved by highly disciplined oral transmission frameworks and conservative tribal narrative rituals. This discovery shifts contemporary understanding of cultural linguistic stability.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Unwritten languages lack the structural complexity necessary to evolve functional scientific metrics.",
+                "Computational linguistic tools are highly unreliable when parsing conversational phonological tracking models.",
+                "Rigid oral traditions can ensure long-term structural and lexical stability in languages lacking written forms, challenging past assumptions.",
+                "Amazonian communities are actively abandoning local dialects in favor of highly standardized regional languages."
+            ],
+            correctAnswer: 2,
+            explanation: "The passage sets up a contrast between an old linguistic belief (unwritten languages drift/change very quickly) and Dr. Silva's discovery (oral traditions kept the core vocabulary unchanged for 400 years). This is accurately synthesized in option C."
+        },
+        {
+            passage: "Architectural historian Dr. Liam Vance asserts that ancient Roman engineers consciously altered the volcanic ash ratios in their concrete formulations not merely for structural endurance, but specifically to adapt to localized seismic contexts—using more elastic chemical combinations in high-risk fault zones.",
+            prompt: "Which quotation from an engineering analysis best supports Dr. Vance's assertion?",
+            options: [
+                "\"The massive concrete foundations of coastal Roman harbors match the chemical composition of inland aqueducts built during the same decade.\"",
+                "\"In the Apennine fault zone, architectural core samples reveal a localized, highly irregular concentration of leucite-rich ash that increased the concrete's tensile elasticity by 40%, a material adjustment conspicuously absent from structurally identical ruins located in seismically stable regions.\"",
+                "\"The structural integrity of Roman domestic masonry deteriorated rapidly when subjected to intense moisture variations.\"",
+                "\"Ancient documents indicate that Roman stonecutters were paid significantly more than concrete laborers.\""
+            ],
+            correctAnswer: 1,
+            explanation: "Dr. Vance claims that Roman engineers tailored concrete blends locally to increase flexibility (elasticity) in seismic hot spots. Option B provides concrete proof by showing that samples from a fault zone had a specialized ash concentration that increased elasticity by 40%, a change not found in stable regions."
+        },
+        {
+            passage: "In quantum computing research, the operational fidelity of a processor is heavily bottlenecked by environmental decoherence, which introduces stray energetic noise that scrambles fragile qubit states. To minimize these processing disruptions, hardware engineers apply complex error-correction codes that distribute logical data across arrays of entangled physical qubits. However, as the physical qubit count scales up, the background computational overhead required to constantly monitor and correct these errors increases exponentially. Consequently, if an engineering pipeline expands physical arrays without simultaneously reducing the native error rates of individual qubits, the processor will likely ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "become entirely consumed by its own error-correction overhead, rendering it computationally non-viable.",
+                "experience an immediate and absolute reduction in background electrical consumption metrics.",
+                "successfully process complex computational equations at speeds surpassing the laws of thermodynamics.",
+                "transition completely from silicon hardware substrates to purely biological neural networks."
+            ],
+            correctAnswer: 0,
+            explanation: "The text establishes that scaling up physical qubits requires an exponential increase in background computational work (overhead) to track and fix errors. If engineers add qubits without fixing individual qubit error rates, the system will become overwhelmed by its own error-correction processing needs, matching option A."
+        },
+        {
+            passage: "Although early economic models assumed consumer purchasing patterns were highly _______, driven by a series of unpredictable and erratic emotional impulses, modern big-data behavioral analysis reveals that these choices are remarkably structured and mathematically predictable.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["capricious", "immutable", "methodical", "parsimonious"],
+            correctAnswer: 0,
+            explanation: "'Capricious' means given to sudden and unaccountable changes of mood or behavior; erratic and unpredictable. The contrast word 'Although' and the clues 'unpredictable' and 'erratic emotional impulses' pinpoint capricious as the correct descriptor for past assumptions."
+        },
+        {
+            passage: "Sociologists studying contemporary urban layouts frequently analyze the concept of spatial mismatch, which describes the geographic separation between suburban employment hubs and low-income inner-city residential zones. Traditional municipal configurations consolidated commercial factories within downtown urban cores, allowing workers to easily commute via walking or centralized streetcar systems. Modern zoning dynamics, conversely, prioritize sprawling commercial tech parks located in remote suburban perimeters. Because high-density public transit frameworks rarely extend past city borders, inner-city populations lacking private vehicles face extreme systemic barriers when trying to secure stable employment. Thus, macro-economic shifts in corporate land development directly perpetuate cyclical urban poverty.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It defines a sociological concept, contrasts historical and modern urban layouts to clarify its manifestation, and outlines the structural socio-economic consequences.",
+                "It lists several infrastructure hazards, blames city engineers, and demands immediate tax adjustments.",
+                "It details a bitter corporate dispute between two developers and proposes an ecological compromise.",
+                "It traces the chronological evolution of streetcar mechanical components across several centuries."
+            ],
+            correctAnswer: 0,
+            explanation: "The text starts by introducing 'spatial mismatch' (a sociological concept), contrasts historical downtown centers with modern suburban commercial parks to illustrate it, and details the socio-economic results (transit barriers fueling systemic urban poverty). This exactly mirrors option A."
+        },
+        {
+            passage: "Text 1\nThe implementation of robotic automation within industrial manufacturing facilities represents an uncompromised boon for the blue-collar workforce. By reallocating repetitive, physically hazardous tasks—such as heavy metal stamping and chemical welding—to precise mechanical arms, automation drastically reduces workplace injury rates while elevating human workers into highly skilled oversight and operational management roles.\n\nText 2\nProponents of manufacturing automation praise its safety improvements while completely ignoring the structural economic displacement it inflicts. When a factory automates its assembly line, the total number of human personnel required drops precipitously. The newly created oversight roles are highly technical and few in number; they are inaccessible to the vast majority of displaced line workers without extensive, self-funded retraining. Ultimately, rather than elevating laborers, rapid automation strips vulnerable demographics of stable employment and exacerbates income inequality.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the assertion in Text 1 that automation 'elevates human workers into highly skilled oversight... roles'?",
+            options: [
+                "By arguing that mechanical robotic arms experience frequent calibration errors during chemical welding tasks.",
+                "By pointing out that these oversight roles are highly limited in number and require advanced technical skills that most displaced assembly workers cannot easily acquire.",
+                "By suggesting that factory floor managers should replace all electronic computers with manual administrative sorting boards.",
+                "By asserting that industrial workplace injuries have no measurable impact on corporate insurance premiums."
+            ],
+            correctAnswer: 1,
+            explanation: "Text 1 claims automation cleanly elevates workers to skilled oversight positions. Text 2 counters that these jobs are 'highly technical and few in number,' meaning they are out of reach for the majority of laid-off assembly workers without extensive retraining. This makes option B the correct response."
+        },
+        {
+            passage: "Marine ecologists studying coastal kelp ecosystems emphasize the role of sea otters (*Enhydra lutris*) as a critical keystone species. Sea otters feed voraciously on herbivorous sea urchins, which graze aggressively on the holdfasts of giant kelp. In regions where sea otter populations were historically decimated by fur trapping, urchin populations exploded exponentially, leading to the creation of barren, deforested seafloors devoid of marine flora. Because giant kelp forests function as essential nurseries and carbon sinks for hundreds of oceanic species, a sustained recovery or decline in sea otter populations will likely ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "directly govern the structural biodiversity and carbon-sequestration capacity of the entire coastal ecosystem.",
+                "force sea urchins to adapt by migrating onto terrestrial coastlines to seek alternate food sources.",
+                "compel environmental scientists to completely replace natural marine biology studies with lab-based computer simulations.",
+                "induce kelp plants to rapidly evolve calcified, predator-resistant root armor."
+            ],
+            correctAnswer: 0,
+            explanation: "The text states that sea otters control urchin populations, which otherwise destroy kelp forests. Since kelp forests act as essential nurseries and carbon sinks for hundreds of species, the state of the otter population will directly dictate the biodiversity and carbon trapping abilities of that environment. Option A is the logical conclusion."
+        },
+        {
+            passage: "Text 1\nHistorians evaluating ancient Mesoamerican civilizations have long prioritized written glyphic texts over oral histories, viewing written materials as inherently objective chronological logs. By analyzing elite monumental inscriptions on stone stelae, researchers can confidently reconstruct exact dynastic successions, treaty declarations, and military victories free from the narrative drift that distorts unwritten lore across generations.\n\nText 2\nTo treat ancient written inscriptions as objective logs is to misunderstand the very nature of dynastic architecture. Monumental stelae were commissioned directly by Mesoamerican rulers specifically as political propaganda designed to legitimize their rule and erase embarrassing military losses. Conversely, the oral histories preserved by contemporary indigenous elders, while subject to stylistic phrasing updates, frequently maintain highly accurate counter-narratives that expose the systematic exaggerations and historical revisions carved into the stone by royal scribes.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to the characterization of written monumental inscriptions in Text 1?",
+            options: [
+                "By asserting that stone stelae erode too quickly to provide legible historical records.",
+                "By claiming that written glyphs are entirely incapable of recording complex military or political timelines.",
+                "By pointing out that written inscriptions are not objective logs but rather biased political propaganda commissioned by rulers to distort historical realities.",
+                "By suggesting that contemporary oral histories are structurally identical to royal dynastic records."
+            ],
+            correctAnswer: 2,
+            explanation: "Text 1 states that written inscriptions on stelae are objective chronological logs. Text 2 directly disputes this, asserting that these monuments were commissioned as political propaganda designed to legitimize rulers and distort historical facts (such as hiding military losses). This aligns precisely with option C."
+        },
+        {
+            passage: "While the defense attorney's courtroom cross-examinations were notoriously _______, often wandering into lengthy, convoluted philosophical digressions that baffled the jury, her written legal briefs were exceptionally pellucid, structured, and direct.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["discursive", "trenchant", "succinct", "lucid"],
+            correctAnswer: 0,
+            explanation: "'Discursive' means digressing from subject to subject; rambling or disorganized. The sentence relies on a contrast ('While') between her written briefs (which were 'pellucid, structured, and direct') and her courtroom arguments, which 'wandered' into 'convoluted philosophical digressions'—making discursive the perfect choice."
+        },
+        {
+            passage: "Astronomers evaluating data from deep-space orbital sensors have focused heavily on detecting atmospheric biosignatures—such as the simultaneous presence of methane and oxygen—on rocky exoplanets orbiting distant M-dwarf stars. Traditional models posited that these gas combinations could only be maintained through active biological metabolism. However, a recent astrophysical simulation demonstrated that intense stellar ultraviolet flares can split atmospheric carbon dioxide and water vapor molecules, recombining them into non-biological pockets of methane and oxygen. This finding complicates the interpretation of remote chemical signals on alien worlds.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "M-dwarf stars are completely incapable of supporting planetary systems due to low gravitational fields.",
+                "New evidence suggests that potential atmospheric biosignatures can be generated by non-biological stellar processes, complicating the search for alien life.",
+                "Rocky exoplanets have been definitively proven to harbor highly advanced agricultural civilizations.",
+                "Orbital sensors are functionally obsolete and must be replaced with physical deep-space probes."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage sets up a shift: scientists used to think certain gas combos meant guaranteed alien life (biosignatures), but new simulations show that non-biological star flares can create the exact same gases. Option B accurately states this main idea."
+        },
+        {
+            passage: "In cognitive psychology, the concept of neuroplasticity describes the brain's capacity to structurally reorganize its neural pathways in response to intensive learning or traumatic injury. To explore the limits of this adaptability, neuroscientists monitored the cortical activity of adult subjects learning complex tactile braille patterns. **Using high-resolution functional MRI scans, the researchers observed that as subjects mastered the tactile scripts, the visual cortex—an area normally dedicated exclusively to processing optical data—was systematically repurposed to process tactile touch signals from the fingertips.** This remarkable functional reallocation illustrates how dynamically internal neurological networks configure themselves to meet novel environmental demands.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+            options: [
+                "It introduces a technical error regarding data tracking in previous neuroplasticity studies.",
+                "It outlines a historical timeline of when functional MRI scanning technology was invented.",
+                "It details the specific empirical experimental findings that demonstrate the real-world structural reorganization of the brain.",
+                "It argues that tactile learning is structurally inferior to visual data processing."
+            ],
+            correctAnswer: 2,
+            explanation: "The passage introduces the concept of neuroplasticity. The highlighted text details the exact empirical findings of the experiment (the visual cortex being repurposed to process touch signals), proving the initial claim. This matches option C."
+        },
+        {
+            passage: "Although the art authentication committee initially dismissed the unsigned renaissance portrait as a completely _______ fabrication, subsequent high-definition X-ray fluorescence scanning revealed genuine under-drawings matching the master painter’s exact handling of perspective.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["spurious", "authentic", "meticulous", "venerable"],
+            correctAnswer: 0,
+            explanation: "'Spurious' means false, fake, or inauthentic. The sentence structure uses the contrast indicator 'Although' to balance the committee's early dismissal of the painting as a fake ('completely spurious fabrication') against the high-tech scan that proved it was actually genuine."
+        },
+        {
+            passage: "Preservation scientists working on the restoration of Renaissance frescoes inside historic Italian cathedrals have revolutionized their field by adopting targeted biochemical treatments. Traditional restoration strategies relied on aggressive mechanical scraping and synthetic chemical solvents, which frequently stripped away original paint layers along with surface grime. Biochemical preservation, conversely, deploys specialized non-pathogenic bacterial strains suspended in an aqueous gel. These tailored microorganisms actively consume organic pollutants and crystallized salt crusts on the plaster surface while leaving the underlying historical pigments completely untouched. Consequently, this precise molecular method maximizes preservation fidelity while eliminating structural degradation.",
+            prompt: "Which choice best describes the overall structure of the text?",
+            options: [
+                "It introduces a preservation methodology, contrasts it with a traditional model to illustrate its safety, and details its biological mechanism and advantages.",
+                "It lists several architectural hazards, blames regional climate shifts, and demands immediate infrastructure funding.",
+                "It profiles a bitter legal dispute between two art curators and offers a financial compromise.",
+                "It charts the chronological evolution of commercial fresco manufacturing over several centuries."
+            ],
+            correctAnswer: 0,
+            explanation: "The passage introduces targeted biochemical treatment for frescoes, contrasts it with traditional chemical/mechanical options to show why it is safer, and explains its mechanism (bacteria eating grime but ignoring pigment) and advantages. Option A is a perfect match."
+        },
+        {
+            passage: "In agricultural genetics, researchers study how epigenetic modifications—heritable changes in gene expression that do not alter the underlying DNA sequence—enable crops to respond to extreme environmental stressors. In a controlled experiment, rice plants subjected to prolonged drought conditions attached methyl chemical groups to specific stress-response genes, down-regulating water consumption and allowing the crops to survive. Crucially, when seeds from these stressed plants were cultivated in well-watered soils, the offspring retained these identical methylation patterns and displayed enhanced drought resilience without any genetic mutations. Because these adaptive molecular markers can be passed down across generations during climate crises, it follows that studying crop epigenetics will likely ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "allow agricultural scientists to rapidly breed climate-resilient crop varieties without relying on permanent gene editing.",
+                "compel farming operations to entirely abandon soil-based agriculture for synthetic laboratory growth chambers.",
+                "prove that plants are entirely unaffected by variations in global temperature or rainfall patterns.",
+                "cause future crop generations to lose all functional root structures and leaf surface areas."
+            ],
+            correctAnswer: 0,
+            explanation: "The text explains that plants can pass down drought-resilient epigenetic traits (like methylation) to their offspring without changing their actual DNA sequence. It follows logically that studying this field will help scientists select and breed climate-safe crops without needing permanent genetic mutations/gene-editing, matching option A."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage.replace(/\n/g, '<br>')}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 22</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy (15 Comprehensive Questions)</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage.replace(/\n/g, '<br>')}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${Math.round((score/quizData.length)*100)}%)`;
+        
+        if (score === quizData.length) {
+            document.getElementById('harvard-reward').style.display = 'block';
+        }
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
