@@ -1,8 +1,7 @@
 // sheetsService.js - Encrypted Cloud Sync Layer
 
 // 1. Paste your generated ciphertext string right here:
-const ENCRYPTED_SCRIPT_URL = "U2FsdGVkX1/lUsS8KMsz1mhgsAL801dbrVf9Su3F1rMsKiMrD0q8VO8b5kZbuWWI"
-
+const ENCRYPTED_SCRIPT_URL = "U2FsdGVkX18Sk2uZus18+GFguFPQqb+7w00fQA8WM9YVh/mRgNJkak/WoDfEH7TA4V8bEPSSJm8tKjuqUVw3yBWI5G+uLN6t14b6CgH5vYvMg24vHVQjGIJZ8MwMG6XgdC0FXhbJrfexEO2hXlxmaYpY1NilLHxTjXVRo26JiBiwsncjuBoU+WdZJhkAR/+u"
 let decryptedUrl = null;
 const SYNC_PASSWORD_KEY = "sat_vocab_sync_password";
 
