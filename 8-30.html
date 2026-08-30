@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alex's Challenge - Math Practice 8-30</title>
+<style>
+:root{
+  --blue:#2980b9; --blue-dark:#1c5980; --green:#27ae60; --green-bg:#eef7e9;
+  --ink:#333; --muted:#7f8c8d; --paper:#fff; --page:#f9f9f9;
+}
+*{box-sizing:border-box}
+body{
+  font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+  line-height:1.6;color:var(--ink);max-width:800px;margin:0 auto;padding:20px;background:var(--page);
+}
+h1,h2{color:#2c3e50;border-bottom:2px solid #e0e0e0;padding-bottom:10px}
+.header-title{text-align:center;color:#2c3e50;margin-bottom:5px}
+.header-subtitle{text-align:center;color:var(--muted);font-size:1.1em;margin:0 0 25px}
+.student-info{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin:-8px 0 24px;color:#555}
+.student-info span{display:inline-block;min-width:220px;border-bottom:1px solid #888;padding:0 4px 2px}
+.problem-section{background:var(--paper);padding:20px;margin-bottom:20px;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,.05)}
+.problem{margin-bottom:15px;border-bottom:1px dashed #eee;padding-bottom:15px;break-inside:avoid}
+.problem:last-child{border-bottom:none}
+.label{font-weight:700;color:var(--blue);margin-right:5px}
+.problem-content{margin-bottom:5px}
+.solution{display:none;margin-top:10px;padding:12px 20px;background:var(--green-bg);border-left:4px solid var(--green);border-radius:4px;color:#444}
+.solution p{margin:.35em 0}
+.answer{font-weight:700;color:var(--green)}
+.reveal-btn{margin-top:10px;padding:6px 12px;background:var(--blue);color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:.9em;font-weight:600}
+.reveal-btn:hover{background:var(--blue-dark)}
+.math{font-family:'Cambria Math','STIX Two Math','Times New Roman',serif;font-size:1.08em;white-space:nowrap}
+sup{font-size:.72em;line-height:0}
+.frac{display:inline-flex;flex-direction:column;vertical-align:-.45em;text-align:center;line-height:1.05;min-width:1.25em;margin:0 .08em;font-family:'Cambria Math','Times New Roman',serif}
+.frac .top{border-bottom:1.35px solid currentColor;padding:0 .12em .06em}
+.frac .bottom{padding:.06em .12em 0}
+.overline{text-decoration:overline;text-decoration-thickness:1.4px}
+.sqrt{display:inline-flex;align-items:flex-start;vertical-align:-.11em;font-family:'Cambria Math','STIX Two Math','Times New Roman',serif;margin:0 .05em}
+.sqrt-sign{font-size:1.27em;line-height:.94;margin-right:-.08em}
+.sqrt-body{border-top:1.5px solid currentColor;line-height:1.08;padding:.02em .12em 0 .10em;margin-top:.02em}
+.note{font-size:.93em;color:#555}
+
+/* Long-division reveal */
+.division-work{margin:14px 0 18px;padding:14px;background:#fff;border:1px solid #cfd8dc;border-radius:6px;overflow-x:auto}
+.division-note{margin:0 0 10px;font-size:14px;line-height:1.45}
+.division-note strong{color:#1f618d}
+.long-division-grid{--cell-size:29px;display:grid;width:max-content;min-width:max-content;margin:8px auto 0;font-family:'Courier New',Courier,monospace;font-size:19px;font-weight:700;line-height:var(--cell-size)}
+.long-division-grid .cell{width:var(--cell-size);height:var(--cell-size);display:flex;align-items:center;justify-content:center;box-sizing:border-box}
+.long-division-grid .txt-q{color:#155a9c}.long-division-grid .txt-sub{color:#b03a2e}.long-division-grid .txt-std{color:#222}
+.long-division-grid .border-right{border-right:2px solid #222}.long-division-grid .border-top{border-top:2px solid #222}.long-division-grid .border-bottom{border-bottom:1px solid #222}
+@media(max-width:520px){body{padding:10px}.problem-section{padding:14px}.long-division-grid{--cell-size:26px;font-size:17px}.division-work{padding:10px 6px}.student-info span{min-width:150px}}
+@media print{
+  body{background:#fff;font-size:12pt;padding:0;max-width:none}
+  .problem-section{box-shadow:none;padding:0}
+  .problem{page-break-inside:avoid;margin-bottom:25px;border-bottom:1px solid #ddd;padding-bottom:20px}
+  .reveal-btn,.solution{display:none!important}
+  .student-info{margin-bottom:20px}
+}
+</style>
+<script>
+const divisionProblems={
+  "1":{target:"division-p1",divisor:24,dividend:"1476.0",answer:"61.5",note:"Move the decimal point <strong>2 places right</strong> in both numbers: 14.76 ÷ 0.24 → <strong>1476 ÷ 24</strong>. Add a zero after the decimal to complete the terminating quotient."},
+  "2":{target:"division-p2",divisor:6,dividend:"70.0000",answer:"11.6666… = 11.<span class=\"overline\">6</span>",note:"Move the decimal point <strong>1 place right</strong> in both numbers: 7 ÷ 0.6 → <strong>70 ÷ 6</strong>. Appended zeros make the repeating 6 pattern visible."}
+};
+function toggleSolution(btn){
+  const box=btn.nextElementSibling;
+  const opening=box.style.display!=="block";
+  box.style.display=opening?"block":"none";
+  btn.textContent=opening?"Hide Answer":"Show Answer";
+  if(opening && btn.dataset.longDivision){
+    const d=divisionProblems[btn.dataset.longDivision];
+    if(d) renderLongDivision(d.target,d.divisor,d.dividend,d.answer,d.note);
+  }
+}
+function renderLongDivision(targetId,divisor,dividendString,answerText,noteText){
+  const target=document.getElementById(targetId); if(!target)return;
+  target.innerHTML="";
+  const note=document.createElement("p"); note.className="division-note"; note.innerHTML=noteText; target.appendChild(note);
+  const grid=document.createElement("div"); grid.className="long-division-grid"; target.appendChild(grid);
+  const sDiv=String(divisor),sDend=String(dividendString),divStartCol=sDiv.length+1,colMap=[];
+  for(let i=0;i<sDend.length;i++)colMap.push(divStartCol+i);
+  const totalCols=divStartCol+sDend.length; grid.style.gridTemplateColumns=`repeat(${totalCols}, var(--cell-size))`;
+  const v={};
+  const plot=(r,c,t,cls="",bdr="")=>v[`${r},${c}`]={text:t==null?"":String(t),cls,bdr};
+  for(let i=0;i<sDiv.length;i++)plot(1,i,sDiv[i],"txt-std");
+  plot(1,sDiv.length,"","","border-right");
+  for(let i=0;i<sDend.length;i++)plot(1,colMap[i],sDend[i],"txt-std","border-top");
+  const raw=sDend.replace(".",""),mathCols=[];
+  for(let i=0;i<sDend.length;i++)if(sDend[i]!==".")mathCols.push(colMap[i]);
+  const dotIndex=sDend.indexOf("."); if(dotIndex!==-1)plot(0,colMap[dotIndex],".","txt-q");
+  let working=0,row=2,started=false;
+  for(let i=0;i<raw.length;i++){
+    working=working*10+Number(raw[i]); const q=Math.floor(working/divisor); const qCol=mathCols[i];
+    if(q>0||started||i===raw.length-1){started=true;plot(0,qCol,q,"txt-q")}
+    if(started){
+      const product=q*divisor,remainder=working-product,sProd=String(product);
+      for(let p=0;p<sProd.length;p++){const idx=i-p;if(idx>=0)plot(row,mathCols[idx],sProd[sProd.length-1-p],"txt-sub","border-bottom")}
+      row++;
+      const sRem=String(remainder);
+      if(sRem!=="0"||i===raw.length-1){for(let r=0;r<sRem.length;r++){const idx=i-r;if(idx>=0)plot(row,mathCols[idx],sRem[sRem.length-1-r],"txt-std")}}
+      if(i<raw.length-1){plot(row,mathCols[i+1],raw[i+1],"txt-std");row++}
+      working=remainder;
+    }
+  }
+  for(let r=0;r<=row;r++)for(let c=0;c<totalCols;c++){
+    const d=v[`${r},${c}`],cell=document.createElement("div"); cell.className="cell";cell.style.gridRow=r+1;cell.style.gridColumn=c+1;
+    if(d){cell.textContent=d.text;cell.className+=` ${d.cls} ${d.bdr}`} grid.appendChild(cell);
+  }
+  const result=document.createElement("p");result.className="division-note";result.style.marginTop="12px";result.innerHTML=`<strong>Quotient: ${answerText}</strong>`;target.appendChild(result);
+}
+</script>
+</head>
+<body>
+<h1 class="header-title">Alex's Challenge</h1>
+<div class="header-subtitle">Practice Problems — 8-30</div>
+<div class="student-info"><div>Name: <span>&nbsp;</span></div><div>Date: <span>&nbsp;</span></div></div>
+<div class="problem-section">
+<h2>Practice Problems</h2>
+<div class="problem">
+  <div class="problem-content"><span class="label">1.</span>Perform long division (terminating decimal result): <span class="math">14.76 ÷ 0.24</span></div>
+  <button class="reveal-btn" data-long-division="1" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><div id="division-p1" class="division-work"></div><p>Answer: <span class="answer">61.5</span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">2.</span>Perform long division (repeating decimal result): <span class="math">7 ÷ 0.6</span>. Express the answer as a fraction and as a repeating decimal.</div>
+  <button class="reveal-btn" data-long-division="2" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><div id="division-p2" class="division-work"></div><p>As a fraction: <span class="math"><span class="frac"><span class="top">35</span><span class="bottom">3</span></span> = 11<span class="frac"><span class="top">2</span><span class="bottom">3</span></span></span></p><p>Answer: <span class="answer">11.<span class="overline">6</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">3.</span>Evaluate: <span class="math">5.2 × (7.1 − 3.6) + 2.8</span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Parentheses: 7.1 − 3.6 = 3.5</p><p>Multiply: 5.2 × 3.5 = 18.2</p><p>Add: 18.2 + 2.8 = <span class="answer">21</span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">4.</span>Solve for <em>x</em>: <span class="math"><span class="frac"><span class="top">2</span><span class="bottom">5</span></span>x + 7 = 19</span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Subtract 7: <span class="math"><span class="frac"><span class="top">2</span><span class="bottom">5</span></span>x = 12</span></p><p>Multiply by <span class="math"><span class="frac"><span class="top">5</span><span class="bottom">2</span></span></span>: <span class="answer">x = 30</span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">5.</span>Evaluate: <span class="math">8<span class="frac"><span class="top">1</span><span class="bottom">4</span></span> − 4<span class="frac"><span class="top">5</span><span class="bottom">8</span></span></span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Convert to eighths: <span class="math">8<span class="frac"><span class="top">2</span><span class="bottom">8</span></span> − 4<span class="frac"><span class="top">5</span><span class="bottom">8</span></span></span></p><p>Regroup: <span class="math">7<span class="frac"><span class="top">10</span><span class="bottom">8</span></span> − 4<span class="frac"><span class="top">5</span><span class="bottom">8</span></span></span></p><p>Answer: <span class="answer">3<span class="frac"><span class="top">5</span><span class="bottom">8</span></span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">6.</span>Find the least common multiple (LCM) of <strong>14, 21, and 35</strong>.</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Prime factors: 14 = 2×7, 21 = 3×7, 35 = 5×7.</p><p>Use each needed prime factor: 2×3×5×7 = <span class="answer">210</span>.</p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">7.</span>Convert <span class="math"><span class="frac"><span class="top">23</span><span class="bottom">50</span></span></span> to a percentage.</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p><span class="math">23 ÷ 50 = 0.46</span></p><p><span class="math">0.46 × 100 = <span class="answer">46%</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">8.</span>A triangle has a base of <strong>24 cm</strong> and an area of <strong>108 cm²</strong>. What is its height?</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Use <span class="math">A = <span class="frac"><span class="top">1</span><span class="bottom">2</span></span>bh</span>.</p><p><span class="math">108 = <span class="frac"><span class="top">1</span><span class="bottom">2</span></span>(24)h = 12h</span></p><p>Answer: <span class="answer">9 cm</span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">9.</span>Evaluate: <span class="math">(−3)<sup>3</sup> + 2<sup>4</sup> × 3</span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p><span class="math">(−3)<sup>3</sup> = −27</span> and <span class="math">2<sup>4</sup> = 16</span>.</p><p><span class="math">−27 + 16×3 = −27 + 48 = <span class="answer">21</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">10.</span>Solve for <em>y</em>: <span class="math">5(y − 1) = 3(y + 3)</span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Distribute: <span class="math">5y − 5 = 3y + 9</span></p><p>Subtract 3y and add 5: <span class="math">2y = 14</span></p><p>Answer: <span class="answer">y = 7</span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">11.</span>A jacket originally costs <strong>$180</strong>. It is marked down by <strong>25%</strong>, and then an additional <strong>10% coupon</strong> is applied to the sale price. What is the final price?</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>After 25% off: <span class="math">180 × 0.75 = $135</span></p><p>After another 10% off: <span class="math">135 × 0.90 = <span class="answer">$121.50</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">12.</span>Find the volume of a rectangular prism with length <strong>8.4 m</strong>, width <strong>3.5 m</strong>, and height <strong>2 m</strong>.</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p><span class="math">V = lwh = 8.4 × 3.5 × 2 = <span class="answer">58.8 m³</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">13.</span>Calculate the mean of the numbers: <strong>14, 22, 31, 17, 26, 10</strong>.</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Sum: <span class="math">14+22+31+17+26+10 = 120</span></p><p><span class="math">120 ÷ 6 = <span class="answer">20</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">14.</span>Solve the inequality: <span class="math">11 − 4x &lt; −9</span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Subtract 11: <span class="math">−4x &lt; −20</span></p><p>Divide by −4 and reverse the inequality sign:</p><p>Answer: <span class="answer">x &gt; 5</span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">15.</span>Evaluate: <span class="math">3<span class="frac"><span class="top">3</span><span class="bottom">4</span></span> × 2<span class="frac"><span class="top">2</span><span class="bottom">5</span></span></span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Convert: <span class="math"><span class="frac"><span class="top">15</span><span class="bottom">4</span></span> × <span class="frac"><span class="top">12</span><span class="bottom">5</span></span> = <span class="frac"><span class="top">180</span><span class="bottom">20</span></span></span></p><p>Answer: <span class="answer">9</span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">16.</span>A <strong>9-foot</strong> pole casts a <strong>6-foot</strong> shadow. At the same time, a tree casts a <strong>28-foot</strong> shadow. How tall is the tree?</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Set up a proportion: <span class="math"><span class="frac"><span class="top">9</span><span class="bottom">6</span></span> = <span class="frac"><span class="top">h</span><span class="bottom">28</span></span></span></p><p><span class="math">6h = 252 → h = <span class="answer">42 feet</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">17.</span>Simplify: <span class="math"><span class="sqrt"><span class="sqrt-sign">√</span><span class="sqrt-body">196</span></span> + <span class="sqrt"><span class="sqrt-sign">√</span><span class="sqrt-body">81</span></span> − <span class="sqrt"><span class="sqrt-sign">√</span><span class="sqrt-body">49</span></span></span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p><span class="math"><span class="sqrt"><span class="sqrt-sign">√</span><span class="sqrt-body">196</span></span> = 14, <span class="sqrt"><span class="sqrt-sign">√</span><span class="sqrt-body">81</span></span> = 9, <span class="sqrt"><span class="sqrt-sign">√</span><span class="sqrt-body">49</span></span> = 7</span></p><p><span class="math">14 + 9 − 7 = <span class="answer">16</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">18.</span>Find the perimeter of a semicircle with radius <strong>7 cm</strong>. Use <span class="math">π ≈ 3.14</span> and include the straight diameter edge.</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Semicircle arc length: <span class="math">πr = 3.14×7 = 21.98 cm</span></p><p>Diameter: <span class="math">2r = 14 cm</span></p><p>Total: <span class="math">21.98 + 14 = <span class="answer">35.98 cm</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">19.</span>Evaluate: <span class="math">|−42| ÷ 7 − |−4 × 5|</span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p><span class="math">|−42| = 42</span> and <span class="math">|−20| = 20</span>.</p><p><span class="math">42 ÷ 7 − 20 = 6 − 20 = <span class="answer">−14</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">20.</span>What number is <strong>125%</strong> of <strong>96</strong>?</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Convert 125% to 1.25.</p><p><span class="math">1.25 × 96 = <span class="answer">120</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">21.</span>Solve for <em>a</em>: <span class="math"><span class="frac"><span class="top">a + 7</span><span class="bottom">5</span></span> = <span class="frac"><span class="top">a − 1</span><span class="bottom">3</span></span></span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Cross multiply: <span class="math">3(a + 7) = 5(a − 1)</span></p><p><span class="math">3a + 21 = 5a − 5</span></p><p>Answer: <span class="answer">a = 13</span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">22.</span>A map scale is <strong>1 inch = 24 miles</strong>. If two cities are <strong>6.25 inches</strong> apart on the map, what is the actual distance?</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p><span class="math">6.25 × 24 = <span class="answer">150 miles</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">23.</span>Evaluate: <span class="math">6<sup>2</sup> − 2<sup>4</sup> + 3(−5)</span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p><span class="math">36 − 16 − 15 = <span class="answer">5</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">24.</span>Find the <strong>range</strong> and <strong>mode</strong> of the data set: <strong>12, 19, 25, 19, 31, 22, 19, 27</strong>.</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Range: <span class="math">31 − 12 = <span class="answer">19</span></span></p><p>Mode: <span class="answer">19</span>, because it occurs three times.</p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">25.</span>A sphere has a radius of <strong>6 cm</strong>. Find its surface area in terms of <span class="math">π</span>. <span class="note">Formula: A = 4πr²</span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p><span class="math">A = 4π(6<sup>2</sup>) = 4π(36) = <span class="answer">144π cm²</span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">26.</span>Convert <span class="math">0.<span class="overline">36</span></span> into a fraction in simplest form.</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Let <span class="math">x = 0.<span class="overline">36</span></span>. Then <span class="math">100x = 36.<span class="overline">36</span></span>.</p><p>Subtract: <span class="math">99x = 36</span>, so <span class="math">x = <span class="frac"><span class="top">36</span><span class="bottom">99</span></span> = <span class="answer"><span class="frac"><span class="top">4</span><span class="bottom">11</span></span></span></span>.</p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">27.</span>Simplify: <span class="math">4(2x − 3y) − 3(x + 2y)</span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Distribute: <span class="math">8x − 12y − 3x − 6y</span></p><p>Combine like terms: <span class="answer">5x − 18y</span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">28.</span>Determine whether a triangle with side lengths <strong>12 cm, 35 cm, and 37 cm</strong> is a right triangle.</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p><span class="math">12<sup>2</sup> + 35<sup>2</sup> = 144 + 1225 = 1369</span></p><p><span class="math">37<sup>2</sup> = 1369</span></p><p>Because the values are equal, <span class="answer">yes, it is a right triangle.</span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">29.</span>Evaluate: <span class="math"><span class="frac"><span class="top">5</span><span class="bottom">9</span></span> ÷ <span class="frac"><span class="top">10</span><span class="bottom">21</span></span></span></div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Multiply by the reciprocal:</p><p><span class="math"><span class="frac"><span class="top">5</span><span class="bottom">9</span></span> × <span class="frac"><span class="top">21</span><span class="bottom">10</span></span> = <span class="frac"><span class="top">105</span><span class="bottom">90</span></span> = <span class="answer"><span class="frac"><span class="top">7</span><span class="bottom">6</span></span></span></span></p><p>Mixed number: <span class="answer">1<span class="frac"><span class="top">1</span><span class="bottom">6</span></span></span></p></div>
+</div>
+
+<div class="problem">
+  <div class="problem-content"><span class="label">30.</span>Deposit <strong>$1,500</strong> into a bank account with <strong>4% compound interest</strong> compounded annually. What is the total balance after <strong>2 years</strong>?</div>
+  <button class="reveal-btn" onclick="toggleSolution(this)">Show Answer</button>
+  <div class="solution"><p>Year 1: <span class="math">$1,500 × 1.04 = $1,560.00</span></p><p>Year 2: <span class="math">$1,560 × 1.04 = <span class="answer">$1,622.40</span></span></p></div>
+</div>
+
+</div>
+</body>
+</html>
