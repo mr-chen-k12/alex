@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saxon Math Course 2 - Step-by-Step Solutions</title>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --accent-bg: #f0fdf4;
+      --accent-border: #86efac;
+      --accent-text: #166534;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .global-controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .btn-global {
+      background-color: #e2e8f0;
+      color: #334155;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+
+    .btn-global:hover {
+      background-color: #cbd5e1;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      margin: 30px 0 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--primary);
+      color: #0f172a;
+    }
+
+    .question-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 16px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .question-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      background-color: #eff6ff;
+      color: var(--primary);
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+
+    .question-text {
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+
+    .btn-toggle {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn-toggle:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-toggle:active {
+      transform: scale(0.98);
+    }
+
+    .solution-panel {
+      display: none;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px dashed var(--border);
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .answer-box {
+      background-color: var(--accent-bg);
+      border-left: 4px solid var(--accent-border);
+      color: var(--accent-text);
+      padding: 10px 14px;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .explanation {
+      font-size: 0.95rem;
+      color: #334155;
+    }
+
+    .explanation ol, .explanation ul {
+      margin-left: 20px;
+      margin-top: 8px;
+    }
+
+    .explanation li {
+      margin-bottom: 4px;
+    }
+
+    /* Number line visual styling */
+    .number-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 320px;
+      margin: 15px 0;
+      padding: 10px;
+      background: #f1f5f9;
+      border-radius: 6px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Saxon Math Course 2 Solutions</h1>
+    <p>Lesson Practice & Written Practice Review Sheet</p>
+    <div class="global-controls">
+      <button class="btn-global" onclick="toggleAll(true)">Expand All Answers</button>
+      <button class="btn-global" onclick="toggleAll(false)">Collapse All Answers</button>
+    </div>
+  </header>
+
+  <h2 class="section-title">Lesson Practice</h2>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Lesson Practice a</span>
+    </div>
+    <div class="question-text">
+      In $217,534,896,000,000$, which digit is in the ten-billions place?
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: 3</div>
+      <div class="explanation">
+        Breaking the number down by periods from right to left:
+        <ul>
+          <li><strong>Ones period:</strong> $000$</li>
+          <li><strong>Thousands period:</strong> $000$</li>
+          <li><strong>Millions period:</strong> $896$</li>
+          <li><strong>Billions period:</strong> $534$ (4 is billions, 3 is ten-billions, 5 is hundred-billions)</li>
+          <li><strong>Trillions period:</strong> $217$</li>
+        </ul>
+        Therefore, the digit in the ten-billions place is <strong>3</strong>.
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Lesson Practice b</span>
+    </div>
+    <div class="question-text">
+      In $9,876,543,210,000$, what is the place value of the digit 6?
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: Billions (or 6 Billion)</div>
+      <div class="explanation">
+        In $9,876,543,210,000$, $876$ is in the billions period.
+        The digit $6$ is the rightmost digit in that period, making its place value the <strong>billions</strong> place ($6,000,000,000$).
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Lesson Practice c</span>
+    </div>
+    <div class="question-text">
+      Write $2500$ in expanded notation.
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $(2 \times 1000) + (5 \times 100)$</div>
+      <div class="explanation">
+        Expanded notation expresses a number as the sum of each non-zero digit multiplied by its place value:
+        $$\text{Expanded Notation} = (2 \times 1000) + (5 \times 100)$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Lesson Practice d</span>
+    </div>
+    <div class="question-text">
+      Use words to write $36,427,580$.
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: Thirty-six million, four hundred twenty-seven thousand, five hundred eighty</div>
+      <div class="explanation">
+        Break the number into periods separated by commas:
+        <ul>
+          <li><strong>36:</strong> thirty-six million</li>
+          <li><strong>427:</strong> four hundred twenty-seven thousand</li>
+          <li><strong>580:</strong> five hundred eighty</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Lesson Practice e</span>
+    </div>
+    <div class="question-text">
+      Use words to write $40,302,010$.
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: Forty million, three hundred two thousand, ten</div>
+      <div class="explanation">
+        Break the number into periods separated by commas:
+        <ul>
+          <li><strong>40:</strong> forty million</li>
+          <li><strong>302:</strong> three hundred two thousand</li>
+          <li><strong>010:</strong> ten</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Lesson Practice f (EXPLAIN)</span>
+    </div>
+    <div class="question-text">
+      How do we know where to place commas when writing the numbers in <strong>d</strong> and <strong>e</strong> as words?
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: Commas are placed in the word form where they appear between periods in digit form.</div>
+      <div class="explanation">
+        We place commas in word form to separate periods (millions, thousands, ones), exactly matching the location of commas in standard digit form.
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Lesson Practice g</span>
+    </div>
+    <div class="question-text">
+      Use digits to write: twenty-five million, two hundred six thousand, forty.
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $25,206,040$</div>
+      <div class="explanation">
+        <ul>
+          <li>Millions period: $25$</li>
+          <li>Thousands period: $206$</li>
+          <li>Ones period: $040$</li>
+        </ul>
+        Combining gives $25,206,040$.
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Lesson Practice h</span>
+    </div>
+    <div class="question-text">
+      Use digits to write: fifty billion, four hundred two million, one hundred thousand.
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $50,402,100,000$</div>
+      <div class="explanation">
+        <ul>
+          <li>Billions: $50$</li>
+          <li>Millions: $402$</li>
+          <li>Thousands: $100$</li>
+          <li>Ones: $000$</li>
+        </ul>
+        Combining gives $50,402,100,000$.
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Lesson Practice i</span>
+    </div>
+    <div class="question-text">
+      Use digits to write: $\$15\text{ billion}$.
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $\$15,000,000,000$</div>
+      <div class="explanation">
+        A billion has 9 trailing zeros. Thus, $\$15\text{ billion}$ is written as $\$15,000,000,000$.
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Lesson Practice j (EXPLAIN)</span>
+    </div>
+    <div class="question-text">
+      What is a shorter, easier way to write $\$15,000,000$?
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $\$15\text{ million}$</div>
+      <div class="explanation">
+        By combining digits with the word "million", we can write <strong>$\$15\text{ million}$</strong>, which avoids writing long strings of zeros.
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Written Practice</h2>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 1</span>
+    </div>
+    <div class="question-text">
+      What is the sum of six hundred seven and two thousand, three hundred ninety-three?
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $3000$</div>
+      <div class="explanation">
+        Convert words to numbers and add:
+        $$607 + 2393 = 3000$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 2</span>
+    </div>
+    <div class="question-text">
+      Use digits and other symbols to write "One hundred one thousand is greater than one thousand, one hundred."
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $101,000 > 1,100$</div>
+      <div class="explanation">
+        <ul>
+          <li>"One hundred one thousand" = $101,000$</li>
+          <li>"is greater than" = $>$</li>
+          <li>"one thousand, one hundred" = $1,100$</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 3</span>
+    </div>
+    <div class="question-text">
+      Use words to write $50,574,006$.
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: Fifty million, five hundred seventy-four thousand, six</div>
+      <div class="explanation">
+        Break into periods:
+        <ul>
+          <li>$50$: Fifty million</li>
+          <li>$574$: five hundred seventy-four thousand</li>
+          <li>$006$: six</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 4</span>
+    </div>
+    <div class="question-text">
+      Which digit is in the trillions place in the number $12,345,678,900,000$?
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: 2</div>
+      <div class="explanation">
+        In $12,345,678,900,000$, the trillions period is $12$. Digit $2$ is in the trillions place and $1$ is in the ten-trillions place.
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 5</span>
+    </div>
+    <div class="question-text">
+      Use digits to write two hundred fifty million, five thousand, seventy.
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $250,005,070$</div>
+      <div class="explanation">
+        <ul>
+          <li>Millions: $250$</li>
+          <li>Thousands: $005$</li>
+          <li>Ones: $070$</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 6</span>
+    </div>
+    <div class="question-text">
+      Replace the circle with the proper comparison symbol. Then write the comparison as a complete sentence, using words to write the numbers:
+      $$-12 \bigcirc -15$$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $-12 > -15$<br>Sentence: Negative twelve is greater than negative fifteen.</div>
+      <div class="explanation">
+        On a number line, $-12$ lies to the right of $-15$, so $-12$ is greater than $-15$.
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 7</span>
+    </div>
+    <div class="question-text">
+      Arrange these numbers in order from least to greatest:
+      $$-1, 4, -7, 0, 5, 7$$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $-7, -1, 0, 4, 5, 7$</div>
+      <div class="explanation">
+        Negative numbers are smallest (with smaller numbers further left on the number line), followed by $0$, then positive numbers in ascending order.
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 8 (MODEL)</span>
+    </div>
+    <div class="question-text">
+      Show this subtraction problem on a number line: $5 - 4$.
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: Result = 1</div>
+      <div class="explanation">
+        <strong>Number Line Steps:</strong>
+        <ol>
+          <li>Start at $0$.</li>
+          <li>Move $5$ units to the right to land on $+5$.</li>
+          <li>Move $4$ units to the left (subtract $4$) to land on $+1$.</li>
+        </ol>
+        <div class="number-line">
+          0 --(+5)--> 5 --(-4)--> 1
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 9</span>
+    </div>
+    <div class="question-text">
+      The rule of a certain sequence is $k = 3n$. Find the first four terms of the sequence.
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $3, 6, 9, 12$</div>
+      <div class="explanation">
+        Substitute $n = 1, 2, 3, 4$ into $k = 3n$:
+        <ul>
+          <li>For $n = 1$: $k = 3(1) = 3$</li>
+          <li>For $n = 2$: $k = 3(2) = 6$</li>
+          <li>For $n = 3$: $k = 3(3) = 9$</li>
+          <li>For $n = 4$: $k = 3(4) = 12$</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 10</span>
+    </div>
+    <div class="question-text">
+      Find the value of $n$: $2 \cdot 3 \cdot 5 \cdot n = 960$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $n = 32$</div>
+      <div class="explanation">
+        <ol>
+          <li>Multiply known factors: $2 \cdot 3 \cdot 5 = 30$.</li>
+          <li>Equation becomes: $30n = 960$.</li>
+          <li>Divide both sides by $30$: $n = 960 \div 30 = 32$.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 11</span>
+    </div>
+    <div class="question-text">
+      Find the value of $a$: $a - 1367 = 2500$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $a = 3867$</div>
+      <div class="explanation">
+        Add $1367$ to both sides:
+        $$a = 2500 + 1367 = 3867$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 12</span>
+    </div>
+    <div class="question-text">
+      Find the value of $b$: $b + 5 + 17 = 50$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $b = 28$</div>
+      <div class="explanation">
+        <ol>
+          <li>Simplify the left side: $5 + 17 = 22 \implies b + 22 = 50$.</li>
+          <li>Subtract $22$ from both sides: $b = 50 - 22 = 28$.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 13</span>
+    </div>
+    <div class="question-text">
+      Find the value of $k$: $\$25.00 - k = \$18.70$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $k = \$6.30$</div>
+      <div class="explanation">
+        Subtract $\$18.70$ from $\$25.00$:
+        $$k = \$25.00 - \$18.70 = \$6.30$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 14</span>
+    </div>
+    <div class="question-text">
+      Find the value of $d$: $6400 + d = 10,000$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $d = 3600$</div>
+      <div class="explanation">
+        Subtract $6400$ from $10,000$:
+        $$d = 10,000 - 6400 = 3600$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 15</span>
+    </div>
+    <div class="question-text">
+      Find the value of $f$: $\frac{144}{f} = 8$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $f = 18$</div>
+      <div class="explanation">
+        Divide $144$ by $8$:
+        $$f = \frac{144}{8} = 18$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 16</span>
+    </div>
+    <div class="question-text">
+      Write $750,000$ in expanded notation.
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $(7 \times 100,000) + (5 \times 10,000)$</div>
+      <div class="explanation">
+        Each non-zero digit is multiplied by its place value:
+        $$(7 \times 100,000) + (5 \times 10,000)$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 17</span>
+    </div>
+    <div class="question-text">
+      Simplify:
+      $$\begin{array}{r} 37,428 \\ + 59,775 \\ \hline \end{array}$$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $97,203$</div>
+      <div class="explanation">
+        Add column by column from right to left:
+        $$37,428 + 59,775 = 97,203$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 18</span>
+    </div>
+    <div class="question-text">
+      Simplify:
+      $$\begin{array}{r} 31,014 \\ - 24,767 \\ \hline \end{array}$$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $6247$</div>
+      <div class="explanation">
+        Subtract column by column:
+        $$31,014 - 24,767 = 6247$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 19</span>
+    </div>
+    <div class="question-text">
+      Simplify: $45 + 362 + 7 + 4319$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $4733$</div>
+      <div class="explanation">
+        Sum the numbers:
+        $$45 + 362 + 7 + 4319 = 4733$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 20</span>
+    </div>
+    <div class="question-text">
+      Simplify: $\$64.59 + \$124 + \$6.30 + 37\text{¢}$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $\$195.26$</div>
+      <div class="explanation">
+        Convert $37\text{¢}$ to $\$0.37$ and align decimals:
+        $$\$64.59 + \$124.00 + \$6.30 + \$0.37 = \$195.26$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 21</span>
+    </div>
+    <div class="question-text">
+      Simplify: $144 \div (12 \div 3)$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $36$</div>
+      <div class="explanation">
+        Perform the operation in parentheses first:
+        <ol>
+          <li>$12 \div 3 = 4$</li>
+          <li>$144 \div 4 = 36$</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 22</span>
+    </div>
+    <div class="question-text">
+      Simplify: $(144 \div 12) \div 3$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $4$</div>
+      <div class="explanation">
+        Perform the operation in parentheses first:
+        <ol>
+          <li>$144 \div 12 = 12$</li>
+          <li>$12 \div 3 = 4$</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 23</span>
+    </div>
+    <div class="question-text">
+      Simplify: $40(500)$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $20,000$</div>
+      <div class="explanation">
+        Multiply $4 \times 5 = 20$, then append the three zeros:
+        $$40 \times 500 = 20,000$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 24</span>
+    </div>
+    <div class="question-text">
+      Simplify: $8505 \div 21$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $405$</div>
+      <div class="explanation">
+        Long division:
+        $$8505 \div 21 = 405$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 25</span>
+    </div>
+    <div class="question-text">
+      Simplify: $\$10 - (\$4.60 - 39\text{¢})$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $\$5.79$</div>
+      <div class="explanation">
+        <ol>
+          <li>Convert $39\text{¢}$ to $\$0.39$.</li>
+          <li>Evaluate parentheses: $\$4.60 - \$0.39 = \$4.21$.</li>
+          <li>Subtract from $\$10.00$: $\$10.00 - \$4.21 = \$5.79$.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 26</span>
+    </div>
+    <div class="question-text">
+      Simplify: $29\text{¢} \times 36$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $\$10.44$ (or $1044\text{¢}$)</div>
+      <div class="explanation">
+        $$29 \times 36 = 1044\text{¢} = \$10.44$$
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 27</span>
+    </div>
+    <div class="question-text">
+      Which property can we use to find each unknown number?
+      <br><strong>a.</strong> $365n = 365$
+      <br><strong>b.</strong> $52 \cdot 7 = 7m$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">
+        a. Identity Property of Multiplication<br>
+        b. Commutative Property of Multiplication
+      </div>
+      <div class="explanation">
+        <ul>
+          <li><strong>a.</strong> $365 \times 1 = 365$. The Identity Property of Multiplication states that multiplying any number by 1 yields that number ($n = 1$).</li>
+          <li><strong>b.</strong> $52 \cdot 7 = 7 \cdot 52$. The Commutative Property of Multiplication states that changing the order of factors does not change the product ($m = 52$).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 28 (GENERALIZE)</span>
+    </div>
+    <div class="question-text">
+      Use words to describe the rule of the following sequence. Then find the next three terms of the sequence:
+      $$\dots, 10, 8, 6, 4, 2, \dots$$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">
+        Rule: Subtract 2 from each term (or count down by 2s).<br>
+        Next three terms: $0, -2, -4$
+      </div>
+      <div class="explanation">
+        Each term decreases by $2$:
+        <ul>
+          <li>$2 - 2 = 0$</li>
+          <li>$0 - 2 = -2$</li>
+          <li>$-2 - 2 = -4$</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 29 (CLASSIFY)</span>
+    </div>
+    <div class="question-text">
+      Name each set of numbers illustrated:
+      <br><strong>a.</strong> $\{1, 2, 3, 4, \dots\}$
+      <br><strong>b.</strong> $\{0, 1, 2, 3, \dots\}$
+      <br><strong>c.</strong> $\{\dots, -2, -1, 0, 1, 2, \dots\}$
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">
+        a. Counting numbers (or Natural numbers)<br>
+        b. Whole numbers<br>
+        c. Integers
+      </div>
+      <div class="explanation">
+        <ul>
+          <li><strong>Counting/Natural numbers:</strong> Positive integers starting from 1.</li>
+          <li><strong>Whole numbers:</strong> Counting numbers plus 0.</li>
+          <li><strong>Integers:</strong> All positive whole numbers, negative whole numbers, and 0.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="question-card">
+    <div class="question-header">
+      <span class="badge">Written Practice 30 (REPRESENT)</span>
+    </div>
+    <div class="question-text">
+      Use braces, an ellipsis, and digits to illustrate the set of negative even numbers.
+    </div>
+    <button class="btn-toggle" onclick="toggleSolution(this)">Review Answer & Explanation</button>
+    <div class="solution-panel">
+      <div class="answer-box">Final Answer: $\{\dots, -6, -4, -2\}$</div>
+      <div class="explanation">
+        Negative even numbers are even integers less than zero, continuing indefinitely to the left:
+        $$\{\dots, -6, -4, -2\}$$
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleSolution(button) {
+    const panel = button.nextElementSibling;
+    const isVisible = panel.style.display === "block";
+    
+    if (isVisible) {
+      panel.style.display = "none";
+      button.innerText = "Review Answer & Explanation";
+    } else {
+      panel.style.display = "block";
+      button.innerText = "Hide Explanation";
+      if (window.MathJax) {
+        MathJax.typesetPromise([panel]);
+      }
+    }
+  }
+
+  function toggleAll(show) {
+    const panels = document.querySelectorAll('.solution-panel');
+    const buttons = document.querySelectorAll('.btn-toggle');
+    
+    panels.forEach((panel, idx) => {
+      panel.style.display = show ? "block" : "none";
+      buttons[idx].innerText = show ? "Hide Explanation" : "Review Answer & Explanation";
+    });
+
+    if (show && window.MathJax) {
+      MathJax.typesetPromise();
+    }
+  }
+</script>
+
+</body>
+</html>
