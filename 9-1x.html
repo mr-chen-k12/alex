@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Practice - Step-by-Step Solutions</title>
+
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  <style>
+    :root {
+      --primary-color: #0056b3;
+      --secondary-color: #eef5ff;
+      --accent-color: #28a745;
+      --text-color: #212529;
+      --border-color: #dcdcdc;
+      --bg-color: #f4f6f9;
+      --card-bg: #ffffff;
+      --badge-bg: #e2e8f0;
+      --badge-text: #475569;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px 10px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: #ffffff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 10px 0;
+      color: var(--primary-color);
+      font-size: 1.8rem;
+    }
+
+    p.subtitle {
+      margin: 0 0 20px 0;
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn:hover {
+      background-color: #004085;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
+    .btn-toggle {
+      background-color: #0d6efd;
+      margin-top: 12px;
+    }
+
+    .btn-toggle:hover {
+      background-color: #0b5ed7;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #333;
+      margin: 30px 0 15px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--primary-color);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      transition: box-shadow 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .q-number {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: var(--primary-color);
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background-color: var(--badge-bg);
+      color: var(--badge-text);
+      letter-spacing: 0.5px;
+    }
+
+    .q-statement {
+      font-size: 1.05rem;
+      color: var(--text-color);
+      margin-bottom: 10px;
+    }
+
+    .solution-box {
+      display: none;
+      margin-top: 15px;
+      padding: 15px;
+      background-color: var(--secondary-color);
+      border-left: 4px solid var(--primary-color);
+      border-radius: 4px;
+    }
+
+    .solution-box.visible {
+      display: block;
+    }
+
+    .sol-label {
+      font-weight: bold;
+      color: var(--accent-color);
+      margin-bottom: 5px;
+    }
+
+    .number-line-svg {
+      max-width: 100%;
+      height: auto;
+      margin: 15px 0;
+      background: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+    }
+
+    ul, ol {
+      margin: 5px 0 10px 20px;
+      padding: 0;
+    }
+
+    .column-add {
+      display: inline-block;
+      text-align: right;
+      font-family: monospace;
+      font-size: 1.1rem;
+      border-bottom: 2px solid #000;
+      padding: 0 10px 4px 10px;
+      margin: 10px 0;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 10px 5px; }
+      .card { padding: 15px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Math Practice Review & Solutions</h1>
+    <p class="subtitle">Sequential step-by-step answers for self-verification</p>
+    <div class="toolbar">
+      <button class="btn" onclick="toggleAll(true)">Expand All Answers</button>
+      <button class="btn btn-secondary" onclick="toggleAll(false)">Collapse All Answers</button>
+    </div>
+  </header>
+
+  <div class="section-title">Warm-up Exercises (h – k)</div>
+
+  <div class="card" id="q-h">
+    <div class="card-header">
+      <span class="q-number">Exercise h</span>
+    </div>
+    <div class="q-statement">
+      The number $7000$ is divisible by which single-digit numbers?
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-h')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-h">
+      <div class="sol-label">Answer:</div>
+      <p><strong>1, 2, 4, 5, 7, 8</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>Test each single-digit number ($1$ to $9$):</p>
+      <ul>
+        <li><strong>1:</strong> All whole numbers are divisible by 1. ($\checkmark$)</li>
+        <li><strong>2:</strong> Ends in $0$ (even number). ($\checkmark$)</li>
+        <li><strong>3:</strong> Sum of digits is $7 + 0 + 0 + 0 = 7$, which is not divisible by 3. ($\times$)</li>
+        <li><strong>4:</strong> Last two digits are $00$, $7000 \div 4 = 1750$. ($\checkmark$)</li>
+        <li><strong>5:</strong> Ends in $0$. ($\checkmark$)</li>
+        <li><strong>6:</strong> Must be divisible by both 2 and 3. Since it is not divisible by 3, it is not divisible by 6. ($\times$)</li>
+        <li><strong>7:</strong> $7000 \div 7 = 1000$. ($\checkmark$)</li>
+        <li><strong>8:</strong> $7000 \div 8 = 875$. ($\checkmark$)</li>
+        <li><strong>9:</strong> Sum of digits is $7$, which is not divisible by 9. ($\times$)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" id="q-i">
+    <div class="card-header">
+      <span class="q-number">Exercise i</span>
+    </div>
+    <div class="q-statement">
+      List all the common factors of $12$ and $20$.
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-i')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-i">
+      <div class="sol-label">Answer:</div>
+      <p><strong>1, 2, 4</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <ul>
+        <li>Factors of $12$: $1, 2, 3, 4, 6, 12$</li>
+        <li>Factors of $20$: $1, 2, 4, 5, 10, 20$</li>
+      </ul>
+      <p>The numbers present in both factor lists are <strong>1, 2, and 4</strong>.</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-j">
+    <div class="card-header">
+      <span class="q-number">Exercise j</span>
+    </div>
+    <div class="q-statement">
+      Find the greatest common factor (GCF) of $24$ and $40$.
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-j')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-j">
+      <div class="sol-label">Answer:</div>
+      <p><strong>8</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <ul>
+        <li>Factors of $24$: $1, 2, 3, 4, 6, \mathbf{8}, 12, 24$</li>
+        <li>Factors of $40$: $1, 2, 4, 5, \mathbf{8}, 10, 20, 40$</li>
+      </ul>
+      <p>Common factors: $1, 2, 4, 8$. The largest factor common to both is <strong>8</strong>.</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-k">
+    <div class="card-header">
+      <span class="q-number">Exercise k</span>
+      <span class="tag">Explain</span>
+    </div>
+    <div class="q-statement">
+      How did you find your answer to exercise <strong>j</strong>?
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-k')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-k">
+      <div class="sol-label">Sample Explanation:</div>
+      <p>I listed all the factors of $24$ and all the factors of $40$. Then I identified the factors shared by both numbers ($1, 2, 4,$ and $8$) and selected the largest one, which is $8$.</p>
+    </div>
+  </div>
+
+
+  <div class="section-title">Written Practice (Questions 1 – 16)</div>
+
+  <div class="card" id="q-1">
+    <div class="card-header">
+      <span class="q-number">1.</span>
+      <span class="tag">Analyze</span>
+    </div>
+    <div class="q-statement">
+      If the product of $10$ and $20$ is divided by the sum of $20$ and $30$, what is the quotient?
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-1')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-1">
+      <div class="sol-label">Answer:</div>
+      <p><strong>4</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <ol>
+        <li>Product of $10$ and $20$: $10 \times 20 = 200$</li>
+        <li>Sum of $20$ and $30$: $20 + 30 = 50$</li>
+        <li>Divide the product by the sum: $$\frac{200}{50} = 4$$</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="card" id="q-2a">
+    <div class="card-header">
+      <span class="q-number">2a.</span>
+    </div>
+    <div class="q-statement">
+      List all the common factors of $30$ and $40$.
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-2a')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-2a">
+      <div class="sol-label">Answer:</div>
+      <p><strong>1, 2, 5, 10</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <ul>
+        <li>Factors of $30$: $1, 2, 3, 5, 6, 10, 15, 30$</li>
+        <li>Factors of $40$: $1, 2, 4, 5, 8, 10, 20, 40$</li>
+      </ul>
+      <p>Common factors appearing in both sets are <strong>1, 2, 5, and 10</strong>.</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-2b">
+    <div class="card-header">
+      <span class="q-number">2b.</span>
+    </div>
+    <div class="q-statement">
+      Find the greatest common factor (GCF) of $30$ and $40$.
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-2b')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-2b">
+      <div class="sol-label">Answer:</div>
+      <p><strong>10</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>From the common factors listed in part 2a ($1, 2, 5, 10$), the greatest value is <strong>10</strong>.</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-3">
+    <div class="card-header">
+      <span class="q-number">3.</span>
+      <span class="tag">Connect</span>
+    </div>
+    <div class="q-statement">
+      Use braces, an ellipsis, and digits to illustrate the set of negative odd numbers.
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-3')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-3">
+      <div class="sol-label">Answer:</div>
+      <p>$$\{\dots, -5, -3, -1\}$$</p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>Negative odd numbers decrease infinitely to the left. Using braces `{}` and an ellipsis `...` to indicate the infinite pattern ending at $-1$ yields $\{\dots, -5, -3, -1\}$.</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-4">
+    <div class="card-header">
+      <span class="q-number">4.</span>
+    </div>
+    <div class="q-statement">
+      Use digits to write four hundred seven million, six thousand, nine hundred sixty-two.
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-4')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-4">
+      <div class="sol-label">Answer:</div>
+      <p><strong>407,006,962</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <ul>
+        <li>Millions period: Four hundred seven $\rightarrow 407$</li>
+        <li>Thousands period: Six thousand $\rightarrow 006$</li>
+        <li>Units period: Nine hundred sixty-two $\rightarrow 962$</li>
+      </ul>
+      <p>Combining all periods: $407,006,962$.</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-5">
+    <div class="card-header">
+      <span class="q-number">5.</span>
+    </div>
+    <div class="q-statement">
+      List the whole numbers from $1$ to $10$ that are divisors of $12,300$.
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-5')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-5">
+      <div class="sol-label">Answer:</div>
+      <p><strong>1, 2, 3, 4, 5, 6, 10</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <ul>
+        <li><strong>1:</strong> Always a divisor. ($\checkmark$)</li>
+        <li><strong>2:</strong> Ends in $0$ (even). ($\checkmark$)</li>
+        <li><strong>3:</strong> Sum of digits $1+2+3+0+0 = 6$ (divisible by 3). ($\checkmark$)</li>
+        <li><strong>4:</strong> Ends in $00$ ($12300 \div 4 = 3075$). ($\checkmark$)</li>
+        <li><strong>5:</strong> Ends in $0$. ($\checkmark$)</li>
+        <li><strong>6:</strong> Divisible by both 2 and 3. ($\checkmark$)</li>
+        <li><strong>7:</strong> $12300 \div 7 = 1757.14...$ ($\times$)</li>
+        <li><strong>8:</strong> $12300 \div 8 = 1537.5$ ($\times$)</li>
+        <li><strong>9:</strong> Sum of digits is 6, which is not divisible by 9. ($\times$)</li>
+        <li><strong>10:</strong> Ends in $0$. ($\checkmark$)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" id="q-6">
+    <div class="card-header">
+      <span class="q-number">6.</span>
+    </div>
+    <div class="q-statement">
+      Replace the circle with the proper comparison symbol. Then write the comparison as a complete sentence using words to write the numbers.
+      $$-7 \bigcirc -11$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-6')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-6">
+      <div class="sol-label">Answer:</div>
+      <p>Symbol: <strong>$>$</strong></p>
+      <p>$$\mathbf{-7 > -11}$$</p>
+      <p>Sentence: <strong>"Negative seven is greater than negative eleven."</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>On a number line, $-7$ lies to the right of $-11$, meaning $-7$ is greater than $-11$.</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-7">
+    <div class="card-header">
+      <span class="q-number">7.</span>
+    </div>
+    <div class="q-statement">
+      The number $3456$ is divisible by which single-digit numbers?
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-7')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-7">
+      <div class="sol-label">Answer:</div>
+      <p><strong>1, 2, 3, 4, 6, 8, 9</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <ul>
+        <li><strong>1:</strong> Yes. ($\checkmark$)</li>
+        <li><strong>2:</strong> Ends in $6$ (even). ($\checkmark$)</li>
+        <li><strong>3:</strong> Sum of digits $3+4+5+6 = 18$, divisible by 3. ($\checkmark$)</li>
+        <li><strong>4:</strong> Last two digits $56 \div 4 = 14$. ($\checkmark$)</li>
+        <li><strong>5:</strong> Does not end in 0 or 5. ($\times$)</li>
+        <li><strong>6:</strong> Divisible by 2 and 3. ($\checkmark$)</li>
+        <li><strong>7:</strong> $3456 \div 7 = 493 \text{ R } 5$. ($\times$)</li>
+        <li><strong>8:</strong> Last 3 digits $456 \div 8 = 57$. ($\checkmark$)</li>
+        <li><strong>9:</strong> Sum of digits $18$ is divisible by 9. ($\checkmark$)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" id="q-8">
+    <div class="card-header">
+      <span class="q-number">8.</span>
+      <span class="tag">Model</span>
+    </div>
+    <div class="q-statement">
+      Show this subtraction problem on a number line: $2 - 5$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-8')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-8">
+      <div class="sol-label">Answer & Diagram:</div>
+      <p><strong>Result: $-3$</strong></p>
+      
+      <svg class="number-line-svg" viewBox="-20 0 540 100" xmlns="http://www.w3.org/2000/svg">
+        <line x1="20" y1="60" x2="480" y2="60" stroke="#333" stroke-width="2" marker-end="url(#arrow)" />
+        <line x1="20" y1="60" x2="10" y2="60" stroke="#333" stroke-width="2" />
+        
+        <g font-size="12" text-anchor="middle" fill="#333">
+          <line x1="100" y1="55" x2="100" y2="65" stroke="#333" stroke-width="1.5"/><text x="100" y="80">-5</text>
+          <line x1="130" y1="55" x2="130" y2="65" stroke="#333" stroke-width="1.5"/><text x="130" y="80">-4</text>
+          <line x1="160" y1="52" x2="160" y2="68" stroke="#d9534f" stroke-width="2.5"/><text x="160" y="82" font-weight="bold" fill="#d9534f">-3</text>
+          <line x1="190" y1="55" x2="190" y2="65" stroke="#333" stroke-width="1.5"/><text x="190" y="80">-2</text>
+          <line x1="220" y1="55" x2="220" y2="65" stroke="#333" stroke-width="1.5"/><text x="220" y="80">-1</text>
+          <line x1="250" y1="52" x2="250" y2="68" stroke="#333" stroke-width="2"/><text x="250" y="80" font-weight="bold">0</text>
+          <line x1="280" y1="55" x2="280" y2="65" stroke="#333" stroke-width="1.5"/><text x="280" y="80">1</text>
+          <line x1="310" y1="52" x2="310" y2="68" stroke="#0275d8" stroke-width="2.5"/><text x="310" y="82" font-weight="bold" fill="#0275d8">2</text>
+          <line x1="340" y1="55" x2="340" y2="65" stroke="#333" stroke-width="1.5"/><text x="340" y="80">3</text>
+          <line x1="370" y1="55" x2="370" y2="65" stroke="#333" stroke-width="1.5"/><text x="370" y="80">4</text>
+        </g>
+
+        <path d="M 250 45 Q 280 25 310 45" fill="none" stroke="#0275d8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+        <text x="280" y="25" font-size="12" fill="#0275d8" font-weight="bold" text-anchor="middle">+2</text>
+
+        <path d="M 310 40 Q 235 5 160 40" fill="none" stroke="#d9534f" stroke-width="2" marker-end="url(#arrow-red)"/>
+        <text x="235" y="12" font-size="12" fill="#d9534f" font-weight="bold" text-anchor="middle">-5</text>
+
+        <defs>
+          <marker id="arrow-blue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#0275d8"/>
+          </marker>
+          <marker id="arrow-red" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#d9534f"/>
+          </marker>
+        </defs>
+      </svg>
+
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <ol>
+        <li>Start at $0$ and move $2$ units to the right to land on $+2$.</li>
+        <li>From $+2$, move $5$ units to the left (subtraction).</li>
+        <li>You finish at <strong>$-3$</strong>.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="card" id="q-9">
+    <div class="card-header">
+      <span class="q-number">9.</span>
+    </div>
+    <div class="q-statement">
+      Write $6400$ in expanded notation.
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-9')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-9">
+      <div class="sol-label">Answer:</div>
+      <p>$$\mathbf{(6 \times 1000) + (4 \times 100)}$$</p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>Identify the place value of each non-zero digit:</p>
+      <ul>
+        <li>$6$ is in the thousands place $\rightarrow (6 \times 1000)$</li>
+        <li>$4$ is in the hundreds place $\rightarrow (4 \times 100)$</li>
+      </ul>
+    </div>
+  </div>
+
+  <p><em>Find the value of each variable:</em></p>
+
+  <div class="card" id="q-10">
+    <div class="card-header">
+      <span class="q-number">10.</span>
+    </div>
+    <div class="q-statement">
+      $$x + \$4.60 = \$10.00$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-10')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-10">
+      <div class="sol-label">Answer:</div>
+      <p>$$\mathbf{x = \$5.40}$$</p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>Subtract $\$4.60$ from both sides:</p>
+      <p>$$x = \$10.00 - \$4.60 = \$5.40$$</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-11">
+    <div class="card-header">
+      <span class="q-number">11.</span>
+    </div>
+    <div class="q-statement">
+      $$p - 3850 = 4500$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-11')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-11">
+      <div class="sol-label">Answer:</div>
+      <p>$$\mathbf{p = 8350}$$</p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>Add $3850$ to both sides:</p>
+      <p>$$p = 4500 + 3850 = 8350$$</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-12">
+    <div class="card-header">
+      <span class="q-number">12.</span>
+    </div>
+    <div class="q-statement">
+      $$8z = \$50.00$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-12')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-12">
+      <div class="sol-label">Answer:</div>
+      <p>$$\mathbf{z = \$6.25}$$</p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>Divide both sides by $8$:</p>
+      <p>$$z = \frac{\$50.00}{8} = \$6.25$$</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-13">
+    <div class="card-header">
+      <span class="q-number">13.</span>
+    </div>
+    <div class="q-statement">
+      Column addition sum equal to $60$:
+      <div style="text-align: left; margin: 10px 0;">
+        $7 + 4 + 8 + 6 + 2 + 1 + 6 + 8 + 9 + n = 60$
+      </div>
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-13')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-13">
+      <div class="sol-label">Answer:</div>
+      <p>$$\mathbf{n = 9}$$</p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <ol>
+        <li>Sum the known numbers: $$7 + 4 + 8 + 6 + 2 + 1 + 6 + 8 + 9 = 51$$</li>
+        <li>Set up equation: $$51 + n = 60$$</li>
+        <li>Subtract $51$ from $60$: $$n = 60 - 51 = 9$$</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="card" id="q-14">
+    <div class="card-header">
+      <span class="q-number">14.</span>
+    </div>
+    <div class="q-statement">
+      $$1426 - k = 87$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-14')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-14">
+      <div class="sol-label">Answer:</div>
+      <p>$$\mathbf{k = 1339}$$</p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>Subtract $87$ from $1426$:</p>
+      <p>$$k = 1426 - 87 = 1339$$</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-15">
+    <div class="card-header">
+      <span class="q-number">15.</span>
+    </div>
+    <div class="q-statement">
+      $$\frac{990}{p} = 45$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-15')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-15">
+      <div class="sol-label">Answer:</div>
+      <p>$$\mathbf{p = 22}$$</p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>Divide $990$ by $45$:</p>
+      <p>$$p = \frac{990}{45} = 22$$</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-16">
+    <div class="card-header">
+      <span class="q-number">16.</span>
+    </div>
+    <div class="q-statement">
+      $$\frac{z}{8} = 32$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-16')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-16">
+      <div class="sol-label">Answer:</div>
+      <p>$$\mathbf{z = 256}$$</p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>Multiply both sides by $8$:</p>
+      <p>$$z = 32 \times 8 = 256$$</p>
+    </div>
+  </div>
+
+
+  <div class="section-title">Written Practice (Questions 17 – 30)</div>
+
+  <p><em>Simplify:</em></p>
+
+  <div class="card" id="q-17">
+    <div class="card-header">
+      <span class="q-number">17.</span>
+    </div>
+    <div class="q-statement">
+      $$\frac{1225}{35}$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-17')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-17">
+      <div class="sol-label">Answer:</div>
+      <p><strong>35</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>$$1225 \div 35 = 35$$</p>
+      <p><em>Check: $35 \times 35 = 1225$.</em></p>
+    </div>
+  </div>
+
+  <div class="card" id="q-18">
+    <div class="card-header">
+      <span class="q-number">18.</span>
+    </div>
+    <div class="q-statement">
+      $$800 \times 50$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-18')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-18">
+      <div class="sol-label">Answer:</div>
+      <p><strong>40,000</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>Multiply non-zero digits first: $8 \times 5 = 40$. Then attach the three trailing zeros: $40,000$.</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-19">
+    <div class="card-header">
+      <span class="q-number">19.</span>
+    </div>
+    <div class="q-statement">
+      $$\$100.00 - \$48.37$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-19')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-19">
+      <div class="sol-label">Answer:</div>
+      <p><strong>$51.63</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>$$\begin{array}{r} \$100.00 \\ -\ \$48.37 \\ \hline \$51.63 \end{array}$$</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-20">
+    <div class="card-header">
+      <span class="q-number">20.</span>
+    </div>
+    <div class="q-statement">
+      $$46,302 + 49,998$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-20')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-20">
+      <div class="sol-label">Answer:</div>
+      <p><strong>96,300</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>$$\begin{array}{r} 46,302 \\ +\ 49,998 \\ \hline 96,300 \end{array}$$</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-21">
+    <div class="card-header">
+      <span class="q-number">21.</span>
+    </div>
+    <div class="q-statement">
+      $$\$45.00 \div 20$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-21')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-21">
+      <div class="sol-label">Answer:</div>
+      <p><strong>$2.25</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>$$\frac{45.00}{20} = 2.25$$</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-22">
+    <div class="card-header">
+      <span class="q-number">22.</span>
+    </div>
+    <div class="q-statement">
+      $$7 \cdot 11 \cdot 13$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-22')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-22">
+      <div class="sol-label">Answer:</div>
+      <p><strong>1001</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <ol>
+        <li>First product: $7 \times 11 = 77$</li>
+        <li>Second product: $77 \times 13 = 1001$</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="card" id="q-23">
+    <div class="card-header">
+      <span class="q-number">23.</span>
+    </div>
+    <div class="q-statement">
+      $$9 \overline{\smash{)} 43,271}$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-23')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-23">
+      <div class="sol-label">Answer:</div>
+      <p><strong>4807 R 8</strong> (or $4807\frac{8}{9}$)</p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <ul>
+        <li>$43 \div 9 = 4$ R $7$</li>
+        <li>Bring down $2 \rightarrow 72 \div 9 = 8$ R $0$</li>
+        <li>Bring down $7 \rightarrow 7 \div 9 = 0$ R $7$</li>
+        <li>Bring down $1 \rightarrow 71 \div 9 = 7$ R $8$</li>
+      </ul>
+      <p>Quotient is <strong>4807</strong> with a remainder of <strong>8</strong>.</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-24">
+    <div class="card-header">
+      <span class="q-number">24.</span>
+    </div>
+    <div class="q-statement">
+      $$48\text{¢} + \$8.49 + \$14$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-24')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-24">
+      <div class="sol-label">Answer:</div>
+      <p><strong>$22.97</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>Convert all values to dollar notation:</p>
+      <p>$$\$0.48 + \$8.49 + \$14.00 = \$22.97$$</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-25">
+    <div class="card-header">
+      <span class="q-number">25.</span>
+    </div>
+    <div class="q-statement">
+      $$1000 - (430 - 58)$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-25')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-25">
+      <div class="sol-label">Answer:</div>
+      <p><strong>628</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <ol>
+        <li>Simplify parentheses first: $$430 - 58 = 372$$</li>
+        <li>Subtract from $1000$: $$1000 - 372 = 628$$</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="card" id="q-26">
+    <div class="card-header">
+      <span class="q-number">26.</span>
+    </div>
+    <div class="q-statement">
+      $$140(16)$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-26')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-26">
+      <div class="sol-label">Answer:</div>
+      <p><strong>2240</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>$$140 \times 16 = 2240$$</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-27">
+    <div class="card-header">
+      <span class="q-number">27.</span>
+    </div>
+    <div class="q-statement">
+      $$25\text{¢} \times 24$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-27')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-27">
+      <div class="sol-label">Answer:</div>
+      <p><strong>600¢ or $6.00</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>$$25\text{¢} \times 24 = 600\text{¢} = \$6.00$$</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-28">
+    <div class="card-header">
+      <span class="q-number">28.</span>
+    </div>
+    <div class="q-statement">
+      $$\frac{\$43.50}{10}$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-28')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-28">
+      <div class="sol-label">Answer:</div>
+      <p><strong>$4.35</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>Dividing by $10$ moves the decimal point one place to the left:</p>
+      <p>$$\$43.50 \div 10 = \$4.35$$</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-29a">
+    <div class="card-header">
+      <span class="q-number">29a.</span>
+      <span class="tag">Analyze</span>
+    </div>
+    <div class="q-statement">
+      Name the property illustrated by the following equation:
+      $$x \cdot 5 = 5x$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-29a')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-29a">
+      <div class="sol-label">Answer:</div>
+      <p><strong>Commutative Property of Multiplication</strong></p>
+      <div class="sol-label">Step-by-Step Explanation:</div>
+      <p>The equation shows that changing the order of factors ($x \cdot 5$ to $5 \cdot x$) does not alter the product.</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-29b">
+    <div class="card-header">
+      <span class="q-number">29b.</span>
+      <span class="tag">Summarize</span>
+    </div>
+    <div class="q-statement">
+      In your own words explain the meaning of this property.
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-29b')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-29b">
+      <div class="sol-label">Sample Explanation:</div>
+      <p>The Commutative Property of Multiplication means that the order in which two numbers or variables are multiplied does not change the final product. For any numbers $a$ and $b$, $a \cdot b = b \cdot a$.</p>
+    </div>
+  </div>
+
+  <div class="card" id="q-30">
+    <div class="card-header">
+      <span class="q-number">30.</span>
+      <span class="tag">Justify</span>
+    </div>
+    <div class="q-statement">
+      List the properties used in the first three steps to simplify the expression $(8 \times 7) \times 5$.
+      $$\begin{aligned} &(8 \times 7) \times 5 && \text{Given expression} \\ &8 \times (7 \times 5) && \mathbf{a.\ \text{\_\_\_\_\_\_\_\_\_\_\_\_\_}} \\ &8 \times (5 \times 7) && \mathbf{b.\ \text{\_\_\_\_\_\_\_\_\_\_\_\_\_}} \\ &(8 \times 5) \times 7 && \mathbf{c.\ \text{\_\_\_\_\_\_\_\_\_\_\_\_\_}} \\ &40 \times 7 && 8 \times 5 = 40 \\ &280 && 40 \times 7 = 280 \end{aligned}$$
+    </div>
+    <button class="btn btn-toggle" onclick="toggleSolution('sol-30')">Show Answer & Explanation</button>
+    <div class="solution-box" id="sol-30">
+      <div class="sol-label">Answers:</div>
+      <ul>
+        <li><strong>a. Associative Property of Multiplication</strong> (regrouping factors from $(8 \times 7) \times 5$ to $8 \times (7 \times 5)$)</li>
+        <li><strong>b. Commutative Property of Multiplication</strong> (reordering factors inside parentheses from $(7 \times 5)$ to $(5 \times 7)$)</li>
+        <li><strong>c. Associative Property of Multiplication</strong> (regrouping factors to $(8 \times 5) \times 7$)</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleSolution(id) {
+    const box = document.getElementById(id);
+    if (box) {
+      box.classList.toggle('visible');
+    }
+  }
+
+  function toggleAll(show) {
+    const boxes = document.querySelectorAll('.solution-box');
+    boxes.forEach(box => {
+      if (show) {
+        box.classList.add('visible');
+      } else {
+        box.classList.remove('visible');
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
