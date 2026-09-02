@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Practice - Written Practice Solutions</title>
+  <!-- MathJax Configuration & Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --success-bg: #f0fdf4;
+      --success-border: #bbf7d0;
+      --success-text: #166534;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #0f172a;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .grid-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 25px;
+      background: var(--card-bg);
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .grid-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: #fff;
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .grid-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .grid-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .question-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      padding: 25px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+    }
+
+    .question-number {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .tag {
+      background: #eff6ff;
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .question-text {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+
+    .diagram {
+      text-align: center;
+      margin: 15px 0;
+    }
+
+    .diagram svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .toggle-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .solution-box {
+      display: none;
+      margin-top: 20px;
+      padding: 18px;
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      border-radius: 8px;
+      color: #064e3b;
+    }
+
+    .solution-box.visible {
+      display: block;
+    }
+
+    .solution-box h4 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      color: var(--success-text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: white;
+      border: 1px solid var(--border-color);
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-main);
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: #f1f5f9;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .vert-math {
+      display: inline-block;
+      text-align: right;
+      font-family: monospace;
+      font-size: 1.1rem;
+      line-height: 1.3;
+      padding: 5px 10px;
+    }
+    .vert-math .line {
+      border-bottom: 2px solid #000;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Written Practice Step-by-Step Solutions</h1>
+    <p>Select a question to view and verify your answer with detailed explanations.</p>
+  </header>
+
+  <div class="grid-nav" id="gridNav"></div>
+
+  <div class="question-card">
+    <div class="card-header">
+      <span class="question-number" id="qNum">Question 1</span>
+      <span class="tag" id="qTag">Standard</span>
+    </div>
+
+    <div class="question-text" id="qText"></div>
+
+    <div class="diagram" id="qDiagram"></div>
+
+    <button class="toggle-btn" id="toggleBtn" onclick="toggleSolution()">
+      <span id="btnText">Reveal Answer & Explanation</span>
+    </button>
+
+    <div class="solution-box" id="solutionBox">
+      <h4>✓ Solution & Explanation</h4>
+      <div id="solutionContent"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">← Previous</button>
+    <span id="progressText" style="color: var(--text-muted); font-size: 0.9rem;">1 of 30</span>
+    <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  const questions = [
+    {
+      id: 1,
+      tag: "Problem Solving",
+      text: "If the product of two one-digit whole numbers is 35, what is the sum of the same two numbers?",
+      solution: "<strong>Step 1:</strong> Find the two single-digit factors of $35$.<br>" +
+                "The factors of $35$ are $5$ and $7$ (since $5 \\times 7 = 35$). Both are one-digit whole numbers.<br><br>" +
+                "<strong>Step 2:</strong> Find their sum.<br>" +
+                "$$5 + 7 = 12$$<br>" +
+                "<strong>Answer:</strong> $12$"
+    },
+    {
+      id: 2,
+      tag: "Analyze",
+      text: "Name the property illustrated by this equation:<br> $$-5 \\cdot 1 = -5$$",
+      solution: "<strong>Explanation:</strong> Multiplying any real number by $1$ results in the number itself remaining unchanged.<br><br>" +
+                "<strong>Answer:</strong> Identity Property of Multiplication (or Multiplicative Identity Property)"
+    },
+    {
+      id: 3,
+      tag: "Factors",
+      text: "List the factor pairs of 50.",
+      solution: "<strong>Step 1:</strong> Find all pairs of positive integers that multiply to equal $50$.<br>" +
+                "$$\\bullet \\; 1 \\times 50 = 50$$" +
+                "$$\\bullet \\; 2 \\times 25 = 50$$" +
+                "$$\\bullet \\; 5 \\times 10 = 50$$<br>" +
+                "<strong>Answer:</strong> $1$ and $50$, $2$ and $25$, $5$ and $10$"
+    },
+    {
+      id: 4,
+      tag: "Translation",
+      text: "Use digits and symbols to write \"Two minus five equals negative three.\"",
+      solution: "<strong>Translation:</strong><br>" +
+                "\"Two\" $\\rightarrow 2$<br>" +
+                "\"minus\" $\\rightarrow -$<br>" +
+                "\"five\" $\\rightarrow 5$<br>" +
+                "\"equals\" $\\rightarrow =$<br>" +
+                "\"negative three\" $\\rightarrow -3$<br><br>" +
+                "<strong>Answer:</strong> $2 - 5 = -3$"
+    },
+    {
+      id: 5,
+      tag: "Place Value",
+      text: "Use only digits and commas to write 90 million.",
+      solution: "<strong>Explanation:</strong> \"Million\" represents six trailing zeros after the thousands period.<br><br>" +
+                "<strong>Answer:</strong> $90,000,000$"
+    },
+    {
+      id: 6,
+      tag: "Factors",
+      text: "List the single-digit factors of 924.",
+      solution: "<strong>Step 1:</strong> Test each single digit ($1$ through $9$) using divisibility rules:<br>" +
+                "$$\\bullet \\; 1: \\text{Factor of every number. (Yes)}$$" +
+                "$$\\bullet \\; 2: \\text{Last digit } 4 \\text{ is even. (Yes)}$$" +
+                "$$\\bullet \\; 3: \\text{Sum of digits } 9+2+4=15 \\text{ (divisible by 3). (Yes)}$$" +
+                "$$\\bullet \\; 4: \\text{Last two digits } 24 \\text{ divisible by 4. (Yes)}$$" +
+                "$$\\bullet \\; 5: \\text{Does not end in 0 or 5. (No)}$$" +
+                "$$\\bullet \\; 6: \\text{Divisible by both 2 and 3. (Yes)}$$" +
+                "$$\\bullet \\; 7: 924 \\div 7 = 132. \\text{ (Yes)}$$" +
+                "$$\\bullet \\; 8: 924 \\div 8 = 115.5. \\text{ (No)}$$" +
+                "$$\\bullet \\; 9: \\text{Sum of digits } 15 \\text{ is not divisible by 9. (No)}$$<br>" +
+                "<strong>Answer:</strong> $1, 2, 3, 4, 6, 7$"
+    },
+    {
+      id: 7,
+      tag: "Ordering",
+      text: "Arrange these numbers in order from least to greatest:<br> $$-10, 5, -7, 8, 0, -2$$",
+      solution: "<strong>Step 1:</strong> Compare negative numbers (further left on the number line means smaller): $-10 < -7 < -2$.<br>" +
+                "<strong>Step 2:</strong> Place zero and positive numbers: $0 < 5 < 8$.<br><br>" +
+                "<strong>Answer:</strong> $-10, -7, -2, 0, 5, 8$"
+    },
+    {
+      id: 8,
+      tag: "Generalize",
+      text: "Use words to describe the following sequence. Then find the next three numbers in the sequence.<br> $$\\dots, 49, 64, 81, 100, \\dots$$",
+      solution: "<strong>Description:</strong> The terms are consecutive perfect squares starting from $7^2$ ($7^2=49, 8^2=64, 9^2=81, 10^2=100$).<br><br>" +
+                "<strong>Next three terms:</strong><br>" +
+                "$$\\bullet \\; 11^2 = 121$$" +
+                "$$\\bullet \\; 12^2 = 144$$" +
+                "$$\\bullet \\; 13^2 = 169$$<br>" +
+                "<strong>Answer:</strong> Consecutive perfect squares; $121, 144, 169$"
+    },
+    {
+      id: 9,
+      tag: "Geometry Concepts",
+      text: "To build a fence, Megan dug holes in the ground to hold the posts upright. Then she attached rails to connect the posts. Which fence parts were vertical, the posts or the rails?",
+      solution: "<strong>Explanation:</strong> Vertical means pointing straight up and down (perpendicular to the ground). Since the posts are placed upright in the ground, the posts are vertical (the rails are horizontal).<br><br>" +
+                "<strong>Answer:</strong> The posts"
+    },
+    {
+      id: 10,
+      tag: "Factors & GCF",
+      text: "a. List the common factors of 24 and 32.<br>b. Find the greatest common factor (GCF) of 24 and 32.",
+      solution: "<strong>a. Common Factors:</strong><br>" +
+                "Factors of $24$: $\\{1, 2, 3, 4, 6, 8, 12, 24\\}$<br>" +
+                "Factors of $32$: $\\{1, 2, 4, 8, 16, 32\\}$<br>" +
+                "Intersection / Common factors: $1, 2, 4, 8$<br><br>" +
+                "<strong>b. Greatest Common Factor:</strong><br>" +
+                "The largest number among the common factors is $8$.<br><br>" +
+                "<strong>Answer:</strong> a. $1, 2, 4, 8$; &nbsp; b. $8$"
+    },
+    {
+      id: 11,
+      tag: "Connect",
+      text: "The temperature at noon was $3^\\circ\\text{C}$. The temperature at 5:00 p.m. was $-4^\\circ\\text{C}$. Did the temperature rise or fall between noon and 5:00 p.m.? By how many degrees?",
+      solution: "<strong>Step 1:</strong> Compare temperatures. Since $-4^\\circ\\text{C} < 3^\\circ\\text{C}$, the temperature <strong>fell</strong>.<br><br>" +
+                "<strong>Step 2:</strong> Calculate difference:<br>" +
+                "$$3 - (-4) = 3 + 4 = 7^\\circ\\text{C}$$<br>" +
+                "<strong>Answer:</strong> Fell by $7^\\circ\\text{C}$"
+    },
+    {
+      id: 12,
+      tag: "Algebra",
+      text: "Find the value of $z$:<br> $$6 \\cdot 6 \\cdot z = 1224$$",
+      solution: "<strong>Step 1:</strong> Simplify the coefficient:<br>" +
+                "$$36z = 1224$$<br>" +
+                "<strong>Step 2:</strong> Solve for $z$ by dividing both sides by $36$:<br>" +
+                "$$z = \\frac{1224}{36} = 34$$<br>" +
+                "<strong>Answer:</strong> $z = 34$"
+    },
+    {
+      id: 13,
+      tag: "Algebra",
+      text: "Find the value of $k$:<br> $$\\$100.00 - k = \\$17.54$$",
+      solution: "<strong>Step 1:</strong> Rearrange to solve for $k$:<br>" +
+                "$$k = \\$100.00 - \\$17.54$$<br>" +
+                "<strong>Step 2:</strong> Perform subtraction:<br>" +
+                "$$k = \\$82.46$$<br>" +
+                "<strong>Answer:</strong> $k = \\$82.46$"
+    },
+    {
+      id: 14,
+      tag: "Algebra",
+      text: "Find the value of $w$:<br> $$w - 98 = 432$$",
+      solution: "<strong>Step 1:</strong> Add $98$ to both sides:<br>" +
+                "$$w = 432 + 98$$<br>" +
+                "$$w = 530$$<br>" +
+                "<strong>Answer:</strong> $w = 530$"
+    },
+    {
+      id: 15,
+      tag: "Algebra",
+      text: "Find the value of $x$:<br> $$20x = \\$36.00$$",
+      solution: "<strong>Step 1:</strong> Divide both sides by $20$:<br>" +
+                "$$x = \\frac{\\$36.00}{20}$$<br>" +
+                "$$x = \\$1.80$$<br>" +
+                "<strong>Answer:</strong> $x = \\$1.80$"
+    },
+    {
+      id: 16,
+      tag: "Algebra",
+      text: "Find the value of $w$:<br> $$\\frac{w}{20} = 200$$",
+      solution: "<strong>Step 1:</strong> Multiply both sides by $20$:<br>" +
+                "$$w = 200 \\cdot 20$$<br>" +
+                "$$w = 4000$$<br>" +
+                "<strong>Answer:</strong> $w = 4000$"
+    },
+    {
+      id: 17,
+      tag: "Algebra",
+      text: "Find the value of $x$:<br> $$\\frac{300}{x} = 30$$",
+      solution: "<strong>Step 1:</strong> Multiply by $x$ and divide by $30$:<br>" +
+                "$$30x = 300 \\implies x = \\frac{300}{30} = 10$$<br>" +
+                "<strong>Answer:</strong> $x = 10$"
+    },
+    {
+      id: 18,
+      tag: "Explain",
+      text: "Does the quotient of $4554 \\div 9$ have a remainder? How can you tell without dividing?",
+      solution: "<strong>Explanation:</strong> Use the divisibility rule for $9$. Add the digits of $4554$:<br>" +
+                "$$4 + 5 + 5 + 4 = 18$$<br>" +
+                "Since $18$ is divisible by $9$ ($18 \\div 9 = 2$), the number $4554$ is evenly divisible by $9$ without a remainder.<br><br>" +
+                "<strong>Answer:</strong> No remainder. The sum of the digits ($18$) is divisible by $9$."
+    },
+    {
+      id: 19,
+      tag: "Arithmetic",
+      text: "Simplify:<br> $$\\begin{array}{r} 36,475 \\\\ + 55,984 \\\\ \\hline \\end{array}$$",
+      solution: "<strong>Vertical Addition:</strong><br>" +
+                "<div class='vert-math'>&nbsp;36,475<br>+55,984<br><div class='line'></div>92,459</div><br><br>" +
+                "<strong>Answer:</strong> $92,459$"
+    },
+    {
+      id: 20,
+      tag: "Arithmetic",
+      text: "Simplify:<br> $$\\begin{array}{r} 476 \\\\ \\times 38 \\\\ \\hline \\end{array}$$",
+      solution: "<strong>Multiplication Steps:</strong><br>" +
+                "$$\\bullet \\; 476 \\times 8 = 3,808$$" +
+                "$$\\bullet \\; 476 \\times 30 = 14,280$$" +
+                "$$\\bullet \\; 3,808 + 14,280 = 18,088$$<br>" +
+                "<strong>Answer:</strong> $18,088$"
+    },
+    {
+      id: 21,
+      tag: "Arithmetic",
+      text: "Simplify:<br> $$\\$80.00 - \\$72.45$$",
+      solution: "<strong>Subtraction Steps:</strong><br>" +
+                "$$\\$80.00 - \\$72.45 = \\$7.55$$<br>" +
+                "<strong>Answer:</strong> $\\$7.55$"
+    },
+    {
+      id: 22,
+      tag: "Arithmetic",
+      text: "Simplify:<br> $$\\$68.00 \\div 40$$",
+      solution: "<strong>Division Steps:</strong><br>" +
+                "$$\\frac{\\$68.00}{40} = \\frac{\\$6.80}{4} = \\$1.70$$<br>" +
+                "<strong>Answer:</strong> $\\$1.70$"
+    },
+    {
+      id: 23,
+      tag: "Justify",
+      text: "Show the steps and the properties that make this multiplication easier to perform mentally: $8 \\cdot 7 \\cdot 5$",
+      solution: "<strong>Step 1:</strong> Use the <strong>Commutative Property of Multiplication</strong> to rearrange factors so $8$ and $5$ are multiplied together first:<br>" +
+                "$$8 \\cdot 7 \\cdot 5 = 8 \\cdot 5 \\cdot 7$$<br>" +
+                "<strong>Step 2:</strong> Use the <strong>Associative Property of Multiplication</strong> to group $(8 \\cdot 5)$:<br>" +
+                "$$(8 \\cdot 5) \\cdot 7 = 40 \\cdot 7$$<br>" +
+                "<strong>Step 3:</strong> Compute mental product:<br>" +
+                "$$40 \\cdot 7 = 280$$<br>" +
+                "<strong>Answer:</strong> $280$ (using Commutative and Associative Properties)"
+    },
+    {
+      id: 24,
+      tag: "Compare",
+      text: "Compare using $>$, $<$, or $=$:<br> $$4000 \\div (200 \\div 10) \\;\\bigcirc\\; (4000 \\div 200) \\div 10$$",
+      solution: "<strong>Left Side:</strong><br>" +
+                "$$200 \\div 10 = 20 \\implies 4000 \\div 20 = 200$$<br>" +
+                "<strong>Right Side:</strong><br>" +
+                "$$4000 \\div 200 = 20 \\implies 20 \\div 10 = 2$$<br>" +
+                "Since $200 > 2$, the relation is $>$.<br><br>" +
+                "<strong>Answer:</strong> $>$"
+    },
+    {
+      id: 25,
+      tag: "Evaluation",
+      text: "Evaluate each expression for $a = 200$ and $b = 400$:<br>a. $ab$<br>b. $a - b$<br>c. $\\frac{b}{a}$",
+      solution: "<strong>a. Product $ab$:</strong><br>" +
+                "$$200 \\times 400 = 80,000$$<br>" +
+                "<strong>b. Difference $a - b$:</strong><br>" +
+                "$$200 - 400 = -200$$<br>" +
+                "<strong>c. Quotient $\\frac{b}{a}$:</strong><br>" +
+                "$$\\frac{400}{200} = 2$$<br>" +
+                "<strong>Answer:</strong> a. $80,000$; &nbsp; b. $-200$; &nbsp; c. $2$"
+    },
+    {
+      id: 26,
+      tag: "Geometry",
+      text: "Refer to the figure to answer <strong>a</strong> and <strong>b</strong>:<br>a. Which angle is an acute angle?<br>b. Which angle is a straight angle?",
+      diagram: `<svg width="280" height="130" viewBox="0 0 280 130">
+        <defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/></marker></defs>
+        <line x1="30" y1="90" x2="250" y2="90" stroke="#333" stroke-width="2" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+        <line x1="140" y1="90" x2="220" y2="20" stroke="#333" stroke-width="2" marker-end="url(#arrow)" />
+        <circle cx="60" cy="90" r="3" fill="#333"/><text x="60" y="115" font-size="14" text-anchor="middle">A</text>
+        <circle cx="140" cy="90" r="3" fill="#333"/><text x="140" y="115" font-size="14" text-anchor="middle">M</text>
+        <circle cx="220" cy="90" r="3" fill="#333"/><text x="220" y="115" font-size="14" text-anchor="middle">C</text>
+        <circle cx="200" cy="37.5" r="3" fill="#333"/><text x="215" y="35" font-size="14" text-anchor="middle">B</text>
+      </svg>`,
+      solution: "<strong>a. Acute angle:</strong> Angle measuring less than $90^\\circ$. $\\angle BMC$ (or $\\angle CMB$) is acute.<br><br>" +
+                "<strong>b. Straight angle:</strong> Angle measuring exactly $180^\\circ$. $\\angle AMC$ (or $\\angle CMA$) forms line $AC$.<br><br>" +
+                "<strong>Answer:</strong> a. $\\angle BMC$; &nbsp; b. $\\angle AMC$"
+    },
+    {
+      id: 27,
+      tag: "Geometry",
+      text: "What type of angle is formed by perpendicular lines?",
+      solution: "<strong>Explanation:</strong> Perpendicular lines intersect to form four $90^\\circ$ angles, which are called right angles.<br><br>" +
+                "<strong>Answer:</strong> Right angle ($90^\\circ$)"
+    },
+    {
+      id: 28,
+      tag: "Geometry",
+      text: "Name three segments in this figure.",
+      diagram: `<svg width="280" height="70" viewBox="0 0 280 70">
+        <defs><marker id="arrow2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/></marker></defs>
+        <line x1="30" y1="35" x2="250" y2="35" stroke="#333" stroke-width="2" marker-start="url(#arrow2)" marker-end="url(#arrow2)" />
+        <circle cx="60" cy="35" r="3" fill="#333"/><text x="60" y="25" font-size="14" text-anchor="middle">X</text>
+        <circle cx="150" cy="35" r="3" fill="#333"/><text x="150" y="25" font-size="14" text-anchor="middle">Y</text>
+        <circle cx="220" cy="35" r="3" fill="#333"/><text x="220" y="25" font-size="14" text-anchor="middle">Z</text>
+      </svg>`,
+      solution: "<strong>Explanation:</strong> A line segment is bounded by two distinct endpoints.<br>" +
+                "The 3 segments formed by points $X$, $Y$, and $Z$ are:<br>" +
+                "$$\\bullet \\; \\overline{XY} \\text{ (segment } XY)$$"+
+                "$$\\bullet \\; \\overline{YZ} \\text{ (segment } YZ)$$"+
+                "$$\\bullet \\; \\overline{XZ} \\text{ (segment } XZ)$$<br>"+
+                "<strong>Answer:</strong> $\\overline{XY}, \\overline{YZ}, \\overline{XZ}$"
+    },
+    {
+      id: 29,
+      tag: "Conclude",
+      text: "If you knew $m\\overline{XY}$ and $m\\overline{YZ}$, describe how you would find $m\\overline{XZ}$.",
+      solution: "<strong>Explanation:</strong> By the Segment Addition Postulate, since point $Y$ lies between $X$ and $Z$ on the line segment:<br>" +
+                "$$m\\overline{XZ} = m\\overline{XY} + m\\overline{YZ}$$<br>" +
+                "<strong>Answer:</strong> Add the length of segment $XY$ ($m\\overline{XY}$) to the length of segment $YZ$ ($m\\overline{YZ}$)."
+    },
+    {
+      id: 30,
+      tag: "Model",
+      text: "Sketch two intersecting planes.",
+      diagram: `<svg width="260" height="150" viewBox="0 0 260 150">
+        <polygon points="20,40 160,40 220,130 80,130" fill="rgba(37, 99, 235, 0.2)" stroke="#2563eb" stroke-width="2"/>
+        <polygon points="100,10 200,10 140,140 40,140" fill="rgba(220, 38, 38, 0.2)" stroke="#dc2626" stroke-width="2"/>
+        <line x1="85" y1="40" x2="155" y2="130" stroke="#000" stroke-width="3" stroke-dasharray="4"/>
+      </svg>`,
+      solution: "<strong>Explanation:</strong> Two planes that cross each other intersect along a single straight line.<br><br>" +
+                "<strong>Answer:</strong> Two flat surfaces intersecting along a line (as depicted in the diagram)."
+    }
+  ];
+
+  let currentIndex = 0;
+
+  function initGrid() {
+    const nav = document.getElementById('gridNav');
+    questions.forEach((q, i) => {
+      const btn = document.createElement('button');
+      btn.className = `grid-btn ${i === 0 ? 'active' : ''}`;
+      btn.innerText = q.id;
+      btn.onclick = () => goToQuestion(i);
+      btn.id = `grid-btn-${i}`;
+      nav.appendChild(btn);
+    });
+  }
+
+  function loadQuestion(index) {
+    currentIndex = index;
+    const q = questions[index];
+
+    document.getElementById('qNum').innerText = `Question ${q.id}`;
+    document.getElementById('qTag').innerText = q.tag;
+    document.getElementById('qText').innerHTML = q.text;
+    
+    const diagDiv = document.getElementById('qDiagram');
+    diagDiv.innerHTML = q.diagram || '';
+
+    document.getElementById('solutionContent').innerHTML = q.solution;
+    
+    // Reset toggle button and hide solution
+    const solBox = document.getElementById('solutionBox');
+    solBox.classList.remove('visible');
+    document.getElementById('btnText').innerText = "Reveal Answer & Explanation";
+
+    // Update navigation UI
+    document.getElementById('prevBtn').disabled = (index === 0);
+    document.getElementById('nextBtn').disabled = (index === questions.length - 1);
+    document.getElementById('progressText').innerText = `${index + 1} of ${questions.length}`;
+
+    // Update active grid button
+    document.querySelectorAll('.grid-btn').forEach((btn, i) => {
+      btn.classList.toggle('active', i === index);
+    });
+
+    // Re-render MathJax formula typesetting
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise();
+    }
+  }
+
+  function toggleSolution() {
+    const solBox = document.getElementById('solutionBox');
+    const btnText = document.getElementById('btnText');
+    const isVisible = solBox.classList.toggle('visible');
+
+    if (isVisible) {
+      btnText.innerText = "Hide Answer & Explanation";
+      if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+      }
+    } else {
+      btnText.innerText = "Reveal Answer & Explanation";
+    }
+  }
+
+  function navigate(direction) {
+    const newIndex = currentIndex + direction;
+    if (newIndex >= 0 && newIndex < questions.length) {
+      loadQuestion(newIndex);
+    }
+  }
+
+  function goToQuestion(index) {
+    loadQuestion(index);
+  }
+
+  // Initialize
+  initGrid();
+  loadQuestion(0);
+</script>
+
+</body>
+</html>
