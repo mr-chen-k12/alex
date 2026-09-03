@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saxon Math Course 2 - Lesson 8 Solutions</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #e2e8f0;
+            --accent-green: #10b981;
+            --accent-light: #ecfdf5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: #eff6ff;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .filter-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: border-color 0.2s ease;
+        }
+
+        .question-card:hover {
+            border-color: #cbd5e1;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .q-badge {
+            background: #dbeafe;
+            color: var(--primary-color);
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .tag-badge {
+            background: #f1f5f9;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .question-body {
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+            color: #1e293b;
+        }
+
+        .answer-container {
+            display: none;
+            margin-top: 15px;
+            padding: 16px;
+            background-color: var(--accent-light);
+            border-left: 4px solid var(--accent-green);
+            border-radius: 6px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .answer-title {
+            font-weight: 700;
+            color: #065f46;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .final-answer {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #047857;
+            margin-bottom: 8px;
+        }
+
+        .explanation {
+            font-size: 0.95rem;
+            color: #1e293b;
+        }
+
+        .explanation p {
+            margin-bottom: 6px;
+        }
+
+        .explanation p:last-child {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Saxon Math Course 2 — Lesson 8</h1>
+        <p>Interactive Solutions & Step-by-Step Explanations</p>
+    </header>
+
+    <div class="controls">
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterQuestions('all')">All Problems</button>
+            <button class="filter-btn" onclick="filterQuestions('practice')">Practice i–k</button>
+            <button class="filter-btn" onclick="filterQuestions('1-10')">1–10</button>
+            <button class="filter-btn" onclick="filterQuestions('11-20')">11–20</button>
+            <button class="filter-btn" onclick="filterQuestions('21-30')">21–30</button>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button class="btn btn-outline" onclick="toggleAllAnswers(true)">Show All</button>
+            <button class="btn btn-outline" onclick="toggleAllAnswers(false)">Hide All</button>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="practice">
+        <div class="question-header">
+            <span class="q-badge">Practice i</span>
+        </div>
+        <div class="question-body">
+            Find \(XZ\) to the nearest sixteenth of an inch.
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-i')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-i">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(XZ = 2\text{ inches}\) (or \(2\frac{0}{16}\text{ in.}\))</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Measuring segment \(XZ\) on the number line provided shows point \(X\) at \(11\frac{1}{2}\) and point \(Z\) at \(13\frac{1}{2}\). The distance between them is \(13\frac{1}{2} - 11\frac{1}{2} = 2\text{ inches}\).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="practice">
+        <div class="question-header">
+            <span class="q-badge">Practice j</span>
+        </div>
+        <div class="question-body">
+            Jack's ruler is divided into eighths of an inch. Assuming the ruler is used correctly, what is the greatest possible measurement error that can be made with Jack's ruler? Express your answer as a fraction of an inch.
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-j')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-j">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(\frac{1}{16}\text{ inch}\)</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> The greatest possible error in a measurement using a precision ruler is half of the smallest unit mark on the scale. Half of \(\frac{1}{8}\) inch is:</p>
+                <p>$$\frac{1}{2} \times \frac{1}{8} = \frac{1}{16}\text{ inch}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="practice">
+        <div class="question-header">
+            <span class="q-badge">Practice k</span>
+        </div>
+        <div class="question-body">
+            Arrange these fractions in order from least to greatest:
+            $$\frac{1}{4}, \quad \frac{1}{2}, \quad \frac{1}{8}, \quad \frac{1}{16}$$
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-k')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-k">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(\frac{1}{16}, \, \frac{1}{8}, \, \frac{1}{4}, \, \frac{1}{2}\)</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> When unit fractions have the same numerator (\(1\)), the fraction with the larger denominator represents a smaller value.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 1</span>
+            <span class="tag-badge">REPRESENT</span>
+        </div>
+        <div class="question-body">
+            Use digits and a comparison symbol to write "One and three fourths is greater than one and three fifths."
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-1')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-1">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(1\frac{3}{4} > 1\frac{3}{5}\)</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> "One and three fourths" is written as \(1\frac{3}{4}\), "greater than" is represented by \(>\), and "one and three fifths" is written as \(1\frac{3}{5}\).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 2</span>
+        </div>
+        <div class="question-body">
+            Refer to practice problem <i>i</i> above. Use a ruler to find \(XY\) and \(YZ\).
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-2')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-2">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(XY = 1\frac{1}{4}\text{ in.}\) and \(YZ = \frac{3}{4}\text{ in.}\)</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Measuring the actual diagram with a standard inch ruler gives segment \(XY = 1\frac{1}{4}\text{ inches}\) and segment \(YZ = \frac{3}{4}\text{ inch}\) (summing to total length \(XZ = 2\text{ inches}\)).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 3</span>
+        </div>
+        <div class="question-body">
+            What is the quotient when the product of 20 and 20 is divided by the sum of 10 and 10?
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-3')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-3">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(20\)</div>
+            <div class="explanation">
+                <p><strong>Step 1:</strong> Find the product of 20 and 20: \(20 \times 20 = 400\).</p>
+                <p><strong>Step 2:</strong> Find the sum of 10 and 10: \(10 + 10 = 20\).</p>
+                <p><strong>Step 3:</strong> Divide the product by the sum: \(\frac{400}{20} = 20\).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 4</span>
+            <span class="tag-badge">ANALYZE</span>
+        </div>
+        <div class="question-body">
+            List the single-digit divisors of 1680.
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-4')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-4">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(1, 2, 3, 4, 5, 6, 7, 8\)</div>
+            <div class="explanation">
+                <p>Check single digits (1 to 9):</p>
+                <p>• <strong>1:</strong> Always divides any integer.</p>
+                <p>• <strong>2:</strong> Ends in 0 (even) \(\rightarrow\) Yes.</p>
+                <p>• <strong>3:</strong> Sum of digits \(1+6+8+0 = 15\) (divisible by 3) \(\rightarrow\) Yes.</p>
+                <p>• <strong>4:</strong> Last two digits 80 divisible by 4 \(\rightarrow\) Yes.</p>
+                <p>• <strong>5:</strong> Ends in 0 \(\rightarrow\) Yes.</p>
+                <p>• <strong>6:</strong> Divisible by 2 and 3 \(\rightarrow\) Yes.</p>
+                <p>• <strong>7:</strong> \(1680 \div 7 = 240\) \(\rightarrow\) Yes.</p>
+                <p>• <strong>8:</strong> \(1680 \div 8 = 210\) \(\rightarrow\) Yes.</p>
+                <p>• <strong>9:</strong> Sum of digits 15 is not divisible by 9 \(\rightarrow\) No.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 5</span>
+            <span class="tag-badge">EVALUATE</span>
+        </div>
+        <div class="question-body">
+            Point \(A\) represents what mixed number on this number line?
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-5')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-5">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(3\frac{1}{2}\)</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> On the number line between whole numbers 3 and 4, point \(A\) lies exactly halfway at the middle tick mark, representing \(3\frac{1}{2}\).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 6a</span>
+        </div>
+        <div class="question-body">
+            Replace the circle with the proper comparison symbol: \(3 + 2 \bigcirc 2 + 3\)
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-6a')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-6a">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(=\)</div>
+            <div class="explanation">
+                <p>Evaluating both sides gives \(3 + 2 = 5\) and \(2 + 3 = 5\). Since \(5 = 5\), the symbol is \(=\).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 6b</span>
+            <span class="tag-badge">ANALYZE</span>
+        </div>
+        <div class="question-body">
+            What property of addition is illustrated by this comparison?
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-6b')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-6b">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">Commutative Property of Addition</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> The Commutative Property of Addition states that changing the order of addends does not change the sum (\(a + b = b + a\)).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 7</span>
+        </div>
+        <div class="question-body">
+            Use words to write \(325,000,000,000\).
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-7')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-7">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">Three hundred twenty-five billion</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> The number has 12 digits, where 325 is in the billions period.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 8a</span>
+        </div>
+        <div class="question-body">
+            What fraction of the circle is shaded?
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-8a')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-8a">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(\frac{3}{8}\)</div>
+            <div class="explanation">
+                <p>The circle is divided into 8 equal sectors, and 3 of them are shaded.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 8b</span>
+        </div>
+        <div class="question-body">
+            What fraction of the circle is not shaded?
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-8b')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-8b">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(\frac{5}{8}\)</div>
+            <div class="explanation">
+                <p>Out of 8 total sectors, 5 remain unshaded (\(1 - \frac{3}{8} = \frac{5}{8}\)).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 9a</span>
+            <span class="tag-badge">ANALYZE</span>
+        </div>
+        <div class="question-body">
+            What percent of the rectangle is shaded?
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-9a')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-9a">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(20\%\)</div>
+            <div class="explanation">
+                <p>The rectangle is divided into 5 equal parts, with 1 part shaded. Expressed as a percentage:</p>
+                <p>$$\frac{1}{5} = \frac{20}{100} = 20\%$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 9b</span>
+        </div>
+        <div class="question-body">
+            What percent of the rectangle is not shaded?
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-9b')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-9b">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(80\%\)</div>
+            <div class="explanation">
+                <p>There are 4 unshaded parts out of 5 total parts:</p>
+                <p>$$\frac{4}{5} = 80\% \quad (\text{or } 100\% - 20\% = 80\%)$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 10</span>
+        </div>
+        <div class="question-body">
+            What is the name of the part of a fraction that indicates the number of equal parts in the whole?
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-10')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-10">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">Denominator</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> The bottom number of a fraction is called the denominator; it shows how many equal parts make up the complete whole unit.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header">
+            <span class="q-badge">Problem 11</span>
+        </div>
+        <div class="question-body">
+            Find the value of \(a\):
+            $$a - \$4.70 = \$2.35$$
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-11')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-11">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(a = \$7.05\)</div>
+            <div class="explanation">
+                <p>Add \(\$4.70\) to both sides of the equation:</p>
+                <p>$$a = \$2.35 + \$4.70 = \$7.05$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header">
+            <span class="q-badge">Problem 12</span>
+        </div>
+        <div class="question-body">
+            Find the value of \(b\):
+            $$b + \$25.48 = \$60.00$$
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-12')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-12">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(b = \$34.52\)</div>
+            <div class="explanation">
+                <p>Subtract \(\$25.48\) from both sides:</p>
+                <p>$$b = \$60.00 - \$25.48 = \$34.52$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header">
+            <span class="q-badge">Problem 13</span>
+        </div>
+        <div class="question-body">
+            Find the value of \(c\):
+            $$8c = \$60.00$$
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-13')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-13">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(c = \$7.50\)</div>
+            <div class="explanation">
+                <p>Divide both sides by 8:</p>
+                <p>$$c = \frac{\$60.00}{8} = \$7.50$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header">
+            <span class="q-badge">Problem 14</span>
+        </div>
+        <div class="question-body">
+            Find the value of \(d\):
+            $$10,000 - d = 5420$$
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-14')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-14">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(d = 4580\)</div>
+            <div class="explanation">
+                <p>Subtract 5420 from 10,000:</p>
+                <p>$$d = 10,000 - 5420 = 4580$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header">
+            <span class="q-badge">Problem 15</span>
+        </div>
+        <div class="question-body">
+            Find the value of \(e\):
+            $$\frac{e}{15} = 15$$
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-15')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-15">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(e = 225\)</div>
+            <div class="explanation">
+                <p>Multiply both sides by 15:</p>
+                <p>$$e = 15 \times 15 = 225$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header">
+            <span class="q-badge">Problem 16</span>
+        </div>
+        <div class="question-body">
+            Find the value of \(f\):
+            $$\frac{196}{f} = 14$$
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-16')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-16">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(f = 14\)</div>
+            <div class="explanation">
+                <p>Multiply by \(f\) and divide by 14:</p>
+                <p>$$f = \frac{196}{14} = 14$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header">
+            <span class="q-badge">Problem 17</span>
+            <span class="tag-badge">JUSTIFY</span>
+        </div>
+        <div class="question-body">
+            Give a reason for each of the first two steps taken to solve the equation \(9 + (n + 8) = 20\):
+            $$\begin{align*}
+            9 + (n + 8) &= 20 && \text{Given equation} \\
+            9 + (8 + n) &= 20 && \text{a. }\underline{\quad\quad\quad\quad} \\
+            (9 + 8) + n &= 20 && \text{b. }\underline{\quad\quad\quad\quad}
+            \end{align*}$$
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-17')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-17">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">
+                <p><strong>a.</strong> Commutative property of addition</p>
+                <p><strong>b.</strong> Associative property of addition</p>
+            </div>
+            <div class="explanation">
+                <p>• In step <strong>a</strong>, the order of terms inside parentheses changed from \((n+8)\) to \((8+n)\) (Commutative Property).</p>
+                <p>• In step <strong>b</strong>, the grouping changed from \(9 + (8+n)\) to \((9+8) + n\) (Associative Property).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header">
+            <span class="q-badge">Problem 18</span>
+        </div>
+        <div class="question-body">
+            Simplify:
+            $$\begin{array}{r} 400 \\ \times 500 \\ \hline \end{array}$$
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-18')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-18">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(200,000\)</div>
+            <div class="explanation">
+                <p>Multiply the non-zero digits: \(4 \times 5 = 20\). Then attach the four zeros from the factors: \(200,000\).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header">
+            <span class="q-badge">Problem 19</span>
+        </div>
+        <div class="question-body">
+            Simplify:
+            $$\begin{array}{r} 79\text{¢} \\ \times 30 \\ \hline \end{array}$$
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-19')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-19">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(2370\text{¢}\) (or \(\$23.70\))</div>
+            <div class="explanation">
+                <p>$$79 \times 30 = 2370\text{¢} = \$23.70$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header">
+            <span class="q-badge">Problem 20</span>
+        </div>
+        <div class="question-body">
+            Simplify: \(3625 + 431 + 687\)
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-20')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-20">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(4743\)</div>
+            <div class="explanation">
+                <p>Add vertically:</p>
+                <p>$$3625 + 431 = 4056$$</p>
+                <p>$$4056 + 687 = 4743$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header">
+            <span class="q-badge">Problem 21</span>
+        </div>
+        <div class="question-body">
+            Simplify: \(6000 \div 50\)
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-21')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-21">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(120\)</div>
+            <div class="explanation">
+                <p>Cancel out one zero from both numbers:</p>
+                <p>$$\frac{6000}{50} = \frac{600}{5} = 120$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header">
+            <span class="q-badge">Problem 22</span>
+        </div>
+        <div class="question-body">
+            Simplify: \(20 \cdot 10 \cdot 5\)
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-22')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-22">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(1000\)</div>
+            <div class="explanation">
+                <p>Multiply in sequence from left to right:</p>
+                <p>$$(20 \cdot 10) \cdot 5 = 200 \cdot 5 = 1000$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header">
+            <span class="q-badge">Problem 23</span>
+        </div>
+        <div class="question-body">
+            Simplify: \(\frac{\$27.00}{18}\)
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-23')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-23">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(\$1.50\)</div>
+            <div class="explanation">
+                <p>Perform long division:</p>
+                <p>$$\$27.00 \div 18 = \$1.50$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header">
+            <span class="q-badge">Problem 24</span>
+        </div>
+        <div class="question-body">
+            Simplify: \(\frac{3456}{6}\)
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-24')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-24">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(576\)</div>
+            <div class="explanation">
+                <p>Divide step-by-step:</p>
+                <p>• \(34 \div 6 = 5\) remainder 4</p>
+                <p>• \(45 \div 6 = 7\) remainder 3</p>
+                <p>• \(36 \div 6 = 6\)</p>
+                <p>Result is \(576\).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header">
+            <span class="q-badge">Problem 25</span>
+            <span class="tag-badge">ANALYZE</span>
+        </div>
+        <div class="question-body">
+            If \(t\) is 1000 and \(v\) is 11, find:
+            <br>a. \(t - v\)
+            <br>b. \(v - t\)
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-25')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-25">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">
+                <p>a. \(989\)</p>
+                <p>b. \(-989\)</p>
+            </div>
+            <div class="explanation">
+                <p><strong>a.</strong> Substitute values: \(1000 - 11 = 989\)</p>
+                <p><strong>b.</strong> Substitute values: \(11 - 1000 = -989\)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header">
+            <span class="q-badge">Problem 26a</span>
+        </div>
+        <div class="question-body">
+            The rule of the sequence \(2, 5, 8, 11, \dots\) is \(k = 3n - 1\). What is the tenth term of the sequence?
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-26a')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-26a">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(29\)</div>
+            <div class="explanation">
+                <p>Substitute \(n = 10\) into the rule \(k = 3n - 1\):</p>
+                <p>$$k = 3(10) - 1 = 30 - 1 = 29$$</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header">
+            <span class="q-badge">Problem 26b</span>
+            <span class="tag-badge">ANALYZE</span>
+        </div>
+        <div class="question-body">
+            What pattern do you recognize in this sequence?
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-26b')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-26b">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">Each term is 3 greater than the preceding term (adds 3 each time).</div>
+            <div class="explanation">
+                <p>Difference between consecutive terms: \(5 - 2 = 3\), \(8 - 5 = 3\), \(11 - 8 = 3\).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header">
+            <span class="q-badge">Problem 27</span>
+        </div>
+        <div class="question-body">
+            Compare: \(416 - (86 + 119) \bigcirc (416 - 86) + 119\)
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-27')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-27">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(<\)</div>
+            <div class="explanation">
+                <p><strong>Left side:</strong> \(416 - (86 + 119) = 416 - 205 = 211\)</p>
+                <p><strong>Right side:</strong> \((416 - 86) + 119 = 330 + 119 = 449\)</p>
+                <p>Since \(211 < 449\), the comparison symbol is \(<\).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header">
+            <span class="q-badge">Problem 28</span>
+        </div>
+        <div class="question-body">
+            Refer to the figure of quadrilateral \(ABCD\) (trapezoid with right angles at \(C\) and \(D\)). Name the acute, obtuse, and right angles.
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-28')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-28">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">
+                <p><strong>Acute angle:</strong> \(\angle B\) (or \(\angle ABC\))</p>
+                <p><strong>Obtuse angle:</strong> \(\angle A\) (or \(\angle DAB\))</p>
+                <p><strong>Right angles:</strong> \(\angle C\) and \(\angle D\)</p>
+            </div>
+            <div class="explanation">
+                <p>• Angle \(B\) is smaller than \(90^\circ\) (acute).</p>
+                <p>• Angle \(A\) is larger than \(90^\circ\) (obtuse).</p>
+                <p>• Angles \(C\) and \(D\) are marked with square symbols indicating \(90^\circ\) (right angles).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header">
+            <span class="q-badge">Problem 29</span>
+        </div>
+        <div class="question-body">
+            Refer to figure \(ABCD\):
+            <br>a. Name a segment parallel to \(\overline{DA}\).
+            <br>b. Name a segment perpendicular to \(\overline{DA}\).
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-29')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-29">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">
+                <p><strong>a.</strong> \(\overline{CB}\) (or \(\overline{BC}\))</p>
+                <p><strong>b.</strong> \(\overline{DC}\) (or \(\overline{CD}\))</p>
+            </div>
+            <div class="explanation">
+                <p><strong>a.</strong> Segment \(\overline{CB}\) is horizontal and run parallel to \(\overline{DA}\).</p>
+                <p><strong>b.</strong> Segment \(\overline{DC}\) meets \(\overline{DA}\) at a \(90^\circ\) right angle, making it perpendicular.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header">
+            <span class="q-badge">Problem 30</span>
+            <span class="tag-badge">EXPLAIN</span>
+        </div>
+        <div class="question-body">
+            Referring to the line with points \(Q, R, S\), what is the difference in meaning between the notations \(\overline{QR}\) and \(QR\)?
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-30')">Review Answer & Explanation</button>
+        <div class="answer-container" id="ans-30">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\(\overline{QR}\) refers to the geometric <strong>segment</strong>, while \(QR\) refers to the <strong>length/distance</strong> of that segment.</div>
+            <div class="explanation">
+                <p>• \(\overline{QR}\) (with a bar above) represents the physical geometric object (segment QR).</p>
+                <p>• \(QR\) (without a bar) represents a numerical quantity indicating the distance or length between point \(Q\) and point \(R\).</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleAnswer(id) {
+        const container = document.getElementById(id);
+        if (container.style.display === "block") {
+            container.style.display = "none";
+        } else {
+            container.style.display = "block";
+            if (window.MathJax) {
+                MathJax.typesetPromise([container]);
+            }
+        }
+    }
+
+    function toggleAllAnswers(show) {
+        const containers = document.querySelectorAll('.answer-container');
+        containers.forEach(container => {
+            container.style.display = show ? 'block' : 'none';
+        });
+        if (show && window.MathJax) {
+            MathJax.typesetPromise();
+        }
+    }
+
+    function filterQuestions(category) {
+        const cards = document.querySelectorAll('.question-card');
+        const buttons = document.querySelectorAll('.filter-btn');
+
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        cards.forEach(card => {
+            if (category === 'all' || card.getAttribute('data-category') === category) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
