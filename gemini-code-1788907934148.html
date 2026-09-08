@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 31</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #harvard-reward {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff;
+        border: 3px double #a51c30;
+        border-radius: 8px;
+        animation: pullUp 0.5s ease-out;
+    }
+    #harvard-reward img {
+        width: 160px;
+        height: auto;
+        margin: 15px auto;
+        display: block;
+    }
+    .harvard-text {
+        color: #a51c30;
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    @keyframes pullUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        #harvard-reward {
+            display: block !important;
+            border: 2px solid #a51c30 !important;
+        }
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 31</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        
+        <div id="harvard-reward">
+            <div class="harvard-text">★ FLAWLESS ACADEMIC EXCELLENCE ★</div>
+            <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard University Crest">
+            <p style="color: #555; font-style: italic; font-weight: bold; margin-top: 5px;">You have successfully earned the Harvard University verification crest for achieving a perfect 10/10 score.</p>
+        </div>
+
+        <button onclick="window.print()" style="margin-top: 15px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected here -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "Though initial press reports categorized the archival discovery as minor, subsequent historiographical analysis revealed its _______ impact on scholarly understandings of the 1783 treaty negotiations.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["monumental", "superficial", "peripheral", "redundant"],
+            correctAnswer: 0, // Index 0 = A
+            explanation: "'Monumental' means great in importance, extent, or size. The passage contrasts the initial reports (which called the discovery 'minor') with the actual impact revealed by subsequent analysis, making 'monumental' the logical contrast."
+        },
+        {
+            passage: "Soil bio-crusts—complex biological communities of cyanobacteria, lichens, and mosses—play a vital role in arid ecosystems by stabilizing soil and retaining moisture. Researchers studying disturbed desert sites found that natural recovery of bio-crusts requires several decades. However, inoculating degraded soils with laboratory-reared cyanobacteria accelerated crust formation from thirty years to just three. Consequently, artificial inoculation provides a promising tool for desert restoration efforts facing climate-induced degradation.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Cyanobacteria are the only biological organisms capable of surviving in arid desert soils.",
+                "Artificial inoculation with cyanobacteria can rapidly accelerate the restoration of ecologically vital desert bio-crusts.",
+                "Natural recovery of soil bio-crusts occurs much faster in desert regions than in temperate climates.",
+                "Desert ecosystems can fully recover from severe soil degradation without human intervention within three years."
+            ],
+            correctAnswer: 1, // Index 1 = B
+            explanation: "The passage outlines the slow natural recovery of bio-crusts and explains how cyanobacteria inoculation reduces recovery time from 30 years to 3, concluding that inoculation is a valuable restoration technique. Option B best captures this main idea."
+        },
+        {
+            passage: "Ethnomusicologists analyzing West African polyrhythms noted that Western listeners frequently misidentify the primary downbeat in complex drumming patterns. This discrepancy occurs because Western musical training emphasizes a singular, fixed meter, whereas traditional West African rhythmic structures rely on intersecting, independent rhythmic cycles. When researchers presented listeners trained in both traditions with synthesized polyrhythmic tracks, the cross-trained listeners effortlessly identified multiple structural entry points. This suggests that perception of rhythmic structure in music is highly influenced by _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "innate biological preferences for simple four-beat measures.",
+                "culturally acquired cognitive frameworks and musical exposure.",
+                "the acoustic volume of underlying percussion instruments.",
+                "universal human neurological responses to rhythmic repetition."
+            ],
+            correctAnswer: 1, // Index 1 = B
+            explanation: "The contrast between Western-trained listeners and cross-trained listeners demonstrates that rhythmic perception depends on one's musical training and background, i.e., culturally acquired cognitive frameworks."
+        },
+        {
+            passage: "In his 1936 monograph, historian C.L.R. James re-examined the Haitian Revolution through the lens of economic and social history. <b>Specifically, James argued that the revolution was driven not merely by abstract philosophical ideals, but by the material self-organization and strategic agency of enslaved laborers themselves.</b> This shift in perspective challenged prevailing Eurocentric narratives of the era.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+            options: [
+                "It details James's primary thesis regarding the drivers of the Haitian Revolution.",
+                "It provides statistical economic data on eighteenth-century agricultural production.",
+                "It criticizes modern historians for ignoring philosophical ideals in revolutionary movements.",
+                "It summarizes European parliamentary debates concerning the abolition of slavery."
+            ],
+            correctAnswer: 0, // Index 0 = A
+            explanation: "The highlighted sentence explicitly states James's central argument regarding what drove the Haitian Revolution—namely, the material self-organization and agency of enslaved laborers."
+        },
+        {
+            passage: "Text 1\nVertical farming in urban centers uses hydroponics and artificial LED lighting to grow crops indoors year-round. By eliminating agricultural runoff and reducing land use by 95%, vertical farms offer a highly sustainable solution to food production in densely populated metropolitan areas.\n\nText 2\nWhile vertical farming dramatically conserves land and water, its energy footprint remains problematic. Powering high-intensity LED arrays 18 hours a day requires massive amounts of electricity, often sourced from fossil-fuel grids. Until urban energy grids transition fully to renewable power, vertical farming may simply shift agricultural environmental impacts from land degradation to carbon emissions.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to Text 1's claim that vertical farming is a 'sustainable solution'?",
+            options: [
+                "By pointing out that vertical farms consume far more water than traditional rural farms.",
+                "By arguing that high energy consumption from fossil-fuel grids offsets vertical farming's sustainability benefits.",
+                "By asserting that LED technology will soon be entirely replaced by natural sunlight reflectors.",
+                "By agreeing that vertical farming is currently the most carbon-neutral method of food production."
+            ],
+            correctAnswer: 1, // Index 1 = B
+            explanation: "Text 2 contends that powering LEDs requires large amounts of electricity from fossil-fuel grids, shifting environmental impacts to carbon emissions. Thus, the author argues energy demands offset the proposed sustainability benefits."
+        },
+        {
+            passage: "Literary scholar Dr. Maya Lin argues that Victorian sensation novels used tropes of mistaken identity and secret wills not just for melodrama, but to voice covert anxieties about the instability of middle-class social mobility during the Industrial Revolution.",
+            prompt: "Which quotation from a critical analysis of a Victorian novel best supports Dr. Lin's argument?",
+            options: [
+                "\"The novel's elaborate plot features three distinct romantic subplots set in rural Yorkshire.\"",
+                "\"By depicting a respectable clerk whose sudden inheritance vanishes due to a forged codicil, the author exposes how precarious financial status felt to the emerging Victorian middle class.\"",
+                "\"The book became the highest-selling publication of 1862, selling over 100,000 copies in London alone.\"",
+                "\"Illustrations accompanying the serialized chapters emphasized gothic architecture and dramatic lighting.\""
+            ],
+            correctAnswer: 1, // Index 1 = B
+            explanation: "Dr. Lin argues that plot devices like secret wills reflected anxieties about middle-class social mobility. Option B explicitly connects a secret/forged codicil to the precarious financial status of the Victorian middle class."
+        },
+        {
+            passage: "Though the corporate spokesperson attempted to present the corporate restructuring as a mutual agreement, industry analysts recognized the takeover as entirely _______, executed through hostile stock acquisitions.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["unilateral", "benign", "colloquial", "harmonious"],
+            correctAnswer: 0, // Index 0 = A
+            explanation: "'Unilateral' means performed by or affecting one person or side only. The text contrasts 'mutual agreement' with a hostile takeover executed by one party, making 'unilateral' the correct word."
+        },
+        {
+            passage: "Glaciologists studying Antarctic ice cores measured trapped atmospheric gases across 800,000 years. They noted that periods of rapid warming coincided with sharp spikes in atmospheric carbon dioxide (CO₂). However, during the initial phases of past glacial terminations, ocean temperature rises lagged behind CO₂ surges by several centuries. Modern satellite measurements, conversely, show atmospheric CO₂ and ocean temperatures rising concurrently due to anthropogenic emissions. This discrepancy indicates that contemporary climate warming ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "is driven primarily by direct human greenhouse gas emissions rather than slow astronomical cycles.",
+                "will result in a rapid cooling of ocean waters over the next several centuries.",
+                "proceeds at a much slower pace than any pre-industrial climate shift in geological history.",
+                "is completely unaffected by atmospheric concentrations of carbon dioxide."
+            ],
+            correctAnswer: 0, // Index 0 = A
+            explanation: "The text contrasts ancient natural warming (where ocean temperature lagged behind CO₂ spikes due to orbital cycles) with modern warming (where CO₂ and ocean temperatures rise together due to human emissions), showing modern warming is driven directly by human greenhouse gas emissions."
+        },
+        {
+            passage: "In materials science, biomimicry involves emulating natural structures to solve complex engineering challenges. Researchers developing super-hydrophobic surfaces studied the microscopic structure of lotus leaves, which feature hierarchical wax nanostructures that trap air pockets and repel water droplets. By replicating this micro-texture on synthetic polymers, engineers created self-cleaning solar panels that shed dust and rain effortlessly. This innovation demonstrates how biological adaptations can inspire highly efficient industrial technologies.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Solar panels are incapable of functioning without microscopic lotus leaf coatings.",
+                "Replicating lotus leaf nanostructures enables the creation of self-cleaning materials, showcasing the value of biomimicry in engineering.",
+                "Lotus leaves are unique because they absorb water through microscopic wax structures.",
+                "Synthetic polymers are far more durable than natural biological tissues in desert environments."
+            ],
+            correctAnswer: 1, // Index 1 = B
+            explanation: "The passage discusses how scientists emulated lotus leaf nanostructures to invent self-cleaning solar panels, using this as an example of how biomimicry benefits engineering. Option B accurately summarizes this main point."
+        },
+        {
+            passage: "The lead researcher was admired by her peers for her _______ pursuit of scientific accuracy, refusing to publish any findings until every hypothesis had undergone rigorous double-blind replication.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["scrupulous", "haphazard", "cursory", "indolent"],
+            correctAnswer: 0, // Index 0 = A
+            explanation: "'Scrupulous' means diligent, thorough, and extremely attentive to details. Refusing to publish until undergoing rigorous double-blind replication exemplifies a scrupulous approach."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 31</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${Math.round((score/quizData.length)*100)}%)`;
+        
+        if (score === quizData.length) {
+            document.getElementById('harvard-reward').style.display = 'block';
+        }
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
