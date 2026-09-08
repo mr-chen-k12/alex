@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 28</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #harvard-reward {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff;
+        border: 3px double #a51c30;
+        border-radius: 8px;
+        animation: pullUp 0.5s ease-out;
+    }
+    #harvard-reward img {
+        width: 160px;
+        height: auto;
+        margin: 15px auto;
+        display: block;
+    }
+    .harvard-text {
+        color: #a51c30;
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    @keyframes pullUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        #harvard-reward {
+            display: block !important;
+            border: 2px solid #a51c30 !important;
+        }
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 28</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        
+        <div id="harvard-reward">
+            <div class="harvard-text">★ FLAWLESS ACADEMIC EXCELLENCE ★</div>
+            <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard University Crest">
+            <p style="color: #555; font-style: italic; font-weight: bold; margin-top: 5px;">You have successfully earned the Harvard University verification crest for achieving a perfect 10/10 score.</p>
+        </div>
+
+        <button onclick="window.print()" style="margin-top: 15px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected here -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "While many early twentieth-century urban planners favored rigid, grid-like geometric layouts for rapid civic expansion, contemporary landscape architects advocate for more _______ designs that emulate natural topography and promote ecological resilience.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["dogmatic", "sinuous", "ostentatious", "precarious"],
+            correctAnswer: 1, // Index 1 = B
+            explanation: "'Sinuous' means having many curves and turns. The passage contrasts 'rigid, grid-like geometric layouts' with designs that 'emulate natural topography,' making 'sinuous' the logical contrast."
+        },
+        {
+            passage: "In a study on marine biology, researchers analyzed the bioluminescent displays of deep-sea comb jellies (ctenophores). Unlike fireflies, which use bioluminescence primarily to attract mates, ctenophores emit brief flashes of light to startle approaching predators, giving the jellies crucial seconds to escape. Additionally, certain ctenophore species release luminous blue clouds into the water column to confuse visual hunters. These findings demonstrate that bioluminescence in ctenophores has evolved predominantly as a defensive mechanism against predation rather than a reproductive signal.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Comb jellies produce bioluminescence primarily to lure prey items in total ocean darkness.",
+                "Fireflies and ctenophores share identical evolutionary motivations for generating bioluminescence.",
+                "Bioluminescence in ctenophores functions chiefly as a defensive adaptation to deter and evade predators.",
+                "Deep-sea predators have adapted to use ctenophore light flashes as targeting beacons during hunts."
+            ],
+            correctAnswer: 2, // Index 2 = C
+            explanation: "The passage explains that comb jellies flash light and release luminous clouds to startle and confuse predators, concluding that bioluminescence evolved predominantly as a defensive mechanism. Option C accurately summarizes this core finding."
+        },
+        {
+            passage: "Agricultural scientists testing subterranean mycorrhizal fungi networks found that trees in mature forests exchange carbon, phosphorus, and nitrogen underground. When shaded saplings lacked adequate sunlight for photosynthesis, neighboring mature trees transferred surplus carbohydrates to them through shared fungal pathways. However, when researchers artificially severed these subterranean fungal networks, the shaded saplings exhibited a 40% decline in growth rates and heightened susceptibility to disease. This experiment suggests that the survival of younger forest vegetation relies significantly on _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "complete independence from surrounding fungal populations.",
+                "resource sharing facilitated by interconnected fungal networks.",
+                "rapid adaptation to photosynthesizing without access to sunlight.",
+                "competitive exclusion of mature trees from nutrient-dense soils."
+            ],
+            correctAnswer: 1, // Index 1 = B
+            explanation: "The text explains that shaded saplings received nutrients from mature trees through fungal networks, and severing these connections severely impaired sapling growth. Therefore, young vegetation relies significantly on resource sharing via interconnected fungal networks."
+        },
+        {
+            passage: "In her 1892 essay, feminist critic Anna Julia Cooper examined the intersections of race and gender in post-Reconstruction America. <b>Specifically, Cooper asserted that the social and economic progress of Black women was not merely a peripheral concern, but the indispensable foundation for the broader uplift of the entire African American community.</b> Subsequent sociologists have recognized this insight as an early precursor to modern intersectional theory.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+            options: [
+                "It highlights a core argument from Cooper's essay regarding the essential role of Black women in social advancement.",
+                "It provides empirical statistical data from post-Reconstruction economic censuses.",
+                "It criticizes Cooper for failing to address broader community uplift in her writings.",
+                "It summarizes modern intersectional theory as defined by contemporary twenty-first-century sociologists."
+            ],
+            correctAnswer: 0, // Index 0 = A
+            explanation: "The highlighted sentence explicitly states Cooper's central claim—that the progress of Black women was essential to the uplift of the entire community—illustrating a core argument of her 1892 essay."
+        },
+        {
+            passage: "Text 1\nThe proliferation of digital ebooks has revolutionized the publishing industry by lowering production costs and democratizing distribution. Independent authors can now publish directly to global audiences without relying on traditional publishing gatekeepers, fostering unprecedented literary diversity.\n\nText 2\nWhile self-publishing platforms have lowered entry barriers, they have also flooded the literary marketplace with unvetted titles. Without traditional editorial oversight, copyediting, and curation, readers often struggle to filter out poor-quality manuscripts, which ultimately dilutes the visibility of truly exceptional works.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to Text 1's enthusiasm regarding the elimination of 'publishing gatekeepers'?",
+            options: [
+                "By arguing that traditional gatekeepers played a valuable role in quality control and curation that self-publishing platforms lack.",
+                "By claiming that ebook technology will soon render paper printing completely obsolete across international markets.",
+                "By suggesting that independent authors earn significantly higher royalties than traditionally published authors.",
+                "By agreeing that unfiltered distribution guarantees high artistic quality across all literary genres."
+            ],
+            correctAnswer: 0, // Index 0 = A
+            explanation: "Text 1 praises eliminating gatekeepers. Text 2 stresses that lacking editorial oversight and curation leads to an influx of poor-quality unvetted titles, arguing that gatekeepers performed essential quality control."
+        },
+        {
+            passage: "Historian Dr. Elena Rostova argues that the architectural layout of ancient Roman forum complexes was designed primarily to project imperial authority and induce psychological awe in visiting foreign delegates rather than simply to accommodate civic administration.",
+            prompt: "Which quotation from a primary source analysis best supports Dr. Rostova's argument?",
+            options: [
+                "\"The forum contained several public archives where municipal tax records and land deeds were meticulously stored.\"",
+                "\"Delegates entering the forum were forced to walk beneath towering colonnades and massive statues of the emperor, designed to make them feel utterly insignificant before Roman power.\"",
+                "\"Merchant stalls surrounding the exterior perimeter offered imported grain, spices, and textiles from eastern provinces.\"",
+                "\"Local magistrates assembled weekly in the forum's basilica to adjudicate minor legal disputes among citizens.\""
+            ],
+            correctAnswer: 1, // Index 1 = B
+            explanation: "Dr. Rostova argues that forum architecture was designed to project authority and induce awe in foreign delegates. Option B explicitly describes towering structures and emperor statues meant to make delegates feel insignificant before Roman power."
+        },
+        {
+            passage: "Despite the engineering team's initial apprehension, the lead architect presented a remarkably _______ proposal that effortlessly harmonized historical preservation with cutting-edge sustainable engineering.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["cumbersome", "ingenious", "tedious", "rudimentary"],
+            correctAnswer: 1, // Index 1 = B
+            explanation: "'Ingenious' means clever, original, and inventive. The text notes that despite apprehension, the proposal 'effortlessly harmonized' complex historical and modern engineering elements, describing an exceptionally clever design."
+        },
+        {
+            passage: "Paleontologists analyzing fossilized tooth enamel from ancient hominins discovered distinct chemical signatures of carbon isotopes. C3 carbon isotopes indicate a diet dominated by forest fruits and leaves, whereas C4 isotopes correspond to savanna grasses and tubers. Specimens of Australopithecus africanus exhibited a sharp shift from C3 to C4 isotope signatures over a two-million-year timeline, coinciding with a period when African forests retreated due to drying climate trends. Researchers infer from these isotopic shifts that Australopithecus africanus ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "strictly maintained a fruit-based diet despite the total disappearance of forest habitats.",
+                "adapted its dietary habits to utilize emerging grassland food resources as forest habitats shrank.",
+                "migrated exclusively to aquatic ecosystems to avoid competing with grassland herbivores.",
+                "ceased consuming food from plants that utilized C4 photosynthetic pathways."
+            ],
+            correctAnswer: 1, // Index 1 = B
+            explanation: "The text explains that C3 isotopes come from forest foods and C4 from savanna foods. A shift from C3 to C4 isotopes as forests retreated shows that *Australopithecus africanus* adapted its diet to consume savanna/grassland food sources."
+        },
+        {
+            passage: "In linguistics, the concept of linguistic relativity—known as the Sapir-Whorf hypothesis—posits that the structure of a language influences its speakers' worldview and cognitive processes. While extreme versions claiming language strictly determines thought have been largely discredited, recent experimental psycholinguistics supports a softer version. Studies show that speakers of languages with rich color terminology or distinct spatial markers categorize visual shades and navigate environments slightly faster than speakers whose languages lack those specific lexical distinctions.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Language completely dictates human thought, leaving no room for non-verbal cognition.",
+                "Research disproves every aspect of the Sapir-Whorf hypothesis across all human languages.",
+                "While language does not strictly determine thought, linguistic structures can subtly influence cognitive tasks like color perception and spatial navigation.",
+                "All human languages possess identical grammatical structures and vocabulary terms for physical space."
+            ],
+            correctAnswer: 2, // Index 2 = C
+            explanation: "The passage notes that while strict determinism is discredited, experimental studies show language can subtly influence cognitive performance in color categorization and navigation. Option C accurately captures this main idea."
+        },
+        {
+            passage: "The lead negotiator was known for her _______ demeanor during intense labor disputes, remaining calm, even-tempered, and composed even when discussions reached an apparent impasse.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["mercurial", "equable", "bellicose", "ostentatious"],
+            correctAnswer: 1, // Index 1 = B
+            explanation: "'Equable' means even-tempered, calm, and tranquil. The passage explicitly defines this trait by describing her as 'calm, even-tempered, and composed' under pressure."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 28</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${Math.round((score/quizData.length)*100)}%)`;
+        
+        if (score === quizData.length) {
+            document.getElementById('harvard-reward').style.display = 'block';
+        }
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
