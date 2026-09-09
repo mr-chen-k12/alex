@@ -1,429 +1,1454 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saxon Math Course 2 - Lesson 10 Practice Set (9-9-alex)</title>
-    <!-- MathJax for rendering mathematical notation -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <style>
-        :root {
-            --primary-color: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --border-color: #e2e8f0;
-            --accent-green: #10b981;
-            --accent-light: #ecfdf5;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saxon Math Course 2 - Lesson 11 Practice Set</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- MathJax Configuration & Library -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process'
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+    /* Print Styles */
+    @media print {
+      @page {
+        margin: 0.5in;
+        size: letter portrait;
+      }
+      body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt;
+      }
+      /* Hide all non-printable interactive elements */
+      .no-print, .toggle-btn, button, input {
+        display: none !important;
+      }
+      /* Clean card styling for printed paper */
+      .problem-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        margin-bottom: 1.25rem !important;
+        background: #ffffff !important;
+        padding: 1rem !important;
+      }
+      /* Default behavior: Hide all answers when printing */
+      .solution-box {
+        display: none !important;
+      }
+      /* When 'print-with-answers' class is active on body, render solutions */
+      body.print-with-answers .solution-box {
+        display: block !important;
+        background-color: #f8fafc !important;
+        border-left: 3px solid #059669 !important;
+        padding: 0.75rem !important;
+        margin-top: 0.75rem !important;
+        border-radius: 0.375rem !important;
+      }
+      /* Render dedicated blank working space when printing Student Worksheet */
+      body:not(.print-with-answers) .problem-card::after {
+        content: "Show your work / notes:";
+        display: block;
+        height: 100px;
+        border: 1.5px dashed #94a3b8;
+        border-radius: 6px;
+        margin-top: 12px;
+        padding: 6px 10px;
+        color: #94a3b8;
+        font-size: 8.5pt;
+        font-style: italic;
+      }
+      header {
+        padding-bottom: 0.75rem !important;
+        border-bottom: 2px solid #0f172a !important;
+        margin-bottom: 1rem !important;
+        background: transparent !important;
+        color: #000000 !important;
+      }
+      header h1 {
+        color: #0f172a !important;
+        font-size: 1.5rem !important;
+      }
+      header p, header span {
+        color: #475569 !important;
+      }
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        header h1 {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            margin-bottom: 8px;
-        }
-
-        header p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            font-size: 0.9rem;
-        }
-
-        .btn:hover {
-            background-color: var(--primary-hover);
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-        }
-
-        .btn-outline:hover {
-            background-color: #eff6ff;
-        }
-
-        .btn-print {
-            background-color: #475569;
-        }
-
-        .btn-print:hover {
-            background-color: #334155;
-        }
-
-        .filter-bar {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-        }
-
-        .filter-btn {
-            background: #e2e8f0;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            color: var(--text-muted);
-            white-space: nowrap;
-        }
-
-        .filter-btn.active {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .question-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            transition: border-color 0.2s ease;
-        }
-
-        .question-card:hover {
-            border-color: #cbd5e1;
-        }
-
-        .question-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .q-badge {
-            background: #dbeafe;
-            color: var(--primary-color);
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-        }
-
-        .tag-badge {
-            background: #f1f5f9;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
-        .question-body {
-            font-size: 1.05rem;
-            margin-bottom: 16px;
-            color: #1e293b;
-        }
-
-        .answer-container {
-            display: none;
-            margin-top: 15px;
-            padding: 16px;
-            background-color: var(--accent-light);
-            border-left: 4px solid var(--accent-green);
-            border-radius: 6px;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .answer-title {
-            font-weight: 700;
-            color: #065f46;
-            margin-bottom: 6px;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .final-answer {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #047857;
-            margin-bottom: 8px;
-        }
-
-        .explanation {
-            font-size: 0.95rem;
-            color: #1e293b;
-        }
-
-        .explanation p {
-            margin-bottom: 6px;
-        }
-
-        .explanation p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* PRINT STYLES */
-        @media print {
-            body {
-                background-color: #ffffff;
-                color: #000000;
-                padding: 0;
-            }
-
-            .container {
-                max-width: 100%;
-                margin: 0;
-            }
-
-            .controls, .btn, .filter-bar {
-                display: none !important;
-            }
-
-            header {
-                box-shadow: none;
-                border-bottom: 2px solid #000;
-                padding: 10px 0;
-                margin-bottom: 20px;
-                border-radius: 0;
-            }
-
-            .question-card {
-                box-shadow: none;
-                border: 1px solid #ccc;
-                page-break-inside: avoid;
-                margin-bottom: 15px;
-                padding: 15px;
-            }
-
-            .answer-container {
-                display: block !important;
-                background-color: #f8fafc !important;
-                border-left: 3px solid #0f172a !important;
-                margin-top: 10px;
-                padding: 10px;
-            }
-
-            .final-answer {
-                color: #000000;
-            }
-
-            .answer-title {
-                color: #333333;
-            }
-        }
-
-        @media (max-width: 600px) {
-            body { padding: 10px; }
-            .controls { flex-direction: column; align-items: stretch; }
-            .btn { width: 100%; text-align: center; }
-        }
-    </style>
+    /* Print Student Header */
+    .print-student-header {
+      display: none;
+    }
+    @media print {
+      .print-student-header {
+        display: flex !important;
+        justify-content: space-between;
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #94a3b8;
+        font-size: 10pt;
+        font-weight: 600;
+      }
+    }
+  </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
 
-<div class="container">
-    <header>
-        <h1>Saxon Math Course 2 — Lesson 10</h1>
-        <p>Supplemental Practice Set 9-9-alex &amp; Step-by-Step Solutions</p>
-    </header>
+  <!-- Header -->
+  <header class="bg-indigo-900 text-white shadow-md">
+    <div class="max-w-6xl mx-auto px-4 py-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <span class="inline-block bg-indigo-700 text-indigo-200 text-xs font-semibold px-2.5 py-1 rounded-full mb-2">
+            Saxon Math Course 2
+          </span>
+          <h1 class="text-2xl md:text-3xl font-bold tracking-tight">
+            Lesson 11: Word Problems About Combining &amp; Separating
+          </h1>
+          <p class="text-indigo-200 text-sm mt-1">
+            Complete Practice Set (a–k) and Written Practice (1–30) with step-by-step solutions
+          </p>
+        </div>
 
-    <div class="controls">
-        <div class="filter-bar">
-            <button class="filter-btn active" onclick="filterQuestions('all')">All Problems</button>
-            <button class="filter-btn" onclick="filterQuestions('practice')">Practice i–k</button>
-            <button class="filter-btn" onclick="filterQuestions('1-10')">1–10</button>
+        <!-- Print & Toolbar Controls -->
+        <div class="flex flex-wrap items-center gap-2.5 no-print">
+          <button onclick="toggleAllSolutions(true)" class="bg-indigo-700 hover:bg-indigo-600 text-white text-xs md:text-sm font-medium px-3 py-2 rounded-lg transition shadow-sm">
+            Show All Answers
+          </button>
+          <button onclick="toggleAllSolutions(false)" class="bg-indigo-800 hover:bg-indigo-700 text-indigo-200 hover:text-white text-xs md:text-sm font-medium px-3 py-2 rounded-lg transition shadow-sm">
+            Hide All Answers
+          </button>
+
+          <!-- Dual Print Buttons -->
+          <div class="flex items-center gap-1.5 bg-indigo-950/50 p-1 rounded-xl border border-indigo-700/60">
+            <button onclick="printWorksheet(false)" title="Print student worksheet with work space and no answers" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs md:text-sm font-medium px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+              <span>Print Worksheet (No Answers)</span>
+            </button>
+            <button onclick="printWorksheet(true)" title="Print teacher answer key with solutions" class="bg-indigo-700 hover:bg-indigo-600 text-indigo-100 hover:text-white text-xs md:text-sm font-medium px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <span>Print with Answers</span>
+            </button>
+          </div>
         </div>
-        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="btn btn-outline" onclick="toggleAllAnswers(true)">Show All</button>
-            <button class="btn btn-outline" onclick="toggleAllAnswers(false)">Hide All</button>
-            <button class="btn btn-print" onclick="window.print()">🖨️ Print Sheet</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter & Search Toolbar -->
+  <section class="bg-white border-b border-slate-200 sticky top-0 z-10 shadow-sm no-print">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex flex-col md:flex-row gap-3 items-center justify-between">
+        
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap gap-1.5 w-full md:w-auto">
+          <button id="filter-all" onclick="filterProblems('all')" class="filter-btn active bg-indigo-100 text-indigo-800 font-medium px-3 py-1.5 rounded-md text-xs md:text-sm transition">
+            All (41)
+          </button>
+          <button id="filter-practice" onclick="filterProblems('practice')" class="filter-btn bg-slate-100 text-slate-600 hover:bg-slate-200 font-medium px-3 py-1.5 rounded-md text-xs md:text-sm transition">
+            Practice Set (a–k)
+          </button>
+          <button id="filter-written" onclick="filterProblems('written')" class="filter-btn bg-slate-100 text-slate-600 hover:bg-slate-200 font-medium px-3 py-1.5 rounded-md text-xs md:text-sm transition">
+            Written Practice (1–30)
+          </button>
+          <button id="filter-odd" onclick="filterProblems('odd')" class="filter-btn bg-slate-100 text-slate-600 hover:bg-slate-200 font-medium px-3 py-1.5 rounded-md text-xs md:text-sm transition">
+            Odds
+          </button>
+          <button id="filter-even" onclick="filterProblems('even')" class="filter-btn bg-slate-100 text-slate-600 hover:bg-slate-200 font-medium px-3 py-1.5 rounded-md text-xs md:text-sm transition">
+            Evens
+          </button>
         </div>
+
+        <!-- Search input -->
+        <div class="relative w-full md:w-64">
+          <input type="text" id="search-input" onkeyup="searchProblems()" placeholder="Search problems..." class="w-full pl-8 pr-3 py-1.5 text-xs md:text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+          <svg class="w-4 h-4 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Area -->
+  <main class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full">
+    
+    <!-- Printable Student Name Header -->
+    <div class="print-student-header">
+      <div>Name: ____________________________________</div>
+      <div>Date: ________________________</div>
+      <div>Score: ________ / 41</div>
     </div>
 
-    <!-- Practice Problems i-k -->
-    <div class="question-card" data-category="practice">
-        <div class="question-header">
-            <span class="q-badge">Practice i</span>
-        </div>
-        <div class="question-body">
-            Point \( A \) is located at \( 3\frac{1}{4} \text{ inches} \) and Point \( B \) is located at \( 8\frac{7}{8} \text{ inches} \) on a ruler. Find the distance \( AB \).
-        </div>
-        <button class="btn" onclick="toggleAnswer('ans-i')">Review Answer &amp; Explanation</button>
-        <div class="answer-container" id="ans-i">
-            <div class="answer-title">Final Answer</div>
-            <div class="final-answer">\( AB = 5\frac{5}{8} \text{ inches} \)</div>
-            <div class="explanation">
-                <p>Subtract the smaller coordinate from the larger coordinate:</p>
-                <p>\[ 8\frac{7}{8} - 3\frac{1}{4} = 8\frac{7}{8} - 3\frac{2}{8} = 5\frac{5}{8} \text{ inches} \]</p>
-            </div>
-        </div>
+    <!-- Summary Counter -->
+    <div class="mb-6 flex items-center justify-between no-print">
+      <p class="text-xs md:text-sm text-slate-500">
+        Showing <span id="visible-count" class="font-bold text-slate-800">41</span> problems
+      </p>
+      <div class="text-xs text-slate-500 flex items-center gap-2">
+        <span class="inline-block w-3 h-3 bg-indigo-500 rounded-full"></span> Formula: Combining ($A + M = T$) &amp; Separating ($S - G = R$)
+      </div>
     </div>
 
-    <div class="question-card" data-category="practice">
-        <div class="question-header">
-            <span class="q-badge">Practice j</span>
+    <!-- Problems Container -->
+    <div id="problems-container" class="space-y-6">
+
+      <!-- ==================== PRACTICE SET (a-k) ==================== -->
+
+      <!-- Practice a -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="practice" data-number="a" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-1 rounded-md">Practice a</span>
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Combining</span>
+          </div>
+          <button onclick="toggleSolution('sol-a')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
         </div>
-        <div class="question-body">
-            A precision scale is marked in sixteenths of an inch. Assuming the scale is used correctly, what is the greatest possible measurement error that can occur? Express your answer as a fraction of an inch.
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          $42$ pupils were in the room. Then $19$ more pupils came in. How many pupils were in the room in all? Write an equation and solve.
         </div>
-        <button class="btn" onclick="toggleAnswer('ans-j')">Review Answer &amp; Explanation</button>
-        <div class="answer-container" id="ans-j">
-            <div class="answer-title">Final Answer</div>
-            <div class="final-answer">\( \frac{1}{32} \text{ inch} \)</div>
-            <div class="explanation">
-                <p>The maximum measurement error is half of the smallest unit mark on the ruler scale:</p>
-                <p>\[ \frac{1}{2} \times \frac{1}{16} = \frac{1}{32} \text{ inch} \]</p>
-            </div>
+        <div id="sol-a" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $42 + 19 = p$; $p = 61$ pupils
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Identify the formula for combining: $\text{Some} + \text{More} = \text{Total}$ ($A + M = T$).</p>
+            <p>2. Substitute given values: $\text{Some} = 42$, $\text{More} = 19$, $\text{Total} = p$.</p>
+            <p>3. Equation: $42 + 19 = p$.</p>
+            <p>4. Add the numbers: $42 + 19 = 61$.</p>
+          </div>
         </div>
+      </div>
+
+      <!-- Practice b -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="practice" data-number="b" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-1 rounded-md">Practice b</span>
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Combining</span>
+          </div>
+          <button onclick="toggleSolution('sol-b')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Tim had some marbles. Then he bought $15$ more marbles. Now he has $52$ marbles. How many marbles did Tim have at first? Write an equation and solve.
+        </div>
+        <div id="sol-b" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $m + 15 = 52$; $m = 37$ marbles
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Formula: $\text{Some} + \text{More} = \text{Total}$.</p>
+            <p>2. Let $m$ be the starting number of marbles. Equation: $m + 15 = 52$.</p>
+            <p>3. Solve for $m$ by subtracting $15$ from $52$: $m = 52 - 15 = 37$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice c -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="practice" data-number="c" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-1 rounded-md">Practice c</span>
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Separating</span>
+          </div>
+          <button onclick="toggleSolution('sol-c')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          The school choir had $65$ members. Some members graduated, leaving $42$ members. How many members graduated? Write an equation and solve.
+        </div>
+        <div id="sol-c" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $65 - g = 42$; $g = 23$ members
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Formula for separating: $\text{Starting Amount} - \text{Some Went Away} = \text{What Remains}$ ($S - G = R$).</p>
+            <p>2. Let $g$ be the number of graduating members: $65 - g = 42$.</p>
+            <p>3. Solve for $g$: $g = 65 - 42 = 23$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice d -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="practice" data-number="d" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-1 rounded-md">Practice d</span>
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Separating</span>
+          </div>
+          <button onclick="toggleSolution('sol-d')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Jenny had $\$28.00$. She spent $\$12.45$ at the store. How much money did she have left? Write an equation and solve.
+        </div>
+        <div id="sol-d" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $\$28.00 - \$12.45 = m$; $m = \$15.55$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Formula: $\text{Starting Amount} - \text{Amount Spent} = \text{Remaining}$.</p>
+            <p>2. Equation: $\$28.00 - \$12.45 = m$.</p>
+            <p>3. Subtract: $28.00 - 12.45 = 15.55$. She had $\$15.55$ left.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice e -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="practice" data-number="e" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-1 rounded-md">Practice e</span>
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Separating</span>
+          </div>
+          <button onclick="toggleSolution('sol-e')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Write an equation for this story and solve: <em>"84 birds were sitting on a wire. Some flew away. 52 birds remained on the wire."</em>
+        </div>
+        <div id="sol-e" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $84 - b = 52$; $b = 32$ birds
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Formula: $\text{Starting birds} - \text{Birds that flew away} = \text{Remaining birds}$.</p>
+            <p>2. Equation: $84 - b = 52$.</p>
+            <p>3. Solve for $b$: $b = 84 - 52 = 32$ birds flew away.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice f -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="practice" data-number="f" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-1 rounded-md">Practice f</span>
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Formulate Story</span>
+          </div>
+          <button onclick="toggleSolution('sol-f')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Formulate a word problem for the equation $x + 18 = 45$ and solve it.
+        </div>
+        <div id="sol-f" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $x = 27$ (Sample Story: "Samantha had some trading cards. Her brother gave her 18 more cards. Now she has 45 cards in total. How many cards did Samantha have at first?")
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. The equation $x + 18 = 45$ represents a combining problem where the starting amount $x$ is unknown.</p>
+            <p>2. Solve the equation: $x = 45 - 18 = 27$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice g -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="practice" data-number="g" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-1 rounded-md">Practice g</span>
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Formulate Story</span>
+          </div>
+          <button onclick="toggleSolution('sol-g')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Formulate a word problem for the equation $k - 25 = 14$ and solve it.
+        </div>
+        <div id="sol-g" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $k = 39$ (Sample Story: "Kevin had a collection of cookies. After eating 25 cookies, he had 14 cookies left. How many cookies did Kevin have originally?")
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. The equation $k - 25 = 14$ represents a separating problem where the total starting amount $k$ is unknown.</p>
+            <p>2. Solve for $k$: $k = 14 + 25 = 39$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice h -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="practice" data-number="h" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-2.5 py-1 rounded-md">Practice h</span>
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Missing Addend</span>
+          </div>
+          <button onclick="toggleSolution('sol-h')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Find the missing addend in the equation: $m + 234 = 600$.
+        </div>
+        <div id="sol-h" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $m = 366$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Subtract the known addend ($234$) from the sum ($600$).</p>
+            <p>2. $m = 600 - 234 = 366$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice i -->
+      <div class="problem-card bg-amber-50 border border-amber-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="practice" data-number="i" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-amber-500 text-white text-xs font-bold px-2.5 py-1 rounded-md">Practice i</span>
+            <span class="text-xs font-semibold text-amber-700 uppercase tracking-wider">Focus Problem (Combining)</span>
+          </div>
+          <button onclick="toggleSolution('sol-i')" class="toggle-btn text-xs font-medium text-amber-800 hover:text-amber-900 bg-amber-100 hover:bg-amber-200 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          In the morning, the temperature was $48^\circ\text{F}$. By afternoon, the temperature had risen $19^\circ\text{F}$. What was the afternoon temperature? Write an equation and solve.
+        </div>
+        <div id="sol-i" class="solution-box hidden bg-white border-t border-amber-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $48^\circ\text{F} + 19^\circ\text{F} = t$; $t = 67^\circ\text{F}$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. This is a <strong>Combining</strong> problem because temperature is added/increased.</p>
+            <p>2. Formula: $\text{Initial Temp} + \text{Rise in Temp} = \text{Final Temp}$.</p>
+            <p>3. Equation: $48 + 19 = t$.</p>
+            <p>4. Calculation: $48 + 19 = 67^\circ\text{F}$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice j -->
+      <div class="problem-card bg-amber-50 border border-amber-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="practice" data-number="j" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-amber-500 text-white text-xs font-bold px-2.5 py-1 rounded-md">Practice j</span>
+            <span class="text-xs font-semibold text-amber-700 uppercase tracking-wider">Focus Problem (Separating)</span>
+          </div>
+          <button onclick="toggleSolution('sol-j')" class="toggle-btn text-xs font-medium text-amber-800 hover:text-amber-900 bg-amber-100 hover:bg-amber-200 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          The bookstore had $120$ copies of a new novel. By noon, $47$ copies were sold. How many copies were left? Write an equation and solve.
+        </div>
+        <div id="sol-j" class="solution-box hidden bg-white border-t border-amber-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $120 - 47 = c$; $c = 73$ copies
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. This is a <strong>Separating</strong> problem because copies were sold (taken away).</p>
+            <p>2. Formula: $\text{Original Copies} - \text{Copies Sold} = \text{Copies Left}$.</p>
+            <p>3. Equation: $120 - 47 = c$.</p>
+            <p>4. Calculation: $120 - 47 = 73$ copies remaining.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice k -->
+      <div class="problem-card bg-amber-50 border border-amber-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="practice" data-number="k" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-amber-500 text-white text-xs font-bold px-2.5 py-1 rounded-md">Practice k</span>
+            <span class="text-xs font-semibold text-amber-700 uppercase tracking-wider">Focus Problem (Combining)</span>
+          </div>
+          <button onclick="toggleSolution('sol-k')" class="toggle-btn text-xs font-medium text-amber-800 hover:text-amber-900 bg-amber-100 hover:bg-amber-200 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Coach Miller had some baseballs in a bucket. After adding $18$ new baseballs to the bucket, there were $45$ baseballs in total. How many baseballs were originally in the bucket? Write an equation and solve.
+        </div>
+        <div id="sol-k" class="solution-box hidden bg-white border-t border-amber-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $b + 18 = 45$; $b = 27$ baseballs
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Formula for combining: $\text{Original} + \text{Added} = \text{Total}$.</p>
+            <p>2. Equation: $b + 18 = 45$.</p>
+            <p>3. Subtract $18$ from $45$: $b = 45 - 18 = 27$ baseballs.</p>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ==================== WRITTEN PRACTICE (1-30) ==================== -->
+
+      <!-- Problem 1 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="1" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">1</span>
+            <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wider">[Lesson 11] Word Problem</span>
+          </div>
+          <button onclick="toggleSolution('sol-1')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          There were $142$ students on the bus. At the next stop, some more students got on. Now there are $189$ students on the bus. How many students got on at the next stop? Write an equation and solve.
+        </div>
+        <div id="sol-1" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $142 + s = 189$; $s = 47$ students
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Combining pattern: $\text{Some} + \text{More} = \text{Total}$.</p>
+            <p>2. Equation: $142 + s = 189$.</p>
+            <p>3. Solve for $s$: $s = 189 - 142 = 47$ students.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 2 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="2" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">2</span>
+            <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wider">[Lesson 11] Word Problem</span>
+          </div>
+          <button onclick="toggleSolution('sol-2')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Sarah had $\$50.00$. After buying a book, she had $\$31.75$ left. How much did the book cost? Write an equation and solve.
+        </div>
+        <div id="sol-2" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $\$50.00 - b = \$31.75$; $b = \$18.25$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Separating pattern: $\text{Start} - \text{Spent} = \text{Left}$.</p>
+            <p>2. Equation: $50.00 - b = 31.75$.</p>
+            <p>3. Solve for $b$: $b = 50.00 - 31.75 = 18.25$. The book cost $\$18.25$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 3 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="3" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">3</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 7] Averages</span>
+          </div>
+          <button onclick="toggleSolution('sol-3')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Find the average (mean) of $124$ and $236$.
+        </div>
+        <div id="sol-3" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $180$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Add the two numbers: $124 + 236 = 360$.</p>
+            <p>2. Divide the sum by $2$: $360 \div 2 = 180$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 4 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="4" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">4</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 10] Missing Numbers</span>
+          </div>
+          <button onclick="toggleSolution('sol-4')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Find the missing number: $N - 485 = 392$.
+        </div>
+        <div id="sol-4" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $N = 877$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. In a subtraction equation $\text{Minuend} - \text{Subtrahend} = \text{Difference}$, $\text{Minuend} = \text{Difference} + \text{Subtrahend}$.</p>
+            <p>2. $N = 392 + 485 = 877$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 5 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="5" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">5</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 9] Place Value</span>
+          </div>
+          <button onclick="toggleSolution('sol-5')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Write $4,050,300,000$ in expanded notation using powers of 10.
+        </div>
+        <div id="sol-5" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $(4 \times 10^9) + (5 \times 10^7) + (3 \times 10^5)$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. $4$ is in the billions place ($10^9$).</p>
+            <p>2. $5$ is in the ten-millions place ($10^7$).</p>
+            <p>3. $3$ is in the hundred-thousands place ($10^5$).</p>
+            <p>4. Expanded form: $(4 \times 10^9) + (5 \times 10^7) + (3 \times 10^5)$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 6 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="6" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">6</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 3] Perimeter</span>
+          </div>
+          <button onclick="toggleSolution('sol-6')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          A rectangle has a length of $15\text{ cm}$ and a width of $8\text{ cm}$. What is its perimeter?
+        </div>
+        <div id="sol-6" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $46\text{ cm}$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Formula: $P = 2l + 2w$.</p>
+            <p>2. $P = 2(15) + 2(8) = 30 + 16 = 46\text{ cm}$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 7 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="7" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">7</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 8] Fractions &amp; Degrees</span>
+          </div>
+          <button onclick="toggleSolution('sol-7')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          What fraction of a full circle ($360^\circ$) is represented by an angle of $60^\circ$? Simplify the fraction.
+        </div>
+        <div id="sol-7" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $\frac{1}{6}$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Write as a fraction: $\frac{60^\circ}{360^\circ}$.</p>
+            <p>2. Divide numerator and denominator by $60$: $\frac{60 \div 60}{360 \div 60} = \frac{1}{6}$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 8 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="8" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">8</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 10] Sequences</span>
+          </div>
+          <button onclick="toggleSolution('sol-8')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Find the next three terms in the sequence: $2, 6, 18, 54, \dots$
+        </div>
+        <div id="sol-8" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $162, 486, 1458$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Identify the rule: Each term is multiplied by $3$ ($2 \times 3 = 6$, $6 \times 3 = 18$, $18 \times 3 = 54$).</p>
+            <p>2. Next term: $54 \times 3 = 162$.</p>
+            <p>3. Following term: $162 \times 3 = 486$.</p>
+            <p>4. Next term: $486 \times 3 = 1458$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 9 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="9" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">9</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 5] Prime Factorization</span>
+          </div>
+          <button onclick="toggleSolution('sol-9')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Find the prime factorization of $120$ using exponents.
+        </div>
+        <div id="sol-9" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $2^3 \times 3 \times 5$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Break down $120$: $120 = 12 \times 10$.</p>
+            <p>2. Factor $12 = 2 \times 2 \times 3$ and $10 = 2 \times 5$.</p>
+            <p>3. Combine prime factors: $2 \times 2 \times 2 \times 3 \times 5 = 2^3 \times 3 \times 5$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 10 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="10" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">10</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 6] Long Division</span>
+          </div>
+          <button onclick="toggleSolution('sol-10')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Divide: $4,328 \div 15$. Write the answer with a remainder.
+        </div>
+        <div id="sol-10" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $288\text{ R }8$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. $43 \div 15 = 2$ with remainder $13$.</p>
+            <p>2. Bring down $2 \rightarrow 132$. $132 \div 15 = 8$ ($8 \times 15 = 120$), remainder $12$.</p>
+            <p>3. Bring down $8 \rightarrow 128$. $128 \div 15 = 8$ ($8 \times 15 = 120$), remainder $8$.</p>
+            <p>4. Result: $288\text{ R }8$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 11 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="11" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">11</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 1] Addition</span>
+          </div>
+          <button onclick="toggleSolution('sol-11')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Find the sum: $4,589 + 3,821 + 9,104$.
+        </div>
+        <div id="sol-11" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $17,514$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Align digits vertically and add: $4,589 + 3,821 = 8,410$.</p>
+            <p>2. Add the last number: $8,410 + 9,104 = 17,514$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 12 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="12" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">12</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 2] Subtraction Across Zeros</span>
+          </div>
+          <button onclick="toggleSolution('sol-12')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Subtract: $10,000 - 3,428$.
+        </div>
+        <div id="sol-12" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $6,572$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Regroup across zeros: $10,000$ becomes $9,999 + 1$.</p>
+            <p>2. $9,999 - 3,428 = 6,571$.</p>
+            <p>3. Add $1$ back: $6,571 + 1 = 6,572$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 13 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="13" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">13</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 4] Multiplication</span>
+          </div>
+          <button onclick="toggleSolution('sol-13')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Multiply: $408 \times 307$.
+        </div>
+        <div id="sol-13" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $125,256$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. $408 \times 7 = 2,856$.</p>
+            <p>2. $408 \times 00 = 0$.</p>
+            <p>3. $408 \times 300 = 122,400$.</p>
+            <p>4. Add products: $2,856 + 122,400 = 125,256$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 14 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="14" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">14</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 10] Missing Addends</span>
+          </div>
+          <button onclick="toggleSolution('sol-14')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Solve for $g$: $38 + g + 14 = 100$.
+        </div>
+        <div id="sol-14" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $g = 48$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Add known numbers: $38 + 14 = 52$.</p>
+            <p>2. Equation: $52 + g = 100$.</p>
+            <p>3. Subtract: $g = 100 - 52 = 48$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 15 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="15" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">15</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 9] Comparing Exponents</span>
+          </div>
+          <button onclick="toggleSolution('sol-15')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Compare using $\gt$, $\lt$, or $=$: $3^4 \bigcirc 4^3$.
+        </div>
+        <div id="sol-15" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $3^4 \gt 4^3$ ($81 \gt 64$)
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Evaluate $3^4 = 3 \times 3 \times 3 \times 3 = 81$.</p>
+            <p>2. Evaluate $4^3 = 4 \times 4 \times 4 = 64$.</p>
+            <p>3. Since $81 \gt 64$, $3^4 \gt 4^3$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 16 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="16" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">16</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 7] Number Line</span>
+          </div>
+          <button onclick="toggleSolution('sol-16')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          What integer is $7$ units to the left of $3$ on the number line?
+        </div>
+        <div id="sol-16" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $-4$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Moving to the left means subtracting: $3 - 7$.</p>
+            <p>2. $3 - 7 = -4$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 17 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="17" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">17</span>
+            <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wider">[Lesson 11] Word Problem</span>
+          </div>
+          <button onclick="toggleSolution('sol-17')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          The library started with $850$ books on display. By Friday, $215$ books were checked out. How many books remained on display? Write an equation and solve.
+        </div>
+        <div id="sol-17" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $850 - 215 = b$; $b = 635$ books
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Separating pattern: $\text{Original} - \text{Checked Out} = \text{Remaining}$.</p>
+            <p>2. Equation: $850 - 215 = b$.</p>
+            <p>3. Calculate: $850 - 215 = 635$ books.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 18 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="18" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">18</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 5] GCF</span>
+          </div>
+          <button onclick="toggleSolution('sol-18')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Find the Greatest Common Factor (GCF) of $24$ and $36$.
+        </div>
+        <div id="sol-18" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $12$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Factors of $24$: $1, 2, 3, 4, 6, 8, 12, 24$.</p>
+            <p>2. Factors of $36$: $1, 2, 3, 4, 6, 9, 12, 18, 36$.</p>
+            <p>3. Common factors: $1, 2, 3, 4, 6, 12$. The greatest is $12$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 19 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="19" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">19</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 5] LCM</span>
+          </div>
+          <button onclick="toggleSolution('sol-19')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Find the Least Common Multiple (LCM) of $8$ and $12$.
+        </div>
+        <div id="sol-19" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $24$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Multiples of $8$: $8, 16, 24, 32, 40, \dots$</p>
+            <p>2. Multiples of $12$: $12, 24, 36, 48, \dots$</p>
+            <p>3. The smallest common multiple is $24$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 20 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="20" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">20</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 8] Rounding</span>
+          </div>
+          <button onclick="toggleSolution('sol-20')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Round $384,921$ to the nearest ten thousand.
+        </div>
+        <div id="sol-20" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $380,000$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. The ten-thousands digit is $8$ (value $80,000$).</p>
+            <p>2. Look at the digit to its right (thousands place): $4$.</p>
+            <p>3. Since $4 \lt 5$, round down: keep $8$ and replace following digits with zeros $\rightarrow 380,000$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 21 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="21" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">21</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 4] Order of Operations</span>
+          </div>
+          <button onclick="toggleSolution('sol-21')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Simplify: $(12 + 8) \div (6 - 2) + 3^2$.
+        </div>
+        <div id="sol-21" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $14$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Evaluate expressions in parentheses: $(12 + 8) = 20$ and $(6 - 2) = 4$.</p>
+            <p>2. Evaluate exponents: $3^2 = 9$.</p>
+            <p>3. Perform division: $20 \div 4 = 5$.</p>
+            <p>4. Add: $5 + 9 = 14$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 22 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="22" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">22</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 6] Mean / Average</span>
+          </div>
+          <button onclick="toggleSolution('sol-22')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Find the average of $84, 92, 78, 90,$ and $86$.
+        </div>
+        <div id="sol-22" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $86$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Sum the numbers: $84 + 92 + 78 + 90 + 86 = 430$.</p>
+            <p>2. Divide by the count ($5$): $430 \div 5 = 86$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 23 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="23" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">23</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 9] Square Roots &amp; Exponents</span>
+          </div>
+          <button onclick="toggleSolution('sol-23')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Simplify: $\sqrt{144} + 5^2$.
+        </div>
+        <div id="sol-23" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $37$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Calculate $\sqrt{144} = 12$ (since $12 \times 12 = 144$).</p>
+            <p>2. Calculate $5^2 = 25$.</p>
+            <p>3. Add: $12 + 25 = 37$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 24 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="24" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">24</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 3] Square Area &amp; Perimeter</span>
+          </div>
+          <button onclick="toggleSolution('sol-24')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          A square has a perimeter of $36\text{ cm}$. What is the length of each side? What is its area?
+        </div>
+        <div id="sol-24" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: Side length $= 9\text{ cm}$; Area $= 81\text{ cm}^2$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Perimeter of a square $P = 4s$. So $4s = 36 \implies s = 9\text{ cm}$.</p>
+            <p>2. Area of a square $A = s^2 = 9^2 = 81\text{ cm}^2$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 25 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="25" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">25</span>
+            <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wider">[Lesson 11] Word Problem</span>
+          </div>
+          <button onclick="toggleSolution('sol-25')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          In January, a bakery made $1,250$ loaves of bread. In February, they made $1,480$ loaves. How many total loaves were made during these two months? Write an equation and solve.
+        </div>
+        <div id="sol-25" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $1,250 + 1,480 = t$; $t = 2,730$ loaves
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Combining pattern: $\text{Jan Loaves} + \text{Feb Loaves} = \text{Total}$.</p>
+            <p>2. Equation: $1,250 + 1,480 = t$.</p>
+            <p>3. Add: $1,250 + 1,480 = 2,730$ loaves.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 26 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="26" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">26</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 10] Missing Factor</span>
+          </div>
+          <button onclick="toggleSolution('sol-26')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Solve for $x$: $12x = 504$.
+        </div>
+        <div id="sol-26" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $x = 42$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Divide product by known factor: $x = 504 \div 12$.</p>
+            <p>2. $504 \div 12 = 42$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 27 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="27" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">27</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 2] Division / Simplifying</span>
+          </div>
+          <button onclick="toggleSolution('sol-27')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Simplify: $\frac{450}{18}$.
+        </div>
+        <div id="sol-27" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $25$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Divide $450$ by $18$.</p>
+            <p>2. $45 \div 18 = 2$ with remainder $9$. Bring down $0 \rightarrow 90 \div 18 = 5$.</p>
+            <p>3. Quotient is $25$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 28 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="28" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">28</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 8] Fraction of a Group</span>
+          </div>
+          <button onclick="toggleSolution('sol-28')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          What is $\frac{3}{5}$ of $45$?
+        </div>
+        <div id="sol-28" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $27$
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Find $\frac{1}{5}$ of $45$: $45 \div 5 = 9$.</p>
+            <p>2. Multiply by $3$: $9 \times 3 = 27$.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 29 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="29" data-odd="true">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">29</span>
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">[Lesson 1] Math Properties</span>
+          </div>
+          <button onclick="toggleSolution('sol-29')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          Which property of addition is demonstrated by $a + (b + c) = (a + b) + c$?
+        </div>
+        <div id="sol-29" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: Associative Property of Addition
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. The Associative Property states that changing the grouping of addends does not change the sum.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem 30 -->
+      <div class="problem-card bg-white border border-slate-200 rounded-xl p-5 md:p-6 shadow-sm hover:shadow-md transition" data-type="written" data-number="30" data-odd="false">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="bg-slate-800 text-white text-xs font-bold px-2.5 py-1 rounded-md">30</span>
+            <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wider">[Lesson 11] Word Problem</span>
+          </div>
+          <button onclick="toggleSolution('sol-30')" class="toggle-btn text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition">
+            Show Answer
+          </button>
+        </div>
+        <div class="text-slate-800 text-base leading-relaxed mb-4">
+          A farmer had $350$ sheep. After selling some sheep, he had $218$ sheep left. Write a subtraction equation and find how many sheep were sold.
+        </div>
+        <div id="sol-30" class="solution-box hidden bg-slate-50 border-t border-slate-200 pt-4 mt-4 rounded-b-lg">
+          <div class="text-sm font-semibold text-emerald-700 mb-1">
+            Answer: $350 - s = 218$; $s = 132$ sheep
+          </div>
+          <div class="text-xs md:text-sm text-slate-600 space-y-1">
+            <p><strong>Step-by-step explanation:</strong></p>
+            <p>1. Separating pattern: $\text{Starting sheep} - \text{Sheep sold} = \text{Sheep left}$.</p>
+            <p>2. Equation: $350 - s = 218$.</p>
+            <p>3. Solve for $s$: $s = 350 - 218 = 132$ sheep sold.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="question-card" data-category="practice">
-        <div class="question-header">
-            <span class="q-badge">Practice k</span>
-        </div>
-        <div class="question-body">
-            Arrange these fractions in order from least to greatest:
-            \[ \frac{1}{3}, \quad \frac{1}{12}, \quad \frac{1}{4}, \quad \frac{1}{16} \]
-        </div>
-        <button class="btn" onclick="toggleAnswer('ans-k')">Review Answer &amp; Explanation</button>
-        <div class="answer-container" id="ans-k">
-            <div class="answer-title">Final Answer</div>
-            <div class="final-answer">\( \frac{1}{16}, \, \frac{1}{12}, \, \frac{1}{4}, \, \frac{1}{3} \)</div>
-            <div class="explanation">
-                <p>When unit fractions have equal numerators (\(1\)), larger denominators correspond to smaller numeric values.</p>
-            </div>
-        </div>
+    <!-- Empty search result message -->
+    <div id="no-results" class="hidden text-center py-12 text-slate-500">
+      <p class="text-lg font-medium">No matching problems found.</p>
+      <p class="text-xs mt-1">Try resetting filters or changing your search terms.</p>
     </div>
 
-    <!-- Written Practice 1-10 -->
-    <div class="question-card" data-category="1-10">
-        <div class="question-header">
-            <span class="q-badge">Problem 1</span>
-            <span class="tag-badge">REPRESENT</span>
-        </div>
-        <div class="question-body">
-            Use digits and a comparison symbol to write "Four and two thirds is less than four and three quarters."
-        </div>
-        <button class="btn" onclick="toggleAnswer('ans-1')">Review Answer &amp; Explanation</button>
-        <div class="answer-container" id="ans-1">
-            <div class="answer-title">Final Answer</div>
-            <div class="final-answer">\( 4\frac{2}{3} < 4\frac{3}{4} \)</div>
-            <div class="explanation">
-                <p>"Four and two thirds" is \( 4\frac{2}{3} \), "is less than" is \( < \), and "four and three quarters" is \( 4\frac{3}{4} \).</p>
-            </div>
-        </div>
-    </div>
+  </main>
 
-    <div class="question-card" data-category="1-10">
-        <div class="question-header">
-            <span class="q-badge">Problem 2</span>
-        </div>
-        <div class="question-body">
-            Point \( R \) is at \( 2\frac{1}{2} \text{ in.} \) and point \( S \) is at \( 7\frac{3}{8} \text{ in.} \) on a ruler. Find length \( RS \).
-        </div>
-        <button class="btn" onclick="toggleAnswer('ans-2')">Review Answer &amp; Explanation</button>
-        <div class="answer-container" id="ans-2">
-            <div class="answer-title">Final Answer</div>
-            <div class="final-answer">\( 4\frac{7}{8} \text{ inches} \)</div>
-            <div class="explanation">
-                <p>Subtract position \( R \) from position \( S \):</p>
-                <p>\[ 7\frac{3}{8} - 2\frac{1}{2} = 7\frac{3}{8} - 2\frac{4}{8} = 6\frac{11}{8} - 2\frac{4}{8} = 4\frac{7}{8} \text{ inches} \]</p>
-            </div>
-        </div>
-    </div>
-</div>
+  <!-- Footer -->
+  <footer class="bg-slate-100 border-t border-slate-200 mt-12 py-6 text-center text-xs text-slate-500 no-print">
+    <p>Saxon Math Course 2 &bull; Lesson 11 Interactive Practice Set</p>
+  </footer>
 
-<script>
-    function toggleAnswer(id) {
-        const container = document.getElementById(id);
-        if (container.style.display === "block") {
-            container.style.display = "none";
+  <!-- Interactivity Script -->
+  <script>
+    // Toggle individual solution
+    function toggleSolution(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.toggle('hidden');
+      }
+    }
+
+    // Toggle all solutions
+    function toggleAllSolutions(show) {
+      const solutions = document.querySelectorAll('.solution-box');
+      solutions.forEach(box => {
+        if (show) {
+          box.classList.remove('hidden');
         } else {
-            container.style.display = "block";
+          box.classList.add('hidden');
         }
+      });
     }
 
-    function toggleAllAnswers(show) {
-        const containers = document.querySelectorAll('.answer-container');
-        containers.forEach(c => {
-            c.style.display = show ? 'block' : 'none';
-        });
+    // Print functionality with dynamic answer key toggling
+    function printWorksheet(withAnswers) {
+      if (withAnswers) {
+        document.body.classList.add('print-with-answers');
+      } else {
+        document.body.classList.remove('print-with-answers');
+      }
+      
+      // Trigger print dialog
+      window.print();
     }
 
-    function filterQuestions(category) {
-        const cards = document.querySelectorAll('.question-card');
-        const buttons = document.querySelectorAll('.filter-btn');
+    // Active filter status
+    let currentFilter = 'all';
 
-        buttons.forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
+    function filterProblems(filter) {
+      currentFilter = filter;
 
-        cards.forEach(card => {
-            if (category === 'all' || card.getAttribute('data-category') === category) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
+      // Update button styles
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-indigo-100', 'text-indigo-800');
+        btn.classList.add('bg-slate-100', 'text-slate-600');
+      });
+
+      const activeBtn = document.getElementById(`filter-${filter}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-slate-100', 'text-slate-600');
+        activeBtn.classList.add('active', 'bg-indigo-100', 'text-indigo-800');
+      }
+
+      applyFilters();
     }
-</script>
 
+    // Search function
+    function searchProblems() {
+      applyFilters();
+    }
+
+    // Combined filter and search logic
+    function applyFilters() {
+      const searchTerm = document.getElementById('search-input').value.toLowerCase();
+      const cards = document.querySelectorAll('.problem-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const type = card.getAttribute('data-type');
+        const isOdd = card.getAttribute('data-odd') === 'true';
+        const cardText = card.innerText.toLowerCase();
+
+        let matchesFilter = false;
+
+        if (currentFilter === 'all') {
+          matchesFilter = true;
+        } else if (currentFilter === 'practice' && type === 'practice') {
+          matchesFilter = true;
+        } else if (currentFilter === 'written' && type === 'written') {
+          matchesFilter = true;
+        } else if (currentFilter === 'odd' && isOdd) {
+          matchesFilter = true;
+        } else if (currentFilter === 'even' && !isOdd) {
+          matchesFilter = true;
+        }
+
+        const matchesSearch = cardText.includes(searchTerm);
+
+        if (matchesFilter && matchesSearch) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      // Update counter
+      document.getElementById('visible-count').textContent = visibleCount;
+
+      // Show/Hide no results notice
+      const noResults = document.getElementById('no-results');
+      if (visibleCount === 0) {
+        noResults.classList.remove('hidden');
+      } else {
+        noResults.classList.add('hidden');
+      }
+    }
+  </script>
 </body>
 </html>
