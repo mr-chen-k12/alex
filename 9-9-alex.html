@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saxon Math Course 2 - Lesson 10 Practice Set (9-9-alex)</title>
+    <!-- MathJax for rendering mathematical notation -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #e2e8f0;
+            --accent-green: #10b981;
+            --accent-light: #ecfdf5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: #eff6ff;
+        }
+
+        .btn-print {
+            background-color: #475569;
+        }
+
+        .btn-print:hover {
+            background-color: #334155;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .filter-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: border-color 0.2s ease;
+        }
+
+        .question-card:hover {
+            border-color: #cbd5e1;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .q-badge {
+            background: #dbeafe;
+            color: var(--primary-color);
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .tag-badge {
+            background: #f1f5f9;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .question-body {
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+            color: #1e293b;
+        }
+
+        .answer-container {
+            display: none;
+            margin-top: 15px;
+            padding: 16px;
+            background-color: var(--accent-light);
+            border-left: 4px solid var(--accent-green);
+            border-radius: 6px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .answer-title {
+            font-weight: 700;
+            color: #065f46;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .final-answer {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #047857;
+            margin-bottom: 8px;
+        }
+
+        .explanation {
+            font-size: 0.95rem;
+            color: #1e293b;
+        }
+
+        .explanation p {
+            margin-bottom: 6px;
+        }
+
+        .explanation p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body {
+                background-color: #ffffff;
+                color: #000000;
+                padding: 0;
+            }
+
+            .container {
+                max-width: 100%;
+                margin: 0;
+            }
+
+            .controls, .btn, .filter-bar {
+                display: none !important;
+            }
+
+            header {
+                box-shadow: none;
+                border-bottom: 2px solid #000;
+                padding: 10px 0;
+                margin-bottom: 20px;
+                border-radius: 0;
+            }
+
+            .question-card {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+                padding: 15px;
+            }
+
+            .answer-container {
+                display: block !important;
+                background-color: #f8fafc !important;
+                border-left: 3px solid #0f172a !important;
+                margin-top: 10px;
+                padding: 10px;
+            }
+
+            .final-answer {
+                color: #000000;
+            }
+
+            .answer-title {
+                color: #333333;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Saxon Math Course 2 — Lesson 10</h1>
+        <p>Supplemental Practice Set 9-9-alex &amp; Step-by-Step Solutions</p>
+    </header>
+
+    <div class="controls">
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterQuestions('all')">All Problems</button>
+            <button class="filter-btn" onclick="filterQuestions('practice')">Practice i–k</button>
+            <button class="filter-btn" onclick="filterQuestions('1-10')">1–10</button>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-outline" onclick="toggleAllAnswers(true)">Show All</button>
+            <button class="btn btn-outline" onclick="toggleAllAnswers(false)">Hide All</button>
+            <button class="btn btn-print" onclick="window.print()">🖨️ Print Sheet</button>
+        </div>
+    </div>
+
+    <!-- Practice Problems i-k -->
+    <div class="question-card" data-category="practice">
+        <div class="question-header">
+            <span class="q-badge">Practice i</span>
+        </div>
+        <div class="question-body">
+            Point \( A \) is located at \( 3\frac{1}{4} \text{ inches} \) and Point \( B \) is located at \( 8\frac{7}{8} \text{ inches} \) on a ruler. Find the distance \( AB \).
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-i')">Review Answer &amp; Explanation</button>
+        <div class="answer-container" id="ans-i">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( AB = 5\frac{5}{8} \text{ inches} \)</div>
+            <div class="explanation">
+                <p>Subtract the smaller coordinate from the larger coordinate:</p>
+                <p>\[ 8\frac{7}{8} - 3\frac{1}{4} = 8\frac{7}{8} - 3\frac{2}{8} = 5\frac{5}{8} \text{ inches} \]</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="practice">
+        <div class="question-header">
+            <span class="q-badge">Practice j</span>
+        </div>
+        <div class="question-body">
+            A precision scale is marked in sixteenths of an inch. Assuming the scale is used correctly, what is the greatest possible measurement error that can occur? Express your answer as a fraction of an inch.
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-j')">Review Answer &amp; Explanation</button>
+        <div class="answer-container" id="ans-j">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( \frac{1}{32} \text{ inch} \)</div>
+            <div class="explanation">
+                <p>The maximum measurement error is half of the smallest unit mark on the ruler scale:</p>
+                <p>\[ \frac{1}{2} \times \frac{1}{16} = \frac{1}{32} \text{ inch} \]</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="practice">
+        <div class="question-header">
+            <span class="q-badge">Practice k</span>
+        </div>
+        <div class="question-body">
+            Arrange these fractions in order from least to greatest:
+            \[ \frac{1}{3}, \quad \frac{1}{12}, \quad \frac{1}{4}, \quad \frac{1}{16} \]
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-k')">Review Answer &amp; Explanation</button>
+        <div class="answer-container" id="ans-k">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( \frac{1}{16}, \, \frac{1}{12}, \, \frac{1}{4}, \, \frac{1}{3} \)</div>
+            <div class="explanation">
+                <p>When unit fractions have equal numerators (\(1\)), larger denominators correspond to smaller numeric values.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Written Practice 1-10 -->
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 1</span>
+            <span class="tag-badge">REPRESENT</span>
+        </div>
+        <div class="question-body">
+            Use digits and a comparison symbol to write "Four and two thirds is less than four and three quarters."
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-1')">Review Answer &amp; Explanation</button>
+        <div class="answer-container" id="ans-1">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 4\frac{2}{3} < 4\frac{3}{4} \)</div>
+            <div class="explanation">
+                <p>"Four and two thirds" is \( 4\frac{2}{3} \), "is less than" is \( < \), and "four and three quarters" is \( 4\frac{3}{4} \).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header">
+            <span class="q-badge">Problem 2</span>
+        </div>
+        <div class="question-body">
+            Point \( R \) is at \( 2\frac{1}{2} \text{ in.} \) and point \( S \) is at \( 7\frac{3}{8} \text{ in.} \) on a ruler. Find length \( RS \).
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-2')">Review Answer &amp; Explanation</button>
+        <div class="answer-container" id="ans-2">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 4\frac{7}{8} \text{ inches} \)</div>
+            <div class="explanation">
+                <p>Subtract position \( R \) from position \( S \):</p>
+                <p>\[ 7\frac{3}{8} - 2\frac{1}{2} = 7\frac{3}{8} - 2\frac{4}{8} = 6\frac{11}{8} - 2\frac{4}{8} = 4\frac{7}{8} \text{ inches} \]</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleAnswer(id) {
+        const container = document.getElementById(id);
+        if (container.style.display === "block") {
+            container.style.display = "none";
+        } else {
+            container.style.display = "block";
+        }
+    }
+
+    function toggleAllAnswers(show) {
+        const containers = document.querySelectorAll('.answer-container');
+        containers.forEach(c => {
+            c.style.display = show ? 'block' : 'none';
+        });
+    }
+
+    function filterQuestions(category) {
+        const cards = document.querySelectorAll('.question-card');
+        const buttons = document.querySelectorAll('.filter-btn');
+
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        cards.forEach(card => {
+            if (category === 'all' || card.getAttribute('data-category') === category) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
