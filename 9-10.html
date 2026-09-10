@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saxon Math Course 2 - Lesson 10 (9-10a)</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --border: #e2e8f0;
+      --accent: #f1f5f9;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .header-panel {
+      background: var(--card-bg);
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.75rem;
+      color: #0f172a;
+    }
+
+    .section-divider {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--primary-dark);
+      margin: 32px 0 16px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    button.secondary {
+      background-color: #64748b;
+    }
+
+    button.secondary:hover {
+      background-color: #475569;
+    }
+
+    .student-header-print {
+      display: none;
+    }
+
+    .problem-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .problem-header {
+      font-weight: bold;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    .solution-box {
+      margin-top: 12px;
+      padding: 12px;
+      background-color: var(--accent);
+      border-left: 4px solid var(--primary);
+      border-radius: 4px;
+      display: none;
+    }
+
+    .solution-box.visible {
+      display: block;
+    }
+
+    .show-work-area {
+      display: none;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        color: #000;
+        padding: 0;
+      }
+
+      .no-print, button, .controls, .header-panel {
+        display: none !important;
+      }
+
+      .student-header-print {
+        display: flex !important;
+        justify-content: space-between;
+        border-bottom: 2px solid #000;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+
+      .problem-card {
+        border: none;
+        border-bottom: 1px solid #ccc;
+        box-shadow: none;
+        padding: 12px 0;
+        page-break-inside: avoid;
+      }
+
+      .solution-box {
+        display: none !important;
+      }
+
+      body.print-with-answers .solution-box {
+        display: block !important;
+        background: #f5f5f5;
+        border-left: 3px solid #000;
+      }
+
+      body:not(.print-with-answers) .show-work-area {
+        display: block !important;
+        border: 1px dashed #aaa;
+        height: 75px;
+        margin-top: 10px;
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-size: 0.8rem;
+        color: #888;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <div class="student-header-print">
+    <span>Name: ______________________</span>
+    <span>Date: ____________</span>
+    <span>Score: ________</span>
+  </div>
+
+  <div class="header-panel no-print">
+    <div class="title-row">
+      <h1>Saxon Math Course 2 — Lesson 10 (9-10a)</h1>
+    </div>
+    <div class="controls">
+      <button onclick="toggleAllSolutions()">Toggle All Answers (Screen)</button>
+      <button onclick="printWorksheet(false)">🖨️ Print Worksheet (No Answers)</button>
+      <button class="secondary" onclick="printWorksheet(true)">🔑 Print Answer Key</button>
+    </div>
+  </div>
+
+  <div id="problems-list">
+
+    <div class="section-divider">Practice Set (a–k)</div>
+
+    <!-- Practice Set a -->
+    <div class="problem-card">
+      <div class="problem-header">Practice Set a</div>
+      <div class="problem-body">Divide and write the quotient as a mixed number: $17 \div 4$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $17 \div 4 = 4$ with a remainder of $1$, so $4\frac{1}{4}$.</div>
+    </div>
+
+    <!-- Practice Set b -->
+    <div class="problem-card">
+      <div class="problem-header">Practice Set b</div>
+      <div class="problem-body">Divide and write the quotient as a mixed number: $25 \div 6$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $25 \div 6 = 4$ with a remainder of $1$, so $4\frac{1}{6}$.</div>
+    </div>
+
+    <!-- Practice Set c -->
+    <div class="problem-card">
+      <div class="problem-header">Practice Set c</div>
+      <div class="problem-body">Divide and write the quotient as a mixed number: $43 \div 5$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $43 \div 5 = 8$ with a remainder of $3$, so $8\frac{3}{5}$.</div>
+    </div>
+
+    <!-- Practice Set d -->
+    <div class="problem-card">
+      <div class="problem-header">Practice Set d</div>
+      <div class="problem-body">Divide and write the quotient as a reduced mixed number: $50 \div 8$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $50 \div 8 = 6\frac{2}{8} = 6\frac{1}{4}$.</div>
+    </div>
+
+    <!-- Practice Set e -->
+    <div class="problem-card">
+      <div class="problem-header">Practice Set e</div>
+      <div class="problem-body">Draw a circle diagram divided into equal sections to represent the fraction $\frac{3}{5}$.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> Draw a circle divided into $5$ equal sectors and shade $3$ of them.</div>
+    </div>
+
+    <!-- Practice Set f -->
+    <div class="problem-card">
+      <div class="problem-header">Practice Set f</div>
+      <div class="problem-body">Identify whether each fraction is proper or improper: $\frac{7}{4}$ and $\frac{3}{8}$.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $\frac{7}{4}$ is improper (numerator $\ge$ denominator); $\frac{3}{8}$ is proper (numerator $<$ denominator).</div>
+    </div>
+
+    <!-- Practice Set g -->
+    <div class="problem-card">
+      <div class="problem-header">Practice Set g</div>
+      <div class="problem-body">Convert the improper fraction to a mixed number: $\frac{11}{3}$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $11 \div 3 = 3\frac{2}{3}$.</div>
+    </div>
+
+    <!-- Practice Set h -->
+    <div class="problem-card">
+      <div class="problem-header">Practice Set h</div>
+      <div class="problem-body">Convert the improper fraction to a mixed number: $\frac{15}{4}$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $15 \div 4 = 3\frac{3}{4}$.</div>
+    </div>
+
+    <!-- Practice Set i -->
+    <div class="problem-card">
+      <div class="problem-header">Practice Set i</div>
+      <div class="problem-body">Simplify the improper fraction to a whole number: $\frac{12}{4}$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $12 \div 4 = 3$.</div>
+    </div>
+
+    <!-- Practice Set j -->
+    <div class="problem-card">
+      <div class="problem-header">Practice Set j</div>
+      <div class="problem-body">Compare: $\frac{5}{8} \bigcirc \frac{5}{9}$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $\frac{5}{8} > \frac{5}{9}$ (eighths are larger pieces than ninths).</div>
+    </div>
+
+    <!-- Practice Set k -->
+    <div class="problem-card">
+      <div class="problem-header">Practice Set k</div>
+      <div class="problem-body">If $15$ apples are shared equally among $4$ children, how many apples does each child receive?</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $15 \div 4 = 3\frac{3}{4}$ apples each.</div>
+    </div>
+
+    <div class="section-divider">Written Practice (1–30)</div>
+
+    <!-- Written Practice 1 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 1</div>
+      <div class="problem-body">Jack had $420$ stamps in his collection. He gave $145$ stamps to his brother. How many stamps does Jack have left?</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $420 - 145 = 275$ stamps.</div>
+    </div>
+
+    <!-- Written Practice 2 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 2</div>
+      <div class="problem-body">There are $8$ boxes of pencils. Each box contains $24$ pencils. How many pencils are there in total?</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $8 \times 24 = 192$ pencils.</div>
+    </div>
+
+    <!-- Written Practice 3 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 3</div>
+      <div class="problem-body">In the number $5,832,910$, which digit is in the ten-thousands place?</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $3$ is in the ten-thousands place.</div>
+    </div>
+
+    <!-- Written Practice 4 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 4</div>
+      <div class="problem-body">Write $40,502$ in expanded notation.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $(4 \times 10,000) + (5 \times 100) + (2 \times 1)$.</div>
+    </div>
+
+    <!-- Written Practice 5 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 5</div>
+      <div class="problem-body">A rectangle has a length of $12\text{ cm}$ and a width of $5\text{ cm}$. Find its perimeter and area.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong><br>Perimeter $= 2(12 + 5) = 34\text{ cm}$<br>Area $= 12 \times 5 = 60\text{ cm}^2$.</div>
+    </div>
+
+    <!-- Written Practice 6 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 6</div>
+      <div class="problem-body">Reduce the fraction $\frac{16}{24}$ to its lowest terms.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> Divide numerator and denominator by $\text{GCF}(16,24) = 8$: $\frac{16 \div 8}{24 \div 8} = \frac{2}{3}$.</div>
+    </div>
+
+    <!-- Written Practice 7 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 7</div>
+      <div class="problem-body">Round $4,782$ to the nearest hundred.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> The tens digit is $8$, so round up to $4,800$.</div>
+    </div>
+
+    <!-- Written Practice 8 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 8</div>
+      <div class="problem-body">Divide and write quotient as a mixed number: $29 \div 3$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $29 \div 3 = 9\frac{2}{3}$.</div>
+    </div>
+
+    <!-- Written Practice 9 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 9</div>
+      <div class="problem-body">Divide and write quotient as a mixed number: $35 \div 6$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $35 \div 6 = 5\frac{5}{6}$.</div>
+    </div>
+
+    <!-- Written Practice 10 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 10</div>
+      <div class="problem-body">Find the prime factorization of $36$ using exponents.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $36 = 2 \times 2 \times 3 \times 3 = 2^2 \times 3^2$.</div>
+    </div>
+
+    <!-- Written Practice 11 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 11</div>
+      <div class="problem-body">Solve for $n$: $n + 387 = 600$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $n = 600 - 387 = 213$.</div>
+    </div>
+
+    <!-- Written Practice 12 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 12</div>
+      <div class="problem-body">Solve for $m$: $15m = 225$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $m = 225 \div 15 = 15$.</div>
+    </div>
+
+    <!-- Written Practice 13 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 13</div>
+      <div class="problem-body">Subtract: $1 - \frac{3}{7}$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $\frac{7}{7} - \frac{3}{7} = \frac{4}{7}$.</div>
+    </div>
+
+    <!-- Written Practice 14 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 14</div>
+      <div class="problem-body">Add: $4.25 + 13.8 + 0.62$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $4.25 + 13.80 + 0.62 = 18.67$.</div>
+    </div>
+
+    <!-- Written Practice 15 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 15</div>
+      <div class="problem-body">Subtract: $10.00 - 3.48$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $10.00 - 3.48 = 6.52$.</div>
+    </div>
+
+    <!-- Written Practice 16 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 16</div>
+      <div class="problem-body">Multiply: $1.2 \times 0.04$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $12 \times 4 = 48$, place 3 decimal places: $0.048$.</div>
+    </div>
+
+    <!-- Written Practice 17 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 17</div>
+      <div class="problem-body">Arrange in order from least to greatest: $0.3, \frac{1}{2}, 0.25, 0.09$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> Convert $\frac{1}{2} = 0.5$. Order: $0.09, 0.25, 0.3, \frac{1}{2}$.</div>
+    </div>
+
+    <!-- Written Practice 18 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 18</div>
+      <div class="problem-body">Find the average (mean) of $12, 18, 22,$ and $28$.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> Sum $= 80$. Divide by $4$: $80 \div 4 = 20$.</div>
+    </div>
+
+    <!-- Written Practice 19 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 19</div>
+      <div class="problem-body">Add: $\frac{3}{11} + \frac{5}{11}$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $\frac{3+5}{11} = \frac{8}{11}$.</div>
+    </div>
+
+    <!-- Written Practice 20 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 20</div>
+      <div class="problem-body">Subtract and simplify: $\frac{9}{10} - \frac{3}{10}$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $\frac{6}{10} = \frac{3}{5}$.</div>
+    </div>
+
+    <!-- Written Practice 21 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 21</div>
+      <div class="problem-body">Classify each angle type: an angle measuring $90^\circ$ and an angle measuring $125^\circ$.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $90^\circ$ is a right angle; $125^\circ$ is an obtuse angle.</div>
+    </div>
+
+    <!-- Written Practice 22 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 22</div>
+      <div class="problem-body">Simplify: $2^5 - 3^2$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $32 - 9 = 23$.</div>
+    </div>
+
+    <!-- Written Practice 23 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 23</div>
+      <div class="problem-body">Simplify using order of operations: $6 + 4 \times (8 - 3)$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $6 + 4 \times 5 = 6 + 20 = 26$.</div>
+    </div>
+
+    <!-- Written Practice 24 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 24</div>
+      <div class="problem-body">Convert the improper fraction $\frac{23}{5}$ into a mixed number.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $23 \div 5 = 4\frac{3}{5}$.</div>
+    </div>
+
+    <!-- Written Practice 25 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 25</div>
+      <div class="problem-body">Convert the mixed number $3\frac{4}{7}$ into an improper fraction.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $\frac{(3 \times 7) + 4}{7} = \frac{25}{7}$.</div>
+    </div>
+
+    <!-- Written Practice 26 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 26</div>
+      <div class="problem-body">Find the greatest common factor (GCF) of $24$ and $36$.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> Factors of 24: $1, 2, 3, 4, 6, 8, 12, 24$. Factors of 36: $1, 2, 3, 4, 6, 9, 12, 18, 36$. $\text{GCF} = 12$.</div>
+    </div>
+
+    <!-- Written Practice 27 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 27</div>
+      <div class="problem-body">Find the least common multiple (LCM) of $8$ and $12$.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> Multiples of 8: $8, 16, 24, 32$. Multiples of 12: $12, 24, 36$. $\text{LCM} = 24$.</div>
+    </div>
+
+    <!-- Written Practice 28 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 28</div>
+      <div class="problem-body">Find the missing term in the proportion: $\frac{3}{4} = \frac{x}{20}$</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> $4 \times 5 = 20$, so $3 \times 5 = 15$. $x = 15$.</div>
+    </div>
+
+    <!-- Written Practice 29 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 29</div>
+      <div class="problem-body">In which quadrant of the coordinate plane is the point $(-3, 4)$ located?</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> Negative x and positive y is Quadrant II.</div>
+    </div>
+
+    <!-- Written Practice 30 -->
+    <div class="problem-card">
+      <div class="problem-header">Written Practice 30</div>
+      <div class="problem-body">A standard 6-sided die is rolled. What is the probability of rolling an even number? Express as a simplified fraction.</div>
+      <div class="show-work-area">Show your work / notes:</div>
+      <button class="no-print" style="margin-top: 10px; padding: 4px 10px; font-size: 0.8rem;" onclick="toggleSolution(this)">Show Answer</button>
+      <div class="solution-box"><strong>Solution:</strong> Even numbers are $2, 4, 6$ ($3$ out of $6$). Probability $= \frac{3}{6} = \frac{1}{2}$.</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function toggleSolution(btn) {
+    const box = btn.nextElementSibling;
+    box.classList.toggle('visible');
+    btn.textContent = box.classList.contains('visible') ? 'Hide Answer' : 'Show Answer';
+  }
+
+  function toggleAllSolutions() {
+    const boxes = document.querySelectorAll('.solution-box');
+    const buttons = document.querySelectorAll('.problem-card button');
+    const anyHidden = Array.from(boxes).some(box => !box.classList.contains('visible'));
+
+    boxes.forEach(box => {
+      if (anyHidden) box.classList.add('visible');
+      else box.classList.remove('visible');
+    });
+
+    buttons.forEach(btn => {
+      btn.textContent = anyHidden ? 'Hide Answer' : 'Show Answer';
+    });
+  }
+
+  function printWorksheet(withAnswers) {
+    if (withAnswers) {
+      document.body.classList.add('print-with-answers');
+    } else {
+      document.body.classList.remove('print-with-answers');
+    }
+    window.print();
+  }
+</script>
+
+</body>
+</html>
