@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 9-10c</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #harvard-reward {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff;
+        border: 3px double #a51c30;
+        border-radius: 8px;
+        animation: pullUp 0.5s ease-out;
+    }
+    #harvard-reward img {
+        width: 160px;
+        height: auto;
+        margin: 15px auto;
+        display: block;
+    }
+    .harvard-text {
+        color: #a51c30;
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    @keyframes pullUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        #harvard-reward {
+            display: block !important;
+            border: 2px solid #a51c30 !important;
+        }
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 9-10c</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        
+        <div id="harvard-reward">
+            <div class="harvard-text">★ FLAWLESS ACADEMIC EXCELLENCE ★</div>
+            <img src="https://raw.githubusercontent.com/mr-chen-k12/math/main/IMG_0232.png" alt="Harvard University Crest">
+            <p style="color: #555; font-style: italic; font-weight: bold; margin-top: 5px;">You have successfully earned the Harvard University verification crest for achieving a perfect 10/10 score.</p>
+        </div>
+
+        <button onclick="window.print()" style="margin-top: 15px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected here -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const quizData = [
+        {
+            passage: "The panel of economists noted that while short-term market fluctuations can appear chaotic and erratic, long-term trends often reveal an underlying _______ structure governed by predictable supply and demand mechanics.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["orderly", "precarious", "ostentatious", "arbitrary"],
+            correctAnswer: 0, // A
+            explanation: "'Orderly' means neat, systematic, or well-arranged. The text contrasts 'chaotic and erratic' short-term movements with long-term trends governed by 'predictable supply and demand mechanics'."
+        },
+        {
+            passage: "Ocean acidification occurs when seawater absorbs excess atmospheric carbon dioxide, lowering ocean pH. Marine biologists studying coral reefs in the South Pacific observed that lowered pH reduces calcification rates in reef-building corals, making their skeletons fragile and vulnerable to storm damage. Additionally, acidified water impairs the olfactory senses of larval fish, preventing them from detecting predators or navigating to safe nursery habitats. Consequently, ocean acidification poses a systemic threat to marine biodiversity by weakening foundational reef structures and altering fish behavior.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Coral reef destruction is caused primarily by physical storm damage rather than chemical alterations in ocean water.",
+                "Ocean acidification threatens marine ecosystems by weakening coral reef structures and disrupting larval fish behavior.",
+                "Larval fish rely exclusively on visual cues to avoid predators and locate appropriate nursery grounds.",
+                "Decreasing atmospheric carbon dioxide levels will immediately restore ocean pH to historical baselines."
+            ],
+            correctAnswer: 1, // B
+            explanation: "The passage outlines two primary harms of ocean acidification—weakened coral skeletons and impaired larval fish senses—and concludes that it threatens marine biodiversity. Option B accurately summarizes this main idea."
+        },
+        {
+            passage: "Paleobotanists examining fossilized plant leaves from the late Cretaceous period observed a sharp decrease in stomatal density—the number of microscopic pores used for gas exchange—during a period of intense volcanic activity. Laboratory experiments with modern plant species demonstrate that plants exposed to elevated carbon dioxide levels produce leaves with fewer stomata, as high CO2 concentrations allow them to take up sufficient carbon for photosynthesis with fewer openings. The observed historical reduction in leaf stomata strongly suggests that during the late Cretaceous, _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "volcanic eruptions led to a severe reduction in atmospheric oxygen levels.",
+                "atmospheric carbon dioxide concentrations increased significantly as a result of volcanic emissions.",
+                "plant species lost the ability to perform photosynthesis altogether.",
+                "global surface temperatures plummeted rapidly due to widespread cloud coverage."
+            ],
+            correctAnswer: 1, // B
+            explanation: "Because modern plants produce fewer stomata when CO2 levels are high, finding decreased stomatal density in fossil leaves during volcanic activity indicates that atmospheric CO2 concentrations were elevated by volcanic emissions."
+        },
+        {
+            passage: "In her 2018 study, urban sociologist Dr. Maya Lin reevaluated the impact of community gardens on neighborhood social cohesion. <b>Specifically, Lin compiled longitudinal survey data across twenty metropolitan zip codes to demonstrate that residents living within walking distance of shared gardens reported higher levels of interpersonal trust and lower rates of property crime.</b> This quantitative evidence countered previous assertions that urban community gardens were merely aesthetic improvements with negligible social benefit.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+            options: [
+                "It presents specific empirical data supporting Lin's finding that community gardens strengthen neighborhood social ties.",
+                "It outlines a criticism raised by opponents of municipal park funding.",
+                "It details the financial cost of establishing community gardens in metropolitan areas.",
+                "It compares crime rates between twenty different international cities."
+            ],
+            correctAnswer: 0, // A
+            explanation: "The highlighted sentence details the specific empirical survey evidence (trust metrics, crime reductions) Lin gathered across 20 zip codes to support her main finding regarding community gardens' social benefits."
+        },
+        {
+            passage: "Text 1\nThe proliferation of remote work software has revolutionized labor productivity. By eliminating long daily commutes and enabling flexible schedule management, remote employees achieve higher output, experience less burnout, and report greater job satisfaction.\n\nText 2\nWhile remote work provides scheduling flexibility, long-term isolation from physical office environments can impede spontaneous collaboration and weaken organizational culture. Furthermore, without physical boundaries between work and home, many remote employees experience blurred work-life distinctions, ultimately leading to higher rates of chronic overwork.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to Text 1's view on worker burnout?",
+            options: [
+                "By agreeing that remote work completely eliminates job-related stress for all corporate employees.",
+                "By arguing that blurred boundaries between work and home in remote setups can actually increase overwork and burnout.",
+                "By asserting that daily commutes are necessary for building physical endurance.",
+                "By suggesting that companies abolish remote work tools and return exclusively to in-person operations."
+            ],
+            correctAnswer: 1, // B
+            explanation: "Text 1 claims remote work reduces burnout. Text 2 counters that the lack of boundaries between work and home in remote settings often leads to chronic overwork, directly challenging Text 1's optimistic claim."
+        },
+        {
+            passage: "Anthropologist Dr. James Thorne posits that the transition of early human groups from nomadic foraging to settled agricultural communities in Southwestern Asia was accompanied by a noticeable rise in infectious disease burdens due to higher population density and close proximity to domesticated animals.",
+            prompt: "Which quotation from a bioarchaeological study best supports Dr. Thorne's position?",
+            options: [
+                "\"Skeletal remains from early agricultural villages show a 40% higher prevalence of lesions caused by chronic infectious pathogens compared to older hunter-gatherer remains from the same region.\"",
+                "\"Early agriculturalists developed sophisticated ceramic vessels to store surplus wheat and barley grains over winter.\"",
+                "\"Nomadic foraging groups moved seasonally between highland and lowland environments to track migratory game herds.\"",
+                "\"DNA sequencing confirms that wild sheep were first domesticated in the Zagros Mountains around 10,000 years ago.\""
+            ],
+            correctAnswer: 0, // A
+            explanation: "Option A provides direct empirical evidence showing a 40% higher prevalence of pathogen-induced lesions in agricultural skeletal remains vs. hunter-gatherer remains, supporting Dr. Thorne's position on disease burden."
+        },
+        {
+            passage: "Although the preliminary budget proposal appeared _______, offering only a brief list of line items without financial breakdowns, the CFO assured investors that a comprehensive financial audit would be released before the end of the quarter.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["cursory", "exhaustive", "immaculate", "rigorous"],
+            correctAnswer: 0, // A
+            explanation: "'Cursory' means hasty and therefore not thorough or detailed. The text contrasts a 'brief list... without financial breakdowns' with a future 'comprehensive financial audit'."
+        },
+        {
+            passage: "Astrophysicists analyzing light spectrum data from exoplanet WASP-121b noticed that temperatures in the planet's upper atmosphere increase with altitude rather than decreasing—a thermal inversion phenomenon. On Earth, thermal inversions are caused by ozone absorbing ultraviolet light in the stratosphere. On WASP-121b, an ultra-hot gas giant where temperatures exceed 2,000°C, ozone cannot exist. Instead, spectral models revealed gaseous titanium oxide and vanadium oxide in the upper atmosphere, both of which absorb high-energy stellar radiation. These observations suggest that thermal inversion on WASP-121b is ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "driven by heavy metal oxides absorbing radiation in place of ozone.",
+                "caused by atmospheric water vapor freezing into ice crystals.",
+                "identical in chemical composition to the thermal inversions observed on Earth.",
+                "evidence that WASP-121b possesses liquid oceans beneath its thick atmosphere."
+            ],
+            correctAnswer: 0, // A
+            explanation: "The passage notes that while Earth relies on ozone for thermal inversions, WASP-121b lacks ozone and instead contains gaseous titanium oxide and vanadium oxide (heavy metal oxides) that absorb stellar radiation to cause the inversion."
+        },
+        {
+            passage: "For over a century, art conservators preserved historic oil paintings by applying clear varnish layers to protect paint from dust and moisture. However, conservators now recognize that synthetic varnishes applied in the twentieth century degrade over time, yellowing and cracking in ways that distort the artist's original color palette. Modern conservation science emphasizes non-invasive restoration techniques, utilizing specialized laser cleaning and micro-solvent gels to safely remove degraded varnish without damaging underlying delicate paint layers.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Oil paintings produced in the twentieth century are inherently less durable than older works.",
+                "Modern conservation techniques allow scientists to remove degrading synthetic varnish without harming the original artwork.",
+                "Laser cleaning should be used as a primary paint application method for contemporary artists.",
+                "Applying multiple layers of varnish remains the most effective way to protect paintings from yellowing."
+            ],
+            correctAnswer: 1, // B
+            explanation: "The passage outlines the issue with degrading synthetic varnishes on historic paintings and highlights how modern non-invasive tools (lasers, micro-solvent gels) enable conservators to remove varnish safely."
+        },
+        {
+            passage: "The lead researcher maintained a _______ posture throughout the peer-review process, quietly accepting constructive critiques while systematically addressing each methodological objection with supplemental data.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["pragmatic", "belligerent", "ostentatious", "dogmatic"],
+            correctAnswer: 0, // A
+            explanation: "'Pragmatic' means dealing with things sensibly and realistically in a way that is based on practical rather than theoretical considerations. Quietly taking feedback and systematically providing data reflects a pragmatic posture."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 9-10c</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${Math.round((score/quizData.length)*100)}%)`;
+        
+        // Displays Harvard reward logo when student achieves 100% (10/10)
+        if (score === quizData.length) {
+            document.getElementById('harvard-reward').style.display = 'block';
+        }
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
