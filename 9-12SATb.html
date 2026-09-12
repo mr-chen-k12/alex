@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 9-12b</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #univ-reward {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff;
+        border: 3px double #a51c30;
+        border-radius: 8px;
+        animation: pullUp 0.5s ease-out;
+    }
+    #univ-reward img {
+        width: 160px;
+        height: auto;
+        margin: 15px auto;
+        display: block;
+    }
+    .univ-text {
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    @keyframes pullUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        #univ-reward {
+            display: block !important;
+            border-style: solid !important;
+            border-width: 2px !important;
+        }
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 9-12b</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        
+        <div id="univ-reward">
+            <div class="univ-text" id="univ-reward-title">★ FLAWLESS ACADEMIC EXCELLENCE ★</div>
+            <img id="univ-reward-img" src="" alt="University Crest">
+            <p id="univ-reward-text" style="color: #555; font-style: italic; font-weight: bold; margin-top: 5px;"></p>
+        </div>
+
+        <button onclick="window.print()" style="margin-top: 15px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected here -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const universityRewards = [
+        {
+            name: "Harvard University",
+            img: "https://mr-chen-k12.github.io/math/IMG_0232.png",
+            color: "#a51c30"
+        },
+        {
+            name: "Boston University",
+            img: "https://mr-chen-k12.github.io/books/IMG_0121.png",
+            color: "#CC0000"
+        },
+        {
+            name: "Yale University",
+            img: "https://mr-chen-k12.github.io/books/IMG_0122.png",
+            color: "#00356B"
+        }
+    ];
+
+    const quizData = [
+        {
+            passage: "While the initial hypothesis regarding the stellar remnant was considered _______ due to a lack of high-resolution spectral data, subsequent observations from space-based observatories confirmed its extraordinary density and composition beyond doubt.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["tentative", "indisputable", "ubiquitous", "dogmatic"],
+            correctAnswer: 0, // A
+            explanation: "'Tentative' means hesitant, unconfirmed, or subject to change. The passage contrasts the initial unconfirmed hypothesis with subsequent observations that confirmed it 'beyond doubt'."
+        },
+        {
+            passage: "Deep-sea hydrothermal vent ecosystems survive in total darkness without reliance on solar energy. Bacteria around these vents utilize chemosynthesis, oxidizing hydrogen sulfide and methane emitted from Earth's crust to produce organic matter. Higher organisms, such as tubeworms and vent shrimp, rely directly on these chemosynthetic microbes for nutrition. Consequently, hydrothermal vent ecosystems demonstrate that complex biological communities can thrive independently of solar-driven photosynthesis.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Hydrothermal vents rely on surface ocean currents to supply solar nutrients.",
+                "Chemosynthetic bacteria form the foundation of hydrothermal vent ecosystems, enabling complex life without sunlight.",
+                "Tubeworms are the primary energy source for deep-sea chemosynthetic bacteria.",
+                "Solar energy penetrates deep-ocean trenches during periods of low volcanic activity."
+            ],
+            correctAnswer: 1, // B
+            explanation: "The text explains how chemosynthetic bacteria synthesize energy from deep-sea vent chemicals, supporting complex organisms without solar energy. Option B summarizes this main idea."
+        },
+        {
+            passage: "Evolutionary biologists examining the vocalizations of songbird species across urban and rural habitats observed that urban populations sing at higher frequencies and louder volumes. Lab tests confirmed that these elevated pitches prevent the birds' calls from being masked by low-frequency city traffic noise. When researchers played recorded low-frequency ambient noise to rural songbirds in controlled enclosures, the rural birds quickly adjusted their pitch upward to maintain signal clarity. This behavioral flexibility suggests that pitch adjustment in songbirds _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "is an immediate phenotypic response to acoustic environments rather than an exclusive genetic mutation.",
+                "prevents birds from attracting mates in quiet forest habitats.",
+                "forces urban birds to abandon vocal communication during nighttime hours.",
+                "relies entirely on permanent morphological alterations to the vocal tract."
+            ],
+            correctAnswer: 0, // A
+            explanation: "Because rural birds quickly adjusted their pitch upward when exposed to noise in a lab, the change is an immediate behavioral (phenotypic) response to environmental acoustics rather than a slow genetic mutation."
+        },
+        {
+            passage: "In her 2022 study, environmental historian Dr. Aris Thorne evaluated early industrial water management strategies along the Rhine River. <b>Specifically, Thorne examined archived municipal flood records from the nineteenth century to reveal that engineered levees often exacerbated downstream flooding during seasonal thaws.</b> This empirical finding challenged long-standing historical narratives praising early flood control infrastructure as uniformly beneficial.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+            options: [
+                "It presents specific historical evidence from Thorne's research that counters traditional assumptions about levee effectiveness.",
+                "It compares nineteenth-century European flood records with modern flood management strategies in Asia.",
+                "It summarizes government policy proposals aimed at constructing additional river levees.",
+                "It explains the financial costs associated with repairing historical river infrastructure."
+            ],
+            correctAnswer: 0, // A
+            explanation: "The highlighted sentence details the empirical evidence (nineteenth-century flood records) Thorne gathered to demonstrate that levees exacerbated downstream flooding, directly challenging traditional praise for flood control."
+        },
+        {
+            passage: "Text 1\nThe integration of artificial intelligence tools into creative writing heralds a new era of artistic expression. By assisting authors with plot outlining and vocabulary expansion, AI serves as an invaluable collaborative partner that enhances human imagination.\n\nText 2\nWhile AI tools can process vast linguistic datasets to generate coherent prose, true creative writing relies on lived human experience, emotional nuance, and deliberate artistic intent—qualities an algorithm cannot possess. Relying on automated generators risks homogenizing literature into repetitive, formulaic patterns.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to Text 1's view on AI as a creative partner?",
+            options: [
+                "By agreeing that AI generators possess genuine emotional empathy.",
+                "By contending that AI output lacks authentic human experience and risks rendering creative writing formulaic.",
+                "By asserting that AI tools will replace all human authors within the next decade.",
+                "By suggesting that human authors avoid using vocabulary expansion tools altogether."
+            ],
+            correctAnswer: 1, // B
+            explanation: "Text 2 asserts that algorithms lack human experience and artistic intent, warning that AI generators risk producing formulaic literature, directly countering Text 1's optimistic view."
+        },
+        {
+            passage: "Architectural historian Dr. Sofia Martinez argues that ancient Maya urban planning integrated natural topography and astronomical alignments to reflect spiritual worldviews rather than focusing solely on defense or resource access.",
+            prompt: "Which quotation from an archeological survey best supports Dr. Martinez's argument?",
+            options: [
+                "\"Maya city walls were constructed using local limestone blocks bound with lime mortar.\"",
+                "\"Excavations revealed that major Maya ceremonial plazas and temples were precisely aligned with the solstices and designed around natural limestone sinkholes deemed sacred.\"",
+                "\"Agricultural terraces surrounding Maya urban centers produced high yields of maize and squash.\"",
+                "\"Trade routes connected coastal Maya ports with inland highland settlements.\""
+            ],
+            correctAnswer: 1, // B
+            explanation: "Option B provides direct evidence of astronomical alignments (solstices) and sacred topography (limestone sinkholes), directly supporting Dr. Martinez's hypothesis about Maya urban planning."
+        },
+        {
+            passage: "Environmental regulations that seem _______ when viewed in isolation often prove highly effective when implemented as part of a comprehensive regional conservation framework.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["ineffective", "indispensable", "vital", "comprehensive"],
+            correctAnswer: 0, // A
+            explanation: "'Ineffective' means not producing any significant or desired effect. The sentence contrasts how a regulation appears in isolation ('ineffective') with its true impact within a larger framework ('highly effective')."
+        },
+        {
+            passage: "Cognitive neuroscientists studying bilingualism discovered that individuals who fluently speak two languages exhibit greater neural density in executive control networks compared to monolingual individuals. Brain scans indicated that managing two active language systems requires constant cognitive monitoring to suppress irrelevant vocabulary, which strengthens prefrontal cortex connectivity over time. This structural adaptation indicates that lifelong bilingualism ________",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "impairs overall cognitive flexibility during problem-solving tasks.",
+                "enhances neural architecture associated with executive function and cognitive control.",
+                "eliminates the brain's ability to acquire third or fourth languages later in life.",
+                "reduces prefrontal cortex activity during non-verbal reasoning challenges."
+            ],
+            correctAnswer: 1, // B
+            explanation: "Because managing two languages strengthens prefrontal cortex connectivity and density in control networks, lifelong bilingualism logically enhances neural architecture tied to executive function."
+        },
+        {
+            passage: "Wetland ecosystems serve as natural filtration systems that absorb agricultural nutrient runoff, preventing toxic algal blooms in coastal estuaries. Ecological restoration projects that reintroduce native wetland vegetation along riverbanks have successfully reduced nitrate concentrations in surrounding waterways by up to 50%. Furthermore, wetlands act as natural flood buffers, absorbing excess storm runoff and reducing flood damage in adjacent residential areas. Consequently, investing in wetland preservation offers a dual benefit for water quality and flood risk management.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Agricultural runoff is the sole cause of toxic algal blooms in marine environments.",
+                "Restoring and preserving wetlands provides critical dual benefits by improving water quality and mitigating flood risks.",
+                "Native wetland vegetation requires artificial fertilizers to filter nitrates effectively.",
+                "Residential development near riverbanks is the most effective method for preventing storm flooding."
+            ],
+            correctAnswer: 1, // B
+            explanation: "The passage outlines how wetlands filter runoff and buffer floodwaters, concluding that wetland preservation improves water quality while mitigating flood risks."
+        },
+        {
+            passage: "The research team appreciated Dr. Vance's _______ methodology; every experimental protocol was documented with meticulous detail to ensure exact reproducibility by independent laboratories.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["rigorous", "ambiguous", "superficial", "haphazard"],
+            correctAnswer: 0, // A
+            explanation: "'Rigorous' means extremely thorough, exhaustive, or accurate. Documenting protocols with 'meticulous detail' directly describes a rigorous methodology."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 9-12b</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${Math.round((score/quizData.length)*100)}%)`;
+        
+        // Pick a random university crest reward on a perfect score (10/10)
+        if (score === quizData.length) {
+            const reward = universityRewards[Math.floor(Math.random() * universityRewards.length)];
+            const rewardDiv = document.getElementById('univ-reward');
+            const rewardTitle = document.getElementById('univ-reward-title');
+            const rewardImg = document.getElementById('univ-reward-img');
+            const rewardText = document.getElementById('univ-reward-text');
+            
+            rewardDiv.style.borderColor = reward.color;
+            rewardTitle.style.color = reward.color;
+            rewardImg.src = reward.img;
+            rewardImg.alt = reward.name + " Crest";
+            rewardText.textContent = `You have successfully earned the ${reward.name} verification crest for achieving a perfect 10/10 score.`;
+            
+            rewardDiv.style.display = 'block';
+        }
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
