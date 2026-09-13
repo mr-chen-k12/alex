@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Light & Matter — 5th Grade Interactive Study Guide</title>
+<style>
+  :root{
+    --bg:#f5f8ff; --card:#ffffff; --ink:#1c2740; --muted:#5d6b82;
+    --brand:#4258ff; --brand2:#7c4dff; --good:#147d4e; --warn:#b36b00; --bad:#b42318;
+    --line:#dce3f2; --soft:#eef2ff; --shadow:0 10px 30px rgba(31,48,95,.12);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#f8fbff 0,#f5f7fb 100%);color:var(--ink)}
+  button,input,select{font:inherit}
+  button{cursor:pointer}
+  .app{max-width:1100px;margin:0 auto;padding:18px}
+  header{background:linear-gradient(135deg,var(--brand),var(--brand2));color:white;border-radius:24px;padding:24px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  header:after{content:"";position:absolute;right:-60px;top:-80px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.10)}
+  h1{margin:0 0 6px;font-size:clamp(28px,5vw,44px)}
+  header p{margin:0;max-width:780px;line-height:1.45;color:#eef0ff}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .stat{background:rgba(255,255,255,.15);backdrop-filter:blur(6px);padding:8px 12px;border-radius:999px;font-size:14px}
+  nav{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:16px 0}
+  .tab{border:1px solid var(--line);background:var(--card);padding:11px 8px;border-radius:14px;color:var(--ink);font-weight:700}
+  .tab.active{background:var(--ink);color:white;border-color:var(--ink)}
+  .panel{display:none;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 4px 16px rgba(31,48,95,.06)}
+  .panel.active{display:block}
+  h2{margin:0 0 12px;font-size:26px}
+  h3{margin:18px 0 8px}
+  .note{background:#fff8df;border:1px solid #f0d774;padding:12px 14px;border-radius:14px;line-height:1.45}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .study-card{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fbfcff}
+  .study-card b{display:block;margin-bottom:5px;font-size:18px}
+  .pill{display:inline-block;font-size:12px;font-weight:800;border-radius:999px;padding:4px 8px;background:var(--soft);color:#3845b9;margin-bottom:8px}
+
+  /* Flashcards */
+  .flash-wrap{max-width:760px;margin:0 auto;text-align:center}
+  .flash-top{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+  .flashcard{height:330px;perspective:1200px;user-select:none;touch-action:pan-y;cursor:pointer}
+  .flash-inner{position:relative;width:100%;height:100%;transition:transform .48s;transform-style:preserve-3d}
+  .flashcard.flipped .flash-inner{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;border-radius:24px;display:flex;align-items:center;justify-content:center;padding:28px;backface-visibility:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+  .front{background:linear-gradient(135deg,#ffffff,#eef2ff)}
+  .back{background:linear-gradient(135deg,#fffef7,#fff7df);transform:rotateY(180deg)}
+  .term{font-size:clamp(34px,7vw,60px);font-weight:900;line-height:1.05}
+  .definition{font-size:clamp(20px,3.3vw,30px);line-height:1.35;font-weight:650}
+  .hint{position:absolute;bottom:16px;color:var(--muted);font-size:13px}
+  .controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .btn{border:0;border-radius:13px;padding:11px 15px;font-weight:800;background:#edf0f7;color:var(--ink)}
+  .btn.primary{background:var(--brand);color:#fff}.btn.good{background:#dff6e9;color:var(--good)}.btn.bad{background:#fde8e7;color:var(--bad)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .toggle{display:flex;align-items:center;gap:8px;font-weight:700}
+
+  /* Matching */
+  .match-layout{display:grid;grid-template-columns:1fr 1.3fr;gap:16px}
+  .term-bank,.targets{border:1px dashed #bbc5dc;border-radius:18px;padding:12px;min-height:320px}
+  .chip{display:inline-flex;align-items:center;justify-content:center;border:1px solid #b9c2df;background:#fff;border-radius:12px;padding:9px 11px;margin:5px;font-weight:800;box-shadow:0 2px 6px rgba(0,0,0,.05);touch-action:none}
+  .chip.selected{outline:3px solid #aab4ff;background:#eef0ff}.chip.locked{opacity:.4;pointer-events:none}
+  .dropzone{border:2px dashed #d1d8e8;border-radius:14px;padding:12px;margin:9px 0;min-height:70px;background:#fbfcff;line-height:1.35}
+  .dropzone.over{border-color:var(--brand);background:#f0f2ff}.dropzone.correct{border-color:#65b98b;background:#e9f8ef}.dropzone.wrong{border-color:#e28d86;background:#fff0ef}
+  .mini{font-size:13px;color:var(--muted)}
+
+  /* Eye diagram */
+  .eye-stage{position:relative;max-width:880px;margin:10px auto 0;background:#fbfdff;border:1px solid var(--line);border-radius:22px;padding:14px;overflow:hidden}
+  #eyeSvg{width:100%;height:auto;display:block}
+  .eye-drop{position:absolute;min-width:120px;min-height:42px;border:2px dashed #aeb9cf;border-radius:11px;background:rgba(255,255,255,.92);padding:8px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;text-align:center}
+  .eye-drop.over{border-color:var(--brand);background:#eef0ff}.eye-drop.correct{border-style:solid;border-color:#56aa7a;background:#e8f7ee}.eye-drop.wrong{border-color:#d96c64;background:#fff0ef}
+  .eye-bank{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px auto;max-width:900px}
+  .eye-bank .chip{margin:0}
+
+  /* Quiz */
+  .quiz-box{max-width:760px;margin:0 auto}
+  .qcard{border:1px solid var(--line);border-radius:18px;padding:18px;background:#fbfcff}
+  .qnum{font-size:13px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+  .question{font-size:24px;font-weight:800;margin:8px 0 14px;line-height:1.3}
+  .option{display:block;width:100%;text-align:left;padding:12px;border-radius:12px;border:1px solid var(--line);background:#fff;margin:8px 0;font-weight:650}
+  .option:hover{border-color:#9eabff}.option.correct{background:#e7f7ed;border-color:#63b687}.option.wrong{background:#fdeceb;border-color:#df7b74}
+  .score{font-size:58px;font-weight:950;line-height:1}.score.good{color:var(--good)}.score.mid{color:var(--warn)}.score.low{color:var(--bad)}
+
+  /* Progress */
+  .progressbar{height:14px;border-radius:999px;background:#edf0f6;overflow:hidden}.progressbar>div{height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));width:0}
+  .progress-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.progress-card{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fbfcff}.big{font-size:34px;font-weight:900}
+  .footer{color:var(--muted);text-align:center;font-size:12px;padding:18px 0 6px}
+  .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(20px);opacity:0;background:#202a44;color:white;padding:10px 14px;border-radius:12px;transition:.25s;z-index:20;font-weight:700}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media(max-width:780px){
+    nav{grid-template-columns:repeat(3,1fr)}.grid,.match-layout,.progress-grid{grid-template-columns:1fr}.flashcard{height:300px}.eye-drop{min-width:90px;font-size:11px;padding:5px;min-height:34px}
+  }
+  @media print{nav,.controls,.eye-bank,.footer,.stats{display:none!important}.panel{display:block!important;box-shadow:none;margin-bottom:16px}.flashcard{height:auto}.flash-inner{transform:none!important}.face{position:relative;min-height:140px}.back{transform:none;margin-top:8px}.hint{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <h1>🔦 Light & Matter Study Guide</h1>
+  <p>5th-grade friendly review of light, color, waves, the eye, mirages, scattering, and polarization. Your progress is saved on this device.</p>
+  <div class="stats">
+    <span class="stat" id="headerMastered">0 mastered</span>
+    <span class="stat" id="headerReview">0 to review</span>
+    <span class="stat" id="headerQuiz">Best quiz: —</span>
+  </div>
+</header>
+
+<nav aria-label="Study sections">
+  <button class="tab active" data-panel="learn">📘 Learn</button>
+  <button class="tab" data-panel="cards">🃏 Cards</button>
+  <button class="tab" data-panel="match">🧩 Match</button>
+  <button class="tab" data-panel="eye">👁️ Eye</button>
+  <button class="tab" data-panel="quiz">✅ Quiz</button>
+  <button class="tab" data-panel="progress">📈 Progress</button>
+</nav>
+
+<section id="learn" class="panel active">
+  <h2>What you should know</h2>
+  <div class="note"><b>Big idea:</b> Light is energy. We see objects when light reaches our eyes. Objects can absorb, reflect, or transmit light.</div>
+  <div class="grid" id="learnGrid"></div>
+  <h3>Important ideas from your study sheet</h3>
+  <div class="grid">
+    <div class="study-card"><span class="pill">COLOR</span><b>How do we see color?</b>White light contains many colors. A prism can separate white light into a rainbow. An object looks a certain color because that color of light is reflected to your eyes while many other colors are absorbed.</div>
+    <div class="study-card"><span class="pill">MIRAGE</span><b>How does a desert mirage form?</b>Layers of air can have different temperatures. Light bends as it passes through those layers, making an image seem to appear higher or in a different place.</div>
+    <div class="study-card"><span class="pill">SKY</span><b>Why is the sky blue?</b>Sunlight is scattered by tiny particles and molecules in the atmosphere. Blue light is scattered strongly in many directions, so the sky often looks blue.</div>
+    <div class="study-card"><span class="pill">POLARIZATION</span><b>What can be polarized?</b>Examples include sunglasses, camera filters/films, and some car windows. Polarizing filters reduce light vibrating in certain directions.</div>
+  </div>
+</section>
+
+<section id="cards" class="panel">
+  <h2>Vocabulary Flashcards</h2>
+  <div class="flash-wrap">
+    <div class="flash-top">
+      <b id="cardCount">Card 1 of 1</b>
+      <label class="toggle"><input id="smartMode" type="checkbox"> Smart Review</label>
+    </div>
+    <div class="flashcard" id="flashcard" tabindex="0" aria-label="Flashcard. Tap to flip.">
+      <div class="flash-inner">
+        <div class="face front"><div class="term" id="cardTerm"></div><div class="hint">Tap to flip • Swipe left/right to move</div></div>
+        <div class="face back"><div class="definition" id="cardDef"></div><div class="hint">Tap to flip back</div></div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="btn" id="prevCard">← Previous</button>
+      <button class="btn bad" id="reviewCard">↻ Review again</button>
+      <button class="btn good" id="knowCard">✓ I know it</button>
+      <button class="btn" id="nextCard">Next →</button>
+    </div>
+    <p class="mini">Smart Review puts cards you marked “Review again” first.</p>
+  </div>
+</section>
+
+<section id="match" class="panel">
+  <h2>Drag & Drop: Match the Vocabulary</h2>
+  <p>Drag a term onto its meaning. On a phone or tablet, you can also tap a term and then tap a meaning.</p>
+  <div class="controls" style="justify-content:flex-start"><button class="btn primary" id="newMatch">New Round</button><span class="mini" id="matchScore"></span></div>
+  <div class="match-layout">
+    <div class="term-bank" id="termBank"><b>Terms</b><div id="matchTerms"></div></div>
+    <div class="targets"><b>Meanings</b><div id="matchTargets"></div></div>
+  </div>
+</section>
+
+<section id="eye" class="panel">
+  <h2>Drag & Drop: Parts of the Eye</h2>
+  <p>Drag each label to the correct place. Tap-to-place also works on touch devices.</p>
+  <div class="eye-stage" id="eyeStage">
+    <svg id="eyeSvg" viewBox="0 0 900 520" role="img" aria-label="Simple cross section diagram of the human eye">
+      <defs>
+        <linearGradient id="vit" x1="0" x2="1"><stop offset="0" stop-color="#f7fbff"/><stop offset="1" stop-color="#d9efff"/></linearGradient>
+        <linearGradient id="lens" x1="0" x2="1"><stop offset="0" stop-color="#fffbe6"/><stop offset="1" stop-color="#dff5ff"/></linearGradient>
+      </defs>
+      <!-- eyeball -->
+      <path d="M250,95 C475,50 680,120 730,260 C695,405 490,465 270,410 C205,365 172,310 170,255 C174,190 203,135 250,95Z" fill="url(#vit)" stroke="#26354d" stroke-width="8"/>
+      <!-- cornea bulge -->
+      <path d="M177,188 C118,192 93,224 94,264 C95,306 124,337 178,340" fill="#dff6ff" stroke="#26354d" stroke-width="7"/>
+      <!-- iris -->
+      <path d="M184,191 Q220,258 184,337" fill="none" stroke="#5277b8" stroke-width="18"/>
+      <!-- pupil -->
+      <line x1="191" y1="235" x2="191" y2="293" stroke="#151922" stroke-width="13" stroke-linecap="round"/>
+      <!-- lens -->
+      <ellipse cx="245" cy="264" rx="42" ry="86" fill="url(#lens)" stroke="#26354d" stroke-width="5"/>
+      <!-- ciliary muscles -->
+      <path d="M210,160 Q248,130 294,164" fill="none" stroke="#8d5b36" stroke-width="14" stroke-linecap="round"/>
+      <path d="M210,366 Q248,396 294,362" fill="none" stroke="#8d5b36" stroke-width="14" stroke-linecap="round"/>
+      <!-- retina -->
+      <path d="M700,160 C748,260 705,356 635,391" fill="none" stroke="#e46d64" stroke-width="12" stroke-linecap="round"/>
+      <!-- optic nerve -->
+      <path d="M703,295 C775,304 805,336 865,348" fill="none" stroke="#f2cb4a" stroke-width="28" stroke-linecap="round"/>
+      <path d="M703,295 C775,304 805,336 865,348" fill="none" stroke="#26354d" stroke-width="4" stroke-linecap="round"/>
+      <!-- connector lines -->
+      <g stroke="#6c7b91" stroke-width="2" stroke-dasharray="7 5" fill="none">
+        <line x1="132" y1="146" x2="122" y2="213"/><line x1="118" y1="378" x2="166" y2="321"/>
+        <line x1="242" y1="86" x2="244" y2="177"/><line x1="380" y1="82" x2="275" y2="155"/>
+        <line x1="733" y1="110" x2="699" y2="182"/><line x1="823" y1="275" x2="767" y2="313"/>
+        <line x1="660" y1="452" x2="600" y2="392"/><line x1="345" y1="455" x2="430" y2="390"/>
+        <line x1="80" y1="265" x2="185" y2="265"/>
+      </g>
+    </svg>
+    <div class="eye-drop" data-answer="Cornea" style="left:1.5%;top:19%">Drop label</div>
+    <div class="eye-drop" data-answer="Iris" style="left:1.5%;top:68%">Drop label</div>
+    <div class="eye-drop" data-answer="Pupil" style="left:1.5%;top:47%">Drop label</div>
+    <div class="eye-drop" data-answer="Crystalline lens" style="left:22%;top:3%">Drop label</div>
+    <div class="eye-drop" data-answer="Ciliary muscles" style="left:39%;top:3%">Drop label</div>
+    <div class="eye-drop" data-answer="Retina" style="right:2%;top:8%">Drop label</div>
+    <div class="eye-drop" data-answer="Optic nerve" style="right:0.8%;top:49%">Drop label</div>
+    <div class="eye-drop" data-answer="Vitreous humour" style="right:19%;bottom:1.5%">Drop label</div>
+    <div class="eye-drop" data-answer="Aqueous humour" style="left:29%;bottom:1.5%">Drop label</div>
+  </div>
+  <div class="eye-bank" id="eyeBank"></div>
+  <div class="controls"><button class="btn primary" id="resetEye">Reset Eye Activity</button><span id="eyeScore" class="mini"></span></div>
+</section>
+
+<section id="quiz" class="panel">
+  <h2>Practice Quiz</h2>
+  <div class="quiz-box" id="quizBox"></div>
+</section>
+
+<section id="progress" class="panel">
+  <h2>Your Progress</h2>
+  <div class="progress-grid">
+    <div class="progress-card"><div class="mini">Flashcards mastered</div><div class="big" id="pMastered">0</div></div>
+    <div class="progress-card"><div class="mini">Cards marked for review</div><div class="big" id="pReview">0</div></div>
+    <div class="progress-card"><div class="mini">Best quiz score</div><div class="big" id="pQuiz">—</div></div>
+  </div>
+  <h3>Overall study progress</h3>
+  <div class="progressbar"><div id="overallBar"></div></div>
+  <p id="progressMessage"></p>
+  <div class="controls" style="justify-content:flex-start"><button class="btn bad" id="resetAll">Reset all saved progress</button></div>
+</section>
+
+<div class="footer">Designed as a single offline HTML file. Progress is stored only in this browser using localStorage.</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const TERMS = [
+  {term:'Light', def:'The part of electromagnetic energy that our eyes can see.'},
+  {term:'Electromagnetic radiation (EM radiation)', def:'Energy that travels through space as electric and magnetic waves. Visible light is one kind.'},
+  {term:'Wavelength', def:'The distance from one wave crest to the next crest.'},
+  {term:'Amplitude', def:'The height of a wave from its middle line to its crest (or trough).'},
+  {term:'Frequency', def:'How many waves pass a point each second. It is measured in hertz (Hz).'},
+  {term:'Light source', def:'Something that gives off visible light, such as the Sun, a light bulb, or a flame.'},
+  {term:'ROY G BIV', def:'A memory helper for rainbow colors: Red, Orange, Yellow, Green, Blue, Indigo, Violet.'},
+  {term:'Absorb', def:'To take in energy instead of sending it back.'},
+  {term:'Reflect', def:'To bounce light or another wave back from a surface.'},
+  {term:'Transmit', def:'To let light or energy pass through a material.'},
+  {term:'Variable', def:'Something in an investigation that can change.'},
+  {term:'Turbidity', def:'A measure of how cloudy or clear water is.'},
+  {term:'Correlation', def:'A relationship or connection between two things.'},
+  {term:'Independent variable', def:'The factor a scientist changes on purpose in an investigation.'},
+  {term:'Dependent variable', def:'The factor a scientist measures or observes to see the effect of the change.'},
+  {term:'Cornea', def:'The clear, curved front covering of the eye. Light enters through it.'},
+  {term:'Iris', def:'The colored part of the eye that controls how much light enters.'},
+  {term:'Pupil', def:'The dark opening in the center of the iris where light enters the eye.'},
+  {term:'Context', def:'The words and ideas around a word or passage that help explain its meaning.'},
+  {term:'Illusion', def:'Something that tricks the brain into seeing or understanding an image differently from reality.'},
+  {term:'Mirage', def:'An optical illusion caused when light bends through layers of air at different temperatures.'},
+  {term:'Transparent', def:'Lets light pass through clearly, so you can see detailed shapes through it.'},
+  {term:'Translucent', def:'Lets some light pass through, but details look blurry.'},
+  {term:'Opaque', def:'Blocks light so you cannot see through it.'},
+  {term:'Refraction', def:'The bending of light as it moves from one material or medium into another.'},
+  {term:'Ophthalmology', def:'The study and medical care of eyes and eye diseases.'},
+  {term:'Scatter', def:'To make light travel or reflect in many different directions.'},
+  {term:'Polarize', def:'To allow light waves moving in certain directions while reducing others.'},
+  {term:'Crystalline lens', def:'A clear part inside the eye that changes shape to help focus light.'},
+  {term:'Aqueous humour', def:'Clear watery fluid in the front part of the eye, between the cornea and lens.'},
+  {term:'Ciliary muscles', def:'Muscles that help change the shape of the lens so the eye can focus.'},
+  {term:'Retina', def:'The light-sensitive layer at the back of the eye that detects an image.'},
+  {term:'Optic nerve', def:'Carries signals from the retina to the brain.'},
+  {term:'Vitreous humour', def:'Clear jelly-like material that fills most of the inside of the eye.'}
+];
+
+const CONCEPTS = [
+ {title:'Visible light', body:'Visible light is the light our eyes can detect. It is part of the larger electromagnetic spectrum.'},
+ {title:'Rainbow order', body:'ROY G BIV means Red, Orange, Yellow, Green, Blue, Indigo, Violet. Red has a longer visible wavelength than violet.'},
+ {title:'Seeing color', body:'We see an object’s color because that color of light is reflected into our eyes.'},
+ {title:'Prisms', body:'A prism separates white light into different colors because different wavelengths bend by different amounts.'},
+ {title:'Mirages', body:'A mirage can happen when light bends through layers of air with different temperatures.'},
+ {title:'Blue sky', body:'Blue light is scattered strongly by molecules in the atmosphere, so it reaches our eyes from many directions.'},
+ {title:'Transparent / translucent / opaque', body:'Transparent lets light through clearly; translucent lets some light through; opaque blocks light.'},
+ {title:'Polarized light', body:'Polarizing filters can reduce glare by blocking light waves vibrating in some directions.'}
+];
+
+const QUIZ_EXTRA = [
+ {q:'Why does a red apple usually look red?', options:['It reflects red light to your eyes','It absorbs only red light','It makes its own red light','It blocks all light'], a:0},
+ {q:'What does a prism do to white light?', options:['Turns it into sound','Separates it into colors','Makes it disappear','Stops all wavelengths'], a:1},
+ {q:'Which material lets you see clear details through it?', options:['Opaque','Translucent','Transparent','Turbid'], a:2},
+ {q:'Which part of the eye carries signals to the brain?', options:['Iris','Optic nerve','Cornea','Pupil'], a:1},
+ {q:'Why can a mirage appear in a hot desert?', options:['Light bends through air layers at different temperatures','Sand creates its own light','The sky becomes opaque','The eye stops focusing'], a:0},
+ {q:'Which visible color is scattered strongly in Earth’s atmosphere, helping make the sky look blue?', options:['Blue','Red','Orange','Yellow'], a:0},
+ {q:'Which variable is changed on purpose by the scientist?', options:['Dependent variable','Independent variable','Correlation','Context'], a:1},
+ {q:'What is refraction?', options:['Light being absorbed','Light bouncing back','Light bending as it enters a different medium','Light turning into matter'], a:2},
+ {q:'Which is an example of a light source?', options:['A mirror','The Sun','A dark wall','A clear window'], a:1},
+ {q:'What does “opaque” mean?', options:['Lets all light through clearly','Lets some light through','Blocks light','Bends all light into a rainbow'], a:2}
+];
+
+const STORAGE_KEY='lightMatter5Study_v1';
+const defaultState={mastered:[],review:[],bestQuiz:null,lastTab:'learn',quizRuns:0,eyeDone:false,matchBest:0};
+let state=loadState();
+let cardIndex=0, cardOrder=[...Array(TERMS.length).keys()], selectedMatch=null, selectedEye=null, currentMatch=[];
+
+function loadState(){try{return {...defaultState,...JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')}}catch(e){return {...defaultState}}}
+function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));updateStats()}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1400)}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+// Tabs
+for(const b of document.querySelectorAll('.tab')) b.addEventListener('click',()=>openTab(b.dataset.panel));
+function openTab(id){document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.panel===id));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===id));state.lastTab=id;saveState();window.scrollTo({top:0,behavior:'smooth'})}
+
+// Learn
+const learnGrid=document.getElementById('learnGrid');
+CONCEPTS.forEach(c=>learnGrid.insertAdjacentHTML('beforeend',`<div class="study-card"><span class="pill">KEY IDEA</span><b>${c.title}</b>${c.body}</div>`));
+
+// Flashcards
+const fc=document.getElementById('flashcard'), termEl=document.getElementById('cardTerm'), defEl=document.getElementById('cardDef'), countEl=document.getElementById('cardCount');
+function buildCardOrder(){
+  const smart=document.getElementById('smartMode').checked;
+  if(smart && state.review.length){
+    const reviewSet=new Set(state.review); const first=TERMS.map((_,i)=>i).filter(i=>reviewSet.has(TERMS[i].term)); const rest=TERMS.map((_,i)=>i).filter(i=>!reviewSet.has(TERMS[i].term)); cardOrder=[...first,...rest];
+  } else cardOrder=[...Array(TERMS.length).keys()];
+  cardIndex=Math.min(cardIndex,cardOrder.length-1); renderCard();
+}
+function renderCard(){
+  fc.classList.remove('flipped'); const idx=cardOrder[cardIndex], c=TERMS[idx]; termEl.textContent=c.term; defEl.textContent=c.def; countEl.textContent=`Card ${cardIndex+1} of ${cardOrder.length}`;
+}
+function nextCard(step=1){cardIndex=(cardIndex+step+cardOrder.length)%cardOrder.length;renderCard()}
+fc.addEventListener('click',()=>fc.classList.toggle('flipped'));fc.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fc.classList.toggle('flipped')}});
+document.getElementById('prevCard').onclick=()=>nextCard(-1);document.getElementById('nextCard').onclick=()=>nextCard(1);
+document.getElementById('smartMode').onchange=buildCardOrder;
+document.getElementById('knowCard').onclick=()=>{const t=TERMS[cardOrder[cardIndex]].term;if(!state.mastered.includes(t))state.mastered.push(t);state.review=state.review.filter(x=>x!==t);saveState();toast('Marked as mastered!');if(document.getElementById('smartMode').checked)buildCardOrder();else nextCard(1)};
+document.getElementById('reviewCard').onclick=()=>{const t=TERMS[cardOrder[cardIndex]].term;if(!state.review.includes(t))state.review.push(t);state.mastered=state.mastered.filter(x=>x!==t);saveState();toast('Added to Smart Review');nextCard(1)};
+let startX=null;fc.addEventListener('pointerdown',e=>startX=e.clientX);fc.addEventListener('pointerup',e=>{if(startX===null)return;const dx=e.clientX-startX;if(Math.abs(dx)>70){e.stopPropagation();nextCard(dx<0?1:-1)}startX=null});
+
+// Matching
+function newMatchRound(){
+  selectedMatch=null;currentMatch=shuffle(TERMS.map((_,i)=>i)).slice(0,8);const terms=shuffle(currentMatch);const targets=shuffle(currentMatch);
+  document.getElementById('matchTerms').innerHTML=terms.map(i=>`<button class="chip" draggable="true" data-term="${esc(TERMS[i].term)}">${TERMS[i].term}</button>`).join('');
+  document.getElementById('matchTargets').innerHTML=targets.map(i=>`<div class="dropzone" data-answer="${esc(TERMS[i].term)}"><span>${TERMS[i].def}</span></div>`).join('');
+  attachMatchDnD();updateMatchScore();
+}
+function attachMatchDnD(){
+ document.querySelectorAll('#matchTerms .chip').forEach(ch=>{
+   ch.addEventListener('dragstart',e=>e.dataTransfer.setData('text/plain',ch.dataset.term));
+   ch.addEventListener('click',()=>{document.querySelectorAll('#matchTerms .chip').forEach(x=>x.classList.remove('selected'));selectedMatch=ch.dataset.term;ch.classList.add('selected');toast('Now tap the matching meaning')});
+ });
+ document.querySelectorAll('#matchTargets .dropzone').forEach(z=>{
+   z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('over')});z.addEventListener('dragleave',()=>z.classList.remove('over'));
+   z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('over');attemptMatch(e.dataTransfer.getData('text/plain'),z)});
+   z.addEventListener('click',()=>{if(selectedMatch)attemptMatch(selectedMatch,z)});
+ });
+}
+function attemptMatch(term,z){
+ if(z.classList.contains('correct'))return;
+ if(term===z.dataset.answer){z.classList.remove('wrong');z.classList.add('correct');z.insertAdjacentHTML('beforeend',`<div><b>✓ ${term}</b></div>`);const chip=[...document.querySelectorAll('#matchTerms .chip')].find(c=>c.dataset.term===term);if(chip)chip.classList.add('locked');selectedMatch=null;updateMatchScore();toast('Correct!')}else{z.classList.add('wrong');setTimeout(()=>z.classList.remove('wrong'),600);toast('Try again')}
+}
+function updateMatchScore(){const n=document.querySelectorAll('#matchTargets .correct').length;document.getElementById('matchScore').textContent=`${n} / ${currentMatch.length} matched`;if(currentMatch.length&&n===currentMatch.length){state.matchBest=Math.max(state.matchBest,n);saveState();toast('Great job — round complete!')}}
+document.getElementById('newMatch').onclick=newMatchRound;
+function esc(s){return s.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
+
+// Eye activity
+const eyeParts=['Cornea','Iris','Pupil','Crystalline lens','Aqueous humour','Ciliary muscles','Retina','Optic nerve','Vitreous humour'];
+function resetEye(){
+ selectedEye=null;document.querySelectorAll('.eye-drop').forEach(z=>{z.className='eye-drop';z.textContent='Drop label'});
+ document.getElementById('eyeBank').innerHTML=shuffle(eyeParts).map(x=>`<button class="chip" draggable="true" data-eye="${x}">${x}</button>`).join('');
+ attachEyeDnD();updateEyeScore();
+}
+function attachEyeDnD(){
+ document.querySelectorAll('#eyeBank .chip').forEach(ch=>{
+  ch.addEventListener('dragstart',e=>e.dataTransfer.setData('text/plain',ch.dataset.eye));
+  ch.addEventListener('click',()=>{document.querySelectorAll('#eyeBank .chip').forEach(x=>x.classList.remove('selected'));selectedEye=ch.dataset.eye;ch.classList.add('selected');toast('Now tap the correct spot')});
+ });
+ document.querySelectorAll('.eye-drop').forEach(z=>{
+  z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('over')});z.addEventListener('dragleave',()=>z.classList.remove('over'));
+  z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('over');attemptEye(e.dataTransfer.getData('text/plain'),z)});
+  z.addEventListener('click',()=>{if(selectedEye)attemptEye(selectedEye,z)});
+ });
+}
+function attemptEye(term,z){
+ if(z.classList.contains('correct'))return;
+ if(term===z.dataset.answer){z.classList.add('correct');z.classList.remove('wrong');z.textContent='✓ '+term;const ch=[...document.querySelectorAll('#eyeBank .chip')].find(c=>c.dataset.eye===term);if(ch)ch.classList.add('locked');selectedEye=null;updateEyeScore();toast('Correct!')} else {z.classList.add('wrong');setTimeout(()=>z.classList.remove('wrong'),600);toast('Not there — try again')}
+}
+function updateEyeScore(){const n=document.querySelectorAll('.eye-drop.correct').length;document.getElementById('eyeScore').textContent=`${n} / ${eyeParts.length} labels correct`;if(n===eyeParts.length){state.eyeDone=true;saveState();toast('Eye diagram complete!')}}
+document.getElementById('resetEye').onclick=resetEye;
+
+// Quiz
+let quiz=[],qi=0,qCorrect=0,qLocked=false;
+function buildQuiz(){
+ const termQs=shuffle(TERMS).slice(0,10).map(c=>{
+   const wrong=shuffle(TERMS.filter(x=>x.term!==c.term)).slice(0,3).map(x=>x.def);const opts=shuffle([c.def,...wrong]);return {q:`What does “${c.term}” mean?`,options:opts,a:opts.indexOf(c.def)}
+ });
+ quiz=shuffle([...termQs,...QUIZ_EXTRA]).slice(0,15);qi=0;qCorrect=0;renderQuestion();
+}
+function renderQuestion(){
+ qLocked=false;const box=document.getElementById('quizBox');if(qi>=quiz.length){finishQuiz();return}const q=quiz[qi];
+ box.innerHTML=`<div class="qcard"><div class="qnum">Question ${qi+1} of ${quiz.length}</div><div class="question">${q.q}</div><div id="options">${q.options.map((o,i)=>`<button class="option" data-i="${i}">${o}</button>`).join('')}</div><div class="controls" style="justify-content:flex-end"><button class="btn primary" id="nextQ" disabled>${qi===quiz.length-1?'See score':'Next question →'}</button></div></div>`;
+ box.querySelectorAll('.option').forEach(btn=>btn.onclick=()=>answerQuestion(+btn.dataset.i));document.getElementById('nextQ').onclick=()=>{qi++;renderQuestion()};
+}
+function answerQuestion(i){if(qLocked)return;qLocked=true;const q=quiz[qi],buttons=[...document.querySelectorAll('.option')];buttons[q.a].classList.add('correct');if(i===q.a){qCorrect++;toast('Correct!')}else{buttons[i].classList.add('wrong');toast('Good try — check the green answer')}buttons.forEach(b=>b.disabled=true);document.getElementById('nextQ').disabled=false}
+function finishQuiz(){const pct=Math.round(qCorrect/quiz.length*100);state.quizRuns++;state.bestQuiz=state.bestQuiz===null?pct:Math.max(state.bestQuiz,pct);saveState();let cls=pct>=80?'good':pct>=60?'mid':'low';document.getElementById('quizBox').innerHTML=`<div class="qcard" style="text-align:center"><div class="mini">Your score</div><div class="score ${cls}">${pct}%</div><h3>${qCorrect} of ${quiz.length} correct</h3><p>${pct>=80?'Excellent work! You are showing strong understanding.':pct>=60?'Nice progress. Review the cards you missed and try again.':'Keep practicing. Use Smart Review, then retake the quiz.'}</p><button class="btn primary" id="again">Take another quiz</button></div>`;document.getElementById('again').onclick=buildQuiz}
+
+// Stats and progress
+function updateStats(){
+ const m=state.mastered.length,r=state.review.length,b=state.bestQuiz;
+ document.getElementById('headerMastered').textContent=`${m} mastered`;document.getElementById('headerReview').textContent=`${r} to review`;document.getElementById('headerQuiz').textContent=`Best quiz: ${b===null?'—':b+'%'}`;
+ document.getElementById('pMastered').textContent=`${m}/${TERMS.length}`;document.getElementById('pReview').textContent=r;document.getElementById('pQuiz').textContent=b===null?'—':b+'%';
+ const cardPct=m/TERMS.length*100, quizPct=b||0, eyePct=state.eyeDone?100:0; const overall=Math.round(cardPct*.5+quizPct*.35+eyePct*.15);document.getElementById('overallBar').style.width=overall+'%';
+ document.getElementById('progressMessage').textContent=overall>=85?'You are in great shape. Do one more quiz for confidence!':overall>=55?'You are making solid progress. Focus on Smart Review cards next.':'Start with flashcards, then try the matching activities and quiz.';
+}
+document.getElementById('resetAll').onclick=()=>{if(confirm('Reset all saved study progress on this device?')){state={...defaultState};localStorage.removeItem(STORAGE_KEY);buildCardOrder();updateStats();toast('Progress reset')}};
+
+// Initialize
+buildCardOrder();newMatchRound();resetEye();buildQuiz();updateStats();
+if(['learn','cards','match','eye','quiz','progress'].includes(state.lastTab)) openTab(state.lastTab);
+</script>
+</body>
+</html>
