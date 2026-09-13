@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5th Grade Science: Light & Matter Interactive Study Guide</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #06b6d4;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --bg-grad: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+            --card-bg: #ffffff;
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+            --radius: 16px;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background: var(--bg-grad);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 40px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px 15px 10px 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: #eef2ff;
+            color: var(--primary);
+            border: 2px solid transparent;
+            padding: 10px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn:hover {
+            background: #e0e7ff;
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        .container {
+            max-width: 900px;
+            width: 95%;
+            margin: 25px auto;
+            flex-grow: 1;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* CARD FLASHCARDS SECTION */
+        .flashcard-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 10px;
+            background: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 480px;
+            height: 320px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--radius);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: var(--card-bg);
+            border: 3px solid #e5e7eb;
+        }
+
+        .card-front {
+            border-color: #c7d2fe;
+        }
+
+        .card-front h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .card-front .tap-hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 15px;
+            background: #f3f4f6;
+            padding: 4px 12px;
+            border-radius: 10px;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: #f8fafc;
+            border-color: #93c5fd;
+        }
+
+        .card-back p {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .card-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.1s, background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--text-dark);
+            border: 2px solid #e5e7eb;
+        }
+
+        .btn-review {
+            background: #fef3c7;
+            color: #d97706;
+            border: 2px solid #fcd34d;
+        }
+
+        .btn-review.marked {
+            background: var(--accent);
+            color: white;
+        }
+
+        .counter {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* DIAGRAM SECTION */
+        .diagram-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .diagram-instruction {
+            margin-bottom: 15px;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        .svg-container {
+            position: relative;
+            width: 100%;
+            max-width: 750px;
+            background: #fafafa;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        svg.eye-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .drop-zone {
+            position: absolute;
+            width: 130px;
+            height: 36px;
+            border: 2px dashed var(--primary);
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            transition: all 0.2s;
+        }
+
+        .drop-zone.hover {
+            background: #c7d2fe;
+            border-style: solid;
+        }
+
+        .drop-zone.filled {
+            border: 2px solid var(--success);
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .drop-zone.incorrect {
+            border: 2px solid var(--danger);
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .labels-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        .draggable-label {
+            background: var(--primary);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: grab;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            transition: transform 0.1s, background 0.2s;
+        }
+
+        .draggable-label.selected {
+            outline: 3px solid var(--accent);
+            transform: scale(1.05);
+        }
+
+        .draggable-label.used {
+            opacity: 0.3;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* MATCHING SECTION */
+        .matching-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .matching-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .match-card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+
+        .match-card.selected {
+            border-color: var(--primary);
+            background: #eef2ff;
+            transform: scale(1.02);
+        }
+
+        .match-card.matched {
+            border-color: var(--success);
+            background: #ecfdf5;
+            color: #065f46;
+            cursor: default;
+            opacity: 0.8;
+        }
+
+        /* QUIZ SECTION */
+        .quiz-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .quiz-progress {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            padding: 14px 18px;
+            border-radius: 12px;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .option-btn.selected {
+            border-color: var(--primary);
+            background: #eef2ff;
+        }
+
+        .quiz-result {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        .score-circle .pct {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .score-circle .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CONCEPT NOTES SECTION */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .note-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 22px;
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--primary);
+        }
+
+        .note-card h3 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.15rem;
+        }
+
+        .note-card p, .note-card ul {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .note-card ul {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+
+        .note-card li {
+            margin-bottom: 6px;
+        }
+
+        /* FOOTER CONTROLS */
+        .footer-tools {
+            margin-top: 30px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>💡 5th Grade Light & Science Guide</h1>
+        <p>Interactive Flashcards, Eye Diagram, Matching Game & Quiz</p>
+        <nav>
+            <button class="nav-btn active" onclick="switchTab('flashcards')">📇 Flashcards</button>
+            <button class="nav-btn" onclick="switchTab('eye-diagram')">👁️ Eye Diagram</button>
+            <button class="nav-btn" onclick="switchTab('matching')">🧩 Term Match</button>
+            <button class="nav-btn" onclick="switchTab('quiz')">📝 Practice Quiz</button>
+            <button class="nav-btn" onclick="switchTab('notes')">📖 Key Concepts</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- 1. FLASHCARDS TAB -->
+        <div id="tab-flashcards" class="tab-content active">
+            <div class="flashcard-wrapper">
+                <div class="filter-controls">
+                    <button id="filter-all" class="filter-btn active" onclick="setCardFilter('all')">All Terms (<span id="count-all">34</span>)</button>
+                    <button id="filter-marked" class="filter-btn" onclick="setCardFilter('marked')">Needs Review (<span id="count-marked">0</span>)</button>
+                </div>
+
+                <div class="card-container" onclick="flipCard()">
+                    <div id="flashcard" class="flashcard">
+                        <div class="card-face card-front">
+                            <h3 id="card-term">Loading...</h3>
+                            <div class="tap-hint">🔄 Tap or Click to Flip</div>
+                        </div>
+                        <div class="card-face card-back">
+                            <p id="card-def">Loading definition...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="counter" id="card-counter">Card 1 of 34</div>
+
+                <div class="card-controls">
+                    <button class="btn btn-outline" onclick="prevCard()">⬅️ Prev</button>
+                    <button id="btn-mark" class="btn btn-review" onclick="toggleMarkCard()">⭐ Mark for Review</button>
+                    <button class="btn btn-outline" onclick="flipCard()">🔄 Flip</button>
+                    <button class="btn btn-outline" onclick="shuffleCards()">🎲 Shuffle</button>
+                    <button class="btn" onclick="nextCard()">Next ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. EYE DIAGRAM TAB -->
+        <div id="tab-eye-diagram" class="tab-content">
+            <div class="diagram-card">
+                <h2>👁️ Interactive Eye Anatomy</h2>
+                <p class="diagram-instruction">Drag each label into its correct box on the eye diagram (or tap a label, then tap a box)!</p>
+                
+                <div class="svg-container" id="svg-container">
+                    <svg viewBox="0 0 800 480" class="eye-svg">
+                        <defs>
+                            <radialGradient id="lensGrad" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#e0f2fe" stop-opacity="0.9"/>
+                                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.6"/>
+                            </radialGradient>
+                            <radialGradient id="vitreousGrad" cx="40%" cy="50%" r="60%">
+                                <stop offset="0%" stop-color="#f0f9ff"/>
+                                <stop offset="100%" stop-color="#bae6fd"/>
+                            </radialGradient>
+                        </defs>
+
+                        <!-- Outer Sclera / Shell -->
+                        <path d="M 230,120 A 170,170 0 1,1 230,340 C 180,310 180,150 230,120 Z" fill="#ffffff" stroke="#94a3b8" stroke-width="4"/>
+                        <!-- Retina Inner Lining -->
+                        <path d="M 250,130 A 155,155 0 1,1 250,330" fill="none" stroke="#ef4444" stroke-width="6"/>
+                        <!-- Vitreous Humour Fill -->
+                        <path d="M 250,130 A 155,155 0 1,1 250,330 Z" fill="url(#vitreousGrad)" opacity="0.7"/>
+
+                        <!-- Cornea (Front bulge) -->
+                        <path d="M 230,120 C 160,150 160,310 230,340 C 200,290 200,170 230,120 Z" fill="#e0f2fe" opacity="0.6" stroke="#0284c7" stroke-width="3"/>
+
+                        <!-- Aqueous Humour Chamber -->
+                        <path d="M 230,120 C 190,160 190,300 230,340 L 245,310 L 245,150 Z" fill="#7dd3fc" opacity="0.3"/>
+
+                        <!-- Crystalline Lens -->
+                        <ellipse cx="260" cy="230" rx="18" ry="70" fill="url(#lensGrad)" stroke="#0284c7" stroke-width="3"/>
+
+                        <!-- Iris Upper & Lower -->
+                        <path d="M 230,120 L 255,170 L 242,175 L 225,130 Z" fill="#2563eb"/>
+                        <path d="M 230,340 L 255,290 L 242,285 L 225,330 Z" fill="#2563eb"/>
+
+                        <!-- Ciliary Muscles -->
+                        <path d="M 255,160 L 275,135 L 260,120 Z" fill="#dc2626"/>
+                        <path d="M 255,300 L 275,325 L 260,340 Z" fill="#dc2626"/>
+
+                        <!-- Optic Nerve Exit -->
+                        <path d="M 390,315 L 470,370 L 510,340 L 410,270" fill="#fef08a" stroke="#eab308" stroke-width="3"/>
+
+                        <!-- Leader Lines pointing to structures -->
+                        <!-- Aqueous Humour -->
+                        <polyline points="140,45 200,45 210,210" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4"/>
+                        <!-- Cornea -->
+                        <polyline points="140,115 170,115 185,210" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4"/>
+                        <!-- Iris -->
+                        <polyline points="140,185 200,185 240,150" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4"/>
+                        <!-- Pupil -->
+                        <polyline points="140,275 220,275 245,230" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4"/>
+                        <!-- Crystalline Lens -->
+                        <polyline points="140,365 240,365 260,260" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4"/>
+                        <!-- Ciliary Muscles -->
+                        <polyline points="660,65 270,65 265,135" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4"/>
+                        <!-- Vitreous Humour -->
+                        <polyline points="660,165 340,165 340,230" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4"/>
+                        <!-- Retina -->
+                        <polyline points="660,265 410,265 390,210" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4"/>
+                        <!-- Optic Nerve -->
+                        <polyline points="660,365 460,365 460,345" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4"/>
+                    </svg>
+
+                    <!-- Target Drop Slots positioned over diagram -->
+                    <div class="drop-zone" style="top: 28px; left: 10px;" data-part="aqueous">Drop Here</div>
+                    <div class="drop-zone" style="top: 98px; left: 10px;" data-part="cornea">Drop Here</div>
+                    <div class="drop-zone" style="top: 168px; left: 10px;" data-part="iris">Drop Here</div>
+                    <div class="drop-zone" style="top: 258px; left: 10px;" data-part="pupil">Drop Here</div>
+                    <div class="drop-zone" style="top: 348px; left: 10px;" data-part="lens">Drop Here</div>
+
+                    <div class="drop-zone" style="top: 48px; right: 10px;" data-part="ciliary">Drop Here</div>
+                    <div class="drop-zone" style="top: 148px; right: 10px;" data-part="vitreous">Drop Here</div>
+                    <div class="drop-zone" style="top: 248px; right: 10px;" data-part="retina">Drop Here</div>
+                    <div class="drop-zone" style="top: 348px; right: 10px;" data-part="optic">Drop Here</div>
+                </div>
+
+                <div class="labels-bank" id="eye-labels-bank"></div>
+
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button class="btn" onclick="checkEyeDiagram()">Check Diagram</button>
+                    <button class="btn btn-outline" onclick="resetEyeDiagram()">Reset</button>
+                </div>
+                <div id="diagram-score" style="margin-top: 15px; font-weight: bold; font-size: 1.1rem;"></div>
+            </div>
+        </div>
+
+        <!-- 3. DRAG & DROP MATCHING TAB -->
+        <div id="tab-matching" class="tab-content">
+            <div class="diagram-card">
+                <h2>🧩 Vocabulary Matching Game</h2>
+                <p class="diagram-instruction">Click a term on the left, then click its matching definition on the right!</p>
+                <div class="matching-grid" id="matching-grid"></div>
+                <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+                    <button class="btn" onclick="loadMatchingGame()">🔄 New Set of Terms</button>
+                </div>
+                <div id="match-score" style="margin-top: 15px; font-weight: bold; text-align: center;"></div>
+            </div>
+        </div>
+
+        <!-- 4. PRACTICE QUIZ TAB -->
+        <div id="tab-quiz" class="tab-content">
+            <div class="quiz-card" id="quiz-container">
+                <!-- Dynamic quiz content -->
+            </div>
+        </div>
+
+        <!-- 5. KEY CONCEPTS TAB -->
+        <div id="tab-notes" class="tab-content">
+            <div class="notes-grid">
+                <div class="note-card">
+                    <h3>🌈 How & Why We See Colors</h3>
+                    <p><strong>How we see color:</strong> A prism scatters visible white light into bands of different colors by separating light according to wavelength (longest to shortest).</p>
+                    <br>
+                    <p><strong>Why we see color:</strong> When light shines on an object, the color you see is the light wavelength that the object <em>reflected</em> instead of absorbed.</p>
+                </div>
+
+                <div class="note-card">
+                    <h3>🏜️ How a Mirage is Formed</h3>
+                    <p>Air masses of different temperatures sit on top of each other just above hot desert sand. Light rays are bent (refracted) in a way that places the image well above the actual position of the object!</p>
+                </div>
+
+                <div class="note-card">
+                    <h3>🌌 Why the Sky is Blue</h3>
+                    <p>Atmospheric particles reflecting energy in all directions <strong>scatter</strong> the light. Clear sky looks blue because out of all colors in visible light, <strong>blue is the shortest wavelength that scatters the most!</strong></p>
+                </div>
+
+                <div class="note-card">
+                    <h3>🕶️ Items That Can Be Polarized</h3>
+                    <p>Polarizing restricts light wave oscillations into a single direction. Items include:</p>
+                    <ul>
+                        <li>📷 Camera Films</li>
+                        <li>🕶️ Sunglasses</li>
+                        <li>🚗 Car Windows</li>
+                    </ul>
+                </div>
+
+                <div class="note-card">
+                    <h3>📊 Science Variables & Methods</h3>
+                    <ul>
+                        <li><strong>Independent Variable:</strong> The factor deliberately adjusted or changed in an experiment.</li>
+                        <li><strong>Dependent Variable:</strong> The factor measured to observe the effect.</li>
+                        <li><strong>Turbidity:</strong> A measure of how clear water is.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-tools">
+        <button class="btn btn-outline" style="font-size: 0.8rem; padding: 6px 12px;" onclick="clearSavedData()">🗑️ Reset Saved Progress</button>
+    </div>
+
+    <script>
+        // MASTER DATA STRUCTURE FROM STUDY GUIDE
+        const vocabularyData = [
+            { id: "light", term: "Light", def: "Visible electromagnetic radiation." },
+            { id: "em_rad", term: "Electromagnetic Radiation", def: "The flow of energy at the speed of light through empty space or a medium in the form of electric and magnetic waves." },
+            { id: "wavelength", term: "Wavelength", def: "The distance between wave crests (the top of the waves)." },
+            { id: "amplitude", term: "Amplitude", def: "The height of a wave crest (or depth of trough) from the flat middle equilibrium line." },
+            { id: "frequency", term: "Frequency", def: "The number of wavelengths that travel past a reference point in a second (measured in Hertz / Hz)." },
+            { id: "light_source", term: "Light Source", def: "Something that emits visible light, typically through a reaction within it." },
+            { id: "roygbiv", term: "ROY G BIV", def: "Acronym for colors of the rainbow (Red, Orange, Yellow, Green, Blue, Indigo, Violet). BLUE is the hottest color on the Kelvin scale!" },
+            { id: "absorb", term: "Absorb", def: "To take in or soak up light energy by chemical or physical action." },
+            { id: "reflect", term: "Reflect", def: "To throw back light without absorbing it." },
+            { id: "transmit", term: "Transmit", def: "To cause or allow light or force to pass through space or a medium." },
+            { id: "variable", term: "Variable", def: "Something in an investigation that can be adjusted to produce a different effect." },
+            { id: "turbidity", term: "Turbidity", def: "A scientific measure of how clear water is." },
+            { id: "correlation", term: "Correlation", def: "A perceived connection or relationship between two things." },
+            { id: "independent_var", term: "Independent Variable", def: "A factor that is deliberately adjusted or varied in an experiment." },
+            { id: "dependent_var", term: "Dependent Variable", def: "A factor that is studied to measure the effect of the independent variable." },
+            { id: "cornea", term: "Cornea", def: "A glass-like clear window through which light enters the front of the eye." },
+            { id: "iris", term: "Iris", def: "The colored part of the eye surrounding the pupil." },
+            { id: "pupil", term: "Pupil", def: "The black hole in the middle of the iris through which light enters the lens." },
+            { id: "context", term: "Context", def: "All the words and ideas surrounding a word or passage that shed light on its meaning." },
+            { id: "illusion", term: "Illusion", def: "Images using color, light, and patterns to deceive or mislead our brains." },
+            { id: "mirage", term: "Mirage", def: "An optical illusion where light bends through hot air layers, altering an object's apparent position." },
+            { id: "transparent", term: "Transparent", def: "Allowing light to pass through clearly." },
+            { id: "translucent", term: "Translucent", def: "Semitransparent; allowing some light to pass through but not clear detailed shapes." },
+            { id: "opaque", term: "Opaque", def: "Blocks light completely; not able to be seen through." },
+            { id: "refraction", term: "Refraction", def: "The bending or deflection of waves as they pass from one medium to another." },
+            { id: "ophthalmology", term: "Ophthalmology", def: "The medical study of eyes and eye diseases." },
+            { id: "scatter", term: "Scatter", def: "To cause light to reflect or travel in multiple, random directions." },
+            { id: "polarize", term: "Polarize", def: "To restrict light wave oscillations partly or completely to a single direction." },
+            { id: "crystalline_lens", term: "Crystalline Lens", def: "Transparent structure behind pupil that bends light rays to focus on the retina." },
+            { id: "aqueous_humour", term: "Aqueous Humour", def: "Clear fluid filling space between the cornea and lens." },
+            { id: "vitreous_humour", term: "Vitreous Humour", def: "Clear jelly-like fluid filling the main inner body of the eyeball." },
+            { id: "ciliary_muscles", term: "Ciliary Muscles", def: "Muscles attached to the lens that adjust its shape for focusing." },
+            { id: "retina", term: "Retina", def: "Light-sensitive layer at back of eye that sends signals to the optic nerve." },
+            { id: "optic_nerve", term: "Optic Nerve", def: "Nerve bundle that transmits visual info from the retina to the brain." }
+        ];
+
+        const eyePartsList = [
+            { id: "cornea", name: "Cornea" },
+            { id: "iris", name: "Iris" },
+            { id: "pupil", name: "Pupil" },
+            { id: "lens", name: "Crystalline lens" },
+            { id: "aqueous", name: "Aqueous humour" },
+            { id: "vitreous", name: "Vitreous humour" },
+            { id: "ciliary", name: "Ciliary muscles" },
+            { id: "retina", name: "Retina" },
+            { id: "optic", name: "Optic nerve" }
+        ];
+
+        // QUIZ QUESTIONS
+        const quizQuestions = [
+            {
+                q: "Why does the sky appear blue on a clear day?",
+                options: [
+                    "Blue is the wavelength of light that is scattered the most by atmospheric particles.",
+                    "The sky reflects blue light directly from ocean water.",
+                    "Air molecules absorb every color except blue.",
+                    "The sun only produces blue light waves."
+                ],
+                answer: 0
+            },
+            {
+                q: "What color of visible light is the HOTTEST on the Kelvin scale?",
+                options: ["Red", "Yellow", "Blue", "Violet"],
+                answer: 2
+            },
+            {
+                q: "How is a desert mirage formed?",
+                options: [
+                    "Sunlight bounces off hot sand grains like a mirror.",
+                    "Layers of air at different temperatures bend light rays above the object's actual position.",
+                    "Clouds cast strange shadows on the desert horizon.",
+                    "Water vapor in the desert evaporates and reflects blue sky."
+                ],
+                answer: 1
+            },
+            {
+                q: "Which of the following items CAN be polarized?",
+                options: [
+                    "Sunglasses, Camera Films, and Car Windows",
+                    "Clear Water, Mirrors, and Glass Jars",
+                    "Paper, Cardboard, and Wood",
+                    "Metal Spoons and Aluminum Foil"
+                ],
+                answer: 0
+            },
+            {
+                q: "What is the glass-like window at the front of the eye through which light enters?",
+                options: ["Retina", "Iris", "Cornea", "Optic Nerve"],
+                answer: 2
+            },
+            {
+                q: "Why do we see a red leaf as red?",
+                options: [
+                    "The leaf absorbed red light and reflected all other colors.",
+                    "The leaf reflected red light while absorbing other colors.",
+                    "The leaf transmitted red light through its stem.",
+                    "The leaf changed white light into heat."
+                ],
+                answer: 1
+            },
+            {
+                q: "What measure tells us how clear water is?",
+                options: ["Amplitude", "Turbidity", "Frequency", "Refraction"],
+                answer: 1
+            },
+            {
+                q: "Which part of the eye is the colored ring surrounding the pupil?",
+                options: ["Iris", "Retina", "Cornea", "Ciliary Muscle"],
+                answer: 0
+            },
+            {
+                q: "In a science experiment, what is the Independent Variable?",
+                options: [
+                    "The result being measured.",
+                    "The factor deliberately adjusted or varied by the scientist.",
+                    "The equipment that stays unchanged.",
+                    "The final conclusion of the project."
+                ],
+                answer: 1
+            },
+            {
+                q: "What nerve carries visual images from the retina to your brain?",
+                options: ["Ciliary Nerve", "Optic Nerve", "Aqueous Nerve", "Cornea Nerve"],
+                answer: 1
+            }
+        ];
+
+        // APP STATE & LOCAL STORAGE persistence
+        let state = {
+            markedCards: JSON.parse(localStorage.getItem('study_marked_cards')) || [],
+            cardIndex: 0,
+            cardFilter: 'all',
+            eyePlacements: {},
+            selectedLabel: null,
+            quizIndex: 0,
+            quizScore: 0,
+            quizAnswered: false,
+            selectedOption: null,
+            matchingSelectedTerm: null
+        };
+
+        let currentDeck = [...vocabularyData];
+
+        // INITIALIZATION
+        window.onload = function() {
+            updateFlashcardUI();
+            initEyeDiagram();
+            loadMatchingGame();
+            initQuiz();
+
+            // Setup Touch Swipe for Flashcards
+            const cardElem = document.getElementById('flashcard');
+            let startX = 0;
+            cardElem.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive: true});
+            cardElem.addEventListener('touchend', e => {
+                let endX = e.changedTouches[0].clientX;
+                if (startX - endX > 50) nextCard();
+                if (endX - startX > 50) prevCard();
+            }, {passive: true});
+
+            // Keyboard navigation
+            document.addEventListener('keydown', e => {
+                const activeTab = document.querySelector('.tab-content.active').id;
+                if (activeTab === 'tab-flashcards') {
+                    if (e.key === 'ArrowRight') nextCard();
+                    if (e.key === 'ArrowLeft') prevCard();
+                    if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        flipCard();
+                    }
+                }
+            });
+        };
+
+        function saveData() {
+            localStorage.setItem('study_marked_cards', JSON.stringify(state.markedCards));
+        }
+
+        function clearSavedData() {
+            if (confirm("Reset all saved review bookmarks and quiz progress?")) {
+                localStorage.clear();
+                state.markedCards = [];
+                setCardFilter('all');
+                updateFlashcardUI();
+                alert("Progress reset!");
+            }
+        }
+
+        // TAB NAVIGATION
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // FLASHCARD SYSTEM
+        function getActiveDeck() {
+            if (state.cardFilter === 'marked') {
+                return vocabularyData.filter(c => state.markedCards.includes(c.id));
+            }
+            return vocabularyData;
+        }
+
+        function updateFlashcardUI() {
+            const deck = getActiveDeck();
+            document.getElementById('count-all').innerText = vocabularyData.length;
+            document.getElementById('count-marked').innerText = state.markedCards.length;
+
+            if (deck.length === 0) {
+                document.getElementById('card-term').innerText = "🎉 All Clear!";
+                document.getElementById('card-def').innerText = "You have no terms marked for review! Switch to 'All Terms' tab.";
+                document.getElementById('card-counter').innerText = "0 of 0";
+                return;
+            }
+
+            if (state.cardIndex >= deck.length) state.cardIndex = 0;
+            if (state.cardIndex < 0) state.cardIndex = deck.length - 1;
+
+            const card = deck[state.cardIndex];
+            document.getElementById('card-term').innerText = card.term;
+            document.getElementById('card-def').innerText = card.def;
+            document.getElementById('card-counter').innerText = `Card ${state.cardIndex + 1} of ${deck.length}`;
+
+            // Mark button style
+            const isMarked = state.markedCards.includes(card.id);
+            const markBtn = document.getElementById('btn-mark');
+            if (isMarked) {
+                markBtn.classList.add('marked');
+                markBtn.innerHTML = "★ Marked for Review";
+            } else {
+                markBtn.classList.remove('marked');
+                markBtn.innerHTML = "☆ Mark for Review";
+            }
+
+            // Reset flip animation state
+            document.getElementById('flashcard').classList.remove('flipped');
+        }
+
+        function flipCard() {
+            const card = document.getElementById('flashcard');
+            card.classList.toggle('flipped');
+        }
+
+        function nextCard() {
+            const deck = getActiveDeck();
+            if (deck.length === 0) return;
+            state.cardIndex = (state.cardIndex + 1) % deck.length;
+            updateFlashcardUI();
+        }
+
+        function prevCard() {
+            const deck = getActiveDeck();
+            if (deck.length === 0) return;
+            state.cardIndex = (state.cardIndex - 1 + deck.length) % deck.length;
+            updateFlashcardUI();
+        }
+
+        function shuffleCards() {
+            const deck = getActiveDeck();
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+            state.cardIndex = 0;
+            updateFlashcardUI();
+        }
+
+        function toggleMarkCard() {
+            const deck = getActiveDeck();
+            if (deck.length === 0) return;
+            const currentCardId = deck[state.cardIndex].id;
+
+            if (state.markedCards.includes(currentCardId)) {
+                state.markedCards = state.markedCards.filter(id => id !== currentCardId);
+            } else {
+                state.markedCards.push(currentCardId);
+            }
+            saveData();
+            updateFlashcardUI();
+        }
+
+        function setCardFilter(filter) {
+            state.cardFilter = filter;
+            state.cardIndex = 0;
+            document.getElementById('filter-all').classList.toggle('active', filter === 'all');
+            document.getElementById('filter-marked').classList.toggle('active', filter === 'marked');
+            updateFlashcardUI();
+        }
+
+        // EYE DIAGRAM DRAG AND DROP
+        function initEyeDiagram() {
+            const bank = document.getElementById('eye-labels-bank');
+            bank.innerHTML = '';
+            
+            // Shuffle labels for bank
+            const shuffled = [...eyePartsList].sort(() => Math.random() - 0.5);
+            shuffled.forEach(part => {
+                const chip = document.createElement('div');
+                chip.className = 'draggable-label';
+                chip.innerText = part.name;
+                chip.setAttribute('draggable', 'true');
+                chip.dataset.id = part.id;
+
+                // Drag Events
+                chip.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', part.id);
+                });
+
+                // Tap-to-select support (mobile fallback)
+                chip.addEventListener('click', () => {
+                    document.querySelectorAll('.draggable-label').forEach(c => c.classList.remove('selected'));
+                    chip.classList.add('selected');
+                    state.selectedLabel = part.id;
+                });
+
+                bank.appendChild(chip);
+            });
+
+            // Drop zones events
+            const zones = document.querySelectorAll('.drop-zone');
+            zones.forEach(zone => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('hover');
+                });
+
+                zone.addEventListener('dragleave', () => zone.classList.remove('hover'));
+
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('hover');
+                    const labelId = e.dataTransfer.getData('text/plain');
+                    placeLabelInZone(zone, labelId);
+                });
+
+                zone.addEventListener('click', () => {
+                    if (state.selectedLabel) {
+                        placeLabelInZone(zone, state.selectedLabel);
+                        state.selectedLabel = null;
+                        document.querySelectorAll('.draggable-label').forEach(c => c.classList.remove('selected'));
+                    }
+                });
+            });
+        }
+
+        function placeLabelInZone(zone, labelId) {
+            const partObj = eyePartsList.find(p => p.id === labelId);
+            if (!partObj) return;
+
+            zone.innerText = partObj.name;
+            zone.dataset.placedId = labelId;
+            zone.classList.add('filled');
+            zone.classList.remove('incorrect');
+
+            // Mark chip as used in bank
+            document.querySelectorAll('.draggable-label').forEach(chip => {
+                if (chip.dataset.id === labelId) chip.classList.add('used');
+            });
+        }
+
+        function checkEyeDiagram() {
+            let correct = 0;
+            const zones = document.querySelectorAll('.drop-zone');
+            zones.forEach(zone => {
+                const targetPart = zone.dataset.part;
+                const placedPart = zone.dataset.placedId;
+
+                if (targetPart === placedPart) {
+                    correct++;
+                    zone.classList.add('filled');
+                    zone.classList.remove('incorrect');
+                } else {
+                    zone.classList.add('incorrect');
+                    zone.classList.remove('filled');
+                }
+            });
+
+            const scoreElem = document.getElementById('diagram-score');
+            const pct = Math.round((correct / eyePartsList.length) * 100);
+            scoreElem.innerHTML = `Score: ${correct} / ${eyePartsList.length} (${pct}%) ${pct === 100 ? '🎉 Excellent Job!' : 'Keep trying!'}`;
+            scoreElem.style.color = pct === 100 ? 'var(--success)' : 'var(--primary)';
+        }
+
+        function resetEyeDiagram() {
+            const zones = document.querySelectorAll('.drop-zone');
+            zones.forEach(zone => {
+                zone.innerText = 'Drop Here';
+                zone.classList.remove('filled', 'incorrect', 'hover');
+                delete zone.dataset.placedId;
+            });
+            document.getElementById('diagram-score').innerText = '';
+            initEyeDiagram();
+        }
+
+        // VOCABULARY MATCHING GAME
+        function loadMatchingGame() {
+            const grid = document.getElementById('matching-grid');
+            grid.innerHTML = '';
+            document.getElementById('match-score').innerText = '';
+            state.matchingSelectedTerm = null;
+
+            // Pick 6 random vocabulary items
+            const sample = [...vocabularyData].sort(() => Math.random() - 0.5).slice(0, 6);
+            
+            const terms = sample.map(item => ({ id: item.id, text: item.term, type: 'term' }));
+            const defs = sample.map(item => ({ id: item.id, text: item.def, type: 'def' })).sort(() => Math.random() - 0.5);
+
+            const leftCol = document.createElement('div');
+            leftCol.style.display = 'flex';
+            leftCol.style.flexDirection = 'column';
+            leftCol.style.gap = '10px';
+
+            const rightCol = document.createElement('div');
+            rightCol.style.display = 'flex';
+            rightCol.style.flexDirection = 'column';
+            rightCol.style.gap = '10px';
+
+            terms.forEach(t => {
+                const card = document.createElement('div');
+                card.className = 'match-card';
+                card.innerText = t.text;
+                card.dataset.id = t.id;
+                card.dataset.type = 'term';
+                card.onclick = () => handleMatchClick(card);
+                leftCol.appendChild(card);
+            });
+
+            defs.forEach(d => {
+                const card = document.createElement('div');
+                card.className = 'match-card';
+                card.innerText = d.text;
+                card.dataset.id = d.id;
+                card.dataset.type = 'def';
+                card.onclick = () => handleMatchClick(card);
+                rightCol.appendChild(card);
+            });
+
+            grid.appendChild(leftCol);
+            grid.appendChild(rightCol);
+        }
+
+        function handleMatchClick(card) {
+            if (card.classList.contains('matched')) return;
+
+            if (!state.matchingSelectedTerm) {
+                document.querySelectorAll('.match-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                state.matchingSelectedTerm = card;
+            } else {
+                const prev = state.matchingSelectedTerm;
+                if (prev === card) {
+                    card.classList.remove('selected');
+                    state.matchingSelectedTerm = null;
+                    return;
+                }
+
+                // If clicked items of different types
+                if (prev.dataset.type !== card.dataset.type) {
+                    if (prev.dataset.id === card.dataset.id) {
+                        // MATCH FOUND!
+                        prev.classList.remove('selected');
+                        card.classList.remove('selected');
+                        prev.classList.add('matched');
+                        card.classList.add('matched');
+                        state.matchingSelectedTerm = null;
+                        checkMatchingComplete();
+                    } else {
+                        // WRONG MATCH
+                        card.classList.add('selected');
+                        setTimeout(() => {
+                            prev.classList.remove('selected');
+                            card.classList.remove('selected');
+                            state.matchingSelectedTerm = null;
+                        }, 400);
+                    }
+                } else {
+                    // Switch selection to new card in same column
+                    prev.classList.remove('selected');
+                    card.classList.add('selected');
+                    state.matchingSelectedTerm = card;
+                }
+            }
+        }
+
+        function checkMatchingComplete() {
+            const total = document.querySelectorAll('.match-card').length;
+            const matched = document.querySelectorAll('.match-card.matched').length;
+            if (total > 0 && total === matched) {
+                document.getElementById('match-score').innerHTML = "🌟 Awesome! You matched all pairs correctly!";
+            }
+        }
+
+        // PRACTICE QUIZ SYSTEM
+        function initQuiz() {
+            state.quizIndex = 0;
+            state.quizScore = 0;
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const container = document.getElementById('quiz-container');
+            if (state.quizIndex >= quizQuestions.length) {
+                renderQuizResults();
+                return;
+            }
+
+            const qData = quizQuestions[state.quizIndex];
+            container.innerHTML = `
+                <div class="quiz-header">
+                    <h3>📝 Practice Test</h3>
+                    <span class="quiz-progress">Question ${state.quizIndex + 1} of ${quizQuestions.length}</span>
+                </div>
+                <div class="question-text">${qData.q}</div>
+                <div class="options-grid">
+                    ${qData.options.map((opt, i) => `
+                        <button class="option-btn" onclick="selectQuizOption(${i})">
+                            <strong>${String.fromCharCode(65 + i)}.</strong> ${opt}
+                        </button>
+                    `).join('')}
+                </div>
+                <div style="margin-top: 25px; text-align: right;">
+                    <button id="btn-quiz-next" class="btn" onclick="nextQuestion()" disabled>Next Question ➡️</button>
+                </div>
+            `;
+        }
+
+        function selectQuizOption(index) {
+            state.selectedOption = index;
+            document.querySelectorAll('.option-btn').forEach((btn, i) => {
+                btn.classList.toggle('selected', i === index);
+            });
+            document.getElementById('btn-quiz-next').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (state.selectedOption === quizQuestions[state.quizIndex].answer) {
+                state.quizScore++;
+            }
+            state.quizIndex++;
+            state.selectedOption = null;
+            renderQuestion();
+        }
+
+        function renderQuizResults() {
+            const pct = Math.round((state.quizScore / quizQuestions.length) * 100);
+            localStorage.setItem('study_quiz_score', pct);
+
+            let feedback = "Great attempt! Keep studying to boost your score!";
+            if (pct >= 90) feedback = "🌟 Outstanding! You are a Light & Optics Master!";
+            else if (pct >= 70) feedback = "👍 Good job! Review a few cards and try again for 100%!";
+
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <div class="quiz-result">
+                    <h2>Quiz Complete!</h2>
+                    <div class="score-circle">
+                        <span class="pct">${pct}%</span>
+                        <span class="label">Score</span>
+                    </div>
+                    <p style="font-size: 1.2rem; font-weight: 600; color: var(--primary);">${feedback}</p>
+                    <p style="margin-top: 10px; color: var(--text-muted);">You answered ${state.quizScore} out of ${quizQuestions.length} questions correctly.</p>
+                    <div style="margin-top: 25px;">
+                        <button class="btn" style="margin: 0 auto;" onclick="initQuiz()">🔄 Retake Quiz</button>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
