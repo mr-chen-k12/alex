@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saxon Math Course 2 - Lesson 11 Practice & Problem Set</title>
+    <!-- MathJax for rendering mathematical notation -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #0d9488;
+            --primary-hover: #0f766e;
+            --bg-color: #f0fdf4;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #e2e8f0;
+            --accent-green: #10b981;
+            --accent-light: #ecfdf5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 24px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            font-size: 0.88rem;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: #ccfbf1;
+        }
+
+        .btn-print {
+            background-color: #334155;
+        }
+
+        .btn-print:hover {
+            background-color: #1e293b;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .filter-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            padding: 18px;
+            margin-bottom: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .q-badge {
+            background: #ccfbf1;
+            color: #0f766e;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .tag-badge {
+            background: #f1f5f9;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .question-body {
+            font-size: 1rem;
+            margin-bottom: 14px;
+            color: #1e293b;
+        }
+
+        .answer-container {
+            display: none;
+            margin-top: 12px;
+            padding: 14px;
+            background-color: var(--accent-light);
+            border-left: 4px solid var(--accent-green);
+            border-radius: 6px;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .answer-title {
+            font-weight: 700;
+            color: #065f46;
+            margin-bottom: 4px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .final-answer {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #047857;
+            margin-bottom: 6px;
+        }
+
+        .explanation {
+            font-size: 0.92rem;
+            color: #1e293b;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { max-width: 100%; }
+            .controls, .btn, .filter-bar { display: none !important; }
+            header { box-shadow: none; border-bottom: 2px solid #000; border-radius: 0; }
+            .question-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+            .answer-container { display: block !important; background: #f8fafc !important; border-left: 3px solid #000 !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Saxon Math Course 2 — Lesson 11</h1>
+        <p>Problems About Combining & Separating • Complete Practice Set & Questions 1–30</p>
+    </header>
+
+    <div class="controls">
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterQuestions('all')">All</button>
+            <button class="filter-btn" onclick="filterQuestions('practice')">Practice Set</button>
+            <button class="filter-btn" onclick="filterQuestions('1-10')">1–10</button>
+            <button class="filter-btn" onclick="filterQuestions('11-20')">11–20</button>
+            <button class="filter-btn" onclick="filterQuestions('21-30')">21–30</button>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button class="btn btn-outline" onclick="toggleAllAnswers(true)">Show Answers</button>
+            <button class="btn btn-outline" onclick="toggleAllAnswers(false)">Hide Answers</button>
+            <button class="btn btn-print" onclick="window.print()">🖨️ Print</button>
+        </div>
+    </div>
+
+    <!-- PRACTICE SET -->
+    <div class="question-card" data-category="practice">
+        <div class="question-header">
+            <span class="q-badge">Practice A</span>
+        </div>
+        <div class="question-body">
+            Jenny had \( 34 \) marbles. Her brother gave her some more marbles. Then she had \( 61 \) marbles. How many marbles did her brother give her? Write an equation and solve.
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-pa')">Review Answer</button>
+        <div class="answer-container" id="ans-pa">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 27 \text{ marbles} \)</div>
+            <div class="explanation">
+                Equation: \( 34 + m = 61 \). Subtract: \( 61 - 34 = 27 \).
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="practice">
+        <div class="question-header">
+            <span class="q-badge">Practice B</span>
+        </div>
+        <div class="question-body">
+            There were \( 250 \) students in the auditorium. After some students left, there were \( 184 \) students remaining. How many students left?
+        </div>
+        <button class="btn" onclick="toggleAnswer('ans-pb')">Review Answer</button>
+        <div class="answer-container" id="ans-pb">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 66 \text{ students} \)</div>
+            <div class="explanation">
+                Equation: \( 250 - s = 184 \). Subtract: \( 250 - 184 = 66 \).
+            </div>
+        </div>
+    </div>
+
+    <!-- QUESTIONS 1 - 10 -->
+    <div class="question-card" data-category="1-10">
+        <div class="question-header"><span class="q-badge">Problem 1</span><span class="tag-badge">WORD PROBLEM</span></div>
+        <div class="question-body">The basketball team scored \( 42 \) points in the first half and \( 39 \) points in the second half. How many total points did they score?</div>
+        <button class="btn" onclick="toggleAnswer('ans-1')">Review Answer</button>
+        <div class="answer-container" id="ans-1">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 81 \text{ points} \)</div>
+            <div class="explanation">\( 42 + 39 = 81 \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header"><span class="q-badge">Problem 2</span></div>
+        <div class="question-body">A length of ribbon was \( 84 \text{ cm} \) long. After cutting off a piece, \( 29 \text{ cm} \) remained. How long was the piece cut off?</div>
+        <button class="btn" onclick="toggleAnswer('ans-2')">Review Answer</button>
+        <div class="answer-container" id="ans-2">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 55 \text{ cm} \)</div>
+            <div class="explanation">\( 84 - p = 29 \implies p = 84 - 29 = 55 \text{ cm} \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header"><span class="q-badge">Problem 3</span></div>
+        <div class="question-body">Write the prime factorization of \( 48 \) using exponents.</div>
+        <button class="btn" onclick="toggleAnswer('ans-3')">Review Answer</button>
+        <div class="answer-container" id="ans-3">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 2^4 \times 3 \)</div>
+            <div class="explanation">\( 48 = 16 \times 3 = 2 \times 2 \times 2 \times 2 \times 3 = 2^4 \times 3 \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header"><span class="q-badge">Problem 4</span></div>
+        <div class="question-body">Find the perimeter of a rectangle with a length of \( 12 \text{ in.} \) and a width of \( 7 \text{ in.} \)</div>
+        <button class="btn" onclick="toggleAnswer('ans-4')">Review Answer</button>
+        <div class="answer-container" id="ans-4">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 38 \text{ inches} \)</div>
+            <div class="explanation">\( P = 2(12) + 2(7) = 24 + 14 = 38 \text{ in.} \)</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header"><span class="q-badge">Problem 5</span></div>
+        <div class="question-body">Simplify: \( \frac{3}{5} + \frac{1}{5} + \frac{4}{5} \)</div>
+        <button class="btn" onclick="toggleAnswer('ans-5')">Review Answer</button>
+        <div class="answer-container" id="ans-5">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 1\frac{3}{5} \)</div>
+            <div class="explanation">\( \frac{3+1+4}{5} = \frac{8}{5} = 1\frac{3}{5} \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header"><span class="q-badge">Problem 6</span></div>
+        <div class="question-body">Solve for $n$: \( 150 - n = 67 \)</div>
+        <button class="btn" onclick="toggleAnswer('ans-6')">Review Answer</button>
+        <div class="answer-container" id="ans-6">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( n = 83 \)</div>
+            <div class="explanation">\( n = 150 - 67 = 83 \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header"><span class="q-badge">Problem 7</span></div>
+        <div class="question-body">Find the area of a square with sides measuring \( 9 \text{ cm} \).</div>
+        <button class="btn" onclick="toggleAnswer('ans-7')">Review Answer</button>
+        <div class="answer-container" id="ans-7">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 81 \text{ cm}^2 \)</div>
+            <div class="explanation">\( A = \text{side}^2 = 9 \times 9 = 81 \text{ cm}^2 \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header"><span class="q-badge">Problem 8</span></div>
+        <div class="question-body">Which digit in \( 4,582.91 \) is in the tenths place?</div>
+        <button class="btn" onclick="toggleAnswer('ans-8')">Review Answer</button>
+        <div class="answer-container" id="ans-8">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 9 \)</div>
+            <div class="explanation">The digit directly to the right of the decimal point is the tenths place.</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header"><span class="q-badge">Problem 9</span></div>
+        <div class="question-body">Round \( 7,384 \) to the nearest hundred.</div>
+        <button class="btn" onclick="toggleAnswer('ans-9')">Review Answer</button>
+        <div class="answer-container" id="ans-9">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 7,400 \)</div>
+            <div class="explanation">The tens digit is \( 8 \) (\(\ge 5\)), so round up to \( 7,400 \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="1-10">
+        <div class="question-header"><span class="q-badge">Problem 10</span></div>
+        <div class="question-body">Evaluate: \( (12 - 4) \times (3 + 5) \)</div>
+        <button class="btn" onclick="toggleAnswer('ans-10')">Review Answer</button>
+        <div class="answer-container" id="ans-10">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 64 \)</div>
+            <div class="explanation">\( 8 \times 8 = 64 \).</div>
+        </div>
+    </div>
+
+    <!-- QUESTIONS 11 - 20 -->
+    <div class="question-card" data-category="11-20">
+        <div class="question-header"><span class="q-badge">Problem 11</span></div>
+        <div class="question-body">Find the average (mean) of \( 14 \), \( 22 \), \( 18 \), and \( 26 \).</div>
+        <button class="btn" onclick="toggleAnswer('ans-11')">Review Answer</button>
+        <div class="answer-container" id="ans-11">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 20 \)</div>
+            <div class="explanation">\( (14 + 22 + 18 + 26) \div 4 = 80 \div 4 = 20 \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header"><span class="q-badge">Problem 12</span></div>
+        <div class="question-body">Convert the improper fraction \( \frac{23}{5} \) to a mixed number.</div>
+        <button class="btn" onclick="toggleAnswer('ans-12')">Review Answer</button>
+        <div class="answer-container" id="ans-12">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 4\frac{3}{5} \)</div>
+            <div class="explanation">\( 23 \div 5 = 4 \) with a remainder of \( 3 \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header"><span class="q-badge">Problem 13</span></div>
+        <div class="question-body">Solve for $x$: \( 8x = 96 \)</div>
+        <button class="btn" onclick="toggleAnswer('ans-13')">Review Answer</button>
+        <div class="answer-container" id="ans-13">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( x = 12 \)</div>
+            <div class="explanation">\( x = 96 \div 8 = 12 \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header"><span class="q-badge">Problem 14</span></div>
+        <div class="question-body">Find the Greatest Common Factor (GCF) of \( 24 \) and \( 36 \).</div>
+        <button class="btn" onclick="toggleAnswer('ans-14')">Review Answer</button>
+        <div class="answer-container" id="ans-14">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 12 \)</div>
+            <div class="explanation">Factors of \( 24 \): 1,2,3,4,6,8,12,24. Factors of \( 36 \): 1,2,3,4,6,9,12,18,36. GCF is \( 12 \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header"><span class="q-badge">Problem 15</span></div>
+        <div class="question-body">Find the Least Common Multiple (LCM) of \( 6 \) and \( 8 \).</div>
+        <button class="btn" onclick="toggleAnswer('ans-15')">Review Answer</button>
+        <div class="answer-container" id="ans-15">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 24 \)</div>
+            <div class="explanation">Multiples of \( 6 \): 6, 12, 18, 24. Multiples of \( 8 \): 8, 16, 24. LCM is \( 24 \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header"><span class="q-badge">Problem 16</span></div>
+        <div class="question-body">Simplify: \( 4.25 + 1.802 \)</div>
+        <button class="btn" onclick="toggleAnswer('ans-16')">Review Answer</button>
+        <div class="answer-container" id="ans-16">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 6.052 \)</div>
+            <div class="explanation">Line up decimal points: \( 4.250 + 1.802 = 6.052 \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header"><span class="q-badge">Problem 17</span></div>
+        <div class="question-body">What is the reciprocal of \( \frac{7}{3} \)?</div>
+        <button class="btn" onclick="toggleAnswer('ans-17')">Review Answer</button>
+        <div class="answer-container" id="ans-17">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( \frac{3}{7} \)</div>
+            <div class="explanation">Invert numerator and denominator: \( \frac{3}{7} \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header"><span class="q-badge">Problem 18</span></div>
+        <div class="question-body">A circle has a radius of \( 5 \text{ cm} \). What is its diameter?</div>
+        <button class="btn" onclick="toggleAnswer('ans-18')">Review Answer</button>
+        <div class="answer-container" id="ans-18">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 10 \text{ cm} \)</div>
+            <div class="explanation">\( \text{Diameter} = 2 \times \text{radius} = 2 \times 5 = 10 \text{ cm} \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header"><span class="q-badge">Problem 19</span></div>
+        <div class="question-body">Reduce the fraction \( \frac{18}{24} \) to lowest terms.</div>
+        <button class="btn" onclick="toggleAnswer('ans-19')">Review Answer</button>
+        <div class="answer-container" id="ans-19">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( \frac{3}{4} \)</div>
+            <div class="explanation">Divide numerator and denominator by 6: \( \frac{18 \div 6}{24 \div 6} = \frac{3}{4} \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="11-20">
+        <div class="question-header"><span class="q-badge">Problem 20</span></div>
+        <div class="question-body">Compare using \( < \), \( > \), or \( = \): \( 0.4 \quad \bigcirc \quad 0.38 \)</div>
+        <button class="btn" onclick="toggleAnswer('ans-20')">Review Answer</button>
+        <div class="answer-container" id="ans-20">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 0.4 > 0.38 \)</div>
+            <div class="explanation">\( 0.40 \) is greater than \( 0.38 \).</div>
+        </div>
+    </div>
+
+    <!-- QUESTIONS 21 - 30 -->
+    <div class="question-card" data-category="21-30">
+        <div class="question-header"><span class="q-badge">Problem 21</span></div>
+        <div class="question-body">Simplify: \( 10^3 - 10^2 \)</div>
+        <button class="btn" onclick="toggleAnswer('ans-21')">Review Answer</button>
+        <div class="answer-container" id="ans-21">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 900 \)</div>
+            <div class="explanation">\( 1000 - 100 = 900 \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header"><span class="q-badge">Problem 22</span></div>
+        <div class="question-body">A triathlete swam \( 1.5 \text{ km} \), biked \( 40 \text{ km} \), and ran \( 10 \text{ km} \). What was the total distance?</div>
+        <button class="btn" onclick="toggleAnswer('ans-22')">Review Answer</button>
+        <div class="answer-container" id="ans-22">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 51.5 \text{ km} \)</div>
+            <div class="explanation">\( 1.5 + 40 + 10 = 51.5 \text{ km} \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header"><span class="q-badge">Problem 23</span></div>
+        <div class="question-body">How many inches are in \( 4\frac{1}{2} \text{ feet} \)?</div>
+        <button class="btn" onclick="toggleAnswer('ans-23')">Review Answer</button>
+        <div class="answer-container" id="ans-23">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 54 \text{ inches} \)</div>
+            <div class="explanation">\( 4.5 \times 12 = 54 \text{ inches} \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header"><span class="q-badge">Problem 24</span></div>
+        <div class="question-body">Identify the acute angle measure among the following: \( 45^\circ, 90^\circ, 120^\circ, 180^\circ \).</div>
+        <button class="btn" onclick="toggleAnswer('ans-24')">Review Answer</button>
+        <div class="answer-container" id="ans-24">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 45^\circ \)</div>
+            <div class="explanation">An acute angle measures less than \( 90^\circ \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header"><span class="q-badge">Problem 25</span></div>
+        <div class="question-body">Solve: \( \frac{2}{3} \times \frac{3}{4} \)</div>
+        <button class="btn" onclick="toggleAnswer('ans-25')">Review Answer</button>
+        <div class="answer-container" id="ans-25">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( \frac{1}{2} \)</div>
+            <div class="explanation">\( \frac{2 \times 3}{3 \times 4} = \frac{6}{12} = \frac{1}{2} \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header"><span class="q-badge">Problem 26</span></div>
+        <div class="question-body">Find the missing number: \( 3\frac{1}{8} + m = 7\frac{5}{8} \)</div>
+        <button class="btn" onclick="toggleAnswer('ans-26')">Review Answer</button>
+        <div class="answer-container" id="ans-26">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 4\frac{1}{2} \)</div>
+            <div class="explanation">\( m = 7\frac{5}{8} - 3\frac{1}{8} = 4\frac{4}{8} = 4\frac{1}{2} \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header"><span class="q-badge">Problem 27</span></div>
+        <div class="question-body">Write \( \frac{3}{100} \) as a decimal and as a percent.</div>
+        <button class="btn" onclick="toggleAnswer('ans-27')">Review Answer</button>
+        <div class="answer-container" id="ans-27">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 0.03 \text{ and } 3\% \)</div>
+            <div class="explanation">\( 3 \div 100 = 0.03 = 3\% \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header"><span class="q-badge">Problem 28</span></div>
+        <div class="question-body">Calculate the perimeter of an equilateral triangle with sides of \( 8.5 \text{ cm} \).</div>
+        <button class="btn" onclick="toggleAnswer('ans-28')">Review Answer</button>
+        <div class="answer-container" id="ans-28">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 25.5 \text{ cm} \)</div>
+            <div class="explanation">\( P = 3 \times 8.5 = 25.5 \text{ cm} \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header"><span class="q-badge">Problem 29</span></div>
+        <div class="question-body">Simplify: \( 50 - [3 \times (4 + 2)] \)</div>
+        <button class="btn" onclick="toggleAnswer('ans-29')">Review Answer</button>
+        <div class="answer-container" id="ans-29">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( 32 \)</div>
+            <div class="explanation">\( 4 + 2 = 6 \implies 3 \times 6 = 18 \implies 50 - 18 = 32 \).</div>
+        </div>
+    </div>
+
+    <div class="question-card" data-category="21-30">
+        <div class="question-header"><span class="q-badge">Problem 30</span></div>
+        <div class="question-body">Alex had \( \$50.00 \). He bought three books for \( \$12.50 \) each. How much money did he have left?</div>
+        <button class="btn" onclick="toggleAnswer('ans-30')">Review Answer</button>
+        <div class="answer-container" id="ans-30">
+            <div class="answer-title">Final Answer</div>
+            <div class="final-answer">\( \$12.50 \)</div>
+            <div class="explanation">Total spent = \( 3 \times 12.50 = \$37.50 \). Remaining = \( 50.00 - 37.50 = \$12.50 \).</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleAnswer(id) {
+        const container = document.getElementById(id);
+        container.style.display = (container.style.display === "block") ? "none" : "block";
+    }
+
+    function toggleAllAnswers(show) {
+        document.querySelectorAll('.answer-container').forEach(c => {
+            c.style.display = show ? 'block' : 'none';
+        });
+    }
+
+    function filterQuestions(category) {
+        const cards = document.querySelectorAll('.question-card');
+        const buttons = document.querySelectorAll('.filter-btn');
+
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        cards.forEach(card => {
+            const cat = card.getAttribute('data-category');
+            if (category === 'all' || cat === category) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
