@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - Set 9-14c</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+    }
+    
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #univ-reward {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff;
+        border: 3px double #a51c30;
+        border-radius: 8px;
+        animation: pullUp 0.5s ease-out;
+    }
+    #univ-reward img {
+        width: 160px;
+        height: auto;
+        margin: 15px auto;
+        display: block;
+    }
+    .univ-text {
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    @keyframes pullUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        #univ-reward {
+            display: block !important;
+            border-style: solid !important;
+            border-width: 2px !important;
+        }
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice - Set 9-14c</h1>
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        
+        <div id="univ-reward">
+            <div class="univ-text" id="univ-reward-title">★ FLAWLESS ACADEMIC EXCELLENCE ★</div>
+            <img id="univ-reward-img" src="" alt="University Crest">
+            <p id="univ-reward-text" style="color: #555; font-style: italic; font-weight: bold; margin-top: 5px;"></p>
+        </div>
+
+        <button onclick="window.print()" style="margin-top: 15px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected here -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const universityRewards = [
+        {
+            name: "Harvard University",
+            img: "https://mr-chen-k12.github.io/math/IMG_0232.png",
+            color: "#a51c30"
+        },
+        {
+            name: "Boston University",
+            img: "https://mr-chen-k12.github.io/books/IMG_0121.png",
+            color: "#CC0000"
+        },
+        {
+            name: "Yale University",
+            img: "https://mr-chen-k12.github.io/books/IMG_0122.png",
+            color: "#00356B"
+        }
+    ];
+
+    const quizData = [
+        {
+            passage: "Though earlier architectural critics dismissed the new museum's bold geometric facets as erratic and garish, contemporary commentators view the design as remarkably _______, praising how its unexpected angles harmonize with the surrounding cityscape.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["cohesive", "derivative", "trite", "transitory"],
+            correctAnswer: 0, // A
+            explanation: "'Cohesive' means forming a unified whole. The passage contrasts early claims of the museum being 'erratic and garish' with contemporary praise for how its angles 'harmonize with the surrounding cityscape'."
+        },
+        {
+            passage: "Deep-sea hydrothermal vents emit mineral-rich water heated by magma beneath the Earth's crust. In these pitch-black environments where photosynthesis is impossible, chemosynthetic bacteria utilize hydrogen sulfide to manufacture organic compounds. These microbes form the base of an ecosystem supporting tube worms, giant clams, and blind shrimp. Studying these organisms expands our understanding of life's boundaries on Earth and informs astrobiologists seeking potential habitats on icy moons like Europa.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Hydrothermal vents are the primary source of hydrogen sulfide in Earth's upper atmosphere.",
+                "Chemosynthetic ecosystems around hydrothermal vents demonstrate that life can thrive without sunlight, providing insights into terrestrial extreme environments and astrobiology.",
+                "Tube worms and giant clams are the only organisms capable of surviving extreme deep-ocean pressure.",
+                "Solar radiation is necessary for microbial chemosynthesis near hydrothermal vents."
+            ],
+            correctAnswer: 1, // B
+            explanation: "The passage explains how vent organisms thrive via chemosynthesis without sunlight and notes their relevance to terrestrial biology and astrobiology. Option B accurately captures this main point."
+        },
+        {
+            passage: "Marine biologists tracked loggerhead sea turtles navigating thousands of miles across open ocean using Earth's geomagnetic field. When researchers attached small magnetic disruptors to young turtles in a controlled tank, the turtles swam in disoriented, random directions. Conversely, when the disruptors were removed, the turtles immediately reoriented toward their target migration vector. This experiment implies that sea turtles _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "rely on magnetic cues to orient themselves during oceanic migration.",
+                "navigate exclusively by monitoring surface water temperatures.",
+                "lose their vision permanently when exposed to artificial magnets.",
+                "migrate only during periods of low solar radiation."
+            ],
+            correctAnswer: 0, // A
+            explanation: "Because magnetic disruptors caused disorientation while their removal restored correct orientation, the experiment shows that loggerhead turtles rely on magnetic cues for navigational orientation."
+        },
+        {
+            passage: "Historians of technology have long analyzed the rapid adoption of steam power during the Industrial Revolution. <b>Specifically, Dr. Chen examined coal consumption logs from Lancashire textile mills between 1780 and 1830 to demonstrate that water wheels remained the dominant power source far longer than previously assumed.</b> This empirical analysis challenged traditional historical models that asserted steam engines immediately replaced water power.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+            options: [
+                "It describes the specific empirical research method Dr. Chen used to challenge a prevailing assumption about the timeline of steam power adoption.",
+                "It introduces a theoretical framework for calculating the energy output of 19th-century water wheels.",
+                "It criticizes textile mill owners for failing to adopt modern machinery.",
+                "It provides historical context regarding coal mining regulations in early modern Europe."
+            ],
+            correctAnswer: 0, // A
+            explanation: "The highlighted sentence details Dr. Chen's empirical study (examining coal consumption logs in Lancashire mills) which challenged the traditional view that steam power rapidly replaced water power."
+        },
+        {
+            passage: "Text 1\nDesalination plants offer an invaluable solution to global freshwater scarcity. By removing salt from ocean water, these facilities generate reliable drinking water supplies for arid coastal regions, insulating communities from prolonged droughts.\n\nText 2\nWhile desalination produces essential freshwater, its environmental footprint is substantial. The process yields concentrated brine that, when pumped back into ocean habitats, increases salinity and depletes dissolved oxygen, severely threatening local marine organisms.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to Text 1's perspective on desalination?",
+            options: [
+                "By emphasizing that desalination's benefits are accompanied by significant marine environmental risks caused by brine discharge.",
+                "By asserting that desalination plants are incapable of removing salt from ocean water.",
+                "By arguing that freshwater scarcity is an exaggerated issue in arid coastal regions.",
+                "By claiming that desalination is cheaper than traditional groundwater extraction."
+            ],
+            correctAnswer: 0, // A
+            explanation: "Text 2 explicitly highlights the substantial environmental drawbacks (concentrated brine discharge and oxygen depletion), offering a direct counterweight to Text 1's praise of desalination."
+        },
+        {
+            passage: "Sociologist Dr. Marcus Rivera argues that community gardens improve urban neighborhood cohesion most effectively when residents directly participate in governance and decision-making rather than merely receiving plot assignments from external administrators.",
+            prompt: "Which quotation from an urban planning survey best supports Dr. Rivera's argument?",
+            options: [
+                "\"Neighborhoods with resident-governed community gardens reported a 45% increase in civic participation compared to those managed by outside agencies.\"",
+                "\"Urban plots produce an average of fifty pounds of fresh vegetables per household each growing season.\"",
+                "\"Soil testing revealed elevated lead levels in several unmanaged urban plots prior to remediation.\"",
+                "\"City grants for green spaces increased overall municipal property values across all districts.\""
+            ],
+            correctAnswer: 0, // A
+            explanation: "Option A provides direct evidence that resident-governed gardens lead to a 45% increase in civic participation compared to externally managed ones, supporting Dr. Rivera's thesis."
+        },
+        {
+            passage: "The archivist examined the fragile medieval manuscript with _______ care, turning its yellowed pages with gloved fingers so as not to damage the fading gold leaf illumination.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["meticulous", "cursory", "haphazard", "indifferent"],
+            correctAnswer: 0, // A
+            explanation: "'Meticulous' means taking or showing extreme care about minute details; precise and thorough. Turning fragile pages with gloved hands to protect gold leaf demonstrates meticulous care."
+        },
+        {
+            passage: "Atmospheric scientists measuring methane concentrations in boreal peatlands observed that melting permafrost exposes previously frozen organic matter to anaerobic microbes. As these microbes decompose the thawing vegetation, they release substantial volumes of methane—a potent greenhouse gas—into the atmosphere. Increased atmospheric methane accelerates global warming, which in turn causes additional permafrost thawing. This self-reinforcing process indicates that permafrost degradation _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "creates a positive feedback loop that amplifies global temperature increases.",
+                "permanently reduces global greenhouse gas emissions in high-latitude regions.",
+                "prevents anaerobic microbes from active decomposition in peatland soils.",
+                "cools the surrounding atmosphere by absorbing solar thermal energy."
+            ],
+            correctAnswer: 0, // A
+            explanation: "A process where thawing causes methane release, which increases warming, leading to more thawing, is by definition a self-reinforcing positive feedback loop that accelerates global temperature increases."
+        },
+        {
+            passage: "Cognitive neuroscientists studying bilingualism discovered that managing two languages engages executive control mechanisms in the prefrontal cortex. Neuroimaging shows that bilingual individuals constantly suppress one language while speaking another, strengthening neural pathways responsible for task-switching and conflict resolution. Long-term studies indicate that this cognitive exercise provides a protective buffer against age-related cognitive decline, delaying the onset of dementia symptoms by several years. Thus, bilingualism offers significant structural and functional brain benefits across a person's lifespan.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Bilingual individuals are unable to focus on a single language during rapid conversation.",
+                "Managing two languages enhances prefrontal executive function and helps delay age-related cognitive decline.",
+                "Learning a second language is beneficial only when undertaken during early childhood.",
+                "Executive control mechanisms are located exclusively in the brain's occipital lobe."
+            ],
+            correctAnswer: 1, // B
+            explanation: "The text explains how bilingualism strengthens executive control neural pathways and protects against cognitive decline, summarizing its main idea in Option B."
+        },
+        {
+            passage: "Despite encountering numerous unexpected engineering setbacks during the prototype testing phase, the team remained _______, systematically redesigning each component until the device passed safety certification.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["tenacious", "vacillating", "complacent", "apathetic"],
+            correctAnswer: 0, // A
+            explanation: "'Tenacious' means persistent and unyielding in pursuing a goal. Systematically redesigning components despite setbacks demonstrates a tenacious approach."
+        }
+    ];
+
+    let currentQuestion = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
+    let isLocked = new Array(quizData.length).fill(false);
+
+    function initQuiz() {
+        const wrapper = document.getElementById('questions-wrapper');
+        
+        // Build Interactive Web Quiz
+        quizData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Build Hidden "Blank Print" Version
+        let printHTML = '<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice - Set 9-14c</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">';
+        
+        quizData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+
+        updateNav();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const q = quizData[currentQuestion];
+        
+        if (selected === null) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === quizData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        
+        quizData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${quizData.length} (${Math.round((score/quizData.length)*100)}%)`;
+        
+        // Pick a random university crest reward on a perfect score (10/10)
+        if (score === quizData.length) {
+            const reward = universityRewards[Math.floor(Math.random() * universityRewards.length)];
+            const rewardDiv = document.getElementById('univ-reward');
+            const rewardTitle = document.getElementById('univ-reward-title');
+            const rewardImg = document.getElementById('univ-reward-img');
+            const rewardText = document.getElementById('univ-reward-text');
+            
+            rewardDiv.style.borderColor = reward.color;
+            rewardTitle.style.color = reward.color;
+            rewardImg.src = reward.img;
+            rewardImg.alt = reward.name + " Crest";
+            rewardText.textContent = `You have successfully earned the ${reward.name} verification crest for achieving a perfect 10/10 score.`;
+            
+            rewardDiv.style.display = 'block';
+        }
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
