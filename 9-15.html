@@ -1,10 +1,11 @@
+
 <!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
 <title>Saxon Math – Sequential Solutions</title>
 <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]}};</script>
 <script defer src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
 <style>
-body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f4f7fb;color:#172033;margin:0}.wrap{max-width:900px;margin:auto;padding:24px}h1{margin-bottom:6px}.sub{color:#5b6474;margin-top:0}.card{background:white;border:1px solid #dce3ee;border-radius:14px;padding:18px;margin:14px 0;box-shadow:0 2px 8px #0000000a}.q{font-size:1.05rem;line-height:1.5}.ans{font-weight:700;margin-top:10px}.ex{display:none;margin-top:12px;padding:14px;background:#f7f9fc;border-left:4px solid #3b82f6;border-radius:8px;line-height:1.6}button{border:0;background:#2563eb;color:white;padding:9px 14px;border-radius:9px;font-weight:650;cursor:pointer;margin-top:10px}button:hover{background:#1d4ed8}.section{margin-top:32px;border-bottom:2px solid #cbd5e1;padding-bottom:6px}@media print{button{display:none}.ex{display:block!important}.card{break-inside:avoid;box-shadow:none}}
-</style></head><body><div class='wrap'><h1>Saxon Math – Sequential Solutions</h1><p class='sub'>Questions from the three provided pages. Click <b>Show Explanation</b> for worked solutions.</p><div id='app'></div></div>
+body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f4f7fb;color:#172033;margin:0}.wrap{max-width:900px;margin:auto;padding:24px}h1{margin-bottom:6px}.sub{color:#5b6474;margin-top:0}.card{background:white;border:1px solid #dce3ee;border-radius:14px;padding:18px;margin:14px 0;box-shadow:0 2px 8px #0000000a}.q{font-size:1.05rem;line-height:1.5}.ans{font-weight:700;margin-top:10px;display:none}.ex{display:none;margin-top:12px;padding:14px;background:#f7f9fc;border-left:4px solid #3b82f6;border-radius:8px;line-height:1.6}button{border:0;background:#2563eb;color:white;padding:9px 14px;border-radius:9px;font-weight:650;cursor:pointer;margin-top:10px}button:hover{background:#1d4ed8}.section{margin-top:32px;border-bottom:2px solid #cbd5e1;padding-bottom:6px}@media print{button{display:none}.ans,.ex{display:none!important}.card{break-inside:avoid;box-shadow:none}}
+</style></head><body><div class='wrap'><h1>Saxon Math – Sequential Solutions</h1><p class='sub'>Questions from the three provided pages. Answers are hidden. Click <b>Show Answer & Explanation</b> to reveal the answer and worked solution.</p><div id='app'></div></div>
 <script>
 const data = [
 ['Page 1 – Written Practice','1','Festival population: 200,000 people are in the city; the usual population is 85,000. How many visitors came?','115,000 visitors',String.raw`Subtract the usual population from the total: \[200{,}000-85{,}000=115{,}000.\] So there were \(115{,}000\) visitors.`],
@@ -51,6 +52,6 @@ const data = [
 ['','Real-World c','Express pencils left over compared with the total number of pencils as a fraction in simplest form.','1/36',String.raw`There are \(10\) pencils left out of \(360\): \[\frac{10}{360}=\frac1{36}.\]`]
 ];
 let app=document.getElementById('app'), last='';
-data.forEach((x,i)=>{if(x[0]&&x[0]!==last){last=x[0];app.insertAdjacentHTML('beforeend',`<h2 class="section">${x[0]}</h2>`)}let id='e'+i;app.insertAdjacentHTML('beforeend',`<div class="card"><div class="q"><b>${x[1]}.</b> ${x[2]}</div><div class="ans">Answer: ${x[3]}</div><button onclick="toggle('${id}',this)">Show Explanation</button><div class="ex" id="${id}">${x[4]}</div></div>`)});
-function toggle(id,b){let e=document.getElementById(id),show=e.style.display!=='block';e.style.display=show?'block':'none';b.textContent=show?'Hide Explanation':'Show Explanation';if(window.MathJax)MathJax.typesetPromise([e]);}
+data.forEach((x,i)=>{if(x[0]&&x[0]!==last){last=x[0];app.insertAdjacentHTML('beforeend',`<h2 class="section">${x[0]}</h2>`)}let id='e'+i;app.insertAdjacentHTML('beforeend',`<div class="card"><div class="q"><b>${x[1]}.</b> ${x[2]}</div><button onclick="toggle('${id}',this)">Show Answer & Explanation</button><div class="ex" id="${id}"><div class="ans" style="display:block">Answer: ${x[3]}</div>${x[4]}</div></div>`)});
+function toggle(id,b){let e=document.getElementById(id),show=e.style.display!=='block';e.style.display=show?'block':'none';b.textContent=show?'Hide Answer & Explanation':'Show Answer & Explanation';if(window.MathJax)MathJax.typesetPromise([e]);}
 </script></body></html>
