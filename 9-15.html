@@ -1,0 +1,56 @@
+<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Saxon Math – Sequential Solutions</title>
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]}};</script>
+<script defer src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f4f7fb;color:#172033;margin:0}.wrap{max-width:900px;margin:auto;padding:24px}h1{margin-bottom:6px}.sub{color:#5b6474;margin-top:0}.card{background:white;border:1px solid #dce3ee;border-radius:14px;padding:18px;margin:14px 0;box-shadow:0 2px 8px #0000000a}.q{font-size:1.05rem;line-height:1.5}.ans{font-weight:700;margin-top:10px}.ex{display:none;margin-top:12px;padding:14px;background:#f7f9fc;border-left:4px solid #3b82f6;border-radius:8px;line-height:1.6}button{border:0;background:#2563eb;color:white;padding:9px 14px;border-radius:9px;font-weight:650;cursor:pointer;margin-top:10px}button:hover{background:#1d4ed8}.section{margin-top:32px;border-bottom:2px solid #cbd5e1;padding-bottom:6px}@media print{button{display:none}.ex{display:block!important}.card{break-inside:avoid;box-shadow:none}}
+</style></head><body><div class='wrap'><h1>Saxon Math – Sequential Solutions</h1><p class='sub'>Questions from the three provided pages. Click <b>Show Explanation</b> for worked solutions.</p><div id='app'></div></div>
+<script>
+const data = [
+['Page 1 – Written Practice','1','Festival population: 200,000 people are in the city; the usual population is 85,000. How many visitors came?','115,000 visitors',String.raw`Subtract the usual population from the total: \[200{,}000-85{,}000=115{,}000.\] So there were \(115{,}000\) visitors.`],
+['','2','Syd returned with $12.47 after spending $98.03. How much did he have before shopping?','$110.50',String.raw`Starting money equals money spent plus money left: \[98.03+12.47=110.50.\]`],
+['','3','17,926 runners began the marathon and 16,733 finished. How many dropped out?','1,193 runners',String.raw`Find the difference: \[17{,}926-16{,}733=1{,}193.\]`],
+['','4a','What fraction of the pictured group is shaded?','8/9',String.raw`There are \(9\) circles total and \(8\) are shaded. Therefore \[\frac{8}{9}.\]`],
+['','4b','What fraction of the group is not shaded?','1/9',String.raw`Only \(1\) of the \(9\) circles is unshaded: \[\frac{1}{9}.\]`],
+['','4c','What percent of the group is not shaded?','11 1/9% (about 11.1%)',String.raw`Convert \(\frac19\) to a percent: \[\frac19\times100\%=11\frac19\%\approx11.1\%.\]`],
+['','5a','Arrange \(\frac12,0,-2,1\) from least to greatest.','−2, 0, 1/2, 1',String.raw`On a number line, negative numbers come before zero, and \(\frac12\) lies between \(0\) and \(1\): \[-2<0<\frac12<1.\]`],
+['','5b','Which of \(\frac12,0,-2,1\) is not an integer?','1/2',String.raw`Integers are whole numbers and their negatives, including zero. \(\frac12\) is not an integer.`],
+['','6','A 35-inch ribbon is cut into 8 equal lengths. How long is each piece?','4 3/8 inches',String.raw`Divide the total length by \(8\): \[35\div8=\frac{35}{8}=4\frac38.\] Each piece is \(4\frac38\) inches long.`],
+['','7','Write with digits and symbols: “The product of one and two is less than the sum of one and two.”','1 × 2 < 1 + 2',String.raw`“Product” means multiplication and “sum” means addition: \[1\times2<1+2.\] Indeed, \(2<3\).`],
+['','8','Subtract 89 million from 100 million. Write the difference in words.','eleven million',String.raw`\[100{,}000{,}000-89{,}000{,}000=11{,}000{,}000.\] In words: <b>eleven million</b>.`],
+['','9a','List the factors of 16.','1, 2, 4, 8, 16',String.raw`Factor pairs are \(1\times16\), \(2\times8\), and \(4\times4\). Thus the factors are \(1,2,4,8,16\).`],
+['','9b','List the factors of 24.','1, 2, 3, 4, 6, 8, 12, 24',String.raw`Using factor pairs \(1\times24\), \(2\times12\), \(3\times8\), and \(4\times6\), the factors are \(1,2,3,4,6,8,12,24\).`],
+['','9c','Which numbers are factors of both 16 and 24?','1, 2, 4, 8',String.raw`Compare the two factor lists. Their common factors are \[1,2,4,8.\]`],
+['','9d','What is the GCF of 16 and 24?','8',String.raw`The common factors are \(1,2,4,8\). The greatest is \(8\), so \(\operatorname{GCF}(16,24)=8\).`],
+['','10','Write and solve a word problem for \($20.00-k=$12.50\).','k = $7.50',String.raw`Example: You have $20.00. After buying an item for \(k\) dollars, you have $12.50 left. Then \[20.00-k=12.50\] so \[k=20.00-12.50=7.50.\]`],
+['Page 2 – Lesson 11','11','Sketch two intersecting planes.','Two planes meeting in a line',String.raw`When two distinct planes intersect, their intersection is a <b>line</b>. A correct sketch shows two flat surfaces crossing, with the common line marked.`],
+['','12','Solve \(4\cdot9\cdot n=720\).','n = 20',String.raw`First multiply \(4\cdot9=36\): \[36n=720.\] Divide by \(36\): \[n=\frac{720}{36}=20.\]`],
+['','13','Solve \($126+r=$375\).','r = $249',String.raw`Subtract \(126\) from both sides: \[r=375-126=249.\]`],
+['','14','Solve \(\frac{169}{s}=13\).','s = 13',String.raw`Multiply by \(s\): \(169=13s\). Then \[s=\frac{169}{13}=13.\]`],
+['','15','Solve \(\frac{t}{40}=$25.00\).','t = $1,000',String.raw`Multiply both sides by \(40\): \[t=25\times40=1000.\]`],
+['','16','Compare \(100-(5\times20)\) and \((100-5)\times20\).','<',String.raw`Left: \[100-(5\times20)=100-100=0.\] Right: \[(100-5)\times20=95\times20=1900.\] Therefore \(0<1900\).`],
+['','17','Simplify \(1\frac59+1\frac59\).','3 1/9',String.raw`Add whole and fractional parts: \[1\frac59+1\frac59=2+\frac{10}{9}=2+1\frac19=3\frac19.\]`],
+['','18','Simplify \(\frac53\times\frac23\).','10/9 = 1 1/9',String.raw`Multiply numerators and denominators: \[\frac53\cdot\frac23=\frac{10}{9}=1\frac19.\]`],
+['','19','Compute \(135\times72\).','9,720',String.raw`Distribute: \[135(72)=135(70)+135(2)=9450+270=9720.\]`],
+['','20','Compute \(\frac{1000}{40}\).','25',String.raw`Cancel a factor of \(10\): \[\frac{1000}{40}=\frac{100}{4}=25.\]`],
+['','21','Compute \(30($1.49)\).','$44.70',String.raw`\[30\times1.49=44.70.\]`],
+['','22','Compute \($140.70\div35\).','$4.02',String.raw`\[140.70\div35=4.02\] because \(35\times4.02=140.70\).`],
+['','23','Simplify \(\frac59\cdot\frac13\cdot\frac12\).','5/54',String.raw`Multiply straight across: \[\frac{5\cdot1\cdot1}{9\cdot3\cdot2}=\frac5{54}.\]`],
+['','24','Simplify \(\frac58+(\frac38-\frac18)\).','7/8',String.raw`Work inside parentheses: \[\frac38-\frac18=\frac28=\frac14.\] Then \[\frac58+\frac28=\frac78.\]`],
+['','25a','Write \(3\frac34\) as an improper fraction.','15/4',String.raw`\[3\frac34=\frac{3\cdot4+3}{4}=\frac{15}{4}.\]`],
+['','25b','Write the reciprocal of the answer to 25a.','4/15',String.raw`The reciprocal of \(\frac{15}{4}\) is found by switching numerator and denominator: \[\frac4{15}.\]`],
+['','25c','Find the product of the answers to 25a and 25b.','1',String.raw`A nonzero number times its reciprocal equals \(1\): \[\frac{15}{4}\cdot\frac4{15}=1.\]`],
+['','26','Estimate the shaded portion of the rectangle: \(\frac14,\frac12,40\%,60\%\).','40%',String.raw`The shaded part appears a little less than one-half, roughly two-fifths. Since \(\frac25=40\%\), the best estimate is <b>40%</b>.`],
+['','27','Find the next four terms: \(\frac18,\frac14,\frac38,\frac12,\ldots\)','5/8, 3/4, 7/8, 1',String.raw`Each term increases by \(\frac18\). Continue: \[\frac58,\frac68,\frac78,\frac88\] which simplifies to \[\frac58,\frac34,\frac78,1.\]`],
+['','28a','Which labeled angles appear acute?','Angles 1 and 3',String.raw`Acute angles measure less than \(90^\circ\). In the diagram, the two narrow opposite angles are \(\angle1\) and \(\angle3\).`],
+['','28b','Which labeled angles appear obtuse?','Angles 2 and 4',String.raw`Obtuse angles are greater than \(90^\circ\) but less than \(180^\circ\). The two wide opposite angles are \(\angle2\) and \(\angle4\).`],
+['Page 3 – Continuation','29','Draw \(AC=3\frac12\) inches. Mark \(B\) on \(AC\) so \(AB=1\frac78\) inches. Find \(BC\).','1 5/8 inches',String.raw`Because \(B\) lies on \(\overline{AC}\), \(AB+BC=AC\). Thus \[BC=3\frac12-1\frac78=3\frac48-1\frac78=1\frac58\text{ in.}\]`],
+['','30','If \(n\div m=\frac78\), what does \(m\div n\) equal?','8/7',String.raw`Reversing the order gives the reciprocal. If \[\frac nm=\frac78,\] then \[\frac mn=\frac87.\]`],
+['','Real-World a','30 packets contain 12 pencils each. 50 students share all pencils equally. How many pencils should each student get?','7 pencils each',String.raw`Total pencils: \[30\times12=360.\] Divide among \(50\) students: \[360\div50=7\text{ remainder }10.\] So each student gets \(7\) whole pencils.`],
+['','Real-World b','Will any pencils be left over? If so, how many?','Yes, 10 pencils',String.raw`Giving \(7\) pencils to each of \(50\) students uses \[7\times50=350.\] From \(360\) pencils, \[360-350=10\] remain.`],
+['','Real-World c','Express pencils left over compared with the total number of pencils as a fraction in simplest form.','1/36',String.raw`There are \(10\) pencils left out of \(360\): \[\frac{10}{360}=\frac1{36}.\]`]
+];
+let app=document.getElementById('app'), last='';
+data.forEach((x,i)=>{if(x[0]&&x[0]!==last){last=x[0];app.insertAdjacentHTML('beforeend',`<h2 class="section">${x[0]}</h2>`)}let id='e'+i;app.insertAdjacentHTML('beforeend',`<div class="card"><div class="q"><b>${x[1]}.</b> ${x[2]}</div><div class="ans">Answer: ${x[3]}</div><button onclick="toggle('${id}',this)">Show Explanation</button><div class="ex" id="${id}">${x[4]}</div></div>`)});
+function toggle(id,b){let e=document.getElementById(id),show=e.style.display!=='block';e.style.display=show?'block':'none';b.textContent=show?'Hide Explanation':'Show Explanation';if(window.MathJax)MathJax.typesetPromise([e]);}
+</script></body></html>
