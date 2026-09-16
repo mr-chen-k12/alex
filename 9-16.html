@@ -1,0 +1,766 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saxon Math & Challenge Problem Set</title>
+  
+  <!-- MathJax Configuration: Uses \( \) exclusively for inline math to prevent $ currency rendering bugs -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]'], ['$$', '$$']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --secondary: #2563eb;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --border: #e2e8f0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .header-area {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    /* Interactive Toolbar */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card-bg);
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+
+    .toolbar-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9em;
+      width: 200px;
+    }
+
+    .btn {
+      background-color: var(--secondary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 0.9em;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--secondary);
+      border: 1px solid var(--secondary);
+    }
+
+    .btn-outline:hover {
+      background-color: #eff6ff;
+    }
+
+    .btn-print {
+      background-color: #059669;
+    }
+
+    .btn-print:hover {
+      background-color: #047857;
+    }
+
+    .section-title {
+      color: var(--primary);
+      border-bottom: 2px solid var(--secondary);
+      padding-bottom: 6px;
+      margin-top: 36px;
+      margin-bottom: 20px;
+    }
+
+    .problem-card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .problem-header {
+      font-weight: 700;
+      font-size: 1.05em;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .problem-body {
+      margin-bottom: 14px;
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 14px;
+      padding: 14px 18px;
+      background-color: #f0f9ff;
+      border-left: 4px solid var(--secondary);
+      border-radius: 0 6px 6px 0;
+    }
+
+    ol, ul {
+      padding-left: 20px;
+    }
+
+    /* Print Styles: Configured to hide answers for clean student worksheets */
+    @media print {
+      body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+      }
+
+      /* Hides toolbar, action buttons, and answer solutions */
+      .no-print, .toolbar, button, .explanation {
+        display: none !important;
+      }
+
+      .container {
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+
+      .problem-card {
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+        margin-bottom: 12px !important;
+        padding: 14px !important;
+      }
+
+      .section-title {
+        color: #000000 !important;
+        border-bottom-color: #000000 !important;
+        margin-top: 24px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header-area">
+    <h1>Math Practice & Solutions Guide</h1>
+    <p class="no-print">Interactive study set with MathJax rendering and print optimization.</p>
+  </div>
+
+  <!-- Control Toolbar -->
+  <div class="toolbar no-print">
+    <div class="toolbar-group">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search problems..." onkeyup="filterProblems()">
+      <button class="btn btn-outline" onclick="toggleAllSolutions(true)">Expand All</button>
+      <button class="btn btn-outline" onclick="toggleAllSolutions(false)">Collapse All</button>
+    </div>
+    <div class="toolbar-group">
+      <button class="btn btn-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+    </div>
+  </div>
+
+  <!-- SECTION 1: SAXON WRITTEN PRACTICE -->
+  <h2 class="section-title">Written Practice (Problems 1–30)</h2>
+
+  <!-- Problem 1 -->
+  <div class="problem-card">
+    <div class="problem-header">*1. Visitor Count</div>
+    <div class="problem-body">
+      As the day of the festival drew near, there were 200,000 people in the city. If the usual population of the city was 85,000, how many visitors had come to the city?
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p1')">Toggle Solution</button>
+    <div class="explanation" id="p1">
+      <p>Subtract the usual population from the total festival population:</p>
+      \[\text{Visitors} = 200{,}000 - 85{,}000 = 115{,}000\]
+      <p><strong>Answer:</strong> \(115{,}000\text{ visitors}\)</p>
+    </div>
+  </div>
+
+  <!-- Problem 2 -->
+  <div class="problem-card">
+    <div class="problem-header">*2. Money Spent</div>
+    <div class="problem-body">
+      Syd returned from the store with $12.47. He had spent $98.03 on groceries. How much money did he have when he went to the store?
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p2')">Toggle Solution</button>
+    <div class="explanation" id="p2">
+      <p>Add the remaining money to the spent money to calculate the original total:</p>
+      \[\text{Initial Amount} = \$12.47 + \$98.03 = \$110.50\]
+      <p><strong>Answer:</strong> \(\$110.50\)</p>
+    </div>
+  </div>
+
+  <!-- Problem 3 -->
+  <div class="problem-card">
+    <div class="problem-header">*3. Marathon Finishers</div>
+    <div class="problem-body">
+      Exactly 17,926 runners began the 2004 Boston Marathon. If only 16,733 runners finished the marathon, how many dropped out along the way?
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p3')">Toggle Solution</button>
+    <div class="explanation" id="p3">
+      <p>Subtract the finishers from total starters:</p>
+      \[\text{Dropped Out} = 17{,}926 - 16{,}733 = 1{,}193\]
+      <p><strong>Answer:</strong> \(1{,}193\text{ runners}\)</p>
+    </div>
+  </div>
+
+  <!-- Problem 4 -->
+  <div class="problem-card">
+    <div class="problem-header">*4. Circle Fractions</div>
+    <div class="problem-body">
+      Refer to the circle diagram (8 total smaller circles, 7 shaded, 1 unshaded):
+      <ol type="a">
+        <li>What fraction of the group is shaded?</li>
+        <li>What fraction of the group is not shaded?</li>
+        <li>What percent of the group is not shaded?</li>
+      </ol>
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p4')">Toggle Solution</button>
+    <div class="explanation" id="p4">
+      <p><strong>a.</strong> \(7\) out of \(8\) circles are shaded \(\implies \frac{7}{8}\)</p>
+      <p><strong>b.</strong> \(1\) out of \(8\) circles is unshaded \(\implies \frac{1}{8}\)</p>
+      <p><strong>c.</strong> Convert \(\frac{1}{8}\) to percent:</p>
+      \[\frac{1}{8} \times 100\% = 12.5\%\quad \text{or}\quad 12\frac{1}{2}\%\]
+    </div>
+  </div>
+
+  <!-- Problem 5 -->
+  <div class="problem-card">
+    <div class="problem-header">*5. Ordering & Integers</div>
+    <div class="problem-body">
+      <ol type="a">
+        <li>Arrange these numbers in order from least to greatest: \(\frac{1}{2}, 0, -2, 1\)</li>
+        <li>Which of these numbers is not an integer?</li>
+      </ol>
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p5')">Toggle Solution</button>
+    <div class="explanation" id="p5">
+      <p><strong>a. Least to greatest:</strong> \(-2, 0, \frac{1}{2}, 1\)</p>
+      <p><strong>b. Non-integer:</strong> \(\frac{1}{2}\) (integers are whole numbers and their negatives)</p>
+    </div>
+  </div>
+
+  <!-- Problem 6 -->
+  <div class="problem-card">
+    <div class="problem-header">*6. Cutting Ribbon</div>
+    <div class="problem-body">
+      A 35-inch ribbon was cut into 8 equal lengths. How long was each piece? Describe how the ribbon could be cut into eighths.
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p6')">Toggle Solution</button>
+    <div class="explanation" id="p6">
+      <p>Divide total length by pieces:</p>
+      \[\text{Length per piece} = \frac{35}{8} = 4\frac{3}{8}\text{ inches} \quad (\text{or } 4.375\text{ in.})\]
+      <p><strong>Cutting Method:</strong> Fold the ribbon in half three consecutive times to divide it into eight equal segments, then cut along the folds.</p>
+    </div>
+  </div>
+
+  <!-- Problem 7 -->
+  <div class="problem-card">
+    <div class="problem-header">7. Inequality Statement</div>
+    <div class="problem-body">
+      Use digits and symbols to write: "The product of one and two is less than the sum of one and two."
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p7')">Toggle Solution</button>
+    <div class="explanation" id="p7">
+      \[1 \cdot 2 < 1 + 2\]
+    </div>
+  </div>
+
+  <!-- Problem 8 -->
+  <div class="problem-card">
+    <div class="problem-header">8. Subtracting Millions</div>
+    <div class="problem-body">
+      Subtract 89 million from 100 million. Use words to write the difference.
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p8')">Toggle Solution</button>
+    <div class="explanation" id="p8">
+      \[100\text{ million} - 89\text{ million} = 11\text{ million} \implies 11{,}000{,}000\]
+      <p><strong>In words:</strong> Eleven million</p>
+    </div>
+  </div>
+
+  <!-- Problem 9 -->
+  <div class="problem-card">
+    <div class="problem-header">9. Factors & GCF</div>
+    <div class="problem-body">
+      <ol type="a">
+        <li>List the factors of 16.</li>
+        <li>List the factors of 24.</li>
+        <li>Which numbers are factors of both 16 and 24?</li>
+        <li>What is the GCF of 16 and 24?</li>
+      </ol>
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p9')">Toggle Solution</button>
+    <div class="explanation" id="p9">
+      <p><strong>a. Factors of 16:</strong> \(1, 2, 4, 8, 16\)</p>
+      <p><strong>b. Factors of 24:</strong> \(1, 2, 3, 4, 6, 8, 12, 24\)</p>
+      <p><strong>c. Common factors:</strong> \(1, 2, 4, 8\)</p>
+      <p><strong>d. GCF:</strong> \(8\)</p>
+    </div>
+  </div>
+
+  <!-- Problem 10 -->
+  <div class="problem-card">
+    <div class="problem-header">*10. Word Problem Equation</div>
+    <div class="problem-body">
+      Write and solve a word problem for this equation: $\$20.00 - k = \$12.50$
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p10')">Toggle Solution</button>
+    <div class="explanation" id="p10">
+      <p><strong>Word Problem:</strong> Maya went to the store with $20.00. After purchasing a book for \(k\) dollars, she had $12.50 left. How much did the book cost?</p>
+      <p><strong>Solution:</strong></p>
+      \[k = \$20.00 - \$12.50 = \$7.50\]
+    </div>
+  </div>
+
+  <!-- Problem 11 -->
+  <div class="problem-card">
+    <div class="problem-header">11. Intersecting Planes</div>
+    <div class="problem-body">
+      Sketch two intersecting planes.
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p11')">Toggle Solution</button>
+    <div class="explanation" id="p11">
+      <p>Two flat planes that cross each other intersect along a straight line (similar to the spine where two pages of an open book meet).</p>
+    </div>
+  </div>
+
+  <!-- Problem 12 -->
+  <div class="problem-card">
+    <div class="problem-header">12. Unknown Variable Equation</div>
+    <div class="problem-body">
+      Find the unknown number in: \(4 \cdot 9 \cdot n = 720\)
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p12')">Toggle Solution</button>
+    <div class="explanation" id="p12">
+      \[36n = 720 \implies n = \frac{720}{36} = 20\]
+    </div>
+  </div>
+
+  <!-- Problem 13 -->
+  <div class="problem-card">
+    <div class="problem-header">13. Unknown Variable Equation</div>
+    <div class="problem-body">
+      Find the unknown number in: $\$126 + r = \$375$
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p13')">Toggle Solution</button>
+    <div class="explanation" id="p13">
+      \[r = \$375 - \$126 = \$249\]
+    </div>
+  </div>
+
+  <!-- Problem 14 -->
+  <div class="problem-card">
+    <div class="problem-header">14. Division Equation</div>
+    <div class="problem-body">
+      Find the unknown number in: \(\frac{169}{s} = 13\)
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p14')">Toggle Solution</button>
+    <div class="explanation" id="p14">
+      \[s = \frac{169}{13} = 13\]
+    </div>
+  </div>
+
+  <!-- Problem 15 -->
+  <div class="problem-card">
+    <div class="problem-header">15. Fraction Division Equation</div>
+    <div class="problem-body">
+      Find the unknown number in: \(\frac{t}{40} = \$25.00\)
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p15')">Toggle Solution</button>
+    <div class="explanation" id="p15">
+      \[t = 40 \times \$25.00 = \$1000.00\]
+    </div>
+  </div>
+
+  <!-- Problem 16 -->
+  <div class="problem-card">
+    <div class="problem-header">16. Order of Operations Comparison</div>
+    <div class="problem-body">
+      Compare: \(100 - (5 \times 20) \bigcirc (100 - 5) \times 20\)
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p16')">Toggle Solution</button>
+    <div class="explanation" id="p16">
+      <p>Left side: \(100 - (100) = 0\)</p>
+      <p>Right side: \((95) \times 20 = 1900\)</p>
+      \[100 - (5 \times 20) < (100 - 5) \times 20\]
+    </div>
+  </div>
+
+  <!-- Problem 17 -->
+  <div class="problem-card">
+    <div class="problem-header">*17. Mixed Number Addition</div>
+    <div class="problem-body">
+      Simplify: \(1\frac{5}{9} + 1\frac{5}{9}\)
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p17')">Toggle Solution</button>
+    <div class="explanation" id="p17">
+      \[1\frac{5}{9} + 1\frac{5}{9} = 2\frac{10}{9} = 3\frac{1}{9}\]
+    </div>
+  </div>
+
+  <!-- Problem 18 -->
+  <div class="problem-card">
+    <div class="problem-header">*18. Fraction Multiplication</div>
+    <div class="problem-body">
+      Simplify: \(\frac{5}{3} \times \frac{2}{3}\)
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p18')">Toggle Solution</button>
+    <div class="explanation" id="p18">
+      \[\frac{5 \times 2}{3 \times 3} = \frac{10}{9} = 1\frac{1}{9}\]
+    </div>
+  </div>
+
+  <!-- Problem 19 -->
+  <div class="problem-card">
+    <div class="problem-header">19. Standard Multiplication</div>
+    <div class="problem-body">
+      Simplify: \(135 \times 72\)
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p19')">Toggle Solution</button>
+    <div class="explanation" id="p19">
+      \[135 \times 72 = 9720\]
+    </div>
+  </div>
+
+  <!-- Problem 20 -->
+  <div class="problem-card">
+    <div class="problem-header">20. Fraction Reduction</div>
+    <div class="problem-body">
+      Simplify: \(\frac{1000}{40}\)
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p20')">Toggle Solution</button>
+    <div class="explanation" id="p20">
+      \[\frac{1000}{40} = 25\]
+    </div>
+  </div>
+
+  <!-- Problem 21 -->
+  <div class="problem-card">
+    <div class="problem-header">21. Currency Multiplication</div>
+    <div class="problem-body">
+      Simplify: \(30(\$1.49)\)
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p21')">Toggle Solution</button>
+    <div class="explanation" id="p21">
+      \[30 \times \$1.49 = \$44.70\]
+    </div>
+  </div>
+
+  <!-- Problem 22 -->
+  <div class="problem-card">
+    <div class="problem-header">22. Currency Division</div>
+    <div class="problem-body">
+      Simplify: $\$140.70 \div 35$
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p22')">Toggle Solution</button>
+    <div class="explanation" id="p22">
+      \[\$140.70 \div 35 = \$4.02\]
+    </div>
+  </div>
+
+  <!-- Problem 23 -->
+  <div class="problem-card">
+    <div class="problem-header">*23. Multiple Fraction Multiplication</div>
+    <div class="problem-body">
+      Simplify: \(\frac{5}{9} \cdot \frac{1}{3} \cdot \frac{1}{2}\)
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p23')">Toggle Solution</button>
+    <div class="explanation" id="p23">
+      \[\frac{5 \cdot 1 \cdot 1}{9 \cdot 3 \cdot 2} = \frac{5}{54}\]
+    </div>
+  </div>
+
+  <!-- Problem 24 -->
+  <div class="problem-card">
+    <div class="problem-header">*24. Fraction Operations with Parentheses</div>
+    <div class="problem-body">
+      Simplify: \(\frac{5}{8} + \left(\frac{3}{8} - \frac{1}{8}\right)\)
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p24')">Toggle Solution</button>
+    <div class="explanation" id="p24">
+      \[\frac{5}{8} + \frac{2}{8} = \frac{7}{8}\]
+    </div>
+  </div>
+
+  <!-- Problem 25 -->
+  <div class="problem-card">
+    <div class="problem-header">*25. Mixed Numbers & Reciprocals</div>
+    <div class="problem-body">
+      <ol type="a">
+        <li>Write \(3\frac{3}{4}\) as an improper fraction.</li>
+        <li>Write the reciprocal of answer a.</li>
+        <li>Find the product of answers a and b.</li>
+      </ol>
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p25')">Toggle Solution</button>
+    <div class="explanation" id="p25">
+      <p><strong>a.</strong> \(3\frac{3}{4} = \frac{15}{4}\)</p>
+      <p><strong>b.</strong> Reciprocal = \(\frac{4}{15}\)</p>
+      <p><strong>c.</strong> Product = \(\frac{15}{4} \times \frac{4}{15} = 1\)</p>
+    </div>
+  </div>
+
+  <!-- Problem 26 -->
+  <div class="problem-card">
+    <div class="problem-header">*26. Shaded Region Estimation</div>
+    <div class="problem-body">
+      Which choice below is the best estimate of the portion of the rectangle that is shaded?
+      <br><br>
+      <strong>A.</strong> \(\frac{1}{4}\) &nbsp;&nbsp;&nbsp;&nbsp; 
+      <strong>B.</strong> \(\frac{1}{2}\) &nbsp;&nbsp;&nbsp;&nbsp; 
+      <strong>C.</strong> \(40\%\) &nbsp;&nbsp;&nbsp;&nbsp; 
+      <strong>D.</strong> \(60\%\)
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p26')">Toggle Solution</button>
+    <div class="explanation" id="p26">
+      <p>The shaded portion represents approximately one fourth (\(25\%\)) of the total rectangle area.</p>
+      <p><strong>Answer: A (\(\frac{1}{4}\))</strong></p>
+    </div>
+  </div>
+
+  <!-- Problem 27 -->
+  <div class="problem-card">
+    <div class="problem-header">*27. Sequence Pattern</div>
+    <div class="problem-body">
+      What are the next four numbers in this sequence?
+      \[\frac{1}{8}, \frac{1}{4}, \frac{3}{8}, \frac{1}{2}, \dots\]
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p27')">Toggle Solution</button>
+    <div class="explanation" id="p27">
+      <p>Express with common denominator of 8: \(\frac{1}{8}, \frac{2}{8}, \frac{3}{8}, \frac{4}{8}, \dots\)</p>
+      <p>Adding \(\frac{1}{8}\) each step gives:</p>
+      \[\frac{5}{8}, \quad \frac{6}{8}=\frac{3}{4}, \quad \frac{7}{8}, \quad \frac{8}{8}=1\]
+    </div>
+  </div>
+
+  <!-- Problem 28 -->
+  <div class="problem-card">
+    <div class="problem-header">*28. Classifying Angles</div>
+    <div class="problem-body">
+      Refer to the figure with intersecting lines forming angles 1, 2, 3, and 4:
+      <ol type="a">
+        <li>Which angles appear to be acute angles?</li>
+        <li>Which angles appear to be obtuse angles?</li>
+      </ol>
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p28')">Toggle Solution</button>
+    <div class="explanation" id="p28">
+      <p><strong>a. Acute angles (< 90°):</strong> Angle 1 and Angle 3</p>
+      <p><strong>b. Obtuse angles (> 90°):</strong> Angle 2 and Angle 4</p>
+    </div>
+  </div>
+
+  <!-- Problem 29 -->
+  <div class="problem-card">
+    <div class="problem-header">*29. Line Segment Subtraction</div>
+    <div class="problem-body">
+      Use an inch ruler to draw \(\overline{AC}\) \(3\frac{1}{2}\) inches long. On \(\overline{AC}\) mark point \(B\) so that \(AB\) is \(1\frac{7}{8}\) inches. Now find \(BC\).
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p29')">Toggle Solution</button>
+    <div class="explanation" id="p29">
+      \[BC = 3\frac{1}{2} - 1\frac{7}{8} = 3\frac{4}{8} - 1\frac{7}{8} = 2\frac{12}{8} - 1\frac{7}{8} = 1\frac{5}{8}\text{ inches}\]
+    </div>
+  </div>
+
+  <!-- Problem 30 -->
+  <div class="problem-card">
+    <div class="problem-header">*30. Reciprocal Equations</div>
+    <div class="problem-body">
+      If \(n \div m\) equals \(\frac{7}{8}\), what does \(m \div n\) equal?
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('p30')">Toggle Solution</button>
+    <div class="explanation" id="p30">
+      <p>Taking the reciprocal of \(\frac{n}{m} = \frac{7}{8}\):</p>
+      \[m \div n = \frac{m}{n} = \frac{8}{7} = 1\frac{1}{7}\]
+    </div>
+  </div>
+
+  <!-- SECTION 2: SPECIALIZED EXTRA PROBLEMS -->
+  <h2 class="section-title">Specialized Extra Problems</h2>
+
+  <!-- Extra 1: Percentage -->
+  <div class="problem-card">
+    <div class="problem-header">E1. Percentage Discount Calculation</div>
+    <div class="problem-body">
+      A winter coat originally priced at $80.00 is on sale for 25% off. 
+      <ol type="a">
+        <li>What is the dollar amount of the discount?</li>
+        <li>What is the final sale price before tax?</li>
+      </ol>
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('pe1')">Toggle Solution</button>
+    <div class="explanation" id="pe1">
+      <p><strong>a. Discount amount:</strong></p>
+      \[25\% \text{ of } \$80.00 = 0.25 \times 80 = \$20.00\]
+      <p><strong>b. Final sale price:</strong></p>
+      \[\$80.00 - \$20.00 = \$60.00\]
+    </div>
+  </div>
+
+  <!-- Extra 2: Terminating Division -->
+  <div class="problem-card">
+    <div class="problem-header">E2. Terminating Decimal Division</div>
+    <div class="problem-body">
+      Divide 7 by 16 using long division. Express the exact quotient as a terminating decimal.
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('pe2')">Toggle Solution</button>
+    <div class="explanation" id="pe2">
+      <p>Perform decimal long division:</p>
+      \[7 \div 16 = \frac{7}{16} = 0.4375\]
+      <p>Since the remainder reaches zero after four decimal places, \(0.4375\) is a terminating decimal.</p>
+    </div>
+  </div>
+
+  <!-- Extra 3: Repeating Decimal Division -->
+  <div class="problem-card">
+    <div class="problem-header">E3. Infinite Repeating Decimal Division</div>
+    <div class="problem-body">
+      Divide 5 by 11 using long division. Express the quotient using repeating decimal notation (vinculum bar).
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('pe3')">Toggle Solution</button>
+    <div class="explanation" id="pe3">
+      <p>Dividing \(5.000\dots\) by \(11\):</p>
+      \[5 \div 11 = 0.454545\dots = 0.\overline{45}\]
+      <p>The digits \(45\) repeat infinitely because the remainders alternate continuously between \(6\) and \(5\).</p>
+    </div>
+  </div>
+
+  <!-- Extra 4: PEMDAS with Fractions & Decimals -->
+  <div class="problem-card">
+    <div class="problem-header">E4. Order of Operations (Mixed Numbers & Decimals)</div>
+    <div class="problem-body">
+      Evaluate the expression following PEMDAS rules:
+      \[\left(\frac{3}{4} + 0.5\right) \times 1.2 - \frac{2}{5}\]
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('pe4')">Toggle Solution</button>
+    <div class="explanation" id="pe4">
+      <p><strong>Step 1 (Parentheses):</strong> Convert fraction to decimal and add inside brackets:</p>
+      \[\frac{3}{4} = 0.75 \implies (0.75 + 0.5) = 1.25\]
+      <p><strong>Step 2 (Multiplication):</strong></p>
+      \[1.25 \times 1.2 = 1.5\]
+      <p><strong>Step 3 (Subtraction):</strong> Convert \(\frac{2}{5} = 0.4\):</p>
+      \[1.5 - 0.4 = 1.1 \quad \left(\text{or } 1\frac{1}{10} = \frac{11}{10}\right)\]
+    </div>
+  </div>
+
+  <!-- SECTION 3: REAL-WORLD & MINDSET -->
+  <h2 class="section-title">Real-World Connection & Motivating Mindset</h2>
+
+  <!-- Real World -->
+  <div class="problem-card">
+    <div class="problem-header">Real-World Connection: Mrs. Chen's Pencils</div>
+    <div class="problem-body">
+      Mrs. Chen purchased 30 packets of #2 pencils. Each packet contains 12 pencils. She has 50 students and wants to share the pencils equally among the students.
+      <ol type="a">
+        <li>How many pencils should each student get? Show your work.</li>
+        <li>Will there be any pencils left over? If so, how many?</li>
+        <li>Express the relationship of the pencils left over to the total number of pencils as a fraction in simplest form.</li>
+      </ol>
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('prw')">Toggle Solution</button>
+    <div class="explanation" id="prw">
+      <p>Total Pencils = \(30 \times 12 = 360\)</p>
+      <p><strong>a.</strong> \(360 \div 50 = 7\) remainder \(10 \implies\) Each student receives <strong>7 pencils</strong>.</p>
+      <p><strong>b.</strong> Yes, <strong>10 pencils</strong> are left over.</p>
+      <p><strong>c.</strong> Fraction leftover: \(\frac{10}{360} = \frac{1}{36}\)</p>
+    </div>
+  </div>
+
+  <!-- Motivating Mindset -->
+  <div class="problem-card">
+    <div class="problem-header">Motivating Mindset: Teaching a Skill</div>
+    <div class="problem-body">
+      What is a skill that you could teach to an older person, such as a grandparent? Can you describe a time when you taught an older person how to do something?
+    </div>
+    <button class="btn no-print" onclick="toggleSolution('pmm')">Toggle Solution</button>
+    <div class="explanation" id="pmm">
+      <p><strong>Sample Response:</strong> "A practical skill I could teach an older person is how to send photos or use video calls on a smartphone. For instance, I once taught my grandfather how to organize digital photos into albums by writing down simple step-by-step instructions and practicing together."</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleSolution(id) {
+    const content = document.getElementById(id);
+    const isHidden = getComputedStyle(content).display === "none";
+    content.style.display = isHidden ? "block" : "none";
+    if (isHidden && window.MathJax) {
+      MathJax.typesetPromise([content]);
+    }
+  }
+
+  function toggleAllSolutions(show) {
+    const explanations = document.querySelectorAll('.explanation');
+    explanations.forEach(exp => {
+      exp.style.display = show ? "block" : "none";
+    });
+    if (show && window.MathJax) {
+      MathJax.typesetPromise();
+    }
+  }
+
+  function filterProblems() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.problem-card');
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.style.display = text.includes(query) ? "block" : "none";
+    });
+  }
+</script>
+
+</body>
+</html>
