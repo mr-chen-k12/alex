@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saxon Math Grade 4 - Lesson 29 Solutions</title>
+    <!-- MathJax Configuration and Loader -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --success-color: #27ae60;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+        }
+
+        header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        /* Quick Navigation Bar */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 8px;
+            margin-bottom: 25px;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 0;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--primary-color);
+        }
+
+        .nav-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Question Cards */
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            scroll-margin-top: 20px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .question-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin: 0 0 10px 0;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            margin-bottom: 15px;
+        }
+
+        .toggle-btn {
+            background-color: #eef6fc;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* Explanation Box */
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f1f8ff;
+            border-left: 4px solid var(--accent-color);
+            border-radius: 4px;
+        }
+
+        .explanation.show {
+            display: block;
+        }
+
+        .explanation h4 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .final-answer {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #e8f8f0;
+            border: 1px solid #a3e6c0;
+            border-radius: 4px;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        ul, ol {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Saxon Math Grade 4 - Lesson 29</h1>
+        <p>Written Practice Solutions (Problems 1 – 30)</p>
+    </header>
+
+    <!-- Quick Navigation Jump Buttons -->
+    <div class="nav-grid" id="navGrid">
+        <!-- Generated by JavaScript -->
+    </div>
+
+    <div class="controls">
+        <h3>All Questions</h3>
+        <div>
+            <button class="action-btn" onclick="toggleAll(true)">Expand All</button>
+            <button class="action-btn" style="background-color: #7f8c8d;" onclick="toggleAll(false)">Collapse All</button>
+        </div>
+    </div>
+
+    <!-- Questions Container -->
+    <div id="questionsContainer">
+
+        <!-- Question 1 -->
+        <div class="question-card" id="q1">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 1</div>
+                    <div class="question-text">
+                        Jasmine grew ninety-two mums to sell at the school fundraiser. At the end of the fundraiser, twenty-four mums remained. How many mums did Jasmine sell?
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp1', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp1">
+                <h4>Explanation:</h4>
+                <p>This is a subtraction problem. Let $m$ be the number of mums sold:</p>
+                $$\text{Total Mums} - \text{Mums Remaining} = \text{Mums Sold}$$
+                $$92 - 24 = m$$
+                <p>Performing vertical subtraction:</p>
+                $$\begin{array}{r} 92 \\ - 24 \\ \hline 68 \end{array}$$
+                <div class="final-answer">Answer: Jasmine sold $68$ mums.</div>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card" id="q2">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 2</div>
+                    <div class="question-text">
+                        Rochelle collected 42 seashells. Then Zuri collected some seashells. They collected 83 seashells in all. How many seashells did Zuri collect?
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp2', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp2">
+                <h4>Explanation:</h4>
+                <p>Let $s$ be the number of seashells Zuri collected. Write an addition equation and solve for $s$ by subtracting:</p>
+                $$42 + s = 83 \implies s = 83 - 42$$
+                $$\begin{array}{r} 83 \\ - 42 \\ \hline 41 \end{array}$$
+                <div class="final-answer">Answer: Zuri collected $41$ seashells.</div>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card" id="q3">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 3</div>
+                    <div class="question-text">
+                        Conner estimated that the radius of one of the circles on the playground was 2 yards. If Conner was correct, then:
+                        <br><strong>a.</strong> the radius was how many feet?
+                        <br><strong>b.</strong> the diameter was how many feet?
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp3', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp3">
+                <h4>Explanation:</h4>
+                <p>We know that $1\text{ yard} = 3\text{ feet}$.</p>
+                <ul>
+                    <li><strong>a. Radius in feet:</strong> Multiply yards by $3$:
+                    $$2\text{ yards} \times 3\text{ feet/yard} = 6\text{ feet}$$</li>
+                    <li><strong>b. Diameter in feet:</strong> The diameter is twice the radius:
+                    $$\text{Diameter} = 2 \times \text{Radius} = 2 \times 6\text{ feet} = 12\text{ feet}$$</li>
+                </ul>
+                <div class="final-answer">Answer: a. $6\text{ feet}$, b. $12\text{ feet}$</div>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-card" id="q4">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 4</div>
+                    <div class="question-text">
+                        Find the missing numbers in the counting sequence:
+                        $$\dots, 8, \underline{\quad}, \underline{\quad}, 32, 40, \underline{\quad}, \dots$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp4', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp4">
+                <h4>Explanation:</h4>
+                <p>Determine the rule of the sequence by looking at adjacent terms: $40 - 32 = 8$. The sequence counts by $8$s (multiples of 8):</p>
+                $$8 \times 1 = 8$$
+                $$8 \times 2 = 16$$
+                $$8 \times 3 = 24$$
+                $$8 \times 4 = 32$$
+                $$8 \times 5 = 40$$
+                $$8 \times 6 = 48$$
+                <div class="final-answer">Answer: Missing numbers are $16, 24, 48$</div>
+            </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question-card" id="q5">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 5</div>
+                    <div class="question-text">
+                        Find the missing numbers in the counting sequence:
+                        $$\dots, 14, \underline{\quad}, \underline{\quad}, 35, 42, \dots$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp5', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp5">
+                <h4>Explanation:</h4>
+                <p>Find the common difference: $42 - 35 = 7$. The sequence counts by $7$s (multiples of 7):</p>
+                $$14 + 7 = 21$$
+                $$21 + 7 = 28$$
+                <div class="final-answer">Answer: Missing numbers are $21, 28$</div>
+            </div>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="question-card" id="q6">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 6</div>
+                    <div class="question-text">
+                        Use the digits 4, 5, and 6 to write a three-digit odd number less than 640. Each number may be used only once.
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp6', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp6">
+                <h4>Explanation:</h4>
+                <ol>
+                    <li>To make an <strong>odd number</strong>, the last digit must be odd. Among $\{4, 5, 6\}$, the only odd digit is $5$. Thus, the ones digit is $5$.</li>
+                    <li>The remaining digits for hundreds and tens are $4$ and $6$.</li>
+                    <li>The number must be <strong>less than 640</strong>. If $6$ is placed in the hundreds place, $645 > 640$ (too large).</li>
+                    <li>Therefore, $4$ must be in the hundreds place, leaving $6$ for the tens place.</li>
+                </ol>
+                <div class="final-answer">Answer: $465$</div>
+            </div>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="question-card" id="q7">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 7</div>
+                    <div class="question-text">
+                        Use digits and a comparison symbol to write that two hundred nine is greater than one hundred ninety.
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp7', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp7">
+                <h4>Explanation:</h4>
+                <p>Convert the words to mathematical terms:</p>
+                <ul>
+                    <li>"two hundred nine" $= 209$</li>
+                    <li>"one hundred ninety" $= 190$</li>
+                    <li>"is greater than" $= >$</li>
+                </ul>
+                <div class="final-answer">Answer: $209 > 190$</div>
+            </div>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="question-card" id="q8">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 8</div>
+                    <div class="question-text">
+                        Fernando arrived home from school at the time shown on the clock (3:25). He snacked for 5 minutes, and then he spent 35 minutes completing his homework. What time did Fernando complete his homework?
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp8', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp8">
+                <h4>Explanation:</h4>
+                <ol>
+                    <li><strong>Arrival time:</strong> The clock shows $3:25$.</li>
+                    <li><strong>After snack:</strong> $3:25 + 5\text{ minutes} = 3:30$.</li>
+                    <li><strong>After homework:</strong> $3:30 + 35\text{ minutes} = 4:05$.</li>
+                </ol>
+                <div class="final-answer">Answer: $4:05\text{ p.m.}$ (or $4:05$)</div>
+            </div>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="question-card" id="q9">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 9</div>
+                    <div class="question-text">
+                        Draw a rectangle $3\text{ cm}$ long and $1\text{ cm}$ wide. Then shade two thirds of it.
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp9', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp9">
+                <h4>Explanation:</h4>
+                <p>Draw a rectangle with length $3\text{ cm}$ and width $1\text{ cm}$. Divide it into $3$ equal sections of $1\text{ cm} \times 1\text{ cm}$ squares. Shade $2$ of the $3$ sections to represent $\frac{2}{3}$.</p>
+                <div class="final-answer">Answer: Shade $2$ of the $3$ equal $1\text{ cm}^2$ segments.</div>
+            </div>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="question-card" id="q10">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 10</div>
+                    <div class="question-text">
+                        Find each product:
+                        <br><strong>a.</strong> $2 \times 8$ &nbsp;&nbsp;&nbsp;&nbsp; <strong>b.</strong> $5 \times 7$
+                        <br><strong>c.</strong> $2 \times 7$ &nbsp;&nbsp;&nbsp;&nbsp; <strong>d.</strong> $5 \times 8$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp10', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp10">
+                <h4>Explanation:</h4>
+                <ul>
+                    <li>a. $2 \times 8 = 16$</li>
+                    <li>b. $5 \times 7 = 35$</li>
+                    <li>c. $2 \times 7 = 14$</li>
+                    <li>d. $5 \times 8 = 40$</li>
+                </ul>
+                <div class="final-answer">Answer: a. $16$, b. $35$, c. $14$, d. $40$</div>
+            </div>
+        </div>
+
+        <!-- Question 11 -->
+        <div class="question-card" id="q11">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 11</div>
+                    <div class="question-text">
+                        In this figure (parallelogram ABCD), what type of angle is angle A? Explain how you know.
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp11', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp11">
+                <h4>Explanation:</h4>
+                <p>Angle A opens wider than a right angle ($90^\circ$). An angle that measures greater than $90^\circ$ and less than $180^\circ$ is defined as an <strong>obtuse angle</strong>.</p>
+                <div class="final-answer">Answer: Obtuse angle (it measures greater than $90^\circ$).</div>
+            </div>
+        </div>
+
+        <!-- Question 12 -->
+        <div class="question-card" id="q12">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 12</div>
+                    <div class="question-text">
+                        To what number is the arrow pointing on the number line? (Tick mark is halfway between $-20$ and $-10$).
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp12', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp12">
+                <h4>Explanation:</h4>
+                <p>The distance between $-20$ and $-10$ is $10$ units. The tick mark splits this segment into two equal halves of $5$ units:</p>
+                $$-20 + 5 = -15$$
+                <div class="final-answer">Answer: $-15$</div>
+            </div>
+        </div>
+
+        <!-- Question 13 -->
+        <div class="question-card" id="q13">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 13</div>
+                    <div class="question-text">
+                        At what temperature does water freeze:
+                        <br><strong>a.</strong> on the Fahrenheit scale?
+                        <br><strong>b.</strong> on the Celsius scale?
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp13', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp13">
+                <h4>Explanation:</h4>
+                <p>Standard freezing points of water:</p>
+                <ul>
+                    <li>Fahrenheit scale: $32^\circ\text{F}$</li>
+                    <li>Celsius scale: $0^\circ\text{C}$</li>
+                </ul>
+                <div class="final-answer">Answer: a. $32^\circ\text{F}$, b. $0^\circ\text{C}$</div>
+            </div>
+        </div>
+
+        <!-- Question 14 -->
+        <div class="question-card" id="q14">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 14</div>
+                    <div class="question-text">
+                        $$\begin{array}{r} \$83 \\ - \$19 \\ \hline \end{array}$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp14', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp14">
+                <h4>Explanation:</h4>
+                <p>Subtract $19$ from $83$:</p>
+                $$\begin{array}{r} 83 \\ - 19 \\ \hline 64 \end{array}$$
+                <div class="final-answer">Answer: $\$64$</div>
+            </div>
+        </div>
+
+        <!-- Question 15 -->
+        <div class="question-card" id="q15">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 15</div>
+                    <div class="question-text">
+                        $$\begin{array}{r} \$286 \\ + \$387 \\ \hline \end{array}$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp15', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp15">
+                <h4>Explanation:</h4>
+                <p>Add $286$ and $387$ vertically:</p>
+                $$\begin{array}{r} 286 \\ + 387 \\ \hline 673 \end{array}$$
+                <div class="final-answer">Answer: $\$673$</div>
+            </div>
+        </div>
+
+        <!-- Question 16 -->
+        <div class="question-card" id="q16">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 16</div>
+                    <div class="question-text">
+                        $$\begin{array}{r} 72 \\ - 38 \\ \hline \end{array}$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp16', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp16">
+                <h4>Explanation:</h4>
+                <p>Subtract $38$ from $72$:</p>
+                $$\begin{array}{r} 72 \\ - 38 \\ \hline 34 \end{array}$$
+                <div class="final-answer">Answer: $34$</div>
+            </div>
+        </div>
+
+        <!-- Question 17 -->
+        <div class="question-card" id="q17">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 17</div>
+                    <div class="question-text">
+                        $$\begin{array}{r} \$5.87 \\ + \$2.79 \\ \hline \end{array}$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp17', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp17">
+                <h4>Explanation:</h4>
+                <p>Add amounts including decimals:</p>
+                $$\begin{array}{r} \$5.87 \\ + \$2.79 \\ \hline \$8.66 \end{array}$$
+                <div class="final-answer">Answer: $\$8.66$</div>
+            </div>
+        </div>
+
+        <!-- Question 18 -->
+        <div class="question-card" id="q18">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 18</div>
+                    <div class="question-text">
+                        Solve for $q$:
+                        $$\begin{array}{r} 19 \\ + q \\ \hline 46 \end{array}$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp18', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp18">
+                <h4>Explanation:</h4>
+                <p>Subtract $19$ from both sides to find $q$:</p>
+                $$q = 46 - 19 = 27$$
+                <div class="final-answer">Answer: $q = 27$</div>
+            </div>
+        </div>
+
+        <!-- Question 19 -->
+        <div class="question-card" id="q19">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 19</div>
+                    <div class="question-text">
+                        Solve for $n$:
+                        $$\begin{array}{r} 88 \\ - n \\ \hline 37 \end{array}$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp19', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp19">
+                <h4>Explanation:</h4>
+                <p>Rearrange the subtraction to solve for $n$:</p>
+                $$n = 88 - 37 = 51$$
+                <div class="final-answer">Answer: $n = 51$</div>
+            </div>
+        </div>
+
+        <!-- Question 20 -->
+        <div class="question-card" id="q20">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 20</div>
+                    <div class="question-text">
+                        Solve for $m$:
+                        $$\begin{array}{r} 88 \\ - m \\ \hline 47 \end{array}$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp20', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp20">
+                <h4>Explanation:</h4>
+                <p>Subtract $47$ from $88$ to find $m$:</p>
+                $$m = 88 - 47 = 41$$
+                <div class="final-answer">Answer: $m = 41$</div>
+            </div>
+        </div>
+
+        <!-- Question 21 -->
+        <div class="question-card" id="q21">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 21</div>
+                    <div class="question-text">
+                        Solve for $g$:
+                        $$\begin{array}{r} g \\ + 14 \\ \hline 47 \end{array}$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp21', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp21">
+                <h4>Explanation:</h4>
+                <p>Subtract $14$ from $47$ to find $g$:</p>
+                $$g = 47 - 14 = 33$$
+                <div class="final-answer">Answer: $g = 33$</div>
+            </div>
+        </div>
+
+        <!-- Question 22 -->
+        <div class="question-card" id="q22">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 22</div>
+                    <div class="question-text">
+                        $$870 - 470$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp22', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp22">
+                <h4>Explanation:</h4>
+                $$\begin{array}{r} 870 \\ - 470 \\ \hline 400 \end{array}$$
+                <div class="final-answer">Answer: $400$</div>
+            </div>
+        </div>
+
+        <!-- Question 23 -->
+        <div class="question-card" id="q23">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 23</div>
+                    <div class="question-text">
+                        $$525 - 521$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp23', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp23">
+                <h4>Explanation:</h4>
+                $$\begin{array}{r} 525 \\ - 521 \\ \hline 4 \end{array}$$
+                <div class="final-answer">Answer: $4$</div>
+            </div>
+        </div>
+
+        <!-- Question 24 -->
+        <div class="question-card" id="q24">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 24</div>
+                    <div class="question-text">
+                        Change this addition problem to a multiplication problem. Then find the product on the multiplication table:
+                        $$8 + 8 + 8$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp24', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp24">
+                <h4>Explanation:</h4>
+                <p>Since $8$ is added $3$ times, it can be written as $3 \times 8$ (or $8 \times 3$):</p>
+                $$3 \times 8 = 24$$
+                <div class="final-answer">Answer: $3 \times 8 = 24$</div>
+            </div>
+        </div>
+
+        <!-- Question 25 -->
+        <div class="question-card" id="q25">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 25</div>
+                    <div class="question-text">
+                        Find the sum:
+                        $$1 + 9 + 2 + 8 + 3 + 7 + 4 + 6 + 5 + 10$$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp25', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp25">
+                <h4>Explanation:</h4>
+                <p>Group pairs that add up to $10$ to add efficiently:</p>
+                $$(1+9) + (2+8) + (3+7) + (4+6) + 5 + 10$$
+                $$= 10 + 10 + 10 + 10 + 5 + 10 = 55$$
+                <div class="final-answer">Answer: $55$</div>
+            </div>
+        </div>
+
+        <!-- Question 26 -->
+        <div class="question-card" id="q26">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 26</div>
+                    <div class="question-text">
+                        Multiple Choice: Which of these does <em>not</em> equal 24?
+                        <br><strong>A</strong> $3 \times 8$ &nbsp;&nbsp;&nbsp;&nbsp; <strong>B</strong> $4 \times 6$ &nbsp;&nbsp;&nbsp;&nbsp; <strong>C</strong> $2 \times 12$ &nbsp;&nbsp;&nbsp;&nbsp; <strong>D</strong> $8 \times 4$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp26', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp26">
+                <h4>Explanation:</h4>
+                <ul>
+                    <li>A: $3 \times 8 = 24$</li>
+                    <li>B: $4 \times 6 = 24$</li>
+                    <li>C: $2 \times 12 = 24$</li>
+                    <li>D: $8 \times 4 = 32 \neq 24$</li>
+                </ul>
+                <div class="final-answer">Answer: D ($8 \times 4$)</div>
+            </div>
+        </div>
+
+        <!-- Question 27 -->
+        <div class="question-card" id="q27">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 27</div>
+                    <div class="question-text">
+                        Name the property of multiplication shown by each of these examples:
+                        <br><strong>a.</strong> $0 \times 50 = 0$
+                        <br><strong>b.</strong> $9 \times 6 = 6 \times 9$
+                        <br><strong>c.</strong> $1 \times 75 = 75$
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp27', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp27">
+                <h4>Explanation:</h4>
+                <ul>
+                    <li><strong>a. Zero Property of Multiplication:</strong> Multiplying any number by $0$ results in $0$.</li>
+                    <li><strong>b. Commutative Property of Multiplication:</strong> Changing the order of factors does not change the product.</li>
+                    <li><strong>c. Identity Property of Multiplication:</strong> Multiplying any number by $1$ leaves it unchanged.</li>
+                </ul>
+                <div class="final-answer">Answer: a. Zero Property, b. Commutative Property, c. Identity Property</div>
+            </div>
+        </div>
+
+        <!-- Question 28 -->
+        <div class="question-card" id="q28">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 28</div>
+                    <div class="question-text">
+                        <strong>a.</strong> Round $\$3.49$ to the nearest dollar.
+                        <br><strong>b.</strong> Round $\$3.49$ to the nearest 25 cents.
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp28', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp28">
+                <h4>Explanation:</h4>
+                <ul>
+                    <li><strong>a. Nearest dollar:</strong> $49\text{ cents}$ is less than $50\text{ cents}$, so round down to $\$3.00$.</li>
+                    <li><strong>b. Nearest 25 cents:</strong> Multiples of $25\text{ cents}$ are $\$3.00, \$3.25, \$3.50, \$3.75$. Since $\$3.49$ is only $1\text{ cent}$ away from $\$3.50$, it rounds to $\$3.50$.</li>
+                </ul>
+                <div class="final-answer">Answer: a. $\$3.00$, b. $\$3.50$</div>
+            </div>
+        </div>
+
+        <!-- Question 29 -->
+        <div class="question-card" id="q29">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 29</div>
+                    <div class="question-text">
+                        Write a multiplication equation that has a product of 18.
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp29', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp29">
+                <h4>Explanation:</h4>
+                <p>Choose any two factors that multiply to give $18$:</p>
+                $$2 \times 9 = 18 \quad \text{or} \quad 3 \times 6 = 18$$
+                <div class="final-answer">Answer: $2 \times 9 = 18$ (or $3 \times 6 = 18$)</div>
+            </div>
+        </div>
+
+        <!-- Question 30 -->
+        <div class="question-card" id="q30">
+            <div class="question-header">
+                <div>
+                    <div class="question-title">Problem 30</div>
+                    <div class="question-text">
+                        Suppose $x + y = z$. Write one more addition and two subtraction equations using $x, y,$ and $z$.
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleExplanation('exp30', this)">Show Explanation</button>
+            </div>
+            <div class="explanation" id="exp30">
+                <h4>Explanation:</h4>
+                <ul>
+                    <li><strong>Addition (Commutative Property):</strong>
+                    $$y + x = z$$</li>
+                    <li><strong>Subtraction 1 (Inverse Operation):</strong>
+                    $$z - x = y$$</li>
+                    <li><strong>Subtraction 2 (Inverse Operation):</strong>
+                    $$z - y = x$$</li>
+                </ul>
+                <div class="final-answer">Answer: Addition: $y + x = z$; Subtractions: $z - x = y$ and $z - y = x$</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Generate navigation grid buttons dynamically
+    const navGrid = document.getElementById('navGrid');
+    for (let i = 1; i <= 30; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'nav-btn';
+        btn.innerText = `Q${i}`;
+        btn.onclick = () => {
+            const card = document.getElementById(`q${i}`);
+            card.scrollIntoView({ behavior: 'smooth' });
+            // Show explanation when jumping
+            const exp = document.getElementById(`exp${i}`);
+            const toggleBtn = card.querySelector('.toggle-btn');
+            if (!exp.classList.contains('show')) {
+                exp.classList.add('show');
+                toggleBtn.innerText = 'Hide Explanation';
+            }
+        };
+        navGrid.appendChild(btn);
+    }
+
+    // Toggle individual explanation
+    function toggleExplanation(id, btn) {
+        const exp = document.getElementById(id);
+        if (exp.classList.contains('show')) {
+            exp.classList.remove('show');
+            btn.innerText = 'Show Explanation';
+        } else {
+            exp.classList.add('show');
+            btn.innerText = 'Hide Explanation';
+        }
+    }
+
+    // Expand or Collapse All Explanations
+    function toggleAll(show) {
+        const explanations = document.querySelectorAll('.explanation');
+        const buttons = document.querySelectorAll('.toggle-btn');
+        explanations.forEach(exp => {
+            if (show) {
+                exp.classList.add('show');
+            } else {
+                exp.classList.remove('show');
+            }
+        });
+        buttons.forEach(btn => {
+            btn.innerText = show ? 'Hide Explanation' : 'Show Explanation';
+        });
+    }
+</script>
+
+</body>
+</html>
