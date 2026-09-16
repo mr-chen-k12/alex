@@ -1,0 +1,1035 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice Suite - Sets A, B, & C</title>
+<style>
+    :root {
+        --primary-navy: #1a5276;
+        --primary-hover: #154360;
+        --accent-orange: #d35400;
+        --accent-orange-hover: #a04000;
+        --success-green: #27ae60;
+        --success-green-hover: #1e8449;
+        --bg-light: #f4f6f9;
+        --card-bg: #ffffff;
+        --border-color: #d5dbdb;
+        --text-dark: #2c3e50;
+        --text-muted: #7f8c8d;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px 15px;
+    }
+
+    #quiz-container {
+        max-width: 850px;
+        margin: 0 auto;
+        background: var(--card-bg);
+        padding: 35px 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        position: relative;
+    }
+
+    .header-bar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+        border-bottom: 2px solid #eaeded;
+        padding-bottom: 15px;
+    }
+
+    h1 {
+        margin: 0;
+        color: var(--primary-navy);
+        font-size: 1.8em;
+        font-weight: 700;
+    }
+
+    .set-selector-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .set-selector-wrapper label {
+        font-weight: 600;
+        color: var(--text-dark);
+        font-size: 0.95em;
+    }
+
+    select.set-dropdown {
+        padding: 8px 14px;
+        font-size: 15px;
+        font-weight: 600;
+        border: 2px solid var(--primary-navy);
+        border-radius: 6px;
+        background-color: #f8f9fa;
+        color: var(--primary-navy);
+        cursor: pointer;
+        outline: none;
+        transition: all 0.2s;
+    }
+
+    select.set-dropdown:hover {
+        background-color: #ebf5fb;
+    }
+
+    .print-blank-btn {
+        background-color: #5d6d7e;
+        padding: 8px 14px;
+        font-size: 14px;
+        border-radius: 6px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .print-blank-btn:hover {
+        background-color: #34495e;
+    }
+
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: 700;
+        color: var(--primary-navy);
+        font-size: 1.1em;
+        background: #ebf5fb;
+        padding: 8px 16px;
+        border-radius: 20px;
+        display: inline-block;
+        margin: 0 auto 20px auto;
+    }
+
+    .progress-wrapper {
+        text-align: center;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+
+    .question-block.active {
+        display: block;
+    }
+
+    .passage {
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        background-color: #fcfcfc;
+        padding: 20px;
+        border-left: 5px solid var(--primary-navy);
+        border-radius: 4px;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+        color: #1a1a1a;
+        box-shadow: inset 0 0 5px rgba(0,0,0,0.02);
+    }
+
+    .prompt {
+        font-weight: 600;
+        font-size: 1.05em;
+        margin-bottom: 18px;
+        color: #2c3e50;
+    }
+
+    .options {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .options li {
+        margin-bottom: 12px;
+    }
+
+    .options label {
+        display: flex;
+        align-items: flex-start;
+        background: #f8f9fa;
+        padding: 12px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s;
+        border: 1px solid var(--border-color);
+        font-size: 0.98em;
+    }
+
+    .options label:hover {
+        background: #ebf5fb;
+        border-color: #aed6f1;
+    }
+
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.75;
+    }
+
+    .options input[type="radio"] {
+        margin-right: 14px;
+        margin-top: 3px;
+        flex-shrink: 0;
+        accent-color: var(--primary-navy);
+        transform: scale(1.15);
+    }
+
+    .feedback {
+        margin-top: 20px;
+        padding: 16px 20px;
+        border-radius: 8px;
+        display: none;
+        border-left: 5px solid;
+        font-size: 0.98em;
+        line-height: 1.5;
+    }
+
+    .feedback.correct {
+        background-color: #e8f8f5;
+        color: #117a65;
+        border-color: var(--success-green);
+        display: block;
+    }
+
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: 600;
+    }
+
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 30px;
+        border-top: 2px solid #eaeded;
+        padding-top: 20px;
+        gap: 10px;
+    }
+
+    button.btn {
+        padding: 10px 22px;
+        font-size: 15px;
+        font-weight: 600;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        background-color: var(--primary-navy);
+        color: white;
+        transition: background 0.2s, transform 0.1s;
+    }
+
+    button.btn:hover { background-color: var(--primary-hover); }
+    button.btn:active { transform: scale(0.98); }
+    button.btn:disabled { background-color: #bdc3c7; cursor: not-allowed; transform: none; }
+    
+    .check-btn { background-color: var(--accent-orange); }
+    .check-btn:hover { background-color: var(--accent-orange-hover); }
+    .check-btn:disabled { background-color: #f0b27a; }
+    
+    .submit-btn { background-color: var(--success-green); }
+    .submit-btn:hover { background-color: var(--success-green-hover); }
+
+    #results {
+        display: none;
+        padding: 25px;
+        background: #f8f9fa;
+        border: 2px solid #d5dbdb;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    #score-display {
+        font-size: 1.6em;
+        font-weight: 700;
+        color: var(--primary-navy);
+        margin: 10px 0;
+    }
+
+    #univ-reward {
+        display: none;
+        margin-top: 25px;
+        padding: 25px;
+        background: #ffffff;
+        border: 3px double #a51c30;
+        border-radius: 10px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        animation: pullUp 0.5s ease-out;
+    }
+
+    #univ-reward img {
+        width: 150px;
+        height: auto;
+        margin: 15px auto;
+        display: block;
+    }
+
+    .univ-text {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 1.35em;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .certificate-title {
+        text-transform: uppercase;
+        font-size: 0.85em;
+        color: #7f8c8d;
+        letter-spacing: 2px;
+        margin-top: 5px;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    @keyframes pullUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 25px;
+            margin-bottom: 25px;
+        }
+
+        .header-bar, .nav-buttons, .progress-wrapper, .print-blank-btn, select { 
+            display: none !important; 
+        }
+
+        .options label { border: none; padding: 4px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        #univ-reward {
+            display: block !important;
+            border-style: solid !important;
+            border-width: 2px !important;
+        }
+
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 650px) {
+        .header-bar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .set-selector-wrapper {
+            justify-content: space-between;
+        }
+        .nav-buttons {
+            flex-wrap: wrap;
+        }
+        button.btn {
+            flex: 1 1 45%;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <div class="header-bar">
+        <h1>SAT Reading Practice</h1>
+        <div class="set-selector-wrapper">
+            <label for="set-select">Select Set:</label>
+            <select id="set-select" class="set-dropdown" onchange="switchSet(this.value)">
+                <option value="A">Set A - Core Analysis</option>
+                <option value="B">Set B - Intermediate Inference</option>
+                <option value="C">Set C - Advanced Synthesis</option>
+            </select>
+            <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank</button>
+        </div>
+    </div>
+
+    <div class="progress-wrapper">
+        <div class="progress-tracker" id="progress-tracker">Set A | Question 1 of 10</div>
+    </div>
+    
+    <div id="results">
+        <h2>Set Completed!</h2>
+        <div id="score-display"></div>
+        <p style="color: #5d6d7e;">Review all question explanations below or choose another set above.</p>
+        
+        <div id="univ-reward">
+            <div class="certificate-title">Official Distinction of Academic Excellence</div>
+            <div class="univ-text" id="univ-reward-title">★ FLAWLESS ACADEMIC EXCELLENCE ★</div>
+            <img id="univ-reward-img" src="" alt="University Crest">
+            <p id="univ-reward-text" style="color: #444; font-style: italic; font-weight: 600; margin-top: 10px;"></p>
+        </div>
+
+        <button class="btn" onclick="window.print()" style="margin-top: 20px; background-color: var(--primary-navy);">🖨️ Print Results Summary</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions dynamically injected via JavaScript -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button class="btn" id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="btn check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button class="btn" id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="btn submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit Set for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+const universityRewards = [
+    {
+        name: "Harvard University",
+        img: "https://mr-chen-k12.github.io/math/IMG_0232.png",
+        color: "#a51c30"
+    },
+    {
+        name: "Boston University",
+        img: "https://mr-chen-k12.github.io/books/IMG_0121.png",
+        color: "#CC0000"
+    },
+    {
+        name: "Yale University",
+        img: "https://mr-chen-k12.github.io/books/IMG_0122.png",
+        color: "#00356B"
+    }
+];
+
+const quizSets = {
+    A: [
+        {
+            passage: "Architectural historians analyzing mid-twentieth-century civic buildings often emphasize the structural starkness of Brutalism. Critics initial condemned these concrete structures as unfeeling and oppressive, yet modern scholars characterize their unadorned surfaces as remarkably _______, reflecting a deliberate desire for social transparency and functional purity.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["austere", "ostentatious", "haphazard", "transitory"],
+            correctAnswer: 0,
+            explanation: "'Austere' means severe or simple in appearance, fitting the description of unadorned surfaces designed for functional purity rather than decorative showiness."
+        },
+        {
+            passage: "Mycorrhizal networks consist of underground fungal hyphae that physically link the root systems of separate plants. Researchers discovered that when a tree experiences pest defoliation, it transmits chemical signaling molecules through these fungal conduits to neighboring trees. Upon receiving these signals, the neighboring trees proactively elevate their production of defensive phenolic compounds before pests arrive.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Mycorrhizal networks function primarily to absorb atmospheric carbon dioxide for soil microbes.",
+                "Fungal hyphae damage root structures and weaken the natural immunity of mature forest trees.",
+                "Trees utilize mycorrhizal networks as communication channels to warn neighbors of insect threats.",
+                "Phenolic compounds represent the primary nutrient exchange mechanism between fungi and plant roots."
+            ],
+            correctAnswer: 2,
+            explanation: "The passage focuses on how trees send chemical defense signals through mycorrhizal fungal networks to warn neighboring trees about incoming pests."
+        },
+        {
+            passage: "Data collected by the James Webb Space Telescope revealed several luminous galaxies existing merely 300 million years after the Big Bang. Standard cosmological models predicted that early cosmic matter would take much longer to coalesce into stars of such high mass and brightness. Scientists hypothesize that early star formation efficiency was significantly higher than previously assumed or that primordial seed black holes accelerated early galactic accumulation. Consequently, astrophysicists conclude that early galaxy formation _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "followed timelines far faster and more energetic than existing models predicted.",
+                "relied exclusively on solar radiation from neighboring older galaxies.",
+                "proves that the Big Bang occurred several billion years later than estimated.",
+                "occurred without the presence of gravitational interactions or dark matter."
+            ],
+            correctAnswer: 0,
+            explanation: "Because early massive galaxies appeared earlier than existing models permitted, astrophysicists logically conclude galaxy formation happened faster than previously predicted."
+        },
+        {
+            passage: "Economic historians studying nineteenth-century industrial labor frequently evaluate the shift from agrarian seasonal schedules to mechanized factory shifts. <b>In her 2022 monograph, Dr. Vance analyzed payroll ledgers from New England cotton mills to demonstrate that female textile workers maintained informal mutual-aid funds during economic downturns.</b> This evidence refined earlier accounts that treated early industrial laborers as entirely devoid of collective agency.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the text as a whole?",
+            options: [
+                "It presents specific empirical archival research used to modify a historical perspective on industrial workers.",
+                "It refutes the claim that cotton production was economically significant in nineteenth-century New England.",
+                "It outlines a theoretical model for calculating wage fluctuations across seasonal agricultural industries.",
+                "It provides background on federal labor regulations governing cotton mill operations."
+            ],
+            correctAnswer: 0,
+            explanation: "The highlighted sentence details Dr. Vance's empirical study of mill payroll ledgers, which served to refine/modify historical views on early industrial workers' agency."
+        },
+        {
+            passage: "Text 1\nRealist literature achieves its dramatic power by adhering strictly to naturalistic probability. By portraying everyday human experiences, familiar social settings, and believable cause-and-effect relationships, realist novels allow readers to recognize their own moral dilemmas within the narrative context.\n\nText 2\nMagical realism expands the boundaries of literary narrative by introducing fantastical elements seamlessly into mundane environments. Rather than distracting from human truths, these surreal occurrences amplify emotional reality, capturing psychological depth that strict realism cannot convey.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely respond to Text 1's claim regarding literary realism?",
+            options: [
+                "By arguing that fantastical elements in literature can convey psychological truths just as effectively as strict realism.",
+                "By asserting that realistic fiction is completely incapable of depicting moral dilemmas.",
+                "By claiming that ordinary readers are unable to comprehend surreal narrative devices.",
+                "By suggesting that literature should avoid portraying everyday human experiences altogether."
+            ],
+            correctAnswer: 0,
+            explanation: "Text 2 argues that magical elements amplify emotional and psychological depth, counterbalancing Text 1's view that strict naturalistic realism is the primary vehicle for truth."
+        },
+        {
+            passage: "Urban planners evaluated traffic congestion metrics in metropolitan corridors following the implementation of electronic peak-hour tolls. They observed a 22% reduction in single-occupancy commuter vehicles during peak travel windows, alongside a 35% increase in transit ridership. To support the claim that the toll system successfully encouraged sustainable transit choices, planners cited data showing that _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "commuters shifted to high-capacity buses and trains during the exact hours tolls were in effect.",
+                "overall private vehicle purchases increased across all suburban zip codes.",
+                "highway maintenance costs remained completely unchanged over the two-year period.",
+                "bordering non-tolled residential streets experienced severe traffic gridlock."
+            ],
+            correctAnswer: 0,
+            explanation: "To prove the tolls successfully encouraged sustainable transit choices, evidence must show that commuters specifically transitioned to public transit (buses/trains) during toll hours."
+        },
+        {
+            passage: "Because the ancient papyrus scroll had been exposed to moisture for centuries, its written ink was exceptionally fragile; any hasty handling threatened to render the historical text completely _______.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["indecipherable", "ubiquitous", "resilient", "superfluous"],
+            correctAnswer: 0,
+            explanation: "'Indecipherable' means impossible to read or understand, which directly aligns with fragile ink being damaged by hasty handling."
+        },
+        {
+            passage: "Botanists measuring leaf stomatal density across various forest canopies found that under elevated carbon dioxide environments, plants produce fewer stomatal pores per unit area. This adaptation enables plants to conserve water vapor while taking in sufficient carbon dioxide for photosynthesis. Consequently, researchers infer that plants growing in CO2-enriched atmospheres _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "exhibit improved water-use efficiency compared to plants in lower CO2 environments.",
+                "require substantially greater quantities of water to survive ambient temperatures.",
+                "lose their ability to synthesize sugars through normal photosynthetic pathways.",
+                "increase their stomatal density to maximize transpired water vapor."
+            ],
+            correctAnswer: 0,
+            explanation: "Reducing stomatal pores allows plants to take in CO2 while losing less water vapor, meaning they achieve greater water-use efficiency."
+        },
+        {
+            passage: "Anthropologists studying oral traditions among indigenous communities note that epic storytelling serves as more than entertainment; it operates as an active repository of ecological knowledge, genealogical history, and legal precedents. Through structured repetition and mnemonic rhythmic phrasing, elder storytellers pass critical survival strategies to younger generations across centuries without written scripts.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Oral storytelling preserves vital ecological and cultural knowledge across generations through structured mnemonic methods.",
+                "Indigenous oral epics were originally transcribed onto parchment before being memorized by elders.",
+                "Mnemonic phrasing is utilized exclusively for memorizing legal codes in agrarian societies.",
+                "Written scripts are proven to be more accurate than oral transmission for preserving genealogy."
+            ],
+            correctAnswer: 0,
+            explanation: "The text emphasizes how oral storytelling acts as a repository of knowledge passed down through generations using mnemonic structures."
+        },
+        {
+            passage: "Engineers designing turbine components for high-temperature aerospace applications require materials that maintain structural integrity under extreme thermal stress. Refractory alloys are particularly suitable because they are exceptionally _______ to heat degradation.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["resistant", "vulnerable", "pliable", "volatile"],
+            correctAnswer: 0,
+            explanation: "'Resistant' fits the context of materials maintaining structural integrity without breaking down under heat stress."
+        }
+    ],
+
+    B: [
+        {
+            passage: "Conservation biologists monitoring wetland ecosystems emphasized that eradicating non-native carp is essential to restoring native vegetation. Left unchecked, the invasive carp stir up benthic sediment, blocking sunlight required for submerged aquatic plants. Therefore, targeted management interventions are needed to _______ the damage caused by these invasive fish.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["mitigate", "exacerbate", "perpetuate", "disregard"],
+            correctAnswer: 0,
+            explanation: "'Mitigate' means to make less severe or serious, matching the goal of management interventions to reduce damage caused by invasive carp."
+        },
+        {
+            passage: "Cognitive psychologists investigating adult language acquisition observed that older learners utilize explicit rule-based learning pathways in the prefrontal cortex, whereas young children rely predominantly on implicit statistical learning in the basal ganglia. Despite these structural processing differences, adult learners who undergo immersive language instruction achieve high levels of functional fluency, demonstrating that adult neural architecture remains remarkably flexible.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Adults and children process language using identical neural pathways in the prefrontal cortex.",
+                "Adult brains retain sufficient neural plasticity to achieve language fluency through different learning pathways than children.",
+                "Implicit statistical learning in the basal ganglia is impossible once a person reaches adulthood.",
+                "Immersive language instruction is effective only for young children learning their first language."
+            ],
+            correctAnswer: 1,
+            explanation: "The passage asserts that adults use different neural pathways than children yet achieve fluency, showing adult neural architecture remains flexible (neuroplasticity)."
+        },
+        {
+            passage: "Airborne LiDAR technology emits laser pulses through dense tropical jungle canopies to generate high-resolution topographical maps of the forest floor. When applied over the Maya Lowlands, LiDAR scans unveiled thousands of previously undetected agricultural terraces, roadways, and residential foundations beneath dense vegetation. This technological application demonstrates that ancient Mesoamerican population densities _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "were vastly larger and more structurally interconnected than archeologists previously estimated.",
+                "declined rapidly prior to the construction of permanent stone roadways.",
+                "relied entirely on imported food supplies from distant coastal settlements.",
+                "were accurately mapped using conventional ground surveys during the nineteenth century."
+            ],
+            correctAnswer: 0,
+            explanation: "Uncovering thousands of hidden terraces, roads, and foundations implies population density and interconnectedness were much greater than previously thought."
+        },
+        {
+            passage: "In his analysis of nineteenth-century gothic fiction, Dr. Aris examines how authors constructed atmosphere. <b>Specifically, he highlights how Edgar Allan Poe utilized claustrophobic spatial settings to mirror the psychological disintegration of his protagonists.</b> This technique grounded abstract mental distress in tangible physical environments.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+            options: [
+                "It provides a specific illustration of how a gothic author used setting to reflect a character's psychological state.",
+                "It compares Edgar Allan Poe's writing style to that of modern psychological thrillers.",
+                "It presents empirical evidence contradicting Dr. Aris's thesis regarding gothic narrative structures.",
+                "It explains the architectural trends prevalent in nineteenth-century residential construction."
+            ],
+            correctAnswer: 0,
+            explanation: "The highlighted sentence gives a specific example (Poe's claustrophobic settings) illustrating the general claim about constructing atmosphere."
+        },
+        {
+            passage: "Text 1\nBanning single-use plastic consumer products is the most direct policy solution to ocean pollution. Municipal bans immediately eliminate millions of tons of non-biodegradable waste from municipal streams, preventing plastic pollution at its source.\n\nText 2\nWhile consumer bans reduce plastic litter, they often prompt manufacturers to substitute paper or cotton alternatives that carry substantially higher carbon footprints during production. Comprehensive waste management must focus on scaling circular chemical recycling technologies rather than prohibition alone.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely view the approach advocated in Text 1?",
+            options: [
+                "As overly simplistic because it fails to consider the broader lifecycle environmental impacts of alternative materials.",
+                "As the only effective method for achieving zero carbon emissions in manufacturing.",
+                "As technically impossible to enforce in modern urban municipal centers.",
+                "As superior to chemical recycling in reducing atmospheric greenhouse gases."
+            ],
+            correctAnswer: 0,
+            explanation: "Text 2 points out that plastic bans cause substitutions with higher carbon footprints, making Text 1's prohibition approach overly simplistic regarding lifecycle impacts."
+        },
+        {
+            passage: "Neuroscientists studied spatial memory consolidation by training mice to navigate a complex water maze. Group A was permitted uninterrupted slow-wave sleep after training, whereas Group B was subjected to sleep deprivation. Subsequent trials revealed that Group A navigated the maze significantly faster and with fewer errors. To support the conclusion that slow-wave sleep specifically consolidates spatial memory traces, researchers demonstrated that _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "neural reactivation patterns in the hippocampus during slow-wave sleep matched those recorded during maze navigation.",
+                "mice in Group B consumed significantly more food during the testing period than mice in Group A.",
+                "both groups of mice exhibited identical swim speeds during initial pre-training baseline trials.",
+                "the maze water temperature had a greater effect on performance than sleep duration."
+            ],
+            correctAnswer: 0,
+            explanation: "Matching hippocampal neural firing patterns during sleep to those during maze learning provides direct neurobiological evidence that slow-wave sleep consolidates spatial memory."
+        },
+        {
+            passage: "Though the two dialectical forms developed in isolated geographic regions, their grammatical structures exhibit _______ similarities, suggesting a common linguistic ancestor.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["striking", "superfluous", "incongruous", "negligible"],
+            correctAnswer: 0,
+            explanation: "'Striking' means noticeable or dramatic, which logically explains why researchers would infer a common linguistic ancestor."
+        },
+        {
+            passage: "Deep-ocean whale falls occur when the carcass of a baleen whale sinks to the abyssal seafloor. In these nutrient-poor environments, a single carcass provides a massive organic windfall, supporting distinct ecological succession stages across decades—from mobile scavengers devouring soft tissue to specialized bone-eating worms (*Osedax*) consuming lipids inside the skeleton. This ecosystem phenomenon demonstrates that _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "localized nutrient inputs can sustain diverse biological communities in energy-deprived ocean zones.",
+                "baleen whales migrate to abyssal depths specifically when seeking feeding grounds.",
+                "bone-eating worms are the primary predators of live ocean mammals in surface waters.",
+                "abyssal seafloor habitats possess uniform oxygen and nutrient levels across all regions."
+            ],
+            correctAnswer: 0,
+            explanation: "A whale fall providing concentrated organic matter in a nutrient-poor area shows how localized inputs sustain diverse biological communities in deep energy-deprived zones."
+        },
+        {
+            passage: "Art historians analyzing the transition from Impressionism to Post-Impressionism emphasize that while Impressionists sought to capture fleeting atmospheric light effects, Post-Impressionists like Paul Cézanne prioritized geometric structure and symbolic color expression. This shift represented a movement away from passive optical observation toward active conceptual interpretation of form.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Post-Impressionism departed from Impressionism by emphasizing structured form and symbolic expression over fleeting light effects.",
+                "Paul Cézanne rejected the use of color in oil paintings to focus exclusively on charcoal line drawings.",
+                "Impressionist artists were unconcerned with visual aesthetics or artistic composition.",
+                "Post-Impressionist paintings were designed to replicate photograph-like realism."
+            ],
+            correctAnswer: 0,
+            explanation: "The passage explains that Post-Impressionism shifted focus from capturing fleeting light (Impressionism) to structured forms and symbolic expression."
+        },
+        {
+            passage: "Faced with volatile commodity prices and rising supply chain expenses, the corporate board adopted a _______ financial strategy, choosing to build cash reserves rather than engage in risky overseas expansion.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["prudent", "precipitous", "capricious", "reckless"],
+            correctAnswer: 0,
+            explanation: "'Prudent' means acting with or showing care and thought for the future, perfectly describing building cash reserves to withstand economic volatility."
+        }
+    ],
+
+    C: [
+        {
+            passage: "Planetary scientists studying Jovian moon Europa analyzed spectrographic data indicating ocean water upwelling through surface ice fractures. Given the presence of hydrothermal chemical signatures, scientists consider Europa one of the most _______ candidates in our solar system for harboring extraterrestrial microbial life.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["plausible", "tenuous", "anomalous", "unviable"],
+            correctAnswer: 0,
+            explanation: "'Plausible' means reasonable or probable. Ocean water upwelling and hydrothermal signatures make Europa a plausible candidate for microbial life."
+        },
+        {
+            passage: "In 1952, biophysicist Rosalind Franklin captured 'Photo 51' using X-ray crystallography, revealing the distinctive B-form helical structure of DNA. Although her critical image was shared with James Watson and Francis Crick without her explicit knowledge, it provided the vital spatial dimensions required for them to construct their famous double-helix molecular model. Recognizing Franklin's contribution is essential to understanding the collaborative—and often contentious—history of molecular biology.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Rosalind Franklin's X-ray crystallography data provided crucial structural evidence that enabled the modeling of the DNA double helix.",
+                "Watson and Crick developed their DNA model without utilizing any physical laboratory measurements.",
+                "X-ray crystallography was proven to be ineffective for determining molecular structures in 1952.",
+                "Photo 51 demonstrated that DNA consisted of a single linear protein strand."
+            ],
+            correctAnswer: 0,
+            explanation: "The passage emphasizes that Franklin's Photo 51 provided the essential physical/spatial data that allowed Watson and Crick to model the double helix structure."
+        },
+        {
+            passage: "Island biogeography theory posits that isolated insular environments induce evolutionary changes known as the 'island rule,' where small species evolve larger body sizes (island gigantism) and large species evolve smaller sizes (island dwarfism). On Mediterranean islands during the Pleistocene, fossil dwarf elephants evolved to be less than six feet tall due to limited resource availability and an absence of large apex predators. This evolutionary trajectory indicates that natural selection _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "modifies organismal morphology in response to ecological constraints like resource limits and predator pressures.",
+                "consistently produces larger organism body sizes on small landmasses over time.",
+                "prevents mammal species from adapting to island habitats without human intervention.",
+                "eliminates genetic variation within insular populations faster than on mainland continents."
+            ],
+            correctAnswer: 0,
+            explanation: "Dwarf elephants evolving smaller sizes due to resource constraints and lack of predators demonstrates that selection adapts morphology to specific ecological pressures."
+        },
+        {
+            passage: "Musicologists analyzing Johann Sebastian Bach's contrapuntal compositions highlight how individual melodic lines maintain independence while harmonizing simultaneously. <b>In a fugue, a single musical subject is introduced by one voice and subsequently imitated by others in succession, creating a dense polyphonic tapestry.</b> This structural technique demands intricate balance between horizontal melody and vertical harmony.",
+            prompt: "Which choice best describes the function of the highlighted sentence in the text as a whole?",
+            options: [
+                "It describes the specific musical mechanism by which fugues achieve independent yet harmonized polyphony.",
+                "It explains why modern audiences prefer homophonic melodies over classical Baroque compositions.",
+                "It compares Bach's keyboard compositions to 20th-century orchestral arrangements.",
+                "It provides historical details regarding the invention of modern musical notation."
+            ],
+            correctAnswer: 0,
+            explanation: "The highlighted sentence details the specific mechanism (introducing and imitating a subject across voices) used to build independent yet harmonious fugal structures."
+        },
+        {
+            passage: "Text 1\nAdvancements in generative artificial intelligence represent a transformative leap for economic productivity. By automating routine cognitive tasks, AI tools free human workers to focus on high-level strategic problem-solving and creative innovation, ultimately driving unprecedented macroeconomic growth.\n\nText 2\nWhile generative AI tools boost efficiency in certain sectors, their rapid integration risks severe labor market displacement in white-collar professions. Without robust retraining programs and safety nets, worker displacement will compound income inequality faster than economic growth can absorb.",
+            prompt: "Based on the texts, how would the author of Text 2 most likely characterize the view expressed in Text 1?",
+            options: [
+                "As overly optimistic, because it overlooks potential worker displacement and rising economic inequality.",
+                "As factually incorrect regarding AI's ability to automate routine cognitive tasks.",
+                "As identical to historical arguments against early mechanical steam engines.",
+                "As advocating for strict federal prohibition of artificial intelligence development."
+            ],
+            correctAnswer: 0,
+            explanation: "Text 2 stresses that rapid AI adoption risks severe labor market displacement and inequality, viewing Text 1's purely positive stance on productivity as overly optimistic."
+        },
+        {
+            passage: "Sociologists studying post-pandemic employment patterns evaluated demographic shifts in suburban municipalities. Survey data revealed a 28% increase in full-time remote employees relocating from urban centers to mid-sized suburban towns. To support the claim that this migration altered local suburban economies, researchers gathered empirical data showing that _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "local suburban commercial tax revenues and small business openings increased noticeably in receiving towns.",
+                "urban transit systems reported record high passenger ridership during suburban commuting hours.",
+                "remote workers spent less time on digital communication tools during standard working hours.",
+                "suburban residential construction ceased entirely due to high material costs."
+            ],
+            correctAnswer: 0,
+            explanation: "Increased local commercial tax revenues and new small business openings provide direct empirical evidence that remote worker relocation impacted local suburban economies."
+        },
+        {
+            passage: "The novelist's prose was lauded by contemporary reviewers for being extraordinarily _______; her vivid sensory descriptions allowed readers to visualize the foggy coastal landscape with crystal clarity.",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["evocative", "pedantic", "ambiguous", "convoluted"],
+            correctAnswer: 0,
+            explanation: "'Evocative' means bringing strong images, memories, or feelings to mind, matching the description of vivid imagery enabling clear visualization."
+        },
+        {
+            passage: "Paleontologists discovering arthropod specimens preserved in Cretaceous amber noted that tree resin engulfs organisms instantly, preventing decay by isolating them from atmospheric oxygen and bacteria. This rapid encasement preserves fragile anatomical structures—such as compound eyes and delicate wing venation—with nanometer-scale fidelity. Consequently, amber fossils offer researchers _______",
+            prompt: "Which choice most logically completes the text?",
+            options: [
+                "unprecedented structural detail regarding ancient micro-organisms compared to standard rock fossils.",
+                "complete chemical records of atmospheric greenhouse gas concentrations during the Jurassic era.",
+                "definitive proof that Cretaceous insects possessed larger body dimensions than modern species.",
+                "evidence that ancient tree resin degraded bone tissue faster than aquatic sedimentary layers."
+            ],
+            correctAnswer: 0,
+            explanation: "Preserving delicate anatomy with nanometer-scale fidelity means amber fossils provide unprecedented structural detail compared to typical mineralized rock fossils."
+        },
+        {
+            passage: "Oceanographers monitoring the Atlantic Meridional Overturning Circulation (AMOC)—a major system of deep-ocean currents—observed a measurable weakening in transport velocity over recent decades. Warm surface waters moving northward cool and sink in the North Atlantic, driving global oceanic heat distribution. Melting ice sheets dilute saline ocean waters with fresh water, decreasing surface water density and disrupting the sinking mechanism that drives the current.",
+            prompt: "Which choice best states the main idea of the text?",
+            options: [
+                "Freshwater influx from melting ice sheets is weakening the AMOC by altering water density and ocean circulation.",
+                "The AMOC is powered primarily by wind patterns across the tropical regions of the South Pacific.",
+                "Ocean surface water salinity increases rapidly whenever polar ice sheets melt.",
+                "Deep-ocean currents have remained completely stable throughout modern geological history."
+            ],
+            correctAnswer: 0,
+            explanation: "The passage explains how freshwater from melting ice decreases density, disrupting surface water sinking and thereby weakening the AMOC system."
+        },
+        {
+            passage: "Cognitive psychologists studying decision-making bias identified the 'anchoring effect,' wherein individuals rely too heavily on the first piece of information encountered when making judgments. Even when presented with subsequent contradictory evidence, participants frequently adjust their estimates insufficiently from the initial anchor value. This psychological phenomenon demonstrates that human reasoning is _______",
+            prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+            options: ["susceptible", "immune", "impervious", "indifferent"],
+            correctAnswer: 0,
+            explanation: "'Susceptible' means vulnerable or influenced by something. Relying too heavily on initial anchors shows human reasoning is susceptible to cognitive biases."
+        }
+    ]
+};
+
+let currentSetKey = 'A';
+let currentQuestionIndex = 0;
+let userAnswers = {}; // Map: `${setKey}-${qIndex}` -> selected option
+let isQuestionLocked = {}; // Map: `${setKey}-${qIndex}` -> boolean
+
+function initSet(setKey) {
+    currentSetKey = setKey;
+    currentQuestionIndex = 0;
+    
+    // Ensure state arrays/maps exist
+    if (!userAnswers[setKey]) {
+        userAnswers[setKey] = new Array(quizSets[setKey].length).fill(null);
+    }
+    if (!isQuestionLocked[setKey]) {
+        isQuestionLocked[setKey] = new Array(quizSets[setKey].length).fill(false);
+    }
+
+    renderInteractiveQuestions();
+    renderPrintBlankVersion();
+    
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('nav-buttons').style.display = 'flex';
+    document.getElementById('progress-tracker').style.display = 'inline-block';
+    
+    showQuestion(0);
+}
+
+function switchSet(newSetKey) {
+    initSet(newSetKey);
+}
+
+function renderInteractiveQuestions() {
+    const wrapper = document.getElementById('questions-wrapper');
+    wrapper.innerHTML = '';
+    const questions = quizSets[currentSetKey];
+
+    questions.forEach((q, qIndex) => {
+        const qBlock = document.createElement('div');
+        qBlock.className = `question-block ${qIndex === 0 ? 'active' : ''}`;
+        qBlock.id = `q-block-${qIndex}`;
+
+        let optionsHTML = '';
+        q.options.forEach((opt, optIndex) => {
+            optionsHTML += `
+                <li>
+                    <label id="lbl-${qIndex}-${optIndex}">
+                        <input type="radio" name="q-${currentSetKey}-${qIndex}" value="${optIndex}" onchange="selectOption(${qIndex}, ${optIndex})">
+                        <span>${opt}</span>
+                    </label>
+                </li>
+            `;
+        });
+
+        qBlock.innerHTML = `
+            <div class="passage">${q.passage}</div>
+            <div class="prompt">${q.prompt}</div>
+            <ul class="options">${optionsHTML}</ul>
+            <div class="feedback" id="feedback-${qIndex}"></div>
+        `;
+
+        wrapper.appendChild(qBlock);
+    });
+}
+
+function renderPrintBlankVersion() {
+    const container = document.getElementById('print-blank-container');
+    const questions = quizSets[currentSetKey];
+    
+    let printHTML = `
+        <div style="text-align: center; margin-bottom: 25px;">
+            <h1 style="color: #1a5276; margin-bottom: 5px;">SAT Reading Practice Exam</h1>
+            <h2 style="color: #555; margin-top: 0; font-size: 1.2em;">Set ${currentSetKey} - Blank Question Sheet</h2>
+            <div style="font-size: 0.9em; color: #777;">Name: _______________________ &nbsp;&nbsp;&nbsp;&nbsp; Date: _______________ &nbsp;&nbsp;&nbsp;&nbsp; Score: ______ / 10</div>
+        </div>
+        <hr style="border: 0; border-top: 1px solid #ccc; margin-bottom: 30px;">
+    `;
+
+    questions.forEach((q, qIndex) => {
+        let printOptionsHTML = '';
+        q.options.forEach((opt, optIndex) => {
+            const letter = String.fromCharCode(65 + optIndex);
+            printOptionsHTML += `
+                <li style="margin-bottom: 10px; display: flex; align-items: baseline;">
+                    <span style="font-weight: bold; width: 25px;">${letter})</span>
+                    <span>${opt}</span>
+                </li>
+            `;
+        });
+
+        printHTML += `
+            <div style="margin-bottom: 35px; page-break-inside: avoid;">
+                <p style="font-weight: bold; font-size: 1.05em; color: #1a5276; margin-bottom: 8px;">Question ${qIndex + 1}</p>
+                <div style="font-family: Georgia, serif; padding: 14px; background-color: #f9f9f9; border-left: 4px solid #1a5276; margin-bottom: 12px; line-height: 1.5;">${q.passage}</div>
+                <p style="font-weight: 600; margin-bottom: 12px;">${q.prompt}</p>
+                <ul style="list-style-type: none; padding-left: 5px;">${printOptionsHTML}</ul>
+            </div>
+        `;
+    });
+
+    container.innerHTML = printHTML;
+}
+
+function selectOption(qIndex, optIndex) {
+    if (isQuestionLocked[currentSetKey][qIndex]) return;
+
+    userAnswers[currentSetKey][qIndex] = optIndex;
+    
+    const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+    if (feedbackDiv.classList.contains('warning')) {
+        feedbackDiv.style.display = 'none';
+    }
+}
+
+function checkAnswer() {
+    const qIndex = currentQuestionIndex;
+    const selected = userAnswers[currentSetKey][qIndex];
+    const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+    const q = quizSets[currentSetKey][qIndex];
+
+    if (selected === null || selected === undefined) {
+        feedbackDiv.innerHTML = "⚠️ Please select an option before checking your answer.";
+        feedbackDiv.className = "feedback warning";
+        return;
+    }
+
+    if (isQuestionLocked[currentSetKey][qIndex]) return;
+
+    isQuestionLocked[currentSetKey][qIndex] = true;
+
+    // Disable inputs for this question
+    const radios = document.getElementsByName(`q-${currentSetKey}-${qIndex}`);
+    radios.forEach(r => r.disabled = true);
+    q.options.forEach((_, optIdx) => {
+        const lbl = document.getElementById(`lbl-${qIndex}-${optIdx}`);
+        if (lbl) lbl.classList.add('disabled');
+    });
+
+    updateNavState();
+
+    if (selected === q.correctAnswer) {
+        feedbackDiv.innerHTML = `<strong>✓ Correct!</strong><br><br><strong>Explanation:</strong> ${q.explanation}`;
+        feedbackDiv.className = "feedback correct";
+    } else {
+        const correctLetter = String.fromCharCode(65 + q.correctAnswer);
+        feedbackDiv.innerHTML = `<strong>✕ Incorrect.</strong> The correct answer is <strong>${correctLetter}) ${q.options[q.correctAnswer]}</strong>.<br><br><strong>Explanation:</strong> ${q.explanation}`;
+        feedbackDiv.className = "feedback incorrect";
+    }
+}
+
+function showQuestion(index) {
+    const questions = quizSets[currentSetKey];
+    if (index < 0 || index >= questions.length) return;
+
+    document.querySelectorAll('.question-block').forEach(el => el.classList.remove('active'));
+    
+    const targetBlock = document.getElementById(`q-block-${index}`);
+    if (targetBlock) targetBlock.classList.add('active');
+
+    currentQuestionIndex = index;
+
+    // Restore radio button selection if already answered
+    const savedAns = userAnswers[currentSetKey][index];
+    if (savedAns !== null && savedAns !== undefined) {
+        const radios = document.getElementsByName(`q-${currentSetKey}-${index}`);
+        if (radios[savedAns]) radios[savedAns].checked = true;
+    }
+
+    document.getElementById('progress-tracker').textContent = `Set ${currentSetKey} | Question ${index + 1} of ${questions.length}`;
+    
+    updateNavState();
+}
+
+function navigate(direction) {
+    showQuestion(currentQuestionIndex + direction);
+}
+
+function updateNavState() {
+    const totalQ = quizSets[currentSetKey].length;
+    document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
+
+    if (currentQuestionIndex === totalQ - 1) {
+        document.getElementById('next-btn').style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'inline-block';
+    } else {
+        document.getElementById('next-btn').style.display = 'inline-block';
+        document.getElementById('submit-btn').style.display = 'none';
+    }
+
+    const checkBtn = document.getElementById('check-btn');
+    if (isQuestionLocked[currentSetKey][currentQuestionIndex]) {
+        checkBtn.disabled = true;
+        checkBtn.textContent = "Answer Checked";
+    } else {
+        checkBtn.disabled = false;
+        checkBtn.textContent = "Check Answer";
+    }
+}
+
+function submitQuiz() {
+    const questions = quizSets[currentSetKey];
+    let score = 0;
+
+    questions.forEach((q, qIndex) => {
+        const qBlock = document.getElementById(`q-block-${qIndex}`);
+        const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+        
+        qBlock.classList.add('active'); // Reveal all for full review
+
+        const selected = userAnswers[currentSetKey][qIndex];
+
+        // Disable input
+        const radios = document.getElementsByName(`q-${currentSetKey}-${qIndex}`);
+        radios.forEach(r => r.disabled = true);
+
+        isQuestionLocked[currentSetKey][qIndex] = true;
+
+        if (selected === q.correctAnswer) {
+            score++;
+            if (!feedbackDiv.classList.contains('correct')) {
+                feedbackDiv.innerHTML = `<strong>✓ Correct!</strong><br><br><strong>Explanation:</strong> ${q.explanation}`;
+                feedbackDiv.className = "feedback correct";
+            }
+        } else {
+            const correctLetter = String.fromCharCode(65 + q.correctAnswer);
+            feedbackDiv.innerHTML = `<strong>✕ ${selected === null || selected === undefined ? 'Unanswered' : 'Incorrect'}.</strong> The correct answer is <strong>${correctLetter}) ${q.options[q.correctAnswer]}</strong>.<br><br><strong>Explanation:</strong> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    });
+
+    document.getElementById('nav-buttons').style.display = 'none';
+    document.getElementById('progress-tracker').style.display = 'none';
+    
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.style.display = 'block';
+
+    const percentage = Math.round((score / questions.length) * 100);
+    document.getElementById('score-display').textContent = `Score: ${score} / ${questions.length} (${percentage}%)`;
+
+    // Trigger Reward Banner if 10/10 (100%)
+    const rewardDiv = document.getElementById('univ-reward');
+    if (score === questions.length) {
+        const reward = universityRewards[Math.floor(Math.random() * universityRewards.length)];
+        
+        document.getElementById('univ-reward-title').style.color = reward.color;
+        rewardDiv.style.borderColor = reward.color;
+        
+        const rewardImg = document.getElementById('univ-reward-img');
+        rewardImg.src = reward.img;
+        rewardImg.alt = `${reward.name} Crest`;
+
+        document.getElementById('univ-reward-text').textContent = 
+            `Congratulations on your flawless 100% performance on Set ${currentSetKey}! You have officially earned the ${reward.name} Verification Certificate of Academic Mastery.`;
+
+        rewardDiv.style.display = 'block';
+    } else {
+        rewardDiv.style.display = 'none';
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function printBlankQuiz() {
+    document.body.classList.add('print-blank-mode');
+    window.print();
+    document.body.classList.remove('print-blank-mode');
+}
+
+// Initialize default set on page load
+window.onload = function() {
+    initSet('A');
+};
+</script>
+</body>
+</html>
