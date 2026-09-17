@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saxon Math Course 2 - Lesson 12 Solutions</title>
+  
+  <!-- MathJax Configuration and Script -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --primary-color: #1e3a8a;
+      --secondary-color: #2563eb;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-color: #1e293b;
+      --border-color: #e2e8f0;
+      --accent-bg: #eff6ff;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin-top: 30px;
+      margin-bottom: 20px;
+      font-size: 1.25rem;
+    }
+
+    .problem-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .problem-header {
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .problem-text {
+      margin-bottom: 15px;
+    }
+
+    .toggle-btn {
+      background-color: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background-color 0.2s ease;
+    }
+
+    .toggle-btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    .solution-box {
+      margin-top: 15px;
+      padding: 15px;
+      background-color: var(--accent-bg);
+      border-left: 4px solid var(--secondary-color);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .answer-label {
+      font-weight: bold;
+      color: #15803d;
+      margin-top: 10px;
+    }
+
+    ol, ul {
+      padding-left: 20px;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Saxon Math Course 2 - Lesson 12</h1>
+  <p class="subtitle">Complete Step-by-Step Solutions with Interactive Reveals</p>
+
+  <!-- LESSON PRACTICE -->
+  <div class="section-title">Lesson Practice</div>
+
+  <!-- LP a -->
+  <div class="problem-card">
+    <div class="problem-header">Lesson Practice a (CLASSIFY)</div>
+    <div class="problem-text">
+      The number $1,000,000,000$ is how much greater than $25,000,000$? What type of problem is this? Explain your reasoning.
+    </div>
+    <button class="toggle-btn" id="btn-lp-a" onclick="toggleAnswer('lp-a')">Show Answer & Explanation</button>
+    <div id="lp-a" class="solution-box hidden">
+      <p><strong>Equation:</strong> $1,000,000,000 - 25,000,000 = d$</p>
+      <p><strong>Type of Problem:</strong> Comparison Problem</p>
+      <p><strong>Explanation:</strong> We are comparing two numbers to find the difference ($d$) between them using the formula $\text{Greater} - \text{Lesser} = \text{Difference}$ ($g - l = d$).</p>
+      <p class="answer-label">Answer: $975,000,000$</p>
+    </div>
+  </div>
+
+  <!-- LP b -->
+  <div class="problem-card">
+    <div class="problem-header">Lesson Practice b</div>
+    <div class="problem-text">
+      How many years were there from 1215 to 1791?
+    </div>
+    <button class="toggle-btn" id="btn-lp-b" onclick="toggleAnswer('lp-b')">Show Answer & Explanation</button>
+    <div id="lp-b" class="solution-box hidden">
+      <p><strong>Equation:</strong> $1791 - 1215 = d$</p>
+      <p><strong>Explanation:</strong> This is an elapsed-time problem ($\text{Later time} - \text{Earlier time} = \text{Difference}$). Subtracting $1215$ from $1791$ yields $576$.</p>
+      <p class="answer-label">Answer: $576 \text{ years}$</p>
+    </div>
+  </div>
+
+  <!-- LP c -->
+  <div class="problem-card">
+    <div class="problem-header">Lesson Practice c</div>
+    <div class="problem-text">
+      John F. Kennedy was elected president in 1960 at the age of 43. In what year was he born?
+    </div>
+    <button class="toggle-btn" id="btn-lp-c" onclick="toggleAnswer('lp-c')">Show Answer & Explanation</button>
+    <div id="lp-c" class="solution-box hidden">
+      <p><strong>Equation:</strong> $1960 - e = 43$ (or $1960 - 43 = b$)</p>
+      <p><strong>Explanation:</strong> To find the birth year, subtract his age ($43$) from the year he was elected ($1960$): $1960 - 43 = 1917$.</p>
+      <p class="answer-label">Answer: $1917$</p>
+    </div>
+  </div>
+
+  <!-- LP d -->
+  <div class="problem-card">
+    <div class="problem-header">Lesson Practice d (FORMULATE)</div>
+    <div class="problem-text">
+      Write a word problem about comparing that fits this equation:
+      $$58\text{ in.} - 55\text{ in.} = d$$
+    </div>
+    <button class="toggle-btn" id="btn-lp-d" onclick="toggleAnswer('lp-d')">Show Answer & Explanation</button>
+    <div id="lp-d" class="solution-box hidden">
+      <p><strong>Sample Word Problem:</strong> Sarah is $58\text{ inches}$ tall and her younger brother is $55\text{ inches}$ tall. How many inches taller is Sarah than her brother?</p>
+      <p class="answer-label">Answer: $d = 3\text{ inches}$</p>
+    </div>
+  </div>
+
+  <!-- LP e -->
+  <div class="problem-card">
+    <div class="problem-header">Lesson Practice e (FORMULATE)</div>
+    <div class="problem-text">
+      Write a word problem about elapsed time that fits this equation:
+      $$2003 - b = 14$$
+    </div>
+    <button class="toggle-btn" id="btn-lp-e" onclick="toggleAnswer('lp-e')">Show Answer & Explanation</button>
+    <div id="lp-e" class="solution-box hidden">
+      <p><strong>Sample Word Problem:</strong> An athlete won a championship in the year $2003$ at $14$ years of age. In what year was the athlete born?</p>
+      <p class="answer-label">Answer: $b = 1989$</p>
+    </div>
+  </div>
+
+
+  <!-- WRITTEN PRACTICE -->
+  <div class="section-title">Written Practice</div>
+
+  <!-- Q1 -->
+  <div class="problem-card">
+    <div class="problem-header">1.</div>
+    <div class="problem-text">
+      In 2003, the U.S. imported one million, eight hundred seventy thousand barrels of crude oil per day. In 1988, the U.S. imported only nine hundred eleven thousand barrels per day. How many fewer barrels per day did the U.S. import in 1988?
+    </div>
+    <button class="toggle-btn" id="btn-q1" onclick="toggleAnswer('q1')">Show Answer & Explanation</button>
+    <div id="q1" class="solution-box hidden">
+      <p><strong>Equation:</strong> $1,870,000 - 911,000 = d$</p>
+      <p><strong>Explanation:</strong> Subtract $911,000$ from $1,870,000$: $1,870,000 - 911,000 = 959,000$.</p>
+      <p class="answer-label">Answer: $959,000\text{ barrels per day}$</p>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="problem-card">
+    <div class="problem-header">2.</div>
+    <div class="problem-text">
+      West Street Middle School received 18 new computers for the media center. Now there are 31 computers in the media center. How many computers were there before they received the new computers?
+    </div>
+    <button class="toggle-btn" id="btn-q2" onclick="toggleAnswer('q2')">Show Answer & Explanation</button>
+    <div id="q2" class="solution-box hidden">
+      <p><strong>Equation:</strong> $p + 18 = 31$ (or $31 - 18 = p$)</p>
+      <p><strong>Explanation:</strong> Subtract the newly received computers ($18$) from the current total ($31$): $31 - 18 = 13$.</p>
+      <p class="answer-label">Answer: $13\text{ computers}$</p>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="problem-card">
+    <div class="problem-header">3.</div>
+    <div class="problem-text">
+      William and the Normans conquered England in 1066. The Magna Carta was signed by King John in 1215. How many years were there from 1066 to 1215?
+    </div>
+    <button class="toggle-btn" id="btn-q3" onclick="toggleAnswer('q3')">Show Answer & Explanation</button>
+    <div id="q3" class="solution-box hidden">
+      <p><strong>Equation:</strong> $1215 - 1066 = d$</p>
+      <p><strong>Explanation:</strong> Subtract the earlier year ($1066$) from the later year ($1215$): $1215 - 1066 = 149$.</p>
+      <p class="answer-label">Answer: $149\text{ years}$</p>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="problem-card">
+    <div class="problem-header">4.</div>
+    <div class="problem-text">
+      The Coliseum, built by the Romans in the first century A.D., could seat about 50,000 spectators. The Los Angeles Coliseum, built for the 1932 Olympics, could seat about 105,000 spectators at the time. How many fewer spectators could the Roman Coliseum seat?
+    </div>
+    <button class="toggle-btn" id="btn-q4" onclick="toggleAnswer('q4')">Show Answer & Explanation</button>
+    <div id="q4" class="solution-box hidden">
+      <p><strong>Equation:</strong> $105,000 - 50,000 = d$</p>
+      <p><strong>Explanation:</strong> Subtract $50,000$ from $105,000$: $105,000 - 50,000 = 55,000$.</p>
+      <p class="answer-label">Answer: $55,000\text{ spectators}$</p>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="problem-card">
+    <div class="problem-header">5. (FORMULATE)</div>
+    <div class="problem-text">
+      Write a word problem about separating that fits this equation:
+      $$\$20.00 - c = \$7.13$$
+    </div>
+    <button class="toggle-btn" id="btn-q5" onclick="toggleAnswer('q5')">Show Answer & Explanation</button>
+    <div id="q5" class="solution-box hidden">
+      <p><strong>Sample Word Problem:</strong> Maria went to the store with a $\$20.00$ bill. After buying a book, she had $\$7.13$ left. How much did the book cost?</p>
+      <p class="answer-label">Answer: $c = \$12.87$</p>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="problem-card">
+    <div class="problem-header">6.</div>
+    <div class="problem-text">
+      Which properties are illustrated by these equations?
+      <ul>
+        <li>a. $\frac{1}{2} \times 1 = \frac{1}{2}$</li>
+        <li>b. $\frac{1}{2} \times \frac{2}{1} = 1$</li>
+      </ul>
+    </div>
+    <button class="toggle-btn" id="btn-q6" onclick="toggleAnswer('q6')">Show Answer & Explanation</button>
+    <div id="q6" class="solution-box hidden">
+      <p><strong>Explanation:</strong></p>
+      <ul>
+        <li><strong>a:</strong> Multiplying any number by $1$ keeps its identity. This is the <strong>Identity Property of Multiplication</strong>.</li>
+        <li><strong>b:</strong> Multiplying a number by its reciprocal yields $1$. This is the <strong>Inverse Property of Multiplication</strong> (or Multiplicative Inverse Property).</li>
+      </ul>
+      <p class="answer-label">Answer: a. Identity Property of Multiplication | b. Inverse Property of Multiplication</p>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="problem-card">
+    <div class="problem-header">7.</div>
+    <div class="problem-text">
+      Twenty-three thousand is how much less than one million? Use words to write the answer.
+    </div>
+    <button class="toggle-btn" id="btn-q7" onclick="toggleAnswer('q7')">Show Answer & Explanation</button>
+    <div id="q7" class="solution-box hidden">
+      <p><strong>Calculation:</strong> $1,000,000 - 23,000 = 977,000$.</p>
+      <p><strong>Explanation:</strong> Subtract $23,000$ from $1,000,000$ to get $977,000$, then express the result in word form.</p>
+      <p class="answer-label">Answer: Nine hundred seventy-seven thousand</p>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="problem-card">
+    <div class="problem-header">8.</div>
+    <div class="problem-text">
+      Replace each circle with the proper comparison symbol:
+      <ul>
+        <li>a. $2 - 3 \bigcirc -1$</li>
+        <li>b. $\frac{1}{2} \bigcirc \frac{1}{3}$</li>
+      </ul>
+    </div>
+    <button class="toggle-btn" id="btn-q8" onclick="toggleAnswer('q8')">Show Answer & Explanation</button>
+    <div id="q8" class="solution-box hidden">
+      <p><strong>Explanation:</strong></p>
+      <ul>
+        <li><strong>a:</strong> $2 - 3 = -1$. Since $-1 = -1$, the symbol is $=$.</li>
+        <li><strong>b:</strong> Converting to decimals or common denominators: $\frac{1}{2} = 0.5$ and $\frac{1}{3} \approx 0.333$. Since $0.5 > 0.333$, the symbol is $>$.</li>
+      </ul>
+      <p class="answer-label">Answer: a. $=$ | b. $>$</p>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="problem-card">
+    <div class="problem-header">9.</div>
+    <div class="problem-text">
+      Name three segments in the figure below in order of length from shortest to longest (Points on line: $P, Q, R$ from left to right).
+    </div>
+    <button class="toggle-btn" id="btn-q9" onclick="toggleAnswer('q9')">Show Answer & Explanation</button>
+    <div id="q9" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Segment $PQ$ is the shortest section, segment $QR$ is the next longer section, and segment $PR$ spans the entire length.</p>
+      <p class="answer-label">Answer: $\overline{PQ}, \overline{QR}, \overline{PR}$ (or $PQ, QR, PR$)</p>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="problem-card">
+    <div class="problem-header">10. (MODEL)</div>
+    <div class="problem-text">
+      Draw and shade circles to show that $2\frac{3}{4}$ equals $\frac{11}{4}$.
+    </div>
+    <button class="toggle-btn" id="btn-q10" onclick="toggleAnswer('q10')">Show Answer & Explanation</button>
+    <div id="q10" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Draw 3 circles and divide each into 4 equal quarters (total of 12 quarters). Shade 2 full circles ($4 + 4 = 8$ quarters) and $3$ quarters of the 3rd circle. The total number of shaded quarters is $8 + 3 = 11$ quarters, or $\frac{11}{4}$.</p>
+      <p class="answer-label">Answer: 2 fully shaded circles + 1 circle with $\frac{3}{4}$ shaded $= \frac{11}{4}$</p>
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="problem-card">
+    <div class="problem-header">11.</div>
+    <div class="problem-text">
+      <ul>
+        <li>a. What fraction of the triangle is shaded?</li>
+        <li>b. What percent of the triangle is not shaded?</li>
+      </ul>
+    </div>
+    <button class="toggle-btn" id="btn-q11" onclick="toggleAnswer('q11')">Show Answer & Explanation</button>
+    <div id="q11" class="solution-box hidden">
+      <p><strong>Explanation:</strong> The large triangle is divided into $4$ equal smaller triangles.</p>
+      <ul>
+        <li><strong>a:</strong> $1$ out of $4$ triangles is shaded, so the fraction is $\frac{1}{4}$.</li>
+        <li><strong>b:</strong> $3$ out of $4$ triangles are unshaded. Expressed as a percentage: $\frac{3}{4} = 75\%$.</li>
+      </ul>
+      <p class="answer-label">Answer: a. $\frac{1}{4}$ | b. $75\%$</p>
+    </div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="problem-card">
+    <div class="problem-header">12.</div>
+    <div class="problem-text">
+      The number 100 is divisible by which whole numbers?
+    </div>
+    <button class="toggle-btn" id="btn-q12" onclick="toggleAnswer('q12')">Show Answer & Explanation</button>
+    <div id="q12" class="solution-box hidden">
+      <p><strong>Explanation:</strong> List all factors of $100$ ($1 \times 100$, $2 \times 50$, $4 \times 25$, $5 \times 20$, $10 \times 10$).</p>
+      <p class="answer-label">Answer: $1, 2, 4, 5, 10, 20, 25, 50, 100$</p>
+    </div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="problem-card">
+    <div class="problem-header">13.</div>
+    <div class="problem-text">
+      Solve: $15x = 630$
+    </div>
+    <button class="toggle-btn" id="btn-q13" onclick="toggleAnswer('q13')">Show Answer & Explanation</button>
+    <div id="q13" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Divide both sides by $15$: $x = \frac{630}{15} = 42$.</p>
+      <p class="answer-label">Answer: $x = 42$</p>
+    </div>
+  </div>
+
+  <!-- Q14 -->
+  <div class="problem-card">
+    <div class="problem-header">14.</div>
+    <div class="problem-text">
+      Solve: $y - 2714 = 3601$
+    </div>
+    <button class="toggle-btn" id="btn-q14" onclick="toggleAnswer('q14')">Show Answer & Explanation</button>
+    <div id="q14" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Add $2714$ to both sides: $y = 3601 + 2714 = 6315$.</p>
+      <p class="answer-label">Answer: $y = 6315$</p>
+    </div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="problem-card">
+    <div class="problem-header">15.</div>
+    <div class="problem-text">
+      Solve: $2900 - p = 64$
+    </div>
+    <button class="toggle-btn" id="btn-q15" onclick="toggleAnswer('q15')">Show Answer & Explanation</button>
+    <div id="q15" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Subtract $64$ from $2900$: $p = 2900 - 64 = 2836$.</p>
+      <p class="answer-label">Answer: $p = 2836$</p>
+    </div>
+  </div>
+
+  <!-- Q16 -->
+  <div class="problem-card">
+    <div class="problem-header">16.</div>
+    <div class="problem-text">
+      Solve: $\$1.53 + q = \$5.00$
+    </div>
+    <button class="toggle-btn" id="btn-q16" onclick="toggleAnswer('q16')">Show Answer & Explanation</button>
+    <div id="q16" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Subtract $\$1.53$ from $\$5.00$: $q = 5.00 - 1.53 = 3.47$.</p>
+      <p class="answer-label">Answer: $q = \$3.47$</p>
+    </div>
+  </div>
+
+  <!-- Q17 -->
+  <div class="problem-card">
+    <div class="problem-header">17.</div>
+    <div class="problem-text">
+      Solve: $20r = 1200$
+    </div>
+    <button class="toggle-btn" id="btn-q17" onclick="toggleAnswer('q17')">Show Answer & Explanation</button>
+    <div id="q17" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Divide both sides by $20$: $r = \frac{1200}{20} = 60$.</p>
+      <p class="answer-label">Answer: $r = 60$</p>
+    </div>
+  </div>
+
+  <!-- Q18 -->
+  <div class="problem-card">
+    <div class="problem-header">18.</div>
+    <div class="problem-text">
+      Solve: $\frac{m}{14} = 16$
+    </div>
+    <button class="toggle-btn" id="btn-q18" onclick="toggleAnswer('q18')">Show Answer & Explanation</button>
+    <div id="q18" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Multiply both sides by $14$: $m = 16 \times 14 = 224$.</p>
+      <p class="answer-label">Answer: $m = 224$</p>
+    </div>
+  </div>
+
+  <!-- Q19 -->
+  <div class="problem-card">
+    <div class="problem-header">19.</div>
+    <div class="problem-text">
+      Simplify: $72,112 - 64,309$
+    </div>
+    <button class="toggle-btn" id="btn-q19" onclick="toggleAnswer('q19')">Show Answer & Explanation</button>
+    <div id="q19" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Subtraction:</p>
+      $$\begin{array}{r@{\quad}l} 72,112 \\ - 64,309 \\ \hline 7,803 \end{array}$$
+      <p class="answer-label">Answer: $7,803$</p>
+    </div>
+  </div>
+
+  <!-- Q20 -->
+  <div class="problem-card">
+    <div class="problem-header">20.</div>
+    <div class="problem-text">
+      Simplify: $453,978 - 386,864$
+    </div>
+    <button class="toggle-btn" id="btn-q20" onclick="toggleAnswer('q20')">Show Answer & Explanation</button>
+    <div id="q20" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Subtraction:</p>
+      $$\begin{array}{r@{\quad}l} 453,978 \\ - 386,864 \\ \hline 67,114 \end{array}$$
+      <p class="answer-label">Answer: $67,114$</p>
+    </div>
+  </div>
+
+  <!-- Q21 -->
+  <div class="problem-card">
+    <div class="problem-header">21.</div>
+    <div class="problem-text">
+      Simplify: $\frac{8}{9} - \left(\frac{3}{9} + \frac{5}{9}\right)$
+    </div>
+    <button class="toggle-btn" id="btn-q21" onclick="toggleAnswer('q21')">Show Answer & Explanation</button>
+    <div id="q21" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Evaluate inside parentheses first: $\frac{3}{9} + \frac{5}{9} = \frac{8}{9}$. Then perform subtraction: $\frac{8}{9} - \frac{8}{9} = 0$.</p>
+      <p class="answer-label">Answer: $0$</p>
+    </div>
+  </div>
+
+  <!-- Q22 -->
+  <div class="problem-card">
+    <div class="problem-header">22.</div>
+    <div class="problem-text">
+      Simplify: $\left(\frac{8}{9} - \frac{3}{9}\right) + \frac{5}{9}$
+    </div>
+    <button class="toggle-btn" id="btn-q22" onclick="toggleAnswer('q22')">Show Answer & Explanation</button>
+    <div id="q22" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Evaluate inside parentheses first: $\frac{8}{9} - \frac{3}{9} = \frac{5}{9}$. Then perform addition: $\frac{5}{9} + \frac{5}{9} = \frac{10}{9} = 1\frac{1}{9}$.</p>
+      <p class="answer-label">Answer: $1\frac{1}{9}$ (or $\frac{10}{9}$)</p>
+    </div>
+  </div>
+
+  <!-- Q23 -->
+  <div class="problem-card">
+    <div class="problem-header">23.</div>
+    <div class="problem-text">
+      Simplify: $\frac{9}{2} \times \frac{3}{5}$
+    </div>
+    <button class="toggle-btn" id="btn-q23" onclick="toggleAnswer('q23')">Show Answer & Explanation</button>
+    <div id="q23" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Multiply numerators together and denominators together: $\frac{9 \times 3}{2 \times 5} = \frac{27}{10} = 2\frac{7}{10}$.</p>
+      <p class="answer-label">Answer: $2\frac{7}{10}$ (or $2.7$)</p>
+    </div>
+  </div>
+
+  <!-- Q24 -->
+  <div class="problem-card">
+    <div class="problem-header">24.</div>
+    <div class="problem-text">
+      Simplify: $\$37.20 \div 15$
+    </div>
+    <button class="toggle-btn" id="btn-q24" onclick="toggleAnswer('q24')">Show Answer & Explanation</button>
+    <div id="q24" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Divide $37.20$ by $15$: $37.20 \div 15 = 2.48$.</p>
+      <p class="answer-label">Answer: $\$2.48$</p>
+    </div>
+  </div>
+
+  <!-- Q25 -->
+  <div class="problem-card">
+    <div class="problem-header">25.</div>
+    <div class="problem-text">
+      Divide 42,847 by 9 and express the quotient as a mixed number.
+    </div>
+    <button class="toggle-btn" id="btn-q25" onclick="toggleAnswer('q25')">Show Answer & Explanation</button>
+    <div id="q25" class="solution-box hidden">
+      <p><strong>Explanation:</strong> $42,847 \div 9 = 4,760$ with a remainder of $7$. Written as a mixed number, the remainder becomes the numerator over divisor $9$.</p>
+      <p class="answer-label">Answer: $4,760\frac{7}{9}$</p>
+    </div>
+  </div>
+
+  <!-- Q26 -->
+  <div class="problem-card">
+    <div class="problem-header">26.</div>
+    <div class="problem-text">
+      Justify the steps taken to simplify $25 \cdot 36 \cdot 4$:
+      <ul>
+        <li>Given: $25 \cdot 36 \cdot 4$</li>
+        <li>a. $25 \cdot 4 \cdot 36$</li>
+        <li>b. $(25 \cdot 4) \cdot 36$</li>
+        <li>c. $100 \cdot 36$</li>
+        <li>d. $3600$</li>
+      </ul>
+    </div>
+    <button class="toggle-btn" id="btn-q26" onclick="toggleAnswer('q26')">Show Answer & Explanation</button>
+    <div id="q26" class="solution-box hidden">
+      <p><strong>Explanation:</strong></p>
+      <ul>
+        <li><strong>a:</strong> Changing the order of factors uses the <strong>Commutative Property of Multiplication</strong>.</li>
+        <li><strong>b:</strong> Grouping factors uses the <strong>Associative Property of Multiplication</strong>.</li>
+        <li><strong>c:</strong> Multiplying inside parentheses ($25 \cdot 4 = 100$) simplifies the expression.</li>
+        <li><strong>d:</strong> Multiplying $100 \cdot 36 = 3600$ completes the simplification.</li>
+      </ul>
+      <p class="answer-label">Answer: a. Commutative Property of Multiplication | b. Associative Property of Multiplication | c. Simplify ($25 \cdot 4$) | d. Simplify ($100 \cdot 36$)</p>
+    </div>
+  </div>
+
+  <!-- Q27 -->
+  <div class="problem-card">
+    <div class="problem-header">27. (GENERALIZE)</div>
+    <div class="problem-text">
+      Find the next three numbers in this sequence:
+      $$\frac{1}{4}, \frac{1}{2}, \frac{3}{4}, \dots$$
+    </div>
+    <button class="toggle-btn" id="btn-q27" onclick="toggleAnswer('q27')">Show Answer & Explanation</button>
+    <div id="q27" class="solution-box hidden">
+      <p><strong>Explanation:</strong> The sequence increases by $\frac{1}{4}$ each step ($\frac{1}{4}, \frac{2}{4}, \frac{3}{4}, \dots$). The next three terms are $\frac{4}{4} = 1$, $\frac{5}{4} = 1\frac{1}{4}$, and $\frac{6}{4} = 1\frac{1}{2}$.</p>
+      <p class="answer-label">Answer: $1, 1\frac{1}{4}, 1\frac{1}{2}$</p>
+    </div>
+  </div>
+
+  <!-- Q28 -->
+  <div class="problem-card">
+    <div class="problem-header">28.</div>
+    <div class="problem-text">
+      How many $\frac{2}{3}$s are in 1?
+    </div>
+    <button class="toggle-btn" id="btn-q28" onclick="toggleAnswer('q28')">Show Answer & Explanation</button>
+    <div id="q28" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Divide $1$ by $\frac{2}{3}$: $1 \div \frac{2}{3} = 1 \times \frac{3}{2} = \frac{3}{2} = 1\frac{1}{2}$.</p>
+      <p class="answer-label">Answer: $1\frac{1}{2}$ (or $\frac{3}{2}$)</p>
+    </div>
+  </div>
+
+  <!-- Q29 -->
+  <div class="problem-card">
+    <div class="problem-header">29.</div>
+    <div class="problem-text">
+      Write $1\frac{2}{3}$ as an improper fraction, and multiply the improper fraction by $\frac{1}{2}$. What is the product?
+    </div>
+    <button class="toggle-btn" id="btn-q29" onclick="toggleAnswer('q29')">Show Answer & Explanation</button>
+    <div id="q29" class="solution-box hidden">
+      <p><strong>Explanation:</strong></p>
+      <ol>
+        <li>Convert to improper fraction: $1\frac{2}{3} = \frac{3 \times 1 + 2}{3} = \frac{5}{3}$.</li>
+        <li>Multiply by $\frac{1}{2}$: $\frac{5}{3} \times \frac{1}{2} = \frac{5 \times 1}{3 \times 2} = \frac{5}{6}$.</li>
+      </ol>
+      <p class="answer-label">Answer: $\frac{5}{6}$</p>
+    </div>
+  </div>
+
+  <!-- Q30 -->
+  <div class="problem-card">
+    <div class="problem-header">30.</div>
+    <div class="problem-text">
+      Using a ruler, draw a triangle that has two perpendicular sides, one that is $\frac{3}{4}\text{ in.}$ long and one that is $1\text{ in.}$ long. What is the measure of the third side?
+    </div>
+    <button class="toggle-btn" id="btn-q30" onclick="toggleAnswer('q30')">Show Answer & Explanation</button>
+    <div id="q30" class="solution-box hidden">
+      <p><strong>Explanation:</strong> Perpendicular sides form a right triangle. Using the Pythagorean theorem $a^2 + b^2 = c^2$:</p>
+      $$c = \sqrt{\left(\frac{3}{4}\right)^2 + 1^2} = \sqrt{\frac{9}{16} + 1} = \sqrt{\frac{25}{16}} = \frac{5}{4} = 1\frac{1}{4}\text{ in.}$$
+      <p class="answer-label">Answer: $1\frac{1}{4}\text{ in.}$ (or $1.25\text{ in.}$)</p>
+    </div>
+  </div>
+
+
+  <!-- REAL-WORLD CONNECTION -->
+  <div class="section-title">Real-World Connection</div>
+
+  <div class="problem-card">
+    <div class="problem-header">Real-World Connection</div>
+    <div class="problem-text">
+      Patricia's grandmother was born in 1948. In 2004, her grandmother's age in years equaled her cat's age in months. What was the cat's age in years and months? Explain your thinking.
+    </div>
+    <button class="toggle-btn" id="btn-rwc" onclick="toggleAnswer('rwc')">Show Answer & Explanation</button>
+    <div id="rwc" class="solution-box hidden">
+      <p><strong>Explanation:</strong></p>
+      <ol>
+        <li>Find grandmother's age in 2004: $2004 - 1948 = 56\text{ years old}$.</li>
+        <li>Since the cat's age in months equals grandmother's age in years, the cat is $56\text{ months}$ old.</li>
+        <li>Convert $56\text{ months}$ to years and months by dividing by $12$: $56 \div 12 = 4$ with a remainder of $8$.</li>
+      </ol>
+      <p class="answer-label">Answer: $4\text{ years and } 8\text{ months}$</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleAnswer(id) {
+    const content = document.getElementById(id);
+    const btn = document.getElementById('btn-' + id);
+    if (content.classList.contains('hidden')) {
+      content.classList.remove('hidden');
+      btn.innerText = 'Hide Answer & Explanation';
+      if (window.MathJax) {
+        MathJax.typesetPromise([content]);
+      }
+    } else {
+      content.classList.add('hidden');
+      btn.innerText = 'Show Answer & Explanation';
+    }
+  }
+</script>
+
+</body>
+</html>
