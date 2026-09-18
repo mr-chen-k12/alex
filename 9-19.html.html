@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Practice Worksheet & Solution Guide</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- MathJax 3 Configuration & Async Script -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process'
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+
+    /* Screen: Solutions are HIDDEN by default */
+    .solution-container {
+      display: none;
+    }
+
+    .solution-container.is-visible {
+      display: block;
+    }
+
+    /* Print-only workspace area for students (hidden on screen) */
+    .print-workspace {
+      display: none;
+    }
+
+    /* Print-only page banner header (hidden on screen) */
+    .print-header {
+      display: none;
+    }
+
+    /* =========================================================
+       STRICT PRINT MODE CSS (@media print)
+       ========================================================= */
+    @media print {
+      /* 1. COMPLETELY HIDE all solutions, explanations, toggles, controls & UI bars */
+      .no-print,
+      .header-controls,
+      .filter-bar,
+      .toggle-btn,
+      .solution-container,
+      .solution-container.is-visible,
+      footer {
+        display: none !important;
+      }
+
+      /* 2. Page & Body setup for clear physical printout */
+      @page {
+        size: letter portrait;
+        margin: 1.5cm 1.5cm 1.5cm 1.5cm;
+      }
+
+      body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt !important;
+        line-height: 1.5 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      main, .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* 3. Display Print-Only Header Banner */
+      .print-header {
+        display: block !important;
+        border-bottom: 2px solid #000000;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      /* 4. Display Blank Workspace for Students to Write Solutions */
+      .print-workspace {
+        display: block !important;
+        height: 110px;
+        border: 1px dashed #cbd5e1;
+        border-radius: 6px;
+        margin-top: 0.75rem;
+        background-color: #fafafa;
+        position: relative;
+      }
+
+      .print-workspace::after {
+        content: "Show work / answer here:";
+        position: absolute;
+        top: 6px;
+        left: 8px;
+        font-size: 8pt;
+        color: #94a3b8;
+        font-style: italic;
+      }
+
+      /* 5. Format Problem Cards cleanly for paper */
+      .problem-card {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+        box-shadow: none !important;
+        margin-bottom: 1.25rem !important;
+        padding: 1rem !important;
+        background: #ffffff !important;
+      }
+
+      /* 6. Headers break handling */
+      h1, h2, h3, .section-header {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+        color: #000000 !important;
+      }
+
+      /* Ensure clear dark rendering of math formulas */
+      .mjx-chtml, .MathJax {
+        color: #000000 !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+
+  <!-- Navigation Header (Screen Only) -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-md">
+          <i class="fa-solid fa-graduation-cap text-xl"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold text-slate-900 tracking-tight">Math Practice Worksheet & Solution Guide</h1>
+          <p class="text-xs text-slate-500 font-medium">Interactive Screen Practice Mode • Clean Question Print Mode</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center gap-2.5 header-controls">
+        <button onclick="showAllSolutions()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs rounded-lg transition flex items-center space-x-1.5 border border-slate-300">
+          <i class="fa-solid fa-eye text-indigo-600"></i>
+          <span>Show All Answers</span>
+        </button>
+
+        <button onclick="hideAllSolutions()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs rounded-lg transition flex items-center space-x-1.5 border border-slate-300">
+          <i class="fa-solid fa-eye-slash text-slate-500"></i>
+          <span>Hide All Answers</span>
+        </button>
+
+        <!-- Dedicated Print Button -->
+        <button onclick="window.print()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-semibold text-xs rounded-lg shadow transition flex items-center space-x-2">
+          <i class="fa-solid fa-print text-sm"></i>
+          <span>Print Worksheet (Questions Only)</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Printable Header Banner (Appears ONLY during print) -->
+  <div class="print-header max-w-7xl mx-auto">
+    <div class="flex justify-between items-end">
+      <div>
+        <h1 class="text-2xl font-bold text-black">Mathematics Practice Worksheet</h1>
+        <p class="text-xs text-gray-600">Name: ________________________ &nbsp;&nbsp;&nbsp;&nbsp; Date: ________________    &nbsp;&nbsp;&nbsp;&nbsp; Score: ______ / 38</p>
+      </div>
+      <div class="text-right text-xs text-gray-500">
+        <p>Comprehensive Set</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+
+    <!-- Search & Filter Bar (Screen Only) -->
+    <div class="no-print filter-bar bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-6">
+      <div class="flex flex-col md:flex-row gap-3 items-center justify-between">
+        <!-- Search Input -->
+        <div class="relative w-full md:w-96">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input type="text" id="searchInput" onkeyup="filterProblems()" placeholder="Search problem # or keywords..." class="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+        </div>
+
+        <!-- Filter Tags -->
+        <div class="flex flex-wrap gap-1.5 w-full md:w-auto text-xs font-medium">
+          <button onclick="setFilter('all')" class="filter-btn active-filter px-3 py-1.5 rounded-lg border border-indigo-600 bg-indigo-600 text-white transition" data-filter="all">All Problems</button>
+          <button onclick="setFilter('geometry')" class="filter-btn px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition" data-filter="geometry">Geometry</button>
+          <button onclick="setFilter('equations')" class="filter-btn px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition" data-filter="equations">Algebra</button>
+          <button onclick="setFilter('fractions')" class="filter-btn px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition" data-filter="fractions">Fractions & Decimals</button>
+          <button onclick="setFilter('word')" class="filter-btn px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition" data-filter="word">Word Problems</button>
+          <button onclick="setFilter('advanced')" class="filter-btn px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition" data-filter="advanced">Advanced (31–34)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1: Formulate & Generalization Problems -->
+    <section class="mb-8" id="sec-formulate">
+      <div class="border-b border-slate-300 pb-2 mb-4 flex items-center justify-between">
+        <h2 class="text-lg font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-square-root-variable text-indigo-600 no-print"></i>
+          Part I: Formulate & Generalize Problems
+        </h2>
+      </div>
+
+      <!-- Formulate Problem Card -->
+      <div class="problem-card bg-white rounded-xl border border-slate-200 p-5 mb-4 shadow-sm" data-category="fractions">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-md border border-indigo-200 tag-badge">Formulate Problem</span>
+            <h3 class="text-base font-semibold text-slate-900 mt-1">Multi-Step Evaluation</h3>
+          </div>
+          <button onclick="toggleSolution('sol-formulate')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+            <span class="btn-text">Show Answer</span>
+            <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+          </button>
+        </div>
+
+        <div class="mt-3 text-sm text-slate-800 leading-relaxed">
+          <p>Evaluate the following multi-step numerical expression containing fractions, decimals, exponents, and division:</p>
+          <div class="my-2 p-3 bg-slate-50 rounded-lg border border-slate-200 text-center text-base font-serif">
+            \[ \frac{3}{4} \times \left( 5.2 - 1.8 \right) + 2.5^2 \div 0.5 \]
+          </div>
+        </div>
+
+        <!-- Printable Blank Space for Student Work -->
+        <div class="print-workspace"></div>
+
+        <!-- Hidden Solution Container -->
+        <div id="sol-formulate" class="solution-container mt-4 pt-4 border-t border-slate-200 text-sm">
+          <h4 class="font-bold text-slate-900 mb-2">Step-by-Step Explanation:</h4>
+          <ol class="list-decimal pl-5 space-y-1.5 text-slate-700">
+            <li>Parentheses: \( 5.2 - 1.8 = 3.4 \).</li>
+            <li>Exponents: \( 2.5^2 = 6.25 \).</li>
+            <li>Multiply & Divide: \( \frac{3}{4} \times 3.4 = 2.55 \), and \( 6.25 \div 0.5 = 12.5 \).</li>
+            <li>Addition: \( 2.55 + 12.5 = 15.05 \).</li>
+          </ol>
+          <div class="mt-3 p-2.5 bg-indigo-50 border-l-4 border-indigo-600 rounded-r-md font-semibold text-slate-900">
+            Final Answer: \( 15.05 \) or \( \frac{301}{20} \)
+          </div>
+        </div>
+      </div>
+
+      <!-- Generalize Problems Card -->
+      <div class="problem-card bg-white rounded-xl border border-slate-200 p-5 mb-4 shadow-sm" data-category="equations">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <span class="text-xs font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-md border border-purple-200 tag-badge">Generalize Problems</span>
+            <h3 class="text-base font-semibold text-slate-900 mt-1">Generalization Statements (a–d)</h3>
+          </div>
+          <button onclick="toggleSolution('sol-generalize')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+            <span class="btn-text">Show Answer</span>
+            <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+          </button>
+        </div>
+
+        <div class="mt-3 text-sm text-slate-800 space-y-2">
+          <p><strong>(a)</strong> State the general expression for scaling linear function \( f(x) = ax + b \) by constant \( k \).</p>
+          <p><strong>(b)</strong> Express repeating decimal \( 0.a\bar{b} \) in algebraic fraction form.</p>
+          <p><strong>(c)</strong> Write formula for price \( P \) with discount \( d\% \) followed by tax \( t\% \).</p>
+          <p><strong>(d)</strong> Differentiate rules for \( (-a)^n \) versus \( -a^n \) based on parity of \( n \).</p>
+        </div>
+
+        <!-- Printable Blank Space for Student Work -->
+        <div class="print-workspace"></div>
+
+        <!-- Hidden Solution Container -->
+        <div id="sol-generalize" class="solution-container mt-4 pt-4 border-t border-slate-200 text-sm space-y-2 text-slate-700">
+          <p><strong>(a)</strong> \( k \cdot f(x) = k(ax + b) = kax + kb \)</p>
+          <p><strong>(b)</strong> \( 0.a\bar{b} = \frac{10a + b - a}{90} \)</p>
+          <p><strong>(c)</strong> \( \text{Final Price} = P(1 - d)(1 + t) \)</p>
+          <p><strong>(d)</strong> \( (-a)^n = a^n \) if \( n \) is even; \( (-a)^n = -a^n \) if \( n \) is odd. \( -a^n \) is always negative for positive \( a \).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Practice Problems 1 to 30 -->
+    <section class="mb-8" id="sec-practice">
+      <div class="border-b border-slate-300 pb-2 mb-4 flex items-center justify-between">
+        <h2 class="text-lg font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-indigo-600 no-print"></i>
+          Part II: Practice Problems 1 through 30
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- Problem 1 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="geometry">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 tag-badge">Problem 1 • Geometry</span>
+            <button onclick="toggleSolution('sol-1')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Find perimeter and area of a rectangle with length \( 12.5 \text{ cm} \) and width \( 8.2 \text{ cm} \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-1" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p><strong>Perimeter:</strong> \( 2(12.5 + 8.2) = 41.4 \text{ cm} \)</p>
+            <p><strong>Area:</strong> \( 12.5 \times 8.2 = 102.5 \text{ cm}^2 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 2 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="geometry">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 tag-badge">Problem 2 • Circles</span>
+            <button onclick="toggleSolution('sol-2')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Calculate circumference and area of a circle with radius \( r = 7 \text{ cm} \) (using \( \pi \approx \frac{22}{7} \)).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-2" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p><strong>Circumference:</strong> \( 2 \times \frac{22}{7} \times 7 = 44 \text{ cm} \)</p>
+            <p><strong>Area:</strong> \( \frac{22}{7} \times 49 = 154 \text{ cm}^2 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 3 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="geometry">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 tag-badge">Problem 3 • Right Triangles</span>
+            <button onclick="toggleSolution('sol-3')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Find hypotenuse \( c \) of a right triangle with legs \( a = 6 \text{ cm} \), \( b = 8 \text{ cm} \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-3" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( c = \sqrt{6^2 + 8^2} = \sqrt{36 + 64} = 10 \text{ cm} \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 4 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="geometry">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 tag-badge">Problem 4 • 3D Volume</span>
+            <button onclick="toggleSolution('sol-4')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Find volume and surface area of a box with dimensions \( 5\text{m} \times 4\text{m} \times 3\text{m} \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-4" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p><strong>Volume:</strong> \( 5 \times 4 \times 3 = 60 \text{ m}^3 \)</p>
+            <p><strong>Surface Area:</strong> \( 2(20 + 15 + 12) = 94 \text{ m}^2 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 5 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="geometry">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 tag-badge">Problem 5 • Angles</span>
+            <button onclick="toggleSolution('sol-5')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Complementary angles are \( (3x + 10)^\circ \) and \( (2x + 20)^\circ \). Find \( x \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-5" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( 5x + 30 = 90 \implies 5x = 60 \implies x = 12^\circ \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 6 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="equations">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 tag-badge">Problem 6 • Number Line</span>
+            <button onclick="toggleSolution('sol-6')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Find the distance between \( -7.5 \) and \( 4.2 \) on the real number line.</p>
+          <div class="print-workspace"></div>
+          <div id="sol-6" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( d = |4.2 - (-7.5)| = 11.7 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 7 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="equations">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 tag-badge">Problem 7 • Midpoint</span>
+            <button onclick="toggleSolution('sol-7')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Find the midpoint between \( -12.4 \) and \( 8.6 \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-7" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( M = \frac{-12.4 + 8.6}{2} = -1.9 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 8 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="fractions">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 tag-badge">Problem 8 • Ordering</span>
+            <button onclick="toggleSolution('sol-8')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Order from least to greatest: \( -\frac{5}{2}, -2.1, 0, \frac{3}{4}, 0.8 \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-8" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( -\frac{5}{2} < -2.1 < 0 < \frac{3}{4} < 0.8 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 9 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="equations">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 tag-badge">Problem 9 • Absolute Value</span>
+            <button onclick="toggleSolution('sol-9')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Solve absolute value equation: \( |2x - 5| = 9 \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-9" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( 2x - 5 = 9 \implies x = 7 \)</p>
+            <p>\( 2x - 5 = -9 \implies x = -2 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 10 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="equations">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 tag-badge">Problem 10 • Inequalities</span>
+            <button onclick="toggleSolution('sol-10')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Solve inequality: \( -3 < 2x + 1 \leq 7 \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-10" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( -4 < 2x \leq 6 \implies -2 < x \leq 3 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 11 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="equations">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 tag-badge">Problem 11 • Algebra</span>
+            <button onclick="toggleSolution('sol-11')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Solve linear equation: \( 4(x - 3) + 2 = 3(x + 1) - 5 \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-11" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( 4x - 10 = 3x - 2 \implies x = 8 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 12 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="equations">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 tag-badge">Problem 12 • Linear Systems</span>
+            <button onclick="toggleSolution('sol-12')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Solve system: \( 2x + y = 11 \) and \( 3x - 2y = 2 \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-12" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( y = 11 - 2x \implies 3x - 2(11 - 2x) = 2 \implies 7x = 24 \implies x = \frac{24}{7}, y = \frac{29}{7} \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 13 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="equations">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 tag-badge">Problem 13 • Quadratic Factoring</span>
+            <button onclick="toggleSolution('sol-13')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Solve quadratic by factoring: \( x^2 - 7x + 12 = 0 \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-13" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( (x - 3)(x - 4) = 0 \implies x = 3, x = 4 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 14 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="equations">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 tag-badge">Problem 14 • Quadratic Formula</span>
+            <button onclick="toggleSolution('sol-14')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Solve: \( 2x^2 + 5x - 3 = 0 \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-14" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( x = \frac{-5 \pm \sqrt{25 - 4(2)(-3)}}{4} = \frac{-5 \pm 7}{4} \implies x = \frac{1}{2}, x = -3 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 15 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="equations">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 tag-badge">Problem 15 • Rational Equations</span>
+            <button onclick="toggleSolution('sol-15')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Solve rational equation: \( \frac{2}{x} + \frac{3}{2x} = 7 \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-15" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( \frac{7}{2x} = 7 \implies 14x = 7 \implies x = \frac{1}{2} \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 16 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="fractions">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 tag-badge">Problem 16 • Fraction Addition</span>
+            <button onclick="toggleSolution('sol-16')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Simplify: \( \frac{5}{6} + \frac{3}{8} - \frac{1}{4} \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-16" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( \frac{20}{24} + \frac{9}{24} - \frac{6}{24} = \frac{23}{24} \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 17 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="fractions">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 tag-badge">Problem 17 • Fraction Division</span>
+            <button onclick="toggleSolution('sol-17')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Evaluate: \( \frac{14}{15} \times \frac{25}{21} \div \frac{2}{9} \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-17" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( \frac{14}{15} \times \frac{25}{21} \times \frac{9}{2} = 5 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 18 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="fractions">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 tag-badge">Problem 18 • Complex Fractions</span>
+            <button onclick="toggleSolution('sol-18')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Simplify complex fraction: \( \frac{\frac{2}{3} + \frac{1}{2}}{\frac{5}{6} - \frac{1}{4}} \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-18" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( \frac{7/6}{7/12} = \frac{7}{6} \times \frac{12}{7} = 2 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 19 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="fractions">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 tag-badge">Problem 19 • Mixed Numbers</span>
+            <button onclick="toggleSolution('sol-19')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Multiply: \( 3\frac{1}{3} \times 2\frac{2}{5} \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-19" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( \frac{10}{3} \times \frac{12}{5} = 8 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 20 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="fractions">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 tag-badge">Problem 20 • Repeating Decimals</span>
+            <button onclick="toggleSolution('sol-20')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Convert repeating decimal \( 0.\bar{36} \) into a simplified fraction.</p>
+          <div class="print-workspace"></div>
+          <div id="sol-20" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( \frac{36}{99} = \frac{4}{11} \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 21 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="word">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200 tag-badge">Problem 21 • Rates & Distance</span>
+            <button onclick="toggleSolution('sol-21')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">A car travels 240 miles in 4 hours. How long for 360 miles at same speed?</p>
+          <div class="print-workspace"></div>
+          <div id="sol-21" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>Speed = 60 mph. Time = \( \frac{360}{60} = 6 \text{ hours} \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 22 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="word">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200 tag-badge">Problem 22 • Mixtures</span>
+            <button onclick="toggleSolution('sol-22')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Mix 20% acid and 50% acid solutions to get 30L of 40% acid. Find volumes.</p>
+          <div class="print-workspace"></div>
+          <div id="sol-22" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>10 Liters of 20% solution and 20 Liters of 50% solution.</p>
+          </div>
+        </div>
+
+        <!-- Problem 23 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="word">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200 tag-badge">Problem 23 • Work Rates</span>
+            <button onclick="toggleSolution('sol-23')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Pipe A fills tank in 6 hrs, Pipe B in 4 hrs. How long working together?</p>
+          <div class="print-workspace"></div>
+          <div id="sol-23" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>Combined rate = \( \frac{1}{6} + \frac{1}{4} = \frac{5}{12} \implies 2.4 \text{ hours} \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 24 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="word">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200 tag-badge">Problem 24 • Age Algebra</span>
+            <button onclick="toggleSolution('sol-24')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Mother is 3x daughter's age. In 12 yrs she is twice as old. Find ages.</p>
+          <div class="print-workspace"></div>
+          <div id="sol-24" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>Daughter = 12 years old, Mother = 36 years old.</p>
+          </div>
+        </div>
+
+        <!-- Problem 25 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="word">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200 tag-badge">Problem 25 • Simple Interest</span>
+            <button onclick="toggleSolution('sol-25')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Calculate total amount on $2,500 invested at 6% simple interest for 3 years.</p>
+          <div class="print-workspace"></div>
+          <div id="sol-25" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>Interest = \( 2500 \times 0.06 \times 3 = \$450 \). Total = \$2,950.</p>
+          </div>
+        </div>
+
+        <!-- Problem 26 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="geometry">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 tag-badge">Problem 26 • Perimeter Algebra</span>
+            <button onclick="toggleSolution('sol-26')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Rectangle perimeter is 48 cm. Length is 6 cm longer than width. Find dimensions.</p>
+          <div class="print-workspace"></div>
+          <div id="sol-26" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>Width = 9 cm, Length = 15 cm.</p>
+          </div>
+        </div>
+
+        <!-- Problem 27 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="equations">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 tag-badge">Problem 27 • Exponents</span>
+            <button onclick="toggleSolution('sol-27')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Solve exponential equation: \( 2^{3x - 1} = 32 \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-27" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( 3x - 1 = 5 \implies x = 2 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 28 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="fractions">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 tag-badge">Problem 28 • Compare Values</span>
+            <button onclick="toggleSolution('sol-28')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Compare \( \frac{7}{8} \), \( 0.87 \), and \( \frac{86}{100} \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-28" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( \frac{86}{100} (0.86) < 0.87 < \frac{7}{8} (0.875) \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 29 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="equations">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 tag-badge">Problem 29 • Absolute Distance</span>
+            <button onclick="toggleSolution('sol-29')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Evaluate distance: \( | -15 - (-27) | \).</p>
+          <div class="print-workspace"></div>
+          <div id="sol-29" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( |12| = 12 \)</p>
+          </div>
+        </div>
+
+        <!-- Problem 30 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-4 shadow-sm" data-category="word">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200 tag-badge">Problem 30 • Proportions</span>
+            <button onclick="toggleSolution('sol-30')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:underline"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800">Recipe for 8 people needs 3 cups of flour. How much flour for 20 people?</p>
+          <div class="print-workspace"></div>
+          <div id="sol-30" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( \frac{3}{8} = \frac{x}{20} \implies x = 7.5 \text{ cups} \)</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3: Real-World Connection Problems -->
+    <section class="mb-8" id="sec-realworld">
+      <div class="border-b border-slate-300 pb-2 mb-4 flex items-center justify-between">
+        <h2 class="text-lg font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-earth-americas text-indigo-600 no-print"></i>
+          Part III: Real-World Connection Problems
+        </h2>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Real World Problem (a) -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-5 shadow-sm" data-category="word">
+          <div class="flex justify-between items-start gap-3">
+            <div>
+              <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded border border-sky-200 tag-badge">Real-World Problem (a)</span>
+              <h3 class="text-base font-semibold text-slate-900 mt-1">Compound Savings Growth</h3>
+            </div>
+            <button onclick="toggleSolution('sol-rwa')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-3 py-1.5 rounded-lg transition"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800 mt-2">
+            An initial savings balance of $1,200 earns 5% compound interest annually. Write the expression for balance after 4 years and calculate total value.
+          </p>
+          <div class="print-workspace"></div>
+          <div id="sol-rwa" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( A = 1200(1 + 0.05)^4 = 1200(1.21550625) = \$1,458.61 \)</p>
+          </div>
+        </div>
+
+        <!-- Real World Problem (b) -->
+        <div class="problem-card bg-white rounded-xl border border-slate-200 p-5 shadow-sm" data-category="word">
+          <div class="flex justify-between items-start gap-3">
+            <div>
+              <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded border border-sky-200 tag-badge">Real-World Problem (b)</span>
+              <h3 class="text-base font-semibold text-slate-900 mt-1">Utility Rates Calculation</h3>
+            </div>
+            <button onclick="toggleSolution('sol-rwb')" class="toggle-btn no-print text-xs font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-3 py-1.5 rounded-lg transition"><span class="btn-text">Show Answer</span></button>
+          </div>
+          <p class="text-sm text-slate-800 mt-2">
+            An electric utility charges a $15 flat monthly fee plus $0.12 per kWh consumed. Find the total monthly bill for using 450 kWh.
+          </p>
+          <div class="print-workspace"></div>
+          <div id="sol-rwb" class="solution-container mt-3 pt-3 border-t border-slate-200 text-xs text-slate-700 space-y-1">
+            <p>\( \text{Total Cost} = 15 + (0.12 \times 450) = 15 + 54 = \$69.00 \)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: Required Key Problems 31 to 34 -->
+    <section class="mb-12" id="sec-advanced">
+      <div class="border-b border-slate-300 pb-2 mb-4 flex items-center justify-between">
+        <h2 class="text-lg font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-star text-amber-500 no-print"></i>
+          Part IV: Key Advanced Problems 31 through 34
+        </h2>
+      </div>
+
+      <div class="space-y-5">
+
+        <!-- PROBLEM 31 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-300 p-5 shadow-md" data-category="advanced fractions">
+          <div class="flex justify-between items-start gap-3">
+            <div>
+              <span class="text-xs font-bold text-indigo-800 bg-indigo-100 px-3 py-0.5 rounded-full border border-indigo-200 tag-badge">Problem 31</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1">Decimal Division (Terminal Quotient)</h3>
+            </div>
+            <button onclick="toggleSolution('sol-31')" class="toggle-btn no-print text-xs font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3.5 py-1.5 rounded-lg transition border border-indigo-200">
+              <span class="btn-text">Show Answer</span>
+              <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+            </button>
+          </div>
+
+          <div class="mt-3 text-sm text-slate-800">
+            <p class="font-medium">Perform long division with decimals to evaluate the quotient:</p>
+            <div class="my-2 p-3 bg-slate-50 rounded-lg text-center font-serif text-lg border border-slate-200">
+              \[ 18.45 \div 4.5 \]
+            </div>
+          </div>
+
+          <!-- Printable Blank Space for Student Work -->
+          <div class="print-workspace" style="height: 120px;"></div>
+
+          <!-- Hidden Solution Container -->
+          <div id="sol-31" class="solution-container mt-4 pt-4 border-t border-slate-200 text-sm text-slate-700 space-y-2">
+            <h4 class="font-bold text-slate-900">Step-by-Step Explanation:</h4>
+            <ol class="list-decimal pl-5 space-y-1">
+              <li>Shift decimal points 1 spot to the right: \( \frac{18.45 \times 10}{4.5 \times 10} = \frac{184.5}{45} \).</li>
+              <li>Divide whole number: \( 184 \div 45 = 4 \) with remainder \( 4 \).</li>
+              <li>Bring down decimal 5: \( 4.5 \div 45 = 0.1 \).</li>
+            </ol>
+            <div class="mt-2 p-2.5 bg-indigo-50 border-l-4 border-indigo-600 rounded-r-md font-semibold text-slate-900">
+              Final Quotient: \( 4.1 \) (Terminal Decimal)
+            </div>
+          </div>
+        </div>
+
+        <!-- PROBLEM 32 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-300 p-5 shadow-md" data-category="advanced fractions">
+          <div class="flex justify-between items-start gap-3">
+            <div>
+              <span class="text-xs font-bold text-indigo-800 bg-indigo-100 px-3 py-0.5 rounded-full border border-indigo-200 tag-badge">Problem 32</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1">Decimal Division (Repeating Quotient)</h3>
+            </div>
+            <button onclick="toggleSolution('sol-32')" class="toggle-btn no-print text-xs font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3.5 py-1.5 rounded-lg transition border border-indigo-200">
+              <span class="btn-text">Show Answer</span>
+              <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+            </button>
+          </div>
+
+          <div class="mt-3 text-sm text-slate-800">
+            <p class="font-medium">Evaluate division and express the answer as both an exact fraction and a repeating decimal:</p>
+            <div class="my-2 p-3 bg-slate-50 rounded-lg text-center font-serif text-lg border border-slate-200">
+              \[ 4.2 \div 0.9 \]
+            </div>
+          </div>
+
+          <!-- Printable Blank Space for Student Work -->
+          <div class="print-workspace" style="height: 120px;"></div>
+
+          <!-- Hidden Solution Container -->
+          <div id="sol-32" class="solution-container mt-4 pt-4 border-t border-slate-200 text-sm text-slate-700 space-y-2">
+            <h4 class="font-bold text-slate-900">Step-by-Step Explanation:</h4>
+            <ol class="list-decimal pl-5 space-y-1">
+              <li>Multiply numerator & denominator by 10: \( \frac{4.2 \times 10}{0.9 \times 10} = \frac{42}{9} \).</li>
+              <li>Reduce fraction by GCD of 3: \( \frac{42 \div 3}{9 \div 3} = \frac{14}{3} \).</li>
+              <li>Convert to repeating decimal: \( \frac{14}{3} = 4\frac{2}{3} = 4.6666... = 4.\bar{6} \).</li>
+            </ol>
+            <div class="mt-2 p-2.5 bg-indigo-50 border-l-4 border-indigo-600 rounded-r-md font-semibold text-slate-900">
+              Final Answer: \( \frac{14}{3} \) or \( 4.\bar{6} \)
+            </div>
+          </div>
+        </div>
+
+        <!-- PROBLEM 33 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-300 p-5 shadow-md" data-category="advanced word">
+          <div class="flex justify-between items-start gap-3">
+            <div>
+              <span class="text-xs font-bold text-indigo-800 bg-indigo-100 px-3 py-0.5 rounded-full border border-indigo-200 tag-badge">Problem 33</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1">Percentage Word Problem (Discount & Sales Tax)</h3>
+            </div>
+            <button onclick="toggleSolution('sol-33')" class="toggle-btn no-print text-xs font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3.5 py-1.5 rounded-lg transition border border-indigo-200">
+              <span class="btn-text">Show Answer</span>
+              <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+            </button>
+          </div>
+
+          <div class="mt-3 text-sm text-slate-800 leading-relaxed">
+            <p>A high-end electronics item originally priced at <strong>$850.00</strong> is marked down by <strong>20%</strong> during a seasonal store promotion. If a local sales tax rate of <strong>6%</strong> is applied to the discounted sale price, calculate the final total cost of the item.</p>
+          </div>
+
+          <!-- Printable Blank Space for Student Work -->
+          <div class="print-workspace" style="height: 130px;"></div>
+
+          <!-- Hidden Solution Container -->
+          <div id="sol-33" class="solution-container mt-4 pt-4 border-t border-slate-200 text-sm text-slate-700 space-y-2">
+            <h4 class="font-bold text-slate-900">Step-by-Step Explanation:</h4>
+            <ol class="list-decimal pl-5 space-y-1">
+              <li><strong>Calculate Sale Price (20% Discount):</strong>
+                \[ \text{Sale Price} = \$850 \times (1 - 0.20) = \$850 \times 0.80 = \$680.00 \]
+              </li>
+              <li><strong>Calculate Sales Tax (6% on $680.00):</strong>
+                \[ \text{Tax} = \$680 \times 0.06 = \$40.80 \]
+              </li>
+              <li><strong>Calculate Final Total:</strong>
+                \[ \text{Total} = \$680.00 + \$40.80 = \$720.80 \]
+              </li>
+            </ol>
+            <div class="mt-2 p-2.5 bg-indigo-50 border-l-4 border-indigo-600 rounded-r-md font-semibold text-slate-900">
+              Final Total Price: $720.80
+            </div>
+          </div>
+        </div>
+
+        <!-- PROBLEM 34 -->
+        <div class="problem-card bg-white rounded-xl border border-slate-300 p-5 shadow-md" data-category="advanced equations fractions">
+          <div class="flex justify-between items-start gap-3">
+            <div>
+              <span class="text-xs font-bold text-indigo-800 bg-indigo-100 px-3 py-0.5 rounded-full border border-indigo-200 tag-badge">Problem 34</span>
+              <h3 class="text-base font-bold text-slate-900 mt-1">Complex PEMDAS Evaluation</h3>
+            </div>
+            <button onclick="toggleSolution('sol-34')" class="toggle-btn no-print text-xs font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3.5 py-1.5 rounded-lg transition border border-indigo-200">
+              <span class="btn-text">Show Answer</span>
+              <i class="fa-solid fa-chevron-down text-xs ml-1"></i>
+            </button>
+          </div>
+
+          <div class="mt-3 text-sm text-slate-800">
+            <p class="font-medium">Evaluate the expression step-by-step following PEMDAS order of operations:</p>
+            <div class="my-3 p-4 bg-slate-50 rounded-xl text-center font-serif text-lg border border-slate-200">
+              \[ (-0.5)^2 + \frac{3}{4} \times \frac{-8 + \frac{1.2}{0.3}}{\left(-\frac{1}{2}\right)^3} \]
+            </div>
+          </div>
+
+          <!-- Printable Blank Space for Student Work -->
+          <div class="print-workspace" style="height: 150px;"></div>
+
+          <!-- Hidden Solution Container -->
+          <div id="sol-34" class="solution-container mt-4 pt-4 border-t border-slate-200 text-sm text-slate-700 space-y-2">
+            <h4 class="font-bold text-slate-900">Step-by-Step Explanation:</h4>
+            <ol class="list-decimal pl-5 space-y-1.5">
+              <li><strong>Simplify Inner Parentheses Division:</strong> \( 1.2 \div 0.3 = 4 \).</li>
+              <li><strong>Simplify Numerator Addition:</strong> \( -8 + 4 = -4 \).</li>
+              <li><strong>Evaluate Exponents:</strong>
+                <ul class="list-disc pl-5 mt-0.5">
+                  <li>\( (-0.5)^2 = 0.25 = \frac{1}{4} \)</li>
+                  <li>\( \left(-\frac{1}{2}\right)^3 = -\frac{1}{8} = -0.125 \)</li>
+                </ul>
+              </li>
+              <li><strong>Multiply Numerator:</strong> \( \frac{3}{4} \times (-4) = -3 \).</li>
+              <li><strong>Divide Fraction Part:</strong> \( \frac{-3}{-\frac{1}{8}} = -3 \times (-8) = 24 \).</li>
+              <li><strong>Final Addition:</strong> \( 0.25 + 24 = 24.25 \) or \( \frac{97}{4} \).</li>
+            </ol>
+            <div class="mt-2 p-2.5 bg-indigo-50 border-l-4 border-indigo-600 rounded-r-md font-semibold text-slate-900">
+              Final Answer: \( 24.25 \) or \( \frac{97}{4} \)
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer (Screen Only) -->
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 no-print">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="font-medium text-slate-700 mb-1">Math Practice Application — Printer-Friendly Edition</p>
+      <p>Click "Print Worksheet" to output clean questions without solutions, or toggle individual answers on screen.</p>
+    </div>
+  </footer>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    /**
+     * Toggles solution visibility for a single problem card on screen
+     */
+    function toggleSolution(id) {
+      const container = document.getElementById(id);
+      if (!container) return;
+
+      const isVisible = container.classList.contains('is-visible');
+      const card = container.closest('.problem-card');
+      const btnText = card ? card.querySelector('.btn-text') : null;
+      const btnIcon = card ? card.querySelector('.fa-chevron-down, .fa-chevron-up') : null;
+
+      if (isVisible) {
+        container.classList.remove('is-visible');
+        if (btnText) btnText.textContent = 'Show Answer';
+        if (btnIcon) {
+          btnIcon.classList.remove('fa-chevron-up');
+          btnIcon.classList.add('fa-chevron-down');
+        }
+      } else {
+        container.classList.add('is-visible');
+        if (btnText) btnText.textContent = 'Hide Answer';
+        if (btnIcon) {
+          btnIcon.classList.remove('fa-chevron-down');
+          btnIcon.classList.add('fa-chevron-up');
+        }
+      }
+    }
+
+    /**
+     * Shows all solutions across the document for screen viewing
+     */
+    function showAllSolutions() {
+      const solutions = document.querySelectorAll('.solution-container');
+      solutions.forEach(sol => {
+        sol.classList.add('is-visible');
+      });
+
+      document.querySelectorAll('.btn-text').forEach(span => {
+        span.textContent = 'Hide Answer';
+      });
+
+      document.querySelectorAll('.toggle-btn i').forEach(icon => {
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-up');
+      });
+    }
+
+    /**
+     * Hides all solutions across the document
+     */
+    function hideAllSolutions() {
+      const solutions = document.querySelectorAll('.solution-container');
+      solutions.forEach(sol => {
+        sol.classList.remove('is-visible');
+      });
+
+      document.querySelectorAll('.btn-text').forEach(span => {
+        span.textContent = 'Show Answer';
+      });
+
+      document.querySelectorAll('.toggle-btn i').forEach(icon => {
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+      });
+    }
+
+    /**
+     * Filters problems by user search query string
+     */
+    function filterProblems() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.problem-card');
+
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(query)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    /**
+     * Filters problems by tag buttons
+     */
+    function setFilter(category) {
+      const buttons = document.querySelectorAll('.filter-btn');
+      buttons.forEach(btn => {
+        if (btn.getAttribute('data-filter') === category) {
+          btn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600', 'active-filter');
+          btn.classList.remove('bg-white', 'text-slate-700');
+        } else {
+          btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600', 'active-filter');
+          btn.classList.add('bg-white', 'text-slate-700');
+        }
+      });
+
+      const cards = document.querySelectorAll('.problem-card');
+      cards.forEach(card => {
+        const catData = card.getAttribute('data-category') || '';
+        if (category === 'all' || catData.includes(category)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Initialize MathJax rendering on window load
+    window.addEventListener('load', () => {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise();
+      }
+    });
+  </script>
+</body>
+</html>
