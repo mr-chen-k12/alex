@@ -1,0 +1,869 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAT Reading Practice - 9-18 Reading</title>
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+    #quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: relative;
+    }
+    h1 {
+        text-align: center;
+        color: #1a5276;
+        margin-bottom: 5px;
+    }
+    
+    .set-selector-wrapper {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    
+    .set-selector-wrapper label {
+        font-weight: bold;
+        margin-right: 10px;
+        color: #2c3e50;
+    }
+
+    .set-selector-wrapper select {
+        padding: 8px 16px;
+        font-size: 15px;
+        border-radius: 4px;
+        border: 1px solid #bdc3c7;
+        background-color: #fcfcfc;
+        cursor: pointer;
+        outline: none;
+        transition: border 0.2s;
+    }
+
+    .set-selector-wrapper select:focus {
+        border-color: #1a5276;
+    }
+
+    .print-blank-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background-color: #7f8c8d;
+        padding: 8px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-blank-btn:hover {
+        background-color: #616a6b;
+    }
+
+    .question-block {
+        display: none; 
+        margin-bottom: 20px;
+    }
+    .question-block.active {
+        display: block;
+    }
+    .passage {
+        font-family: Georgia, serif;
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-left: 4px solid #1a5276;
+        margin-bottom: 20px;
+        font-size: 1.05em;
+    }
+    .prompt {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .options li {
+        margin-bottom: 10px;
+    }
+    .options label {
+        display: flex;
+        align-items: baseline;
+        background: #f0f3f4;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border: 1px solid #d5dbdb;
+    }
+    .options label:hover {
+        background: #e5e8e8;
+    }
+    .options label.disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    .options input {
+        margin-right: 15px;
+    }
+    .feedback {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 4px;
+        display: none;
+        border-left: 4px solid;
+    }
+    .feedback.correct {
+        background-color: #d4efdf;
+        color: #145a32;
+        border-color: #1e8449;
+        display: block;
+    }
+    .feedback.incorrect {
+        background-color: #fadbd8;
+        color: #7b241c;
+        border-color: #c0392b;
+        display: block;
+    }
+    .feedback.warning {
+        background-color: #fcf3cf;
+        color: #7d6608;
+        border-color: #f1c40f;
+        display: block;
+        font-weight: bold;
+    }
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        border-top: 2px solid #eee;
+        padding-top: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #1a5276;
+        color: white;
+        transition: background 0.3s;
+    }
+    button:hover { background-color: #154360; }
+    button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+    
+    .check-btn { background-color: #d35400; }
+    .check-btn:hover { background-color: #a04000; }
+    .check-btn:disabled { background-color: #e59866; }
+    
+    .submit-btn { background-color: #27ae60; }
+    .submit-btn:hover { background-color: #1e8449; }
+    
+    #results {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background: #eafaf1;
+        border: 2px solid #2ecc71;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .progress-tracker {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    #univ-reward {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff;
+        border: 3px double #a51c30;
+        border-radius: 8px;
+        animation: pullUp 0.5s ease-out;
+    }
+    #univ-reward img {
+        width: 160px;
+        height: auto;
+        margin: 15px auto;
+        display: block;
+    }
+    .univ-text {
+        font-family: Georgia, serif;
+        font-size: 1.4em;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    #print-blank-container {
+        display: none;
+    }
+
+    @keyframes pullUp {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Printer Friendly Styles */
+    @media print {
+        body { background-color: white; padding: 0; }
+        
+        #quiz-container { box-shadow: none; max-width: 100%; border: none; padding: 0; }
+        .question-block { 
+            display: block !important; 
+            page-break-inside: avoid; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .nav-buttons, .check-btn, .progress-tracker, button, .print-blank-btn, .set-selector-wrapper { display: none !important; }
+        .options label { border: none; padding: 5px 0; background: transparent; }
+        .options input { appearance: auto; } 
+
+        #univ-reward {
+            display: block !important;
+            border-style: solid !important;
+            border-width: 2px !important;
+        }
+
+        /* Override for Blank Print Mode */
+        body.print-blank-mode #quiz-container { display: none !important; }
+        body.print-blank-mode #print-blank-container { display: block !important; }
+    }
+
+    @media screen and (max-width: 600px) {
+        .print-blank-btn {
+            position: relative;
+            top: 0;
+            right: 0;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <button class="print-blank-btn" onclick="printBlankQuiz()">🖨️ Print Blank Quiz</button>
+    <h1>SAT Reading Practice</h1>
+    
+    <div class="set-selector-wrapper">
+        <label for="set-select">Select Practice Set:</label>
+        <select id="set-select" onchange="changeSet()">
+            <option value="setA">Set A (10 Questions)</option>
+            <option value="setB">Set B (10 Questions)</option>
+            <option value="setC">Set C (10 Questions)</option>
+        </select>
+    </div>
+
+    <div class="progress-tracker" id="progress-tracker">Question 1 of 10</div>
+    
+    <div id="results">
+        <h2>Quiz Complete</h2>
+        <p id="score-display" style="font-size: 1.5em; font-weight: bold;"></p>
+        <p>Review your answers and explanations below.</p>
+        
+        <div id="univ-reward">
+            <div class="univ-text" id="univ-reward-title">★ FLAWLESS ACADEMIC EXCELLENCE ★</div>
+            <img id="univ-reward-img" src="" alt="University Crest">
+            <p id="univ-reward-text" style="color: #555; font-style: italic; font-weight: bold; margin-top: 5px;"></p>
+        </div>
+
+        <button onclick="window.print()" style="margin-top: 15px;">🖨️ Print Results</button>
+    </div>
+
+    <div id="questions-wrapper">
+        <!-- Questions injected here dynamically -->
+    </div>
+
+    <div class="nav-buttons" id="nav-buttons">
+        <button id="prev-btn" onclick="navigate(-1)" disabled>Previous</button>
+        <button class="check-btn" id="check-btn" onclick="checkAnswer()">Check Answer</button>
+        <button id="next-btn" onclick="navigate(1)">Next</button>
+        <button class="submit-btn" id="submit-btn" onclick="submitQuiz()" style="display:none;">Submit for Review</button>
+    </div>
+</div>
+
+<div id="print-blank-container"></div>
+
+<script>
+    const universityRewards = [
+        {
+            name: "Harvard University",
+            img: "https://mr-chen-k12.github.io/math/IMG_0232.png",
+            color: "#a51c30"
+        },
+        {
+            name: "Boston University",
+            img: "https://mr-chen-k12.github.io/books/IMG_0121.png",
+            color: "#CC0000"
+        },
+        {
+            name: "Yale University",
+            img: "https://mr-chen-k12.github.io/books/IMG_0122.png",
+            color: "#00356B"
+        }
+    ];
+
+    const quizSets = {
+        setA: [
+            {
+                passage: "Luthiers crafting high-end violins meticulously select aged spruce and maple wood, noting that even minor variations in wood density can profoundly alter the instrument's acoustic resonance. Acoustic testing reveals that the thickness of the varnish coat also dampens high-frequency vibrations. Consequently, master violin makers must strike a delicate balance between material density and surface treatment to ensure the instrument produces a _______, resonant tone across all registers.",
+                prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+                options: ["harmonious", "strident", "cacophonous", "discordant"],
+                correctAnswer: 0,
+                explanation: "'Harmonious' means forming a pleasing or consistent whole; tuneful. A master craftsman balances material and varnish to achieve a pleasing, resonant tone, contrasting with harsh words like strident, cacophonous, or discordant."
+            },
+            {
+                passage: "Marine ecologists placed automated acoustic monitors in deep trench ecosystems to record low-frequency oceanic ambient noise. The sensors recorded localized, rhythmic acoustic pulses originating near hydrothermal vent fields. Further seismic measurements confirmed that these subsea acoustic signals were produced not by biological organisms, but by high-pressure steam cavitation inside subterranean basalt fissures.",
+                prompt: "Which choice best states the main idea of the text?",
+                options: [
+                    "Acoustic monitoring revealed that subsea noise in deep trenches was generated by geological steam activity rather than marine life.",
+                    "Deep ocean organisms communicate primarily using high-frequency ultrasonic signals.",
+                    "Hydrothermal vent fields are incapable of generating measurable seismic or acoustic disturbances.",
+                    "Basalt fissures prevent steam cavitation from occurring under deep ocean pressure."
+                ],
+                correctAnswer: 0,
+                explanation: "The passage explains how acoustic and seismic instruments determined that rhythmic pulses near hydrothermal vents came from geological steam cavitation rather than biological life."
+            },
+            {
+                passage: "In a series of cognitive trials, subjects were asked to complete complex spatial reasoning puzzles under two conditions: absolute silence and low-volume ambient white noise. Subjects completed the tasks 15% faster and made 22% fewer errors during the ambient noise condition. Neuroimaging revealed that low-level auditory input elevated baseline prefrontal dopamine release just enough to improve executive focus. This experiment suggests that ambient acoustic background _______",
+                prompt: "Which choice most logically completes the text?",
+                options: [
+                    "can optimize cognitive processing performance by facilitating executive neural arousal.",
+                    "completely impairs an individual's capacity to resolve complex visual-spatial challenges.",
+                    "has no measurable physiological impact on prefrontal cortex neurotransmitter levels.",
+                    "forces the human brain to disengage executive focus during task performance."
+                ],
+                correctAnswer: 0,
+                explanation: "Because low-volume ambient noise led to faster completion, fewer errors, and elevated dopamine in the prefrontal cortex, it logically optimizes cognitive processing by facilitating neural focus."
+            },
+            {
+                passage: "Botanists analyzing urban heat island adaptations examined stomatal density in oak leaves collected from urban cores and rural forests. <b>Specifically, Dr. Patel counted micro-stomatal openings per square millimeter to prove that urban oak trees reduce leaf transpiration rates to conserve moisture in hotter city microclimates.</b> This physiological finding provided empirical evidence of rapid urban plant adaptation.",
+                prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+                options: [
+                    "It details the specific micro-level botanical measurement Dr. Patel used to demonstrate urban oak adaptation.",
+                    "It outlines a theoretical model for increasing tree planting initiatives across metropolitan areas.",
+                    "It disputes earlier findings concerning the water requirements of rural forest canopies.",
+                    "It describes a genetic engineering process used to create drought-resistant oak species."
+                ],
+                correctAnswer: 0,
+                explanation: "The highlighted sentence specifies the concrete methodology (counting micro-stomatal openings per square millimeter) Dr. Patel used to demonstrate how urban oaks adapt."
+            },
+            {
+                passage: "Text 1\nIntegrating artificial intelligence into diagnostic radiology offers tremendous clinical promise. Machine learning algorithms can process thousands of mammograms and chest X-rays in seconds, identifying micro-calcifications and subtle tissue abnormalities with accuracy rates surpassing human general practitioners.\n\nText 2\nWhile diagnostic AI models demonstrate high accuracy on curated benchmark datasets, they often struggle when deployed in real-world clinical environments. Differences in hospital imaging hardware and novel patient demographic variables can cause algorithmic bias, leading to false positives or missed diagnoses.",
+                prompt: "Based on the texts, how would the author of Text 2 most likely respond to Text 1's enthusiastic assessment of diagnostic AI?",
+                options: [
+                    "By emphasizing that performance on standardized benchmark tests may not translate reliably to real-world clinical settings due to hardware and demographic variability.",
+                    "By arguing that machine learning algorithms take significantly longer to process radiological images than human physicians.",
+                    "By asserting that diagnostic radiology should be entirely automated without human medical oversight.",
+                    "By claiming that medical imaging hardware is identical across all hospital networks globally."
+                ],
+                correctAnswer: 0,
+                explanation: "Text 2 warns that AI models, while accurate on curated datasets, encounter real-world clinical hurdles (hardware and demographic variables) that cause diagnostic errors."
+            },
+            {
+                passage: "Cognitive psychologist Dr. Maya Lin asserted that frequent task-switching between digital devices impairs sustained deep reading comprehension in high school students.",
+                prompt: "Which quotation from a educational study best supports Dr. Lin's assertion?",
+                options: [
+                    "\"Students who switched between digital messaging apps and e-textbooks every three minutes scored 30% lower on thematic analysis essays than those who read uninterrupted physical texts.\"",
+                    "\"Over 85% of high school classrooms surveyed now utilize interactive digital whiteboards for daily instruction.\"",
+                    "\"E-readers equipped with adjustable font sizes improved reading speed for students with mild visual impairments.\"",
+                    "\"High school libraries reported a 15% increase in physical book checkouts following the implementation of sustained silent reading periods.\""
+                ],
+                correctAnswer: 0,
+                explanation: "Option A provides direct empirical evidence showing that frequent task-switching between apps and texts led to significantly lower scores on comprehension/analysis essays."
+            },
+            {
+                passage: "Despite facing harsh public criticism and administrative delays, the project director remained _______, persistently revising the engineering plans until municipal approval was secured.",
+                prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+                options: ["resolute", "vacillating", "indifferent", "capricious"],
+                correctAnswer: 0,
+                explanation: "'Resolute' means admirably purposeful, determined, and unwavering. Persistently revising plans despite criticism and delays demonstrates a resolute mindset."
+            },
+            {
+                passage: "Paleoclimatologists analyzing ice core samples from Greenland discovered elevated concentrations of atmospheric dust particles corresponding to the late Bronze Age collapse. Chemical finger-printing confirmed that the dust originated from desertified regions in the Near East. This spike in windblown dust coincided with a prolonged regional reduction in annual rainfall documented in lake sediment records. This convergence of paleoclimate evidence suggests that _______",
+                prompt: "Which choice most logically completes the text?",
+                options: [
+                    "severe climate drying and soil erosion were widespread factors during the late Bronze Age collapse.",
+                    "the Near East experienced record agricultural yields during the late Bronze Age.",
+                    "Greenland ice cores are incapable of capturing atmospheric dust from distant geographical continents.",
+                    "lake sediment layers accumulate independently of atmospheric rainfall patterns."
+                ],
+                correctAnswer: 0,
+                explanation: "Elevated dust from desertified Near East regions coinciding with documented rainfall reductions logically indicates that severe drying and soil erosion occurred during that historical era."
+            },
+            {
+                passage: "Linguistic anthropologists examining dialect shifts in isolated valley communities noted that younger speakers were rapidly replacing traditional regional vowels with standardized acoustic patterns heard on national media broadcasts. While older residents maintained distinct localized pronunciations, younger generations displayed homogenous phonetic traits regardless of family lineage. Sociolinguists concluded that widespread digital media exposure accelerates dialect levelling, gradually dismantling regional linguistic diversity.",
+                prompt: "Which choice best states the main idea of the text?",
+                options: [
+                    "Media exposure among younger generations accelerates dialect leveling, leading to the reduction of distinct regional accents.",
+                    "Older residents in valley communities adopt new vowel sounds faster than younger residents.",
+                    "Geographic isolation completely prevents national media broadcasts from altering local accents.",
+                    "Phonetic traits are determined solely by family lineage rather than societal exposure."
+                ],
+                correctAnswer: 0,
+                explanation: "The text explains how national media exposure leads younger generations to adopt standardized acoustic patterns, causing dialect leveling and reduced diversity."
+            },
+            {
+                passage: "Rather than adhering to rigid ideological dogma, the mayor adopted a _______ approach to urban planning, evaluating each infrastructure proposal based on practical cost-benefit analysis and community utility.",
+                prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+                options: ["pragmatic", "doctrinaire", "fanciful", "speculative"],
+                correctAnswer: 0,
+                explanation: "'Pragmatic' means dealing with things sensibly and realistically based on practical considerations rather than theoretical or dogmatic ones."
+            }
+        ],
+        setB: [
+            {
+                passage: "Biochemists studying extremophile enzymes isolated from volcanic hot springs discovered that these proteins remain structurally stable at temperatures exceeding 90°C. Unlike typical proteins that denature when heated, these enzymes contain dense networks of ionic salt bridges that preserve their catalytic activity under extreme thermal stress. Industrial chemical manufacturers are eager to adopt these enzymes because they enable _______ synthetic reactions in high-temperature industrial bioreactors.",
+                prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+                options: ["efficient", "sluggish", "hazardous", "ineffective"],
+                correctAnswer: 0,
+                explanation: "Enzymes that remain stable and maintain catalytic activity at extreme temperatures enable smooth, efficient chemical reactions in industrial high-temperature settings."
+            },
+            {
+                passage: "Agricultural scientists tracked soil nitrogen levels across crop fields rotated between corn and leguminous clover. Corn plants deplete soil nitrogen rapidly during growth cycles, requiring heavy synthetic fertilizer inputs. In contrast, clover harbors symbiotic Rhizobium bacteria in its root nodules that fix atmospheric nitrogen into bioavailable soil nitrates. Rotating clover into corn fields restored soil nitrogen without chemical additions, proving that nitrogen-fixing cover crops provide a sustainable alternative to commercial fertilizers.",
+                prompt: "Which choice best states the main idea of the text?",
+                options: [
+                    "Rotating leguminous clover with nitrogen-consuming corn replenishes soil nutrients naturally, reducing the need for synthetic fertilizers.",
+                    "Rhizobium bacteria destroy root nodule structures in corn crops, lowering overall harvest yields.",
+                    "Synthetic nitrogen fertilizers are the only effective method for maintaining high-density crop production.",
+                    "Corn plants absorb bioavailable nitrates from atmospheric water vapor rather than soil roots."
+                ],
+                correctAnswer: 0,
+                explanation: "The passage demonstrates how clover with symbiotic bacteria fixes soil nitrogen naturally, reducing synthetic fertilizer reliance during corn crop rotation."
+            },
+            {
+                passage: "Behavioral researchers measured sleep parameters and memory retention in two groups of adult participants learning a complex spatial navigation task. Group A took a 90-minute nap containing both slow-wave and REM sleep after training, while Group B remained awake watching documentaries. When tested six hours later, Group A navigated the virtual maze 35% faster and committed half as many wrong turns as Group B. This outcome indicates that post-learning sleep _______",
+                prompt: "Which choice most logically completes the text?",
+                options: [
+                    "facilitates cognitive memory consolidation and spatial skill refinement.",
+                    "disrupts long-term memory retrieval processes in normal adults.",
+                    "has no measurable impact on spatial navigation proficiency.",
+                    "forces the brain to overwrite newly acquired motor skills."
+                ],
+                correctAnswer: 0,
+                explanation: "Significantly faster navigation and fewer errors after a nap indicate that sleep facilitates memory consolidation and skill refinement."
+            },
+            {
+                passage: "Volcanologists monitoring seismic activity near subduction zones utilize satellite radar interferometry to map subtle ground inflation prior to eruptions. <b>Specifically, Dr. Rossi analyzed Sentinel-1 radar data to track a 5-centimeter surface bulge over a magma chamber preceding the 2021 volcanic event.</b> This geodetic monitoring allowed authorities to issue timely evacuation orders for surrounding valleys.",
+                prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+                options: [
+                    "It details the specific satellite radar study Dr. Rossi used to detect ground swelling before a volcanic eruption.",
+                    "It introduces a theoretical debate regarding magma chamber cooling rates in subduction zones.",
+                    "It criticizes emergency management officials for ignoring satellite radar warnings.",
+                    "It outlines a engineering proposal for constructing physical lava barriers in river valleys."
+                ],
+                correctAnswer: 0,
+                explanation: "The highlighted sentence specifies the concrete radar analysis Dr. Rossi conducted to track ground inflation prior to an eruption."
+            },
+            {
+                passage: "Text 1\nHydroelectric dams generate low-carbon renewable electricity by harnessing river flows. These infrastructure projects provide predictable baseload power to regional grids, helping nations transition away from coal-burning power plants and reduce carbon emissions.\n\nText 2\nWhile hydroelectric dams generate low-emission power, flooding large river basins creates massive reservoirs that submerge organic vegetation. As flooded plants decay underwater in anaerobic conditions, they release significant volumes of methane, a greenhouse gas far more potent than carbon dioxide.",
+                prompt: "Based on the texts, how would the author of Text 2 most likely respond to Text 1's presentation of hydroelectric power?",
+                options: [
+                    "By pointing out that dam reservoirs can produce substantial methane emissions through underwater plant decomposition, undermining their low-carbon claims.",
+                    "By arguing that hydroelectric dams are incapable of generating predictable baseload electricity for power grids.",
+                    "By asserting that coal-burning power plants produce zero greenhouse gas emissions compared to hydro reservoirs.",
+                    "By suggesting that hydroelectric power should be banned in favor of diesel generators."
+                ],
+                correctAnswer: 0,
+                explanation: "Text 2 directly counters Text 1's clean-energy framing by pointing out that decaying vegetation in dam reservoirs releases potent methane gas."
+            },
+            {
+                passage: "Urban economist Dr. Vance hypothesized that expanding high-frequency public transit access in underserved suburban neighborhoods increases local small business revenue by boosting foot traffic.",
+                prompt: "Which quotation from an economic survey best supports Dr. Vance's hypothesis?",
+                options: [
+                    "\"Retail stores located within 200 meters of newly opened light-rail stations reported a 28% increase in daily sales revenue compared to pre-expansion figures.\"",
+                    "\"Municipal transit authorities spent $45 million modernizing bus fleet diesel engines across the metro area.\"",
+                    "\"Commuters using private vehicles reported spending an average of 42 minutes per day in highway traffic congestion.\"",
+                    "\"Commercial real estate developers constructed three parking garages in downtown business districts last year.\""
+                ],
+                correctAnswer: 0,
+                explanation: "Option A provides direct empirical sales revenue data (+28%) supporting the claim that transit expansion boosts small business revenue."
+            },
+            {
+                passage: "The novel was widely praised for its _______ storytelling; the author skillfully wove together five separate narrative threads spanning three centuries into a seamless, unified conclusion.",
+                prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+                options: ["intricate", "monotonous", "fragmented", "simplistic"],
+                correctAnswer: 0,
+                explanation: "'Intricate' means very complicated or detailed. Weaving five narrative threads across three centuries into a seamless story describes an intricate plot."
+            },
+            {
+                passage: "Archaeologists analyzing residue inside ancient clay vessels from Mesoamerica detected traces of the biomarker theobromine—a compound found almost exclusively in cacao beans. Radiocarbon dating of carbonized seeds from the same stratum established that the vessels date back to 1900 BCE. This discovery proved that indigenous communities were cultivating and consuming cacao beverages over 500 years earlier than previous historical estimates suggested. This archaeological finding demonstrates that _______",
+                prompt: "Which choice most logically completes the text?",
+                options: [
+                    "cacao domestication and culinary consumption in Mesoamerica have a much deeper antiquity than previously recognized.",
+                    "clay vessels were used exclusively for storing grain rather than liquid beverages.",
+                    "theobromine is an artificial chemical synthesized only in modern agricultural laboratories.",
+                    "ancient Mesoamerican societies lacked trade networks for agricultural commodities."
+                ],
+                correctAnswer: 0,
+                explanation: "Detecting theobromine 500 years earlier than past estimates shows that cacao domestication and consumption have a deeper antiquity than previously recognized."
+            },
+            {
+                passage: "Biologists monitoring sea turtle nesting sites observed that artificial coastal lighting from beachfront hotels disorients newly hatched hatchlings. Naturally guided toward the bright horizon over open ocean water, hatchlings instead crawl inland toward streetlights, where they suffer high mortality from dehydration and traffic. Installing sea-turtle-friendly amber LED fixtures that emit longer wavelengths minimized hatchling disorientation while maintaining public safety. Consequently, targeted lighting modifications effectively safeguard wildlife without compromising human safety.",
+                prompt: "Which choice best states the main idea of the text?",
+                options: [
+                    "Adjusting coastal lighting spectrums protects sea turtle hatchlings from lethal disorientation while maintaining beachfront illumination for humans.",
+                    "Sea turtle hatchlings navigate exclusively by tracking ambient surface water temperatures during nighttime emergences.",
+                    "Beachfront hotel developments must eliminate all artificial lighting to prevent turtle mortality.",
+                    "Amber LED lighting fixtures attract sea turtle hatchlings further inland toward roadways."
+                ],
+                correctAnswer: 0,
+                explanation: "The passage explains how modifying coastal lighting to amber LEDs solves hatchling disorientation while preserving human beachfront safety."
+            },
+            {
+                passage: "Although the initial business proposal seemed risky, the founder's _______ market analysis and realistic revenue projections convinced venture capitalists to fund the startup.",
+                prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+                options: ["rigorous", "superficial", "careless", "haphazard"],
+                correctAnswer: 0,
+                explanation: "'Rigorous' means extremely thorough and accurate. A rigorous analysis paired with realistic projections convinces hesitant investors."
+            }
+        ],
+        setC: [
+            {
+                passage: "Historical restorationists working on late Renaissance oil paintings take care to use _______ methods; any adhesives or pigments applied to the canvas must be easily removable by future conservators without damaging original paint layers.",
+                prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+                options: ["reversible", "permanent", "indelible", "destructive"],
+                correctAnswer: 0,
+                explanation: "'Reversible' means capable of being undone or removed. Using adhesives and pigments that can be easily removed by future conservators ensures the restoration is reversible."
+            },
+            {
+                passage: "Neuroscientists measuring visual cortex activity in expert chess players noticed distinct patterns during board analysis. While novice players showed intense activity in areas responsible for deliberate calculation, grandmasters exhibited rapid activation in fusiform pattern-recognition regions. This neural shift indicates that elite chess expertise relies heavily on recognizing holistic board configurations stored in long-term memory rather than calculating individual move sequences from scratch.",
+                prompt: "Which choice best states the main idea of the text?",
+                options: [
+                    "Elite chess players rely on rapid visual pattern recognition in long-term memory rather than step-by-step calculation.",
+                    "Novice chess players possess superior long-term memory storage compared to tournament grandmasters.",
+                    "The fusiform cortex is responsible exclusively for processing auditory pitch and musical rhythm.",
+                    "Calculating individual move sequences is the fastest way to evaluate complex chess positions."
+                ],
+                correctAnswer: 0,
+                explanation: "The text shows how grandmasters activate fusiform pattern-recognition areas, demonstrating that expertise relies on holistic pattern recognition over slow step-by-step calculation."
+            },
+            {
+                passage: "Environmental chemists analyzing urban soil samples near decommissioned battery plants identified elevated concentrations of heavy metals like lead and cadmium. Researchers introduced hyperaccumulating mustard plants (*Brassica juncea*), which absorb metal ions from the soil through their root systems and concentrate them in harvestable leaf tissue. After three growing seasons, soil heavy metal toxicity dropped by 65%. This phytoremediation trial demonstrates that specialized plants _______",
+                prompt: "Which choice most logically completes the text?",
+                options: [
+                    "can effectively extract heavy metal contaminants from polluted industrial soils.",
+                    "increase heavy metal concentrations in soil by releasing toxic root exudates.",
+                    "are incapable of surviving in soils containing elevated lead and cadmium.",
+                    "absorb heavy metals exclusively through atmospheric leaf stomata."
+                ],
+                correctAnswer: 0,
+                explanation: "Because mustard plants absorbed metals and reduced soil toxicity by 65%, the trial demonstrates that specialized plants can extract contaminants from polluted soil."
+            },
+            {
+                passage: "Ecinologists studying avian migration routes utilize light-level geolocators attached to songbirds to trace seasonal flights. <b>Specifically, Dr. Alvarez recorded day-length patterns from 12-gram thrushes to prove that the birds fly non-stop across the Gulf of Mexico during autumn migration.</b> This tracking data disproved the long-held assumption that small songbirds were forced to take overland coastal routes.",
+                prompt: "Which choice best describes the function of the highlighted sentence in the overall structure of the text?",
+                options: [
+                    "It details the specific tracking study Dr. Alvarez conducted to prove that thrushes make non-stop migratory flights over open water.",
+                    "It proposes a new battery design for lightweight geolocator devices.",
+                    "It disputes earlier claims regarding day-length fluctuations in tropical biomes.",
+                    "It summarizes public policy efforts to protect songbird nesting grounds in Mexico."
+                ],
+                correctAnswer: 0,
+                explanation: "The highlighted sentence details the empirical study (recording day-length patterns on thrushes) that disproved coastal route assumptions by showing non-stop open-water flight."
+            },
+            {
+                passage: "Text 1\nGenetically modifying food crops to express drought-tolerant traits provides vital agricultural resilience against climate change. Transgenic corn and soybean varieties maintain stable yields during severe dry spells, protecting global food security and farmer livelihoods in vulnerable regions.\n\nText 2\nWhile genetically modified crops offer yield stability under drought conditions, their widespread adoption risks reducing agricultural biodiversity. Monocultures of patented seed varieties leave agricultural systems vulnerable to novel pathogens, while high seed licensing fees strain smallholder farm finances.",
+                prompt: "Based on the texts, how would the author of Text 2 most likely respond to Text 1's endorsement of GM crops?",
+                options: [
+                    "By highlighting that widespread GM seed adoption carries risks like reduced crop biodiversity, disease vulnerability, and financial pressure on farmers.",
+                    "By claiming that genetically modified corn varieties require three times more water than traditional crops.",
+                    "By asserting that GM crops have failed to show any yield stability during dry spells.",
+                    "By suggesting that smallholder farmers should avoid planting corn and soybeans entirely."
+                ],
+                correctAnswer: 0,
+                explanation: "Text 2 balances Text 1's praise of GM crops by raising concerns about reduced biodiversity, crop vulnerability to pathogens, and financial strain on farmers."
+            },
+            {
+                passage: "Marine ecologist Dr. Hiroshi Sato hypothesized that restoring sea otter populations in degraded kelp forests reduces sea urchin overgrazing, allowing kelp canopies to recover rapidly.",
+                prompt: "Which quotation from a marine biology report best supports Dr. Sato's hypothesis?",
+                options: [
+                    "\"Coastal zones where sea otters were reintroduced saw an 80% decrease in urchin density and a fourfold increase in kelp forest canopy area within five years.\"",
+                    "\"Kelp forests provide food and shelter for over 1,000 species of marine fish and invertebrates.\"",
+                    "\"Sea urchins feed primarily on drift kelp that sinks to the ocean floor during winter storms.\"",
+                    "\"Commercial kelp harvesting equipment was modified to operate in shallow coastal waters.\""
+                ],
+                correctAnswer: 0,
+                explanation: "Option A gives direct quantitative evidence showing that reintroducing otters decreased urchin density by 80% and increased kelp canopy area fourfold."
+            },
+            {
+                passage: "The architectural review board rejected the initial design for the civic center, calling it too _______; the monumental concrete facade was deemed overly severe and oppressive for a public community hub.",
+                prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+                options: ["austere", "inviting", "ornate", "whimsical"],
+                correctAnswer: 0,
+                explanation: "'Austere' means severe or strict in appearance; plain and unadorned. Describing a monumental concrete facade as severe and oppressive fits austere."
+            },
+            {
+                passage: "Psycholinguists evaluating bilingual memory retrieval conducted experiments where participants recalled childhood memories in their native versus second language. Participants prompted in their native tongue retrieved details with significantly richer emotional descriptors and higher sensory vividness. Neuroimaging confirmed stronger activation in the amygdala during native-language memory recall. This research implies that a person's primary language _______",
+                prompt: "Which choice most logically completes the text?",
+                options: [
+                    "is deeply intertwined with emotional memory processing and autobiographical recall.",
+                    "prevents the retrieval of non-verbal spatial memories formed in adulthood.",
+                    "activates sensory brain regions less effectively than second languages.",
+                    "erases childhood memories formed prior to formal language acquisition."
+                ],
+                correctAnswer: 0,
+                explanation: "Because native language prompts led to richer emotional descriptors and stronger amygdala activation, a primary language is deeply intertwined with emotional memory processing."
+            },
+            {
+                passage: "Paleontologists examining fossilized footprints in New Mexico discovered human trackways intersecting with giant ground sloth prints dating back 20,000 years. Spatial analysis revealed that human tracks closely followed sloth prints, with intentional sharp turns indicating human hunters were actively stalking the megafauna. This footprint evidence provides direct physical proof that humans coexisted with and hunted Pleistocene megafauna in North America thousands of years earlier than stone tool artifacts had previously established.",
+                prompt: "Which choice best states the main idea of the text?",
+                options: [
+                    "Fossilized footprints demonstrate that humans hunted Pleistocene megafauna in North America earlier than previously confirmed.",
+                    "Giant ground sloths were the primary predators of early human populations in North America.",
+                    "Pleistocene megafauna went extinct long before human arrival in the Americas.",
+                    "Trackways in New Mexico were formed by natural soil erosion rather than animal movement."
+                ],
+                correctAnswer: 0,
+                explanation: "The passage uses fossil trackway evidence of humans stalking giant ground sloths to state that humans coexisted with and hunted megafauna earlier than previously known."
+            },
+            {
+                passage: "Although the historical documents appeared contradictory at first glance, the archivist was able to _______ the discrepancies by comparing tax ledgers with personal correspondence.",
+                prompt: "Which choice completes the text with the most logical and precise word or phrase?",
+                options: ["reconcile", "exacerbate", "ignore", "fabricate"],
+                correctAnswer: 0,
+                explanation: "'Reconcile' means to make consistent or restore harmony between contrasting ideas or records. Comparing documents to resolve apparent contradictions reconciles the discrepancies."
+            }
+        ]
+    };
+
+    let currentSetKey = 'setA';
+    let currentQuestion = 0;
+    let userAnswers = {};
+    let isLocked = {};
+
+    function initSet() {
+        currentQuestion = 0;
+        const currentData = quizSets[currentSetKey];
+        userAnswers = new Array(currentData.length).fill(null);
+        isLocked = new Array(currentData.length).fill(false);
+
+        const wrapper = document.getElementById('questions-wrapper');
+        wrapper.innerHTML = '';
+        
+        // Build Interactive Web Quiz
+        currentData.forEach((q, index) => {
+            const qBlock = document.createElement('div');
+            qBlock.className = `question-block ${index === 0 ? 'active' : ''}`;
+            qBlock.id = `question-${index}`;
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                optionsHTML += `
+                    <li>
+                        <label id="label-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" onchange="saveAnswer(${index}, ${optIndex})">
+                            ${opt}
+                        </label>
+                    </li>
+                `;
+            });
+
+            qBlock.innerHTML = `
+                <div class="passage">${q.passage}</div>
+                <div class="prompt">${q.prompt}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div class="feedback" id="feedback-${index}"></div>
+            `;
+            wrapper.appendChild(qBlock);
+        });
+
+        // Hide results, show quiz UI
+        document.getElementById('results').style.display = 'none';
+        document.getElementById('univ-reward').style.display = 'none';
+        document.getElementById('nav-buttons').style.display = 'flex';
+        document.getElementById('progress-tracker').style.display = 'block';
+        document.querySelector('.print-blank-btn').style.display = 'block';
+
+        buildPrintBlankView();
+        updateNav();
+    }
+
+    function buildPrintBlankView() {
+        const currentData = quizSets[currentSetKey];
+        const setLabel = document.getElementById('set-select').options[document.getElementById('set-select').selectedIndex].text;
+        
+        let printHTML = `<h1 style="text-align: center; color: #1a5276; margin-bottom: 5px;">SAT Reading Practice</h1><h3 style="text-align: center; margin-top: 0; margin-bottom: 30px; color: #555;">${setLabel} - Blank Copy</h3><hr style="margin-bottom:30px; border: 0; border-top: 1px solid #ccc;">`;
+        
+        currentData.forEach((q, index) => {
+            let printOptionsHTML = '';
+            q.options.forEach(opt => {
+                printOptionsHTML += `
+                    <li style="margin-bottom: 12px; display: flex; align-items: baseline;">
+                        <div style="display:inline-block; width:14px; height:14px; border:2px solid #555; border-radius:50%; margin-right:12px; position:relative; top: 2px; flex-shrink: 0;"></div>
+                        <span>${opt}</span>
+                    </li>
+                `;
+            });
+            
+            printHTML += `
+                <div style="margin-bottom: 45px; page-break-inside: avoid;">
+                    <p style="font-weight: bold; font-size: 1.1em; color: #333;">Question ${index + 1}</p>
+                    <div style="font-family: Georgia, serif; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #ccc; margin-bottom: 15px;">${q.passage}</div>
+                    <p style="font-weight: bold; margin-bottom: 15px;">${q.prompt}</p>
+                    <ul style="list-style-type: none; padding: 0;">${printOptionsHTML}</ul>
+                </div>
+            `;
+        });
+        document.getElementById('print-blank-container').innerHTML = printHTML;
+    }
+
+    function changeSet() {
+        currentSetKey = document.getElementById('set-select').value;
+        initSet();
+    }
+
+    function saveAnswer(qIndex, optIndex) {
+        if (!isLocked[qIndex]) {
+            userAnswers[qIndex] = optIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            if (feedbackDiv.classList.contains('warning')) {
+                feedbackDiv.style.display = 'none';
+            }
+        }
+    }
+
+    function checkAnswer() {
+        if (isLocked[currentQuestion]) return; 
+
+        const selected = userAnswers[currentQuestion];
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestion}`);
+        const currentData = quizSets[currentSetKey];
+        const q = currentData[currentQuestion];
+        
+        if (selected === null || selected === undefined) {
+            feedbackDiv.innerHTML = "Please select an answer before checking.";
+            feedbackDiv.className = "feedback warning";
+            return;
+        }
+
+        isLocked[currentQuestion] = true;
+        
+        const radios = document.getElementsByName(`q${currentQuestion}`);
+        radios.forEach(r => r.disabled = true);
+        q.options.forEach((_, optIndex) => {
+            document.getElementById(`label-${currentQuestion}-${optIndex}`).classList.add('disabled');
+        });
+
+        updateNav();
+
+        if (selected === q.correctAnswer) {
+            feedbackDiv.innerHTML = `<strong>Correct!</strong><br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback correct";
+        } else {
+            feedbackDiv.innerHTML = `<strong>Incorrect.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+            feedbackDiv.className = "feedback incorrect";
+        }
+    }
+
+    function navigate(direction) {
+        const currentData = quizSets[currentSetKey];
+        document.getElementById(`question-${currentQuestion}`).classList.remove('active');
+        currentQuestion += direction;
+        document.getElementById(`question-${currentQuestion}`).classList.add('active');
+        
+        document.getElementById('progress-tracker').textContent = `Question ${currentQuestion + 1} of ${currentData.length}`;
+        updateNav();
+    }
+
+    function updateNav() {
+        const currentData = quizSets[currentSetKey];
+        document.getElementById('prev-btn').disabled = currentQuestion === 0;
+        
+        if (currentQuestion === currentData.length - 1) {
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('submit-btn').style.display = 'block';
+        } else {
+            document.getElementById('next-btn').style.display = 'block';
+            document.getElementById('submit-btn').style.display = 'none';
+        }
+
+        const checkBtn = document.getElementById('check-btn');
+        if (isLocked[currentQuestion]) {
+            checkBtn.disabled = true;
+            checkBtn.textContent = "Answer Checked";
+        } else {
+            checkBtn.disabled = false;
+            checkBtn.textContent = "Check Answer";
+        }
+    }
+
+    function submitQuiz() {
+        let score = 0;
+        const currentData = quizSets[currentSetKey];
+        
+        currentData.forEach((q, index) => {
+            const qBlock = document.getElementById(`question-${index}`);
+            const feedbackDiv = document.getElementById(`feedback-${index}`);
+            
+            qBlock.classList.add('active');
+            
+            if (!isLocked[index]) {
+                const radios = document.getElementsByName(`q${index}`);
+                radios.forEach(r => r.disabled = true);
+                feedbackDiv.innerHTML = `<strong>Unanswered / Not Checked.</strong> The correct answer was: <strong>${q.options[q.correctAnswer]}</strong>.<br><br><em>Explanation:</em> ${q.explanation}`;
+                feedbackDiv.className = "feedback incorrect";
+            } else {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            }
+        });
+
+        document.getElementById('nav-buttons').style.display = 'none';
+        document.getElementById('progress-tracker').style.display = 'none';
+        document.querySelector('.print-blank-btn').style.display = 'none'; 
+        
+        const resultsDiv = document.getElementById('results');
+        resultsDiv.style.display = 'block';
+        document.getElementById('score-display').textContent = `You scored ${score} out of ${currentData.length} (${Math.round((score/currentData.length)*100)}%)`;
+        
+        // Pick a random university crest reward on a perfect score (10/10)
+        if (score === currentData.length) {
+            const reward = universityRewards[Math.floor(Math.random() * universityRewards.length)];
+            const rewardDiv = document.getElementById('univ-reward');
+            const rewardTitle = document.getElementById('univ-reward-title');
+            const rewardImg = document.getElementById('univ-reward-img');
+            const rewardText = document.getElementById('univ-reward-text');
+            
+            rewardDiv.style.borderColor = reward.color;
+            rewardTitle.style.color = reward.color;
+            rewardImg.src = reward.img;
+            rewardImg.alt = reward.name + " Crest";
+            rewardText.textContent = `You have successfully earned the ${reward.name} verification crest for achieving a perfect 10/10 score.`;
+            
+            rewardDiv.style.display = 'block';
+        }
+        
+        window.scrollTo(0, 0);
+    }
+
+    function printBlankQuiz() {
+        document.body.classList.add('print-blank-mode');
+        window.print();
+        document.body.classList.remove('print-blank-mode');
+    }
+
+    window.onload = initSet;
+</script>
+
+</body>
+</html>
