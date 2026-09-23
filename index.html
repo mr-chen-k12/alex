@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,6 +131,13 @@
             word-break: break-word;
         }
 
+        .card-date {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0.65;
+        }
+
         /* Color rotations */
         .style-1 { border-bottom: 8px solid #FF6B6B; }
         .style-2 { border-bottom: 8px solid #4ECDC4; }
@@ -147,28 +155,55 @@
 
     <header>
         <h1 id="repo-name">Loading...</h1>
-        <p class="subtitle">Select a mission to begin!</p>
+        <p class="subtitle" id="year-label">Select a mission to begin!</p>
     </header>
 
     <div class="controls">
         <button class="update-btn" onclick="fetchLatestFiles()">🔄 Check for New Updates</button>
         <div id="status-msg"></div>
     </div>
-    
+
     <div class="card-grid" id="file-list">
         </div>
 
     <script>
         const USERNAME = "mr-chen-k12";
-        
-        // 1. Get folder name dynamically from URL (e.g. "alex" or "miriam")
+
+        /*
+         * DATE / YEAR SETTINGS
+         * ------------------------------------------------------------
+         * Recommended filename format going forward:
+         *     2026-09-22-fractions-practice.html
+         *
+         * Also supported:
+         *     9-22-2026-fractions-practice.html
+         *     9-22-fractions-practice.html   (legacy; year is inferred)
+         *
+         * Homework is grouped by SCHOOL YEAR. With a July start:
+         * July 2026 through June 2027 = the 2026-2027 school year.
+         */
+        const SCHOOL_YEAR_START_MONTH = 7; // July = 7
+        const ALLOW_LEGACY_MONTH_DAY_FILENAMES = true;
+        const SHOW_UNDATED_FILES = false;
+
+        const today = new Date();
+        const currentMonth = today.getMonth() + 1;
+        const activeSchoolYearStart = currentMonth >= SCHOOL_YEAR_START_MONTH
+            ? today.getFullYear()
+            : today.getFullYear() - 1;
+        const activeSchoolYearEnd = activeSchoolYearStart + 1;
+
+        // 1. Get repository/folder name dynamically from the URL.
         const folderName = window.location.pathname.split('/').filter(Boolean).pop() || "alex";
         document.getElementById('repo-name').innerText = folderName;
+        document.getElementById('year-label').innerText =
+            `Newest assignments first • scroll down for older files`;
 
-        // Form unique storage key based on current folder context
-        const STORAGE_KEY = `homework_files_${folderName}`;
+        // Version + school year are included so an old browser cache does not
+        // keep last year's assignments on the screen.
+        const STORAGE_KEY = `homework_files_v3_${folderName}`;
 
-        // 2. RUN IMMEDIATELY ON LOAD: Look for saved files in Local Storage
+        // 2. RUN IMMEDIATELY ON LOAD: Look for saved files in Local Storage.
         window.addEventListener('DOMContentLoaded', () => {
             const cachedData = localStorage.getItem(STORAGE_KEY);
             const statusMsg = document.getElementById('status-msg');
@@ -178,31 +213,129 @@
                 renderCards(files);
                 statusMsg.innerText = "Loaded cached assignments instantly! ✨";
             } else {
-                statusMsg.innerText = "First-time setup: Fetching initial homework files...";
+                statusMsg.innerText = "First-time setup: Fetching homework files...";
                 fetchLatestFiles();
             }
         });
 
-        // 3. CORE RENDERING ENGINE: Builds layout cards dynamically
-        function renderCards(files) {
+        // Return a real Date only when all parts form a valid calendar date.
+        function makeValidDate(year, month, day) {
+            const date = new Date(year, month - 1, day, 12, 0, 0);
+            if (
+                date.getFullYear() !== year ||
+                date.getMonth() !== month - 1 ||
+                date.getDate() !== day
+            ) {
+                return null;
+            }
+            return date;
+        }
+
+        // Read a date from a filename.
+        function parseFileDate(filename) {
+            const base = filename.replace(/\.html$/i, '');
+            let match;
+
+            // Preferred: YYYY-MM-DD, YYYY_M_D, or YYYY.M.D anywhere in the name.
+            match = base.match(/(?:^|[^0-9])(20\d{2})[-_.](\d{1,2})[-_.](\d{1,2})(?=[^0-9]|$)/);
+            if (match) {
+                const year = Number(match[1]);
+                const month = Number(match[2]);
+                const day = Number(match[3]);
+                const date = makeValidDate(year, month, day);
+                if (date) return { date, hasExplicitYear: true };
+            }
+
+            // Also support MM-DD-YYYY.
+            match = base.match(/(?:^|[^0-9])(\d{1,2})[-_.](\d{1,2})[-_.](20\d{2})(?=[^0-9]|$)/);
+            if (match) {
+                const month = Number(match[1]);
+                const day = Number(match[2]);
+                const year = Number(match[3]);
+                const date = makeValidDate(year, month, day);
+                if (date) return { date, hasExplicitYear: true };
+            }
+
+            // Legacy support: MM-DD with no year.
+            // This is inherently ambiguous across years. For compatibility, infer
+            // the date inside the active school year. For a permanent timeline,
+            // use YYYY-MM-DD in every filename.
+            match = base.match(/(?:^|[^0-9])(\d{1,2})[-_.](\d{1,2})(?=[^0-9]|$)/);
+            if (match && ALLOW_LEGACY_MONTH_DAY_FILENAMES) {
+                const month = Number(match[1]);
+                const day = Number(match[2]);
+                const inferredYear = month >= SCHOOL_YEAR_START_MONTH
+                    ? activeSchoolYearStart
+                    : activeSchoolYearEnd;
+                const date = makeValidDate(inferredYear, month, day);
+                if (date) return { date, hasExplicitYear: false };
+            }
+
+            return null;
+        }
+
+        function isInActiveSchoolYear(date) {
+            const start = new Date(activeSchoolYearStart, SCHOOL_YEAR_START_MONTH - 1, 1, 0, 0, 0);
+            const end = new Date(activeSchoolYearEnd, SCHOOL_YEAR_START_MONTH - 1, 1, 0, 0, 0);
+            return date >= start && date < end;
+        }
+
+        // Convert raw filenames into dated objects and sort by actual date
+        // DESCENDING: newest files appear at the top; older files continue below.
+        // Explicit years are preserved, so 2026-09-22 sorts above 2025-09-22.
+        function prepareFiles(filenames) {
+            return filenames
+                .map(filename => {
+                    const dateInfo = parseFileDate(filename);
+                    return { filename, dateInfo };
+                })
+                .filter(item => item.dateInfo || SHOW_UNDATED_FILES)
+                .sort((a, b) => {
+                    const aTime = a.dateInfo ? a.dateInfo.date.getTime() : -Infinity;
+                    const bTime = b.dateInfo ? b.dateInfo.date.getTime() : -Infinity;
+
+                    // Newest -> oldest.
+                    if (aTime !== bTime) return bTime - aTime;
+
+                    return a.filename.localeCompare(b.filename, undefined, {
+                        numeric: true,
+                        sensitivity: 'base'
+                    });
+                });
+        }
+
+        function formatCardDate(dateInfo) {
+            if (!dateInfo) return '';
+            return dateInfo.date.toLocaleDateString(undefined, {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
+        }
+
+        // 3. CORE RENDERING ENGINE: Builds layout cards dynamically.
+        function renderCards(rawFiles) {
             const list = document.getElementById('file-list');
-            list.innerHTML = ''; // Wipe current elements
+            list.innerHTML = '';
+
+            const files = prepareFiles(rawFiles);
 
             if (files.length === 0) {
-                list.innerHTML = '<div style="color:white; font-size:1.5rem; grid-column: 1/-1; text-align:center;">All clear! No homework files found. 🎉</div>';
+                list.innerHTML = '<div style="color:white; font-size:1.5rem; grid-column: 1/-1; text-align:center;">No dated homework files found. 🎉</div>';
                 return;
             }
 
-            files.forEach((filename, index) => {
+            files.forEach((item, index) => {
+                const filename = item.filename;
                 const a = document.createElement('a');
-                a.href = filename; // Points cleanly to homework file
-                
+                a.href = filename;
+
                 // Color iteration calculation (loops 1 to 4)
                 const styleNum = (index % 4) + 1;
                 a.className = `card style-${styleNum}`;
-                
+
                 // Icon picker assignments
-                let icon = "📄"; 
+                let icon = "📄";
                 const lowerName = filename.toLowerCase();
                 if (lowerName.includes("math")) icon = "📐";
                 else if (lowerName.includes("quiz")) icon = "🏆";
@@ -211,52 +344,64 @@
                 else if (lowerName.includes("game")) icon = "🎮";
                 else if (lowerName.includes("reading")) icon = "📚";
                 else if (lowerName.includes("test")) icon = "📝";
-                
+
+                const dateText = formatCardDate(item.dateInfo);
+
                 a.innerHTML = `
                     <div class="card-icon">${icon}</div>
                     <div class="card-title">${cleanName(filename)}</div>
+                    ${dateText ? `<div class="card-date">${dateText}</div>` : ''}
                 `;
-                
+
                 list.appendChild(a);
             });
         }
 
-        // 4. MANUAL FORCE SYNC BUTTON FUNCTION
+        // 4. MANUAL FORCE SYNC BUTTON FUNCTION.
         async function fetchLatestFiles() {
             const statusMsg = document.getElementById('status-msg');
             statusMsg.innerText = "⏳ Checking GitHub for new changes...";
-            
+
             try {
                 const response = await fetch(`https://api.github.com/repos/${USERNAME}/${folderName}/contents/`);
                 if (!response.ok) throw new Error("Could not load repository folder structure.");
-                
+
                 const data = await response.json();
-                
-                // Filter down to active homework documents, sort alphabetically, and reverse it
+
+                // GitHub's Contents API does not provide a dependable creation date here,
+                // so the date embedded in each filename is our source of truth.
                 const files = data
-                    .filter(f => f.name.endsWith('.html') && !f.name.startsWith('index') && !f.name.startsWith('_') && f.name !== 'generator.html')
-                    .map(f => f.name)
-                    .sort()
-                    .reverse(); // Newest prefixes or strings sit at the top grid row
-                
-                // Save updated array to user's browser local storage
+                    .filter(f =>
+                        f.type === 'file' &&
+                        f.name.toLowerCase().endsWith('.html') &&
+                        !f.name.toLowerCase().startsWith('index') &&
+                        !f.name.startsWith('_') &&
+                        f.name.toLowerCase() !== 'generator.html'
+                    )
+                    .map(f => f.name);
+
+                // Save raw filenames. Filtering and date sorting happen in renderCards()
+                // so cached data follows the exact same rules as fresh GitHub data.
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(files));
-                
-                // Build fresh structural nodes onto grid
+
                 renderCards(files);
-                statusMsg.innerText = "🚀 UI Grid Updated & Saved successfully!";
-                
-                // Clear success toast indicator after a short delay
+
+                const visibleCount = prepareFiles(files).length;
+                statusMsg.innerText = `🚀 Updated! Showing ${visibleCount} file${visibleCount === 1 ? '' : 's'}, newest first.`;
+
                 setTimeout(() => { statusMsg.innerText = ""; }, 4000);
-                
+
             } catch (error) {
                 statusMsg.innerHTML = `⚠️ Sync Failed: <span style="color:#ffaeae;">${error.message}</span>`;
             }
         }
 
-        // Helper string utility (Kept EXACTLY as original to preserve design structure)
         function cleanName(name) {
-            return name.replace('.html', '').replace(/-/g, ' '); // Replaces dashes with spaces
+            return name
+                .replace(/\.html$/i, '')
+                .replace(/[-_]+/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
         }
     </script>
 
