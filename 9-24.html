@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 17 Written Practice — Solutions (9/24)</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(','\\)']],
+    displayMath: [['\\[','\\]']]
+  },
+  options: {
+    skipHtmlTags: ['script','noscript','style','textarea','pre']
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<style>
+  body { font-family: Georgia, 'Times New Roman', serif; max-width: 820px; margin: 0 auto; padding: 20px; background: #f7f5f0; color: #222; line-height: 1.6; }
+  h1 { text-align: center; font-size: 1.6em; margin-bottom: 0.2em; }
+  .subtitle { text-align: center; color: #666; margin-bottom: 1.5em; }
+  .section-title { background: #2c5f8a; color: #fff; padding: 8px 14px; border-radius: 6px; margin-top: 2em; font-size: 1.15em; }
+  .problem { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 14px 16px; margin: 12px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .q-num { display: inline-block; background: #2c5f8a; color: #fff; font-weight: bold; border-radius: 50%; width: 30px; height: 30px; text-align: center; line-height: 30px; margin-right: 8px; font-size: 0.95em; }
+  .q-text { font-size: 1.02em; }
+  .tag { display: inline-block; background: #dbe9f4; color: #2c5f8a; font-size: 0.72em; font-weight: bold; padding: 2px 8px; border-radius: 4px; margin-left: 8px; vertical-align: middle; letter-spacing: 0.5px; }
+  .toggle { margin-top: 10px; background: #3a7d44; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.95em; }
+  .toggle:hover { background: #2f6837; }
+  .answer { display: none; margin-top: 12px; padding: 12px 14px; background: #f0f7f0; border-left: 4px solid #3a7d44; border-radius: 0 6px 6px 0; }
+  .answer strong.label { color: #2f6837; }
+  .toolbar { text-align: center; margin: 16px 0; }
+  .toolbar button { background: #2c5f8a; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin: 0 6px; font-size: 0.95em; }
+  .toolbar button:hover { background: #234d6f; }
+  .sub { margin-left: 38px; margin-top: 8px; }
+  .sub .q-num { width: 26px; height: 26px; line-height: 26px; font-size: 0.85em; background: #5a8ab0; }
+</style>
+<script>
+function toggle(id, btn) {
+  var el = document.getElementById(id);
+  if (el.style.display === 'none' || el.style.display === '') {
+    el.style.display = 'block';
+    btn.textContent = 'Hide Answer';
+    if (window.MathJax) { MathJax.typesetPromise([el]); }
+  } else {
+    el.style.display = 'none';
+    btn.textContent = 'Show Answer';
+  }
+}
+function showAll() {
+  document.querySelectorAll('.answer').forEach(function(el){ el.style.display = 'block'; });
+  document.querySelectorAll('.toggle').forEach(function(b){ b.textContent = 'Hide Answer'; });
+  if (window.MathJax) { MathJax.typesetPromise(); }
+}
+function hideAll() {
+  document.querySelectorAll('.answer').forEach(function(el){ el.style.display = 'none'; });
+  document.querySelectorAll('.toggle').forEach(function(b){ b.textContent = 'Show Answer'; });
+}
+</script>
+</head>
+<body>
+
+<h1>Lesson 17 — Written Practice Solutions</h1>
+<p class="subtitle">Saxon Math Course 2 &nbsp;•&nbsp; September 24 &nbsp;•&nbsp; Tap <em>Show Answer</em> to reveal each solution</p>
+
+<div class="toolbar">
+  <button onclick="showAll()">Show All Answers</button>
+  <button onclick="hideAll()">Hide All Answers</button>
+</div>
+
+<div class="section-title">Warm-Up: Represent &amp; Analyze</div>
+
+<div class="problem">
+  <span class="q-num">g</span><span class="q-text"><span class="tag">REPRESENT</span> Use your protractor to draw a \(45^\circ\) angle.</span><br>
+  <button class="toggle" onclick="toggle('ag', this)">Show Answer</button>
+  <div class="answer" id="ag">
+    <strong class="label">Answer:</strong> A drawing of an acute angle measuring \(45^\circ\).<br>
+    <strong class="label">Explanation:</strong> Place the center of the protractor on the vertex, align one ray with \(0^\circ\), mark a point at \(45^\circ\), and draw the second ray from the vertex through that mark.
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">h</span><span class="q-text"><span class="tag">REPRESENT</span> Use your protractor to draw a \(120^\circ\) angle.</span><br>
+  <button class="toggle" onclick="toggle('ah', this)">Show Answer</button>
+  <div class="answer" id="ah">
+    <strong class="label">Answer:</strong> A drawing of an obtuse angle measuring \(120^\circ\).<br>
+    <strong class="label">Explanation:</strong> Same protractor steps as above, marking \(120^\circ\). The angle is obtuse because it is greater than \(90^\circ\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">i</span><span class="q-text"><span class="tag">REPRESENT</span> Use your protractor to draw a \(100^\circ\) angle.</span><br>
+  <button class="toggle" onclick="toggle('ai', this)">Show Answer</button>
+  <div class="answer" id="ai">
+    <strong class="label">Answer:</strong> A drawing of an obtuse angle measuring \(100^\circ\).<br>
+    <strong class="label">Explanation:</strong> Mark \(100^\circ\) on the protractor and draw the second ray through the mark. Obtuse, since \(100^\circ &gt; 90^\circ\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">j</span><span class="q-text"><span class="tag">REPRESENT</span> Use your protractor to draw an \(80^\circ\) angle.</span><br>
+  <button class="toggle" onclick="toggle('aj', this)">Show Answer</button>
+  <div class="answer" id="aj">
+    <strong class="label">Answer:</strong> A drawing of an acute angle measuring \(80^\circ\).<br>
+    <strong class="label">Explanation:</strong> Mark \(80^\circ\) on the protractor and draw the second ray through the mark. Acute, since \(80^\circ &lt; 90^\circ\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">k</span><span class="q-text"><span class="tag">ANALYZE</span> Perry's protractor is marked at each degree. Assuming the protractor is used correctly, what is the greatest possible error that can be made with Perry's protractor? Express your answer as a fraction of a degree.</span><br>
+  <button class="toggle" onclick="toggle('ak', this)">Show Answer</button>
+  <div class="answer" id="ak">
+    <strong class="label">Answer:</strong> \(\frac{1}{2}\) of a degree.<br>
+    <strong class="label">Explanation:</strong> With marks every \(1^\circ\), a measurement is rounded to the nearest mark, so the true angle can be at most half an interval away from a mark: \(\frac{1^\circ}{2} = \frac{1}{2}^\circ\).
+  </div>
+</div>
+
+<div class="section-title">Written Practice: Problems 1–11</div>
+
+<div class="problem">
+  <span class="q-num">1</span><span class="q-text">Two thousand, four hundred twenty people gathered before noon for the opening of a new park. An additional five thousand, ninety people arrived after noon. How many people were at the opening of the new park?</span><br>
+  <button class="toggle" onclick="toggle('a1', this)">Show Answer</button>
+  <div class="answer" id="a1">
+    <strong class="label">Answer:</strong> 7,510 people.<br>
+    <strong class="label">Explanation:</strong> Add the two groups: \(2420 + 5090 = 7510\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">2</span><span class="q-text">A number cube is rolled once.<br>
+  <strong>a.</strong> What is the probability of rolling a 5?<br>
+  <strong>b.</strong> What is the probability of not rolling a 5?</span><br>
+  <button class="toggle" onclick="toggle('a2', this)">Show Answer</button>
+  <div class="answer" id="a2">
+    <strong class="label">Answer:</strong> a. \(\frac{1}{6}\) &nbsp;&nbsp; b. \(\frac{5}{6}\).<br>
+    <strong class="label">Explanation:</strong> A number cube has 6 equally likely faces. Only one face shows 5, so \(P(5) = \frac{1}{6}\). The other five faces are not 5, so \(P(\text{not }5) = \frac{5}{6} = 1 - \frac{1}{6}\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">3</span><span class="q-text">There are 210 students in the first-year physical education class. If they are equally divided into 15 squads, how many students will be in each squad?</span><br>
+  <button class="toggle" onclick="toggle('a3', this)">Show Answer</button>
+  <div class="answer" id="a3">
+    <strong class="label">Answer:</strong> 14 students per squad.<br>
+    <strong class="label">Explanation:</strong> \(210 \div 15 = 14\). Check: \(15 \times 14 = 210\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">4</span><span class="q-text">Columbus set sail for the New World in 1492. The Pilgrims set sail for the New World in 1620. How many years are there between the two dates?</span><br>
+  <button class="toggle" onclick="toggle('a4', this)">Show Answer</button>
+  <div class="answer" id="a4">
+    <strong class="label">Answer:</strong> 128 years.<br>
+    <strong class="label">Explanation:</strong> \(1620 - 1492 = 128\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">5</span><span class="q-text">Which of the following does <strong>not</strong> equal \(1\frac{1}{3}\)?<br>
+  <strong>A</strong> \(\frac{4}{3}\) &nbsp;&nbsp; <strong>B</strong> \(1\frac{2}{6}\) &nbsp;&nbsp; <strong>C</strong> \(\frac{5}{3}\) &nbsp;&nbsp; <strong>D</strong> \(1\frac{4}{12}\)</span><br>
+  <button class="toggle" onclick="toggle('a5', this)">Show Answer</button>
+  <div class="answer" id="a5">
+    <strong class="label">Answer:</strong> C.<br>
+    <strong class="label">Explanation:</strong> \(1\frac{1}{3} = \frac{4}{3}\).
+    A: \(\frac{4}{3}\) ✓ &nbsp;
+    B: \(1\frac{2}{6} = 1\frac{1}{3}\) ✓ &nbsp;
+    C: \(\frac{5}{3} = 1\frac{2}{3}\) ✗ &nbsp;
+    D: \(1\frac{4}{12} = 1\frac{1}{3}\) ✓.
+    Only choice C differs.
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">6</span><span class="q-text"><span class="tag">ANALYZE</span> Refer to the figure (two vertical lines through \(R\) and \(T\) with a horizontal line through \(R\) and \(T\), right angles marked at \(R\) and \(T\)) to answer <strong>a–c</strong>:<br>
+  <strong>a.</strong> Which line is parallel to \(\overrightarrow{ST}\)?<br>
+  <strong>b.</strong> Which line is perpendicular to \(\overrightarrow{ST}\)?<br>
+  <strong>c.</strong> Angle \(QRT\) measures how many degrees?</span><br>
+  <button class="toggle" onclick="toggle('a6', this)">Show Answer</button>
+  <div class="answer" id="a6">
+    <strong class="label">Answer:</strong> a. \(\overleftrightarrow{QR}\) &nbsp;&nbsp; b. \(\overleftrightarrow{RT}\) &nbsp;&nbsp; c. \(90^\circ\).<br>
+    <strong class="label">Explanation:</strong> \(\overrightarrow{ST}\) is vertical. The other vertical line, \(\overleftrightarrow{QR}\), is parallel to it. The horizontal line \(\overleftrightarrow{RT}\) meets it at a right angle, so it is perpendicular. \(\angle QRT\) is marked as a right angle, so it measures \(90^\circ\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">7</span><span class="q-text">Write each number as a reduced fraction or mixed number:<br>
+  <strong>a.</strong> \(\frac{12}{16}\) &nbsp;&nbsp; <strong>b.</strong> \(3\frac{12}{18}\) &nbsp;&nbsp; <strong>c.</strong> \(25\%\)</span><br>
+  <button class="toggle" onclick="toggle('a7', this)">Show Answer</button>
+  <div class="answer" id="a7">
+    <strong class="label">Answer:</strong> a. \(\frac{3}{4}\) &nbsp;&nbsp; b. \(3\frac{2}{3}\) &nbsp;&nbsp; c. \(\frac{1}{4}\).<br>
+    <strong class="label">Explanation:</strong>
+    a. \(\frac{12}{16} = \frac{12 \div 4}{16 \div 4} = \frac{3}{4}\).
+    b. \(\frac{12}{18} = \frac{2}{3}\), so \(3\frac{12}{18} = 3\frac{2}{3}\).
+    c. \(25\% = \frac{25}{100} = \frac{1}{4}\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">8</span><span class="q-text"><span class="tag">GENERALIZE</span> At the grocery store Len put five apples in a bag and weighed them. The scale showed the weight to be 2 lb 8 oz. What is this weight in ounces?</span><br>
+  <button class="toggle" onclick="toggle('a8', this)">Show Answer</button>
+  <div class="answer" id="a8">
+    <strong class="label">Answer:</strong> 40 oz.<br>
+    <strong class="label">Explanation:</strong> \(1\text{ lb} = 16\text{ oz}\), so \(2\text{ lb }8\text{ oz} = 2(16) + 8 = 32 + 8 = 40\) oz.
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">9</span><span class="q-text">Complete each equivalent fraction:<br>
+  <strong>a.</strong> \(\frac{2}{9} = \frac{?}{18}\) &nbsp;&nbsp; <strong>b.</strong> \(\frac{1}{3} = \frac{?}{18}\) &nbsp;&nbsp; <strong>c.</strong> \(\frac{5}{6} = \frac{?}{18}\)</span><br>
+  <button class="toggle" onclick="toggle('a9', this)">Show Answer</button>
+  <div class="answer" id="a9">
+    <strong class="label">Answer:</strong> a. 4 &nbsp;&nbsp; b. 6 &nbsp;&nbsp; c. 15.<br>
+    <strong class="label">Explanation:</strong>
+    a. \(\frac{2}{9} = \frac{2 \times 2}{9 \times 2} = \frac{4}{18}\).
+    b. \(\frac{1}{3} = \frac{1 \times 6}{3 \times 6} = \frac{6}{18}\).
+    c. \(\frac{5}{6} = \frac{5 \times 3}{6 \times 3} = \frac{15}{18}\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">10</span><span class="q-text"><span class="tag">REPRESENT</span> Use a protractor to draw a \(30^\circ\) angle.</span><br>
+  <button class="toggle" onclick="toggle('a10', this)">Show Answer</button>
+  <div class="answer" id="a10">
+    <strong class="label">Answer:</strong> A drawing of an acute angle measuring \(30^\circ\).<br>
+    <strong class="label">Explanation:</strong> Center the protractor on the vertex, align a ray with \(0^\circ\), mark \(30^\circ\), and draw the second ray through the mark.
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">11</span><span class="q-text"><strong>a.</strong> What factors of 20 are also factors of 50?<br>
+  <strong>b.</strong> What is the GCF of 20 and 50?</span><br>
+  <button class="toggle" onclick="toggle('a11', this)">Show Answer</button>
+  <div class="answer" id="a11">
+    <strong class="label">Answer:</strong> a. 1, 2, 5, 10 &nbsp;&nbsp; b. 10.<br>
+    <strong class="label">Explanation:</strong> Factors of 20: 1, 2, 4, 5, 10, 20. Factors of 50: 1, 2, 5, 10, 25, 50. The common factors are 1, 2, 5, and 10; the greatest is 10.
+  </div>
+</div>
+
+<div class="section-title">Written Practice: Problems 12–30</div>
+
+<div class="problem">
+  <span class="q-num">12</span><span class="q-text"><span class="tag">REPRESENT</span> Draw \(\overline{RS}\) \(1\frac{3}{4}\) in. long. Then draw \(\overrightarrow{ST}\) perpendicular to \(\overline{RS}\).</span><br>
+  <button class="toggle" onclick="toggle('a12', this)">Show Answer</button>
+  <div class="answer" id="a12">
+    <strong class="label">Answer:</strong> A segment \(\overline{RS}\) measuring \(1\frac{3}{4}\) in. with a ray from \(S\) forming a \(90^\circ\) angle with \(\overline{RS}\).<br>
+    <strong class="label">Explanation:</strong> Use a ruler to draw \(\overline{RS} = 1\frac{3}{4}\) in. At point \(S\), use a protractor (or the corner of an index card) to draw a ray making a right angle (\(90^\circ\)) with \(\overline{RS}\); label it \(\overrightarrow{ST}\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">13</span><span class="q-text">If \(x = 4\) and \(y = 8\), find:<br>
+  <strong>a.</strong> \(\frac{y}{x} - \frac{x}{y}\) &nbsp;&nbsp; <strong>b.</strong> \(x - \frac{x}{y}\)</span><br>
+  <button class="toggle" onclick="toggle('a13', this)">Show Answer</button>
+  <div class="answer" id="a13">
+    <strong class="label">Answer:</strong> a. \(1\frac{1}{2}\) &nbsp;&nbsp; b. \(3\frac{1}{2}\).<br>
+    <strong class="label">Explanation:</strong>
+    a. \(\frac{y}{x} - \frac{x}{y} = \frac{8}{4} - \frac{4}{8} = 2 - \frac{1}{2} = 1\frac{1}{2} = \frac{3}{2}\).
+    b. \(x - \frac{x}{y} = 4 - \frac{4}{8} = 4 - \frac{1}{2} = 3\frac{1}{2} = \frac{7}{2}\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">14</span><span class="q-text">Find the value of each variable. Check your work.<br>\(x - 231 = 141\)</span><br>
+  <button class="toggle" onclick="toggle('a14', this)">Show Answer</button>
+  <div class="answer" id="a14">
+    <strong class="label">Answer:</strong> \(x = 372\).<br>
+    <strong class="label">Explanation:</strong> Add 231 to both sides: \(x = 141 + 231 = 372\). Check: \(372 - 231 = 141\) ✓
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">15</span><span class="q-text">Find the value of each variable. Check your work.<br>\(\$6.30 + y = \$25\)</span><br>
+  <button class="toggle" onclick="toggle('a15', this)">Show Answer</button>
+  <div class="answer" id="a15">
+    <strong class="label">Answer:</strong> \(y = \$18.70\).<br>
+    <strong class="label">Explanation:</strong> Subtract: \(y = 25.00 - 6.30 = 18.70\). Check: \(\$6.30 + \$18.70 = \$25.00\) ✓
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">16</span><span class="q-text">Find the value of each variable. Check your work.<br>\(8w = \$30.00\)</span><br>
+  <button class="toggle" onclick="toggle('a16', this)">Show Answer</button>
+  <div class="answer" id="a16">
+    <strong class="label">Answer:</strong> \(w = \$3.75\).<br>
+    <strong class="label">Explanation:</strong> Divide both sides by 8: \(w = \frac{30.00}{8} = 3.75\). Check: \(8 \times \$3.75 = \$30.00\) ✓
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">17</span><span class="q-text">Find the value of each variable. Check your work.<br>\(\frac{100\%}{m} = 20\%\)</span><br>
+  <button class="toggle" onclick="toggle('a17', this)">Show Answer</button>
+  <div class="answer" id="a17">
+    <strong class="label">Answer:</strong> \(m = 5\).<br>
+    <strong class="label">Explanation:</strong> \(m = \frac{100\%}{20\%} = 5\). Check: \(\frac{100\%}{5} = 20\%\) ✓
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">18</span><span class="q-text">Simplify: \(3\frac{5}{6} - 1\frac{1}{6}\)</span><br>
+  <button class="toggle" onclick="toggle('a18', this)">Show Answer</button>
+  <div class="answer" id="a18">
+    <strong class="label">Answer:</strong> \(2\frac{2}{3}\).<br>
+    <strong class="label">Explanation:</strong> Subtract whole numbers and fractions separately: \(3 - 1 = 2\) and \(\frac{5}{6} - \frac{1}{6} = \frac{4}{6} = \frac{2}{3}\). So \(2\frac{4}{6} = 2\frac{2}{3}\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">19</span><span class="q-text">Simplify: \(\frac{1}{2} \cdot \frac{2}{3}\)</span><br>
+  <button class="toggle" onclick="toggle('a19', this)">Show Answer</button>
+  <div class="answer" id="a19">
+    <strong class="label">Answer:</strong> \(\frac{1}{3}\).<br>
+    <strong class="label">Explanation:</strong> \(\frac{1}{2} \cdot \frac{2}{3} = \frac{1 \times 2}{2 \times 3} = \frac{2}{6} = \frac{1}{3}\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">20</span><span class="q-text">Simplify: \(\frac{\$100.00}{40}\)</span><br>
+  <button class="toggle" onclick="toggle('a20', this)">Show Answer</button>
+  <div class="answer" id="a20">
+    <strong class="label">Answer:</strong> \(\$2.50\).<br>
+    <strong class="label">Explanation:</strong> \(\frac{100.00}{40} = 2.50\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">21</span><span class="q-text">Simplify: \(55 \cdot 55\)</span><br>
+  <button class="toggle" onclick="toggle('a21', this)">Show Answer</button>
+  <div class="answer" id="a21">
+    <strong class="label">Answer:</strong> 3025.<br>
+    <strong class="label">Explanation:</strong> \(55 \times 55 = 3025\) (note \(55^2 = 3025\)).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">22</span><span class="q-text">Simplify: \(2(8\text{ in.} + 6\text{ in.})\)</span><br>
+  <button class="toggle" onclick="toggle('a22', this)">Show Answer</button>
+  <div class="answer" id="a22">
+    <strong class="label">Answer:</strong> \(28\) in.<br>
+    <strong class="label">Explanation:</strong> Add inside the parentheses first: \(8 + 6 = 14\), then \(2 \times 14 = 28\) inches.
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">23</span><span class="q-text">Simplify: \(\frac{3}{4}\text{ in.} + \frac{3}{4}\text{ in.}\)</span><br>
+  <button class="toggle" onclick="toggle('a23', this)">Show Answer</button>
+  <div class="answer" id="a23">
+    <strong class="label">Answer:</strong> \(1\frac{1}{2}\) in.<br>
+    <strong class="label">Explanation:</strong> \(\frac{3}{4} + \frac{3}{4} = \frac{6}{4} = \frac{3}{2} = 1\frac{1}{2}\) inches.
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">24</span><span class="q-text">Simplify: \(\frac{15}{16}\text{ in.} - \frac{3}{16}\text{ in.}\)</span><br>
+  <button class="toggle" onclick="toggle('a24', this)">Show Answer</button>
+  <div class="answer" id="a24">
+    <strong class="label">Answer:</strong> \(\frac{3}{4}\) in.<br>
+    <strong class="label">Explanation:</strong> \(\frac{15}{16} - \frac{3}{16} = \frac{12}{16} = \frac{3}{4}\) inch.
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">25</span><span class="q-text">Simplify: \(\frac{1}{2} \cdot \frac{4}{3} \cdot \frac{9}{2}\)</span><br>
+  <button class="toggle" onclick="toggle('a25', this)">Show Answer</button>
+  <div class="answer" id="a25">
+    <strong class="label">Answer:</strong> 3.<br>
+    <strong class="label">Explanation:</strong> \(\frac{1}{2} \cdot \frac{4}{3} \cdot \frac{9}{2} = \frac{1 \times 4 \times 9}{2 \times 3 \times 2} = \frac{36}{12} = 3\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">26</span><span class="q-text"><span class="tag">ANALYZE</span> The cost of the meal was \(\$15.17\). Loretha gave the cashier a \(\$20\) bill and a quarter. Name the fewest possible number of bills and coins she could have received in change.</span><br>
+  <button class="toggle" onclick="toggle('a26', this)">Show Answer</button>
+  <div class="answer" id="a26">
+    <strong class="label">Answer:</strong> One \(\$5\) bill, one nickel, and three pennies (5 pieces total).<br>
+    <strong class="label">Explanation:</strong> She paid \(\$20.25\), so her change is \(\$20.25 - \$15.17 = \$5.08\). The fewest pieces for \(\$5.08\): one \(\$5\) bill, then \(8¢ =\) one nickel \(+\) three pennies. Total: 1 bill + 4 coins.
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">27</span><span class="q-text"><strong>a.</strong> Compare: \(\left(\frac{1}{2} \cdot \frac{3}{4}\right) \cdot \frac{2}{3} \;\bigcirc\; \frac{1}{2}\left(\frac{3}{4} \cdot \frac{2}{3}\right)\)<br>
+  <strong>b.</strong> What property is illustrated by the comparison?</span><br>
+  <button class="toggle" onclick="toggle('a27', this)">Show Answer</button>
+  <div class="answer" id="a27">
+    <strong class="label">Answer:</strong> a. \(=\) &nbsp;&nbsp; b. Associative property of multiplication.<br>
+    <strong class="label">Explanation:</strong>
+    Left: \(\left(\frac{1}{2} \cdot \frac{3}{4}\right) \cdot \frac{2}{3} = \frac{3}{8} \cdot \frac{2}{3} = \frac{6}{24} = \frac{1}{4}\).
+    Right: \(\frac{1}{2}\left(\frac{3}{4} \cdot \frac{2}{3}\right) = \frac{1}{2} \cdot \frac{6}{12} = \frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}\).
+    Both sides equal \(\frac{1}{4}\), so the grouping does not change the product — the associative property.
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">28</span><span class="q-text"><span class="tag">FORMULATE</span> Write a word problem about parts of a whole that fits this equation:<br>\[85\% + w = 100\%\]</span><br>
+  <button class="toggle" onclick="toggle('a28', this)">Show Answer</button>
+  <div class="answer" id="a28">
+    <strong class="label">Answer (sample):</strong> 85% of the students in a class voted for a pizza party. What percent of the students did not vote for a pizza party? (\(w = 15\%\)).<br>
+    <strong class="label">Explanation:</strong> The whole class is \(100\%\). If \(85\%\) voted for the party, the remaining part \(w = 100\% - 85\% = 15\%\) did not. Any word problem where a known part (85%) plus an unknown part equals the whole (100%) fits.
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">29</span><span class="q-text">Write \(3\frac{3}{4}\) as an improper fraction. Then write its reciprocal.</span><br>
+  <button class="toggle" onclick="toggle('a29', this)">Show Answer</button>
+  <div class="answer" id="a29">
+    <strong class="label">Answer:</strong> \(\frac{15}{4}\); reciprocal: \(\frac{4}{15}\).<br>
+    <strong class="label">Explanation:</strong> \(3\frac{3}{4} = \frac{3 \times 4 + 3}{4} = \frac{15}{4}\). The reciprocal flips numerator and denominator: \(\frac{4}{15}\).
+  </div>
+</div>
+
+<div class="problem">
+  <span class="q-num">30</span><span class="q-text">Find a fraction equal to \(\frac{3}{4}\) with a denominator of 8. Add the fraction to \(\frac{5}{8}\). Write the sum as a mixed number.</span><br>
+  <button class="toggle" onclick="toggle('a30', this)">Show Answer</button>
+  <div class="answer" id="a30">
+    <strong class="label">Answer:</strong> \(1\frac{3}{8}\).<br>
+    <strong class="label">Explanation:</strong> \(\frac{3}{4} = \frac{3 \times 2}{4 \times 2} = \frac{6}{8}\). Then \(\frac{6}{8} + \frac{5}{8} = \frac{11}{8} = 1\frac{3}{8}\).
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:2em;">End of solutions — good work!</p>
+
+</body>
+</html>
