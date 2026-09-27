@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>4th Grade Public Speaking Kit - iPad Interactive Edition</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+    
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Custom Input Highlighting */
+    .blank-input {
+      background-color: #fef3c7;
+      border-bottom: 3px solid #f59e0b;
+      color: #92400e;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      display: inline-block;
+      min-width: 90px;
+    }
+    .blank-input:focus {
+      outline: none;
+      background-color: #fde68a;
+      border-color: #d97706;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
+    }
+
+    /* Dynamic text insertion highlight */
+    .filled-highlight {
+      background-color: #dbeafe;
+      color: #1e40af;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      border-bottom: 2px solid #3b82f6;
+    }
+
+    /* iPad Presentation Teleprompter styles */
+    .teleprompter-text {
+      line-height: 1.8;
+    }
+
+    /* Custom Scrollbars for smooth touch scrolling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-amber-200">
+
+  <!-- TOP IPAD NAVIGATION BAR -->
+  <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md px-4 py-3 md:px-8">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
+      
+      <!-- Title & Student Name -->
+      <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">🎤</span>
+          <div>
+            <h1 class="font-extrabold text-base md:text-lg text-sky-400 leading-tight">Public Speaking Assistant</h1>
+            <p class="text-xs text-slate-400">Topic: Balancing Screen Time (4th Grade)</p>
+          </div>
+        </div>
+
+        <!-- Speaker Name Quick Field -->
+        <div class="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+          <span class="text-xs text-slate-400 font-bold uppercase">Speaker:</span>
+          <input type="text" id="speakerNameInput" value="Alex" placeholder="Your Name" 
+                 class="bg-transparent text-amber-300 font-bold text-sm w-24 md:w-32 focus:outline-none border-b border-dashed border-amber-400/50">
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="flex items-center gap-2 w-full md:w-auto justify-center bg-slate-800 p-1 rounded-xl border border-slate-700">
+        <button id="tab-edit" onclick="switchTab('edit')" class="px-4 py-2 text-xs md:text-sm font-bold rounded-lg transition-all bg-sky-500 text-white shadow-sm flex items-center gap-1.5">
+          <span>✏️</span> Edit & Fill Blanks
+        </button>
+        <button id="tab-present" onclick="switchTab('present')" class="px-4 py-2 text-xs md:text-sm font-bold rounded-lg transition-all text-slate-300 hover:text-white hover:bg-slate-700 flex items-center gap-1.5">
+          <span>📺</span> iPad Presenter View
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6">
+
+    <!-- VIEW 1: INTERACTIVE EDIT & PRACTICE CARDS -->
+    <div id="view-edit" class="space-y-6">
+
+      <!-- QUICK SPEAKER TIPS & PROGRESS BAR -->
+      <div class="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-4 md:p-5 shadow-sm">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3">
+          <div class="flex items-center gap-2 text-emerald-800 font-bold text-base">
+            <span class="text-xl">🌟</span>
+            <span>4th Grade Public Speaker's Toolkit</span>
+          </div>
+          <span class="bg-emerald-200 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
+            Tap highlighted fields to fill in your answers!
+          </span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs md:text-sm text-emerald-900">
+          <div class="bg-white p-2.5 rounded-xl border border-emerald-100 flex items-center gap-2">
+            <span class="text-lg">🧍</span> <strong>Stand Tall:</strong> Feet steady, shoulders relaxed.
+          </div>
+          <div class="bg-white p-2.5 rounded-xl border border-emerald-100 flex items-center gap-2">
+            <span class="text-lg">🔊</span> <strong>Clear Voice:</strong> Speak to the back of the room.
+          </div>
+          <div class="bg-white p-2.5 rounded-xl border border-emerald-100 flex items-center gap-2">
+            <span class="text-lg">👀</span> <strong>Eye Contact:</strong> Look up at your audience.
+          </div>
+        </div>
+      </div>
+
+      <!-- PRACTICE MODULE 1 -->
+      <div class="bg-white border-2 border-blue-200 rounded-2xl shadow-sm overflow-hidden">
+        <div class="bg-blue-600 text-white px-5 py-3 flex justify-between items-center">
+          <div class="font-bold text-base md:text-lg flex items-center gap-2">
+            <span class="bg-white text-blue-700 w-7 h-7 rounded-full flex items-center justify-center font-black text-sm">1</span>
+            <span>Warm-Up: What is Screen Time?</span>
+          </div>
+          <span class="bg-blue-800 text-blue-100 text-xs px-3 py-1 rounded-full font-semibold">30 Seconds</span>
+        </div>
+        <div class="p-5 space-y-4">
+          <!-- Key Points -->
+          <div class="bg-slate-50 rounded-xl p-3 text-xs md:text-sm text-slate-600 border border-slate-200">
+            <strong class="text-slate-800 uppercase tracking-wider text-xs block mb-1">Key Points to Remember:</strong>
+            • Screen time includes TV, gaming, tablets, and phones.<br>
+            • Balance means enjoying screens without missing out on exercise, reading, and sleep.
+          </div>
+
+          <!-- Interactive Inputs -->
+          <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 space-y-3">
+            <label class="block text-xs font-bold text-amber-900 uppercase">Interactive Blank #1 (Favorite Screen Activity):</label>
+            <div class="flex flex-wrap gap-2 items-center">
+              <input type="text" id="favScreenActivity" value="playing Minecraft" 
+                     class="blank-input text-sm flex-1" placeholder="e.g. playing Roblox, watching videos">
+              <span class="text-xs text-amber-700">Quick Pick:</span>
+              <button onclick="setField('favScreenActivity', 'playing video games')" class="text-xs bg-amber-200 hover:bg-amber-300 text-amber-900 px-2.5 py-1 rounded-lg">Video Games</button>
+              <button onclick="setField('favScreenActivity', 'watching YouTube')" class="text-xs bg-amber-200 hover:bg-amber-300 text-amber-900 px-2.5 py-1 rounded-lg">YouTube</button>
+              <button onclick="setField('favScreenActivity', 'watching cartoons')" class="text-xs bg-amber-200 hover:bg-amber-300 text-amber-900 px-2.5 py-1 rounded-lg">Cartoons</button>
+            </div>
+          </div>
+
+          <!-- Live Script Box -->
+          <div class="bg-blue-50/60 border-l-4 border-blue-500 p-4 rounded-r-xl text-base md:text-lg leading-relaxed font-medium text-slate-800">
+            "Hello everyone! My name is <span class="filled-speaker-name filled-highlight">Alex</span>. Today I want to talk about screen time. I really enjoy <span class="filled-favScreenActivity filled-highlight">playing Minecraft</span>, but screens are like sweet treats—too much isn't healthy! <strong>Balancing screen time</strong> means enjoying our games while still making time for school, outdoor fun, and rest."
+          </div>
+
+          <!-- Practice Checklist -->
+          <div class="flex items-center gap-4 text-xs font-semibold text-slate-500 pt-1 border-t border-slate-100">
+            <label class="flex items-center gap-1.5 cursor-pointer hover:text-slate-800">
+              <input type="checkbox" class="w-4 h-4 rounded text-blue-600"> Read aloud 2x
+            </label>
+            <label class="flex items-center gap-1.5 cursor-pointer hover:text-slate-800">
+              <input type="checkbox" class="w-4 h-4 rounded text-blue-600"> Used clear voice
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRACTICE MODULE 2 -->
+      <div class="bg-white border-2 border-emerald-200 rounded-2xl shadow-sm overflow-hidden">
+        <div class="bg-emerald-600 text-white px-5 py-3 flex justify-between items-center">
+          <div class="font-bold text-base md:text-lg flex items-center gap-2">
+            <span class="bg-white text-emerald-700 w-7 h-7 rounded-full flex items-center justify-center font-black text-sm">2</span>
+            <span>Informative Speech: Brain & Body Health</span>
+          </div>
+          <span class="bg-emerald-800 text-emerald-100 text-xs px-3 py-1 rounded-full font-semibold">45 Seconds</span>
+        </div>
+        <div class="p-5 space-y-4">
+          <div class="bg-slate-50 rounded-xl p-3 text-xs md:text-sm text-slate-600 border border-slate-200">
+            <strong class="text-slate-800 uppercase tracking-wider text-xs block mb-1">Key Points to Remember:</strong>
+            • Screen blue light tricks our brains into staying awake at night.<br>
+            • Staring at displays too long causes dry eyes and neck stiffness.
+          </div>
+
+          <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 space-y-3">
+            <label class="block text-xs font-bold text-amber-900 uppercase">Interactive Blank #2 (Bedtime Routine Choice):</label>
+            <div class="flex flex-wrap gap-2 items-center">
+              <input type="text" id="bedtimeRoutine" value="reading a storybook" 
+                     class="blank-input text-sm flex-1" placeholder="e.g. reading a book, drawing, listening to music">
+              <span class="text-xs text-amber-700">Quick Pick:</span>
+              <button onclick="setField('bedtimeRoutine', 'reading a fun graphic novel')" class="text-xs bg-amber-200 hover:bg-amber-300 text-amber-900 px-2.5 py-1 rounded-lg">Graphic Novel</button>
+              <button onclick="setField('bedtimeRoutine', 'listening to quiet music')" class="text-xs bg-amber-200 hover:bg-amber-300 text-amber-900 px-2.5 py-1 rounded-lg">Music</button>
+            </div>
+          </div>
+
+          <div class="bg-emerald-50/60 border-l-4 border-emerald-500 p-4 rounded-r-xl text-base md:text-lg leading-relaxed font-medium text-slate-800">
+            "Did you know our eyes and brains need regular screen breaks? Staring at glowing displays for hours can make our eyes tired and dry. Also, blue light from tablets makes it hard to sleep! By swapping my tablet for <span class="filled-bedtimeRoutine filled-highlight">reading a storybook</span> an hour before bed, my mind can <strong>recharge properly</strong> so I feel energized for school!"
+          </div>
+
+          <div class="flex items-center gap-4 text-xs font-semibold text-slate-500 pt-1 border-t border-slate-100">
+            <label class="flex items-center gap-1.5 cursor-pointer hover:text-slate-800">
+              <input type="checkbox" class="w-4 h-4 rounded text-emerald-600"> Practiced hand gestures
+            </label>
+            <label class="flex items-center gap-1.5 cursor-pointer hover:text-slate-800">
+              <input type="checkbox" class="w-4 h-4 rounded text-emerald-600"> Paused at periods
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRACTICE MODULE 3 -->
+      <div class="bg-white border-2 border-amber-200 rounded-2xl shadow-sm overflow-hidden">
+        <div class="bg-amber-500 text-white px-5 py-3 flex justify-between items-center">
+          <div class="font-bold text-base md:text-lg flex items-center gap-2">
+            <span class="bg-white text-amber-700 w-7 h-7 rounded-full flex items-center justify-center font-black text-sm">3</span>
+            <span>Problem-Solving: The 50/50 Screen Rule</span>
+          </div>
+          <span class="bg-amber-700 text-amber-100 text-xs px-3 py-1 rounded-full font-semibold">45 Seconds</span>
+        </div>
+        <div class="p-5 space-y-4">
+          <div class="bg-slate-50 rounded-xl p-3 text-xs md:text-sm text-slate-600 border border-slate-200">
+            <strong class="text-slate-800 uppercase tracking-wider text-xs block mb-1">Key Points to Remember:</strong>
+            • For every 30 minutes on screens, match it with 30 minutes of physical movement.<br>
+            • Setting timers shows self-control and responsibility.
+          </div>
+
+          <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 space-y-3">
+            <label class="block text-xs font-bold text-amber-900 uppercase">Interactive Blank #3 (Timer Minutes & Action):</label>
+            <div class="flex flex-wrap gap-2 items-center">
+              <input type="text" id="screenLimitMinutes" value="30 minutes" 
+                     class="blank-input text-sm w-36" placeholder="e.g. 30 minutes, 45 minutes">
+              <span class="text-xs text-amber-700">Quick Pick:</span>
+              <button onclick="setField('screenLimitMinutes', '20 minutes')" class="text-xs bg-amber-200 hover:bg-amber-300 text-amber-900 px-2.5 py-1 rounded-lg">20 Mins</button>
+              <button onclick="setField('screenLimitMinutes', '30 minutes')" class="text-xs bg-amber-200 hover:bg-amber-300 text-amber-900 px-2.5 py-1 rounded-lg">30 Mins</button>
+            </div>
+          </div>
+
+          <div class="bg-amber-50/60 border-l-4 border-amber-500 p-4 rounded-r-xl text-base md:text-lg leading-relaxed font-medium text-slate-800">
+            "Here is a great rule I follow called <strong>The 50/50 Rule</strong>! When I play on a screen for <span class="filled-screenLimitMinutes filled-highlight">30 minutes</span>, I match it with equal time playing active games. I use a loud kitchen timer, and when it rings, I turn off the screen right away without complaining. This shows <strong>self-control</strong>!"
+          </div>
+
+          <div class="flex items-center gap-4 text-xs font-semibold text-slate-500 pt-1 border-t border-slate-100">
+            <label class="flex items-center gap-1.5 cursor-pointer hover:text-slate-800">
+              <input type="checkbox" class="w-4 h-4 rounded text-amber-600"> Emphasized power words
+            </label>
+            <label class="flex items-center gap-1.5 cursor-pointer hover:text-slate-800">
+              <input type="checkbox" class="w-4 h-4 rounded text-amber-600"> Smiled at audience
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRACTICE MODULE 4 -->
+      <div class="bg-white border-2 border-purple-200 rounded-2xl shadow-sm overflow-hidden">
+        <div class="bg-purple-600 text-white px-5 py-3 flex justify-between items-center">
+          <div class="font-bold text-base md:text-lg flex items-center gap-2">
+            <span class="bg-white text-purple-700 w-7 h-7 rounded-full flex items-center justify-center font-black text-sm">4</span>
+            <span>Persuasive Speech: Favorite Offline Activity</span>
+          </div>
+          <span class="bg-purple-800 text-purple-100 text-xs px-3 py-1 rounded-full font-semibold">45 Seconds</span>
+        </div>
+        <div class="p-5 space-y-4">
+          <div class="bg-slate-50 rounded-xl p-3 text-xs md:text-sm text-slate-600 border border-slate-200">
+            <strong class="text-slate-800 uppercase tracking-wider text-xs block mb-1">Key Points to Remember:</strong>
+            • Offline activities spark real-world creativity, friendships, and physical strength.<br>
+            • Inspire your classmates by sharing what you love to do most outdoors or at home.
+          </div>
+
+          <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 space-y-3">
+            <label class="block text-xs font-bold text-amber-900 uppercase">Interactive Blank #4 (Your Favorite Hobby/Sport):</label>
+            <div class="flex flex-wrap gap-2 items-center">
+              <input type="text" id="favOfflineHobby" value="riding my bike in the park" 
+                     class="blank-input text-sm flex-1" placeholder="e.g. playing soccer, drawing comics, building LEGOs">
+              <span class="text-xs text-amber-700">Quick Pick:</span>
+              <button onclick="setField('favOfflineHobby', 'riding my bicycle')" class="text-xs bg-amber-200 hover:bg-amber-300 text-amber-900 px-2.5 py-1 rounded-lg">Bike</button>
+              <button onclick="setField('favOfflineHobby', 'building LEGO creations')" class="text-xs bg-amber-200 hover:bg-amber-300 text-amber-900 px-2.5 py-1 rounded-lg">LEGOs</button>
+              <button onclick="setField('favOfflineHobby', 'playing soccer with friends')" class="text-xs bg-amber-200 hover:bg-amber-300 text-amber-900 px-2.5 py-1 rounded-lg">Soccer</button>
+              <button onclick="setField('favOfflineHobby', 'drawing comic books')" class="text-xs bg-amber-200 hover:bg-amber-300 text-amber-900 px-2.5 py-1 rounded-lg">Drawing</button>
+            </div>
+          </div>
+
+          <div class="bg-purple-50/60 border-l-4 border-purple-500 p-4 rounded-r-xl text-base md:text-lg leading-relaxed font-medium text-slate-800">
+            "What happens when we unplug our screens? We discover awesome real-world activities! When I turn off my tablet, my absolute favorite offline activity is <span class="filled-favOfflineHobby filled-highlight">riding my bike in the park</span>. Doing this makes me feel happy, active, and creative. I challenge all of you to try one new unplugged activity this afternoon!"
+          </div>
+
+          <div class="flex items-center gap-4 text-xs font-semibold text-slate-500 pt-1 border-t border-slate-100">
+            <label class="flex items-center gap-1.5 cursor-pointer hover:text-slate-800">
+              <input type="checkbox" class="w-4 h-4 rounded text-purple-600"> Enthusiastic tone
+            </label>
+            <label class="flex items-center gap-1.5 cursor-pointer hover:text-slate-800">
+              <input type="checkbox" class="w-4 h-4 rounded text-purple-600"> Good eye contact
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRACTICE MODULE 5 (GRAND SPEECH) -->
+      <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-lg border border-slate-800 space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-3">
+          <div>
+            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest">Final Master Speech</span>
+            <h3 class="text-xl font-black text-white">Module #5: My Balanced Screen Time Pledge</h3>
+          </div>
+          <button onclick="switchTab('present')" class="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white text-xs md:text-sm font-bold px-4 py-2 rounded-xl shadow-md flex items-center gap-2">
+            <span>📺</span> Present This Speech on iPad
+          </button>
+        </div>
+
+        <p class="text-xs text-slate-400">All of your custom filled-in blanks are automatically linked below!</p>
+
+        <div id="fullSpeechPreview" class="bg-slate-800/80 rounded-xl p-5 border border-slate-700/80 text-base md:text-lg leading-relaxed text-slate-200 font-normal space-y-4">
+          <!-- Filled dynamically via JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- VIEW 2: IPAD PRESENTER TELEPROMPTER VIEW -->
+    <div id="view-present" class="hidden space-y-4">
+
+      <!-- Presenter Control Bar -->
+      <div class="bg-slate-900 text-white rounded-2xl p-4 shadow-lg border border-slate-800 flex flex-wrap items-center justify-between gap-3 sticky top-16 z-40">
+        
+        <!-- Timer Widget -->
+        <div class="flex items-center gap-3 bg-slate-800 px-4 py-2 rounded-xl border border-slate-700">
+          <span class="text-xs font-bold uppercase text-slate-400">Timer:</span>
+          <span id="presentationTimer" class="font-mono text-xl font-bold text-amber-400">00:00</span>
+          <div class="flex gap-1">
+            <button onclick="toggleTimer()" id="timerToggleBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-2.5 py-1 rounded-lg">Start</button>
+            <button onclick="resetTimer()" class="bg-slate-700 hover:bg-slate-600 text-slate-300 text-xs font-bold px-2.5 py-1 rounded-lg">Reset</button>
+          </div>
+        </div>
+
+        <!-- Font Resizer for iPad Reading distance -->
+        <div class="flex items-center gap-2 bg-slate-800 px-3 py-2 rounded-xl border border-slate-700">
+          <span class="text-xs font-bold uppercase text-slate-400">Text Size:</span>
+          <button onclick="adjustFontSize(-2)" class="bg-slate-700 hover:bg-slate-600 text-white font-bold w-7 h-7 rounded-lg text-sm">-</button>
+          <span id="fontSizeDisplay" class="text-xs font-bold text-sky-400 min-w-[40px] text-center">22px</span>
+          <button onclick="adjustFontSize(2)" class="bg-slate-700 hover:bg-slate-600 text-white font-bold w-7 h-7 rounded-lg text-sm">+</button>
+        </div>
+
+        <!-- Module Selector -->
+        <div class="flex items-center gap-1 bg-slate-800 p-1 rounded-xl border border-slate-700">
+          <button onclick="showPresentSection('all')" id="btn-sec-all" class="px-3 py-1 text-xs font-bold rounded-lg bg-sky-500 text-white">Full Speech</button>
+          <button onclick="showPresentSection('1')" id="btn-sec-1" class="px-2.5 py-1 text-xs font-bold rounded-lg text-slate-400 hover:text-white">Part 1</button>
+          <button onclick="showPresentSection('2')" id="btn-sec-2" class="px-2.5 py-1 text-xs font-bold rounded-lg text-slate-400 hover:text-white">Part 2</button>
+          <button onclick="showPresentSection('3')" id="btn-sec-3" class="px-2.5 py-1 text-xs font-bold rounded-lg text-slate-400 hover:text-white">Part 3</button>
+          <button onclick="showPresentSection('4')" id="btn-sec-4" class="px-2.5 py-1 text-xs font-bold rounded-lg text-slate-400 hover:text-white">Part 4</button>
+        </div>
+
+      </div>
+
+      <!-- Teleprompter Display Box -->
+      <div class="bg-slate-950 text-white rounded-3xl p-6 md:p-10 shadow-2xl border-4 border-slate-800 min-h-[500px] flex flex-col justify-between">
+        
+        <div id="teleprompterContent" class="teleprompter-text font-medium text-slate-100 transition-all duration-200" style="font-size: 22px;">
+          <!-- Content built by JS -->
+        </div>
+
+        <!-- Bottom Speaker Quick Cue Banner -->
+        <div class="mt-8 pt-4 border-t border-slate-800/80 flex flex-wrap justify-between items-center text-xs text-slate-400 gap-2">
+          <div class="flex items-center gap-4">
+            <span>🗣️ <strong>Voice:</strong> Clear & Loud</span>
+            <span>👀 <strong>Eyes:</strong> Look at audience</span>
+            <span>⏸️ <strong>Pause:</strong> At periods</span>
+          </div>
+          <span class="text-sky-400 font-semibold">iPad Presenter Mode</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // State Variables
+    let currentFontSize = 22;
+    let timerInterval = null;
+    let timerSeconds = 0;
+    let isTimerRunning = false;
+
+    // Quick helper to fill field value and update live texts
+    function setField(fieldId, value) {
+      const input = document.getElementById(fieldId);
+      if (input) {
+        input.value = value;
+        updateAllFilledTexts();
+      }
+    }
+
+    // Tab Switching
+    function switchTab(tabName) {
+      const editView = document.getElementById('view-edit');
+      const presentView = document.getElementById('view-present');
+      const btnEdit = document.getElementById('tab-edit');
+      const btnPresent = document.getElementById('tab-present');
+
+      if (tabName === 'edit') {
+        editView.classList.remove('hidden');
+        presentView.classList.add('hidden');
+        btnEdit.className = "px-4 py-2 text-xs md:text-sm font-bold rounded-lg transition-all bg-sky-500 text-white shadow-sm flex items-center gap-1.5";
+        btnPresent.className = "px-4 py-2 text-xs md:text-sm font-bold rounded-lg transition-all text-slate-300 hover:text-white hover:bg-slate-700 flex items-center gap-1.5";
+      } else {
+        editView.classList.add('hidden');
+        presentView.classList.remove('hidden');
+        btnPresent.className = "px-4 py-2 text-xs md:text-sm font-bold rounded-lg transition-all bg-sky-500 text-white shadow-sm flex items-center gap-1.5";
+        btnEdit.className = "px-4 py-2 text-xs md:text-sm font-bold rounded-lg transition-all text-slate-300 hover:text-white hover:bg-slate-700 flex items-center gap-1.5";
+        renderTeleprompter('all');
+      }
+    }
+
+    // Update all live DOM text references
+    function updateAllFilledTexts() {
+      const nameVal = document.getElementById('speakerNameInput').value || 'Alex';
+      const screenActVal = document.getElementById('favScreenActivity').value || 'playing games';
+      const bedtimeVal = document.getElementById('bedtimeRoutine').value || 'reading a book';
+      const limitVal = document.getElementById('screenLimitMinutes').value || '30 minutes';
+      const hobbyVal = document.getElementById('favOfflineHobby').value || 'playing outside';
+
+      // Update in-card inline spans
+      document.querySelectorAll('.filled-speaker-name').forEach(el => el.textContent = nameVal);
+      document.querySelectorAll('.filled-favScreenActivity').forEach(el => el.textContent = screenActVal);
+      document.querySelectorAll('.filled-bedtimeRoutine').forEach(el => el.textContent = bedtimeVal);
+      document.querySelectorAll('.filled-screenLimitMinutes').forEach(el => el.textContent = limitVal);
+      document.querySelectorAll('.filled-favOfflineHobby').forEach(el => el.textContent = hobbyVal);
+
+      // Render Grand Full Speech Preview in Module 5
+      const grandSpeechBox = document.getElementById('fullSpeechPreview');
+      if (grandSpeechBox) {
+        grandSpeechBox.innerHTML = `
+          <p>
+            <strong class="text-sky-400">[1. Warm Opening]</strong><br>
+            "Good morning classmates and teacher! My name is <span class="text-amber-300 font-bold">${escapeHtml(nameVal)}</span>. 
+            How many of you love <span class="text-amber-300 font-bold">${escapeHtml(screenActVal)}</span>? I know I do! But today, 
+            I want to share why <strong>balancing screen time</strong> is one of the best choices we can make."
+          </p>
+          <p>
+            <strong class="text-emerald-400">[2. Brain & Body Health]</strong><br>
+            "Screens are fun and helpful, but spending too much time staring at glowing displays makes our eyes dry and disrupts our sleep. 
+            By replacing screens with <span class="text-amber-300 font-bold">${escapeHtml(bedtimeVal)}</span> before bedtime, our minds can recharge so we feel awesome the next day!"
+          </p>
+          <p>
+            <strong class="text-amber-400">[3. The 50/50 Rule]</strong><br>
+            "My screen time rule is simple: after <span class="text-amber-300 font-bold">${escapeHtml(limitVal)}</span> of screen play, 
+            I set a loud timer and immediately turn off my device when it rings."
+          </p>
+          <p>
+            <strong class="text-purple-400">[4. Favorite Offline Fun]</strong><br>
+            "When I am unplugged, my favorite thing to do is <span class="text-amber-300 font-bold">${escapeHtml(hobbyVal)}</span>! 
+            It lets me stay active, build real skills, and use my imagination."
+          </p>
+          <p>
+            <strong class="text-sky-300">[5. Closing & Challenge]</strong><br>
+            "I challenge all of my friends here today to set a screen timer and discover an exciting unplugged activity today. Thank you!"
+          </p>
+        `;
+      }
+    }
+
+    // Render Teleprompter Presenter View
+    function renderTeleprompter(sectionKey) {
+      const nameVal = document.getElementById('speakerNameInput').value || 'Alex';
+      const screenActVal = document.getElementById('favScreenActivity').value || 'playing video games';
+      const bedtimeVal = document.getElementById('bedtimeRoutine').value || 'reading a book';
+      const limitVal = document.getElementById('screenLimitMinutes').value || '30 minutes';
+      const hobbyVal = document.getElementById('favOfflineHobby').value || 'riding my bike';
+
+      const contentBox = document.getElementById('teleprompterContent');
+
+      // Update Section active tab styling
+      ['all', '1', '2', '3', '4'].forEach(s => {
+        const btn = document.getElementById('btn-sec-' + s);
+        if (btn) {
+          if (s === sectionKey) {
+            btn.className = "px-3 py-1 text-xs font-bold rounded-lg bg-sky-500 text-white";
+          } else {
+            btn.className = "px-2.5 py-1 text-xs font-bold rounded-lg text-slate-400 hover:text-white";
+          }
+        }
+      });
+
+      let htmlContent = "";
+
+      if (sectionKey === '1' || sectionKey === 'all') {
+        htmlContent += `
+          <div class="mb-6 p-4 rounded-2xl bg-blue-950/40 border border-blue-800/50">
+            <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block mb-1">Part 1: The Warm-Up</span>
+            "Good morning classmates and teacher! My name is <span class="text-amber-300 font-bold">${escapeHtml(nameVal)}</span>. 
+            How many of you love <span class="text-amber-300 font-bold">${escapeHtml(screenActVal)}</span>? I know I do! But today, 
+            I want to share why <strong class="text-sky-300">balancing screen time</strong> is one of the best choices we can make."
+          </div>
+        `;
+      }
+
+      if (sectionKey === '2' || sectionKey === 'all') {
+        htmlContent += `
+          <div class="mb-6 p-4 rounded-2xl bg-emerald-950/40 border border-emerald-800/50">
+            <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest block mb-1">Part 2: Health & Sleep</span>
+            "Screens are fun and helpful, but spending too much time staring at glowing displays makes our eyes dry and disrupts our sleep. 
+            By replacing screens with <span class="text-amber-300 font-bold">${escapeHtml(bedtimeVal)}</span> before bedtime, our minds can <strong class="text-emerald-300">recharge properly</strong> so we feel awesome the next day!"
+          </div>
+        `;
+      }
+
+      if (sectionKey === '3' || sectionKey === 'all') {
+        htmlContent += `
+          <div class="mb-6 p-4 rounded-2xl bg-amber-950/40 border border-amber-800/50">
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-1">Part 3: The 50/50 Rule</span>
+            "My screen time rule is simple: after <span class="text-amber-300 font-bold">${escapeHtml(limitVal)}</span> of screen play, 
+            I set a loud timer and immediately turn off my device when it rings. This shows <strong class="text-amber-300">self-control</strong>!"
+          </div>
+        `;
+      }
+
+      if (sectionKey === '4' || sectionKey === 'all') {
+        htmlContent += `
+          <div class="mb-6 p-4 rounded-2xl bg-purple-950/40 border border-purple-800/50">
+            <span class="text-xs font-bold text-purple-400 uppercase tracking-widest block mb-1">Part 4: Unplugged Fun & Closing</span>
+            "When I am unplugged, my favorite thing to do is <span class="text-amber-300 font-bold">${escapeHtml(hobbyVal)}</span>! 
+            It lets me stay active and creative.<br><br>
+            I challenge all of my friends here today to set a screen timer and discover an exciting unplugged activity today. Thank you!"
+          </div>
+        `;
+      }
+
+      contentBox.innerHTML = htmlContent;
+    }
+
+    function showPresentSection(secKey) {
+      renderTeleprompter(secKey);
+    }
+
+    // Font size adjuster
+    function adjustFontSize(delta) {
+      currentFontSize = Math.min(Math.max(16, currentFontSize + delta), 36);
+      document.getElementById('fontSizeDisplay').textContent = currentFontSize + "px";
+      document.getElementById('teleprompterContent').style.fontSize = currentFontSize + "px";
+    }
+
+    // Timer Logic
+    function toggleTimer() {
+      const btn = document.getElementById('timerToggleBtn');
+      if (isTimerRunning) {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        btn.textContent = "Start";
+        btn.className = "bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-2.5 py-1 rounded-lg";
+      } else {
+        isTimerRunning = true;
+        btn.textContent = "Pause";
+        btn.className = "bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold px-2.5 py-1 rounded-lg";
+        timerInterval = setInterval(() => {
+          timerSeconds++;
+          const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+          const secs = String(timerSeconds % 60).padStart(2, '0');
+          document.getElementById('presentationTimer').textContent = `${mins}:${secs}`;
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      if (isTimerRunning) toggleTimer();
+      timerSeconds = 0;
+      document.getElementById('presentationTimer').textContent = "00:00";
+    }
+
+    // Helper to sanitize HTML input
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    // Event Listeners for live updating
+    document.addEventListener('DOMContentLoaded', () => {
+      const inputs = ['speakerNameInput', 'favScreenActivity', 'bedtimeRoutine', 'screenLimitMinutes', 'favOfflineHobby'];
+      inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('input', updateAllFilledTexts);
+        }
+      });
+
+      // Initial Update
+      updateAllFilledTexts();
+    });
+  </script>
+
+</body>
+</html>
