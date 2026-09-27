@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAT Reading Practice Module</title>
+    <style>
+        :root {
+            --primary-color: #00356B; /* Default Yale Blue */
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Header & Branding */
+        header {
+            background-color: #ffffff;
+            border-bottom: 3px solid var(--primary-color);
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .header-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .uni-badges {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .uni-card {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .uni-card:hover {
+            background-color: #f0f0f0;
+        }
+
+        .uni-card img {
+            height: 35px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* Controls Area */
+        .controls-bar {
+            max-width: 1000px;
+            margin: 25px auto 10px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .selector-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        select {
+            padding: 8px 16px;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 2px solid var(--primary-color);
+            background-color: #fff;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .score-tracker {
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: #ffffff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            max-width: 1000px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .question-number {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6c757d;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .passage {
+            background-color: #f1f3f5;
+            padding: 15px 20px;
+            border-radius: 6px;
+            font-style: italic;
+            margin-bottom: 15px;
+            border-left: 3px solid #ccc;
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            text-align: left;
+            padding: 12px 18px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            background-color: #fff;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+        }
+
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            border-color: var(--success-color) !important;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .option-btn.incorrect {
+            background-color: #f8d7da !important;
+            border-color: var(--danger-color) !important;
+            color: #721c24;
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .feedback-box.correct-fb {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback-box.incorrect-fb {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* End of Set Score Card */
+        .score-summary-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            display: none;
+        }
+
+        .score-summary-card h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .btn-retry {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-retry:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <h2>SAT Reading Module</h2>
+            <div class="uni-badges">
+                <div class="uni-card" onclick="setTheme('#A51C30')">
+                    <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard">
+                    <span style="color: #A51C30;">Harvard</span>
+                </div>
+                <div class="uni-card" onclick="setTheme('#CC0000')">
+                    <img src="https://mr-chen-k12.github.io/books/IMG_0121.png" alt="BU">
+                    <span style="color: #CC0000;">Boston Univ.</span>
+                </div>
+                <div class="uni-card" onclick="setTheme('#00356B')">
+                    <img src="https://mr-chen-k12.github.io/books/IMG_0122.png" alt="Yale">
+                    <span style="color: #00356B;">Yale</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="controls-bar">
+        <div class="selector-group">
+            <label for="set-select">Select Question Set:</label>
+            <select id="set-select" onchange="loadSet(this.value)">
+                <option value="Set A">Set A</option>
+                <option value="Set B">Set B</option>
+                <option value="Set C">Set C</option>
+            </select>
+        </div>
+        <div class="score-tracker" id="score-tracker">
+            Score: 0 / 10
+        </div>
+    </div>
+
+    <main class="quiz-container">
+        <div id="questions-wrapper"></div>
+
+        <div id="score-summary" class="score-summary-card">
+            <h2>Set Complete!</h2>
+            <p>Your total score for this set:</p>
+            <div class="score-display" id="final-score-text">0 / 10</div>
+            <p id="feedback-message"></p>
+            <button class="btn-retry" onclick="resetCurrentSet()">Reset & Try Again</button>
+        </div>
+    </main>
+
+    <script>
+        const questionBank = {
+            "Set A": [
+                {
+                    id: 1,
+                    passage: "Luthiers have long debated whether the extraordinary acoustic resonance of 18th-century Stradivarius violins stems from the specific wood density caused by the Little Ice Age or unique chemical treatments applied to the timber. Recent microscopic analysis reveals that while wood density is unusual, a modern varnish synthesized to mimic the mineral treatments of master craftsmen replicates nearly identical harmonic overtones on standard instruments.",
+                    question: "Which choice best states the main idea of the text?",
+                    options: [
+                        "A) Modern luthiers are unable to match the visual craftsmanship of vintage violins.",
+                        "B) Chemical treatments likely play a more significant role in Stradivarius acoustics than climate-driven wood density.",
+                        "C) The Little Ice Age was the primary determinant of sound quality in European string instruments.",
+                        "D) Microscopic analysis has proven that antique violins sound identical to modern mass-produced instruments."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The passage indicates that mimicking mineral/chemical treatments yields nearly identical overtones despite wood density differences, supporting the claim that chemical treatments are key."
+                },
+                {
+                    id: 2,
+                    passage: "In standard ecological models, species diversity is expected to decline when resource competition intensifies. However, researcher Maya Lin observed that in intertidal rock pools, intense competition for space among algae species led to structural partitioning rather than exclusion, allowing diverse species to coexist by occupying distinct vertical strata.",
+                    question: "As used in the text, what does 'partitioning' most nearly mean?",
+                    options: ["A) Division", "B) Elimination", "C) Migration", "D) Amplification"],
+                    answer: 0,
+                    explanation: "Correct! 'Partitioning' in this context refers to dividing space into distinct layers or sections."
+                },
+                {
+                    id: 3,
+                    passage: "Anthropologist Dr. Sarah Carter examined agricultural terracing in the Andes. She argued that terracing was not merely a response to steep topography, but a deliberate microclimate engineering technique that buffered crops against freezing temperatures.",
+                    question: "Which finding, if true, would most directly support Dr. Carter's argument?",
+                    options: [
+                        "A) Terraced fields require significantly more labor to construct than flat lowland fields.",
+                        "B) Soil temperatures on terraced slopes remain 3°C warmer at night than on un-terraced adjacent slopes.",
+                        "C) Lowland farmers grew different crop varieties than high-altitude terraced farmers.",
+                        "D) Ancient Andean populations abandoned terracing after the introduction of new irrigation canals."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Evidence showing that terraces retain higher temperatures at night directly supports the claim that terracing served as microclimate engineering against frost."
+                },
+                {
+                    id: 4,
+                    passage: "In 1892, Charlotte Perkins Gilman published 'The Yellow Wallpaper,' a short story highlighting the detrimental psychological effects of the 'rest cure' prescribed to women suffering from postpartum depression. The narrator's gradual mental deterioration serves as a scathing critique of 19th-century patriarchal medical practices.",
+                    question: "Which choice best describes the overall purpose of the text?",
+                    options: [
+                        "A) To summarize the biography of Charlotte Perkins Gilman.",
+                        "B) To evaluate the physiological benefits of 19th-century medical cures.",
+                        "C) To contextualize Gilman's story as a criticism of 19th-century medical treatment of women.",
+                        "D) To argue that modern psychology has completely solved postpartum depression."
+                    ],
+                    answer: 2,
+                    explanation: "Correct! The text explains how Gilman's story serves as a critique of medical practices towards women during that era."
+                },
+                {
+                    id: 5,
+                    passage: "Deep-sea hydrothermal vents exist under extreme pressure and temperature conditions. Bacteria living near these vents synthesize organic compounds not through photosynthesis, but through chemosynthesis, using hydrogen sulfide as an energy source. This forms the foundation of a rich ecosystem devoid of sunlight.",
+                    question: "Based on the text, how do bacteria at hydrothermal vents produce energy?",
+                    options: [
+                        "A) By capturing sunlight that penetrates deep water.",
+                        "B) By processing hydrogen sulfide via chemosynthesis.",
+                        "C) By consuming organic matter from surface waters.",
+                        "D) By absorbing thermal radiation directly from lava."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The text states that bacteria synthesize organic compounds through chemosynthesis using hydrogen sulfide."
+                },
+                {
+                    id: 6,
+                    passage: "Although many economists predicted that introducing digital payment platforms in rural markets would immediately eliminate cash transactions, local vendor adoption remained slow. Merchants cited concerns over transactional reliability during frequent cellular network outages.",
+                    question: "Which choice best states the primary reason for slow digital payment adoption?",
+                    options: [
+                        "A) High fees charged by banking institutions.",
+                        "B) Lack of consumer interest in digital transactions.",
+                        "C) Infrastructure concerns regarding cellular network stability.",
+                        "D) Government regulations banning digital payment apps."
+                    ],
+                    answer: 2,
+                    explanation: "Correct! Merchants cited reliability concerns during network outages, which points directly to infrastructure stability."
+                },
+                {
+                    id: 7,
+                    passage: "Philosopher John Dewey asserted that education should not be regarded merely as preparation for future living, but as a continuous reconstruction of present living experience. Consequently, effective curricula must integrate practical problem-solving with theoretical instruction.",
+                    question: "Which choice best summarizes Dewey's view on education?",
+                    options: [
+                        "A) Education should focus exclusively on memorization of historical facts.",
+                        "B) Education is a active, ongoing process rooted in real-world experience.",
+                        "C) Theoretical instruction is far superior to practical application.",
+                        "D) Schools should prepare students solely for specific technical careers."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Dewey views education as a continuous reconstruction of present experience, combining practice and theory."
+                },
+                {
+                    id: 8,
+                    passage: "The Kepler space telescope identified thousands of exoplanets by measuring tiny dips in star brightness as planets passed in front of them. However, this transit method inherently favors detecting large planets orbiting close to their host stars, while smaller or distant planets require much longer observation windows.",
+                    question: "What limitation of the transit method is emphasized in the passage?",
+                    options: [
+                        "A) It cannot detect planets made primarily of gas.",
+                        "B) It systematically bias detections toward larger, short-period planets.",
+                        "C) It relies on visual photography rather than brightness readings.",
+                        "D) It can only be used during solar eclipses."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The text explicitly states that the method favors detecting large planets orbiting close to their stars."
+                },
+                {
+                    id: 9,
+                    passage: "Linguist Dr. Elena Rostova notes that when two languages remain in close contact for generations, they undergo structural convergence. This process causes their grammatical frameworks to grow more similar even if their vocabularies remain distinct.",
+                    question: "According to the passage, structural convergence affects a language's:",
+                    options: [
+                        "A) Vocabulary exclusively.",
+                        "B) Pronunciation of foreign words.",
+                        "C) Grammatical framework.",
+                        "D) Written alphabet."
+                    ],
+                    answer: 2,
+                    explanation: "Correct! The text explicitly notes that structural convergence causes grammatical frameworks to grow similar."
+                },
+                {
+                    id: 10,
+                    passage: "Urban forestry programs often emphasize tree canopy coverage as a metric of success. However, urban ecologist Marcus Vance emphasizes that planting monocultures of high-canopy trees leaves cities vulnerable to catastrophic pest outbreaks, whereas prioritizing species diversity provides greater ecological resilience.",
+                    question: "The author mentions 'pests outbreaks' primarily to:",
+                    options: [
+                        "A) Illustrate a risk associated with prioritizing canopy volume over species diversity.",
+                        "B) Argue against planting any trees in urban environments.",
+                        "C) Show that high-canopy trees attract fewer insects than shrubs.",
+                        "D) Advocate for synthetic pesticide usage in municipal parks."
+                    ],
+                    answer: 0,
+                    explanation: "Correct! Pest outbreaks are presented as a vulnerability resulting from monocultures focused solely on tree canopy coverage."
+                }
+            ],
+            "Set B": [
+                {
+                    id: 1,
+                    passage: "Mycorrhizal fungi form vast underground networks that connect plant roots. Through these 'fungal highways,' trees transfer carbon, phosphorus, and defense signals to neighboring vegetation, demonstrating that forest ecosystems rely heavily on subterranean cooperation.",
+                    question: "Which choice best states the main idea of the passage?",
+                    options: [
+                        "A) Fungi compete with trees for vital soil nutrients.",
+                        "B) Underground fungal networks enable vital resource sharing among trees.",
+                        "C) Forests can survive without soil nutrients if fungi are present.",
+                        "D) Tree roots absorb carbon directly from sunlight through fungi."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The text explains how fungal networks facilitate the transfer of nutrients and signals among trees."
+                },
+                {
+                    id: 2,
+                    passage: "In 1928, Alexander Fleming discovered penicillin when he noticed that mold had contaminated a petri dish and inhibited bacterial growth. However, mass production of the antibiotic was not realized until the 1940s, when Howard Florey and Ernst Chain developed efficient isolation techniques.",
+                    question: "Based on the text, why was penicillin not widely available immediately after 1928?",
+                    options: [
+                        "A) Fleming refused to share his laboratory findings.",
+                        "B) Mass production required isolation techniques developed later.",
+                        "C) Doctors deemed penicillin ineffective against human infections.",
+                        "D) Bacterial resistance made penicillin obsolete."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Mass production relied on isolation methods refined by Florey and Chain in the 1940s."
+                },
+                {
+                    id: 3,
+                    passage: "Historian James Lee argues that the rapid expansion of railroads in the 19th century did not merely accelerate transit; it fundamentally altered human perception of time by necessitating standardized time zones across continents.",
+                    question: "As used in the text, what does 'necessitating' most nearly mean?",
+                    options: ["A) Dissecting", "B) Requiring", "C) Delaying", "D) Preventing"],
+                    answer: 1,
+                    explanation: "Correct! 'Necessitating' means making something necessary or requiring it."
+                },
+                {
+                    id: 4,
+                    passage: "Neuroplasticity refers to the brain's ability to reorganize itself by forming new neural connections throughout life. This flexibility allows the brain to compensate for injury and adjust activities in response to new environmental demands.",
+                    question: "Which choice best describes the central function of neuroplasticity?",
+                    options: [
+                        "A) Preventing any physical changes in brain structure.",
+                        "B) Allowing the brain to adapt to damage and new experiences.",
+                        "C) Ensuring that memory capacity remains fixed after childhood.",
+                        "D) Speeding up blood circulation during physical exercise."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The passage highlights compensating for injury and adapting to environmental demands."
+                },
+                {
+                    id: 5,
+                    passage: "A team of marine biologists tracked tiger sharks using satellite tags and discovered that their seasonal migration patterns closely aligned with sea surface temperature fluctuations rather than prey density alone.",
+                    question: "The team's finding suggests that tiger shark migration is heavily influenced by:",
+                    options: [
+                        "A) Thermal conditions of the ocean water.",
+                        "B) The presence of commercial fishing vessels.",
+                        "C) Underwater topography and coral reefs.",
+                        "D) Exclusive movement of prey species."
+                    ],
+                    answer: 0,
+                    explanation: "Correct! Alignment with sea surface temperature fluctuations points directly to ocean thermal conditions."
+                },
+                {
+                    id: 6,
+                    passage: "Literary realism in 19th-century novels sought to depict everyday middle-class life with fidelity, deliberately avoiding the idealized romance and sensationalism typical of preceding literary movements.",
+                    question: "What was a primary characteristic of literary realism?",
+                    options: [
+                        "A) A focus on supernatural and mythical creatures.",
+                        "B) Faithful representation of ordinary daily life.",
+                        "C) Reliance on exaggerated, romanticized plots.",
+                        "D) Rejection of prose in favor of epic poetry."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The text states that literary realism depicted everyday life with fidelity."
+                },
+                {
+                    id: 7,
+                    passage: "While early computer monitors utilized cathode-ray tubes (CRTs) that required significant depth and energy, modern organic light-emitting diode (OLED) displays achieve high contrast ratio and flexibility by emitting light per individual pixel without requiring a backlighting panel.",
+                    question: "According to the passage, OLED displays differ from CRTs in part because OLEDs:",
+                    options: [
+                        "A) Require bulky glass vacuum tubes to function.",
+                        "B) Emit light individually at the pixel level.",
+                        "C) Consume far more electrical energy.",
+                        "D) Depend on an external backlighting panel."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The passage explicitly states OLEDs emit light per individual pixel without needing a backlighting panel."
+                },
+                {
+                    id: 8,
+                    passage: "In his public policy essay, economist Gabriel Gomez maintains that universal basic income (UBI) pilot programs do not discourage labor participation. Rather, empirical data from trials show participants often use the safety net to pursue higher education or transition into higher-paying occupations.",
+                    question: "Gomez references empirical data from trials in order to:",
+                    options: [
+                        "A) Argue that UBI programs increase overall unemployment.",
+                        "B) Counter the objection that UBI disincentivizes work.",
+                        "C) Suggest that UBI should replace all higher education funding.",
+                        "D) Prove that economic trials are usually inaccurate."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The empirical data shows participants pursue education or better jobs, directly countering claims that UBI discourages work."
+                },
+                {
+                    id: 9,
+                    passage: "Architectural conservator Liam Vance cautions that sandblasting historical brick facades to remove grime strips away the durable outer fire-skin of the brick, making the underlying porous material vulnerable to destructive freeze-thaw water damage.",
+                    question: "What risk does Vance associate with sandblasting brick facades?",
+                    options: [
+                        "A) It permanently alters the color of the mortar.",
+                        "B) It exposes interior brick layers to moisture damage.",
+                        "C) It makes the exterior walls too reflective.",
+                        "D) It increases the building's overall weight."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Stripping the outer layer leaves the porous material vulnerable to freeze-thaw water damage."
+                },
+                {
+                    id: 10,
+                    passage: "In avian behavior studies, corvids—such as crows and ravens—have demonstrated causal reasoning capabilities previously thought unique to primates, such as manufacturing multi-component tools to retrieve hidden food rewards.",
+                    question: "Which conclusion is best supported by the passage?",
+                    options: [
+                        "A) Corvids exhibit complex problem-solving abilities comparable in some aspects to primates.",
+                        "B) Primates learn tool creation by observing corvid behavior.",
+                        "C) Corvids rely strictly on instinct rather than reasoning.",
+                        "D) Tool use among birds is limited to simple twigs."
+                    ],
+                    answer: 0,
+                    explanation: "Correct! The passage highlights corvids demonstrating complex causal reasoning and tool manufacturing."
+                }
+            ],
+            "Set C": [
+                {
+                    id: 1,
+                    passage: "The James Webb Space Telescope operates primarily in the infrared spectrum, allowing it to penetrate dense dust clouds that obscure young stars and observe ultra-distant galaxies whose light has been stretched by cosmic expansion.",
+                    question: "Why is operating in the infrared spectrum advantageous for the space telescope?",
+                    options: [
+                        "A) It enables the telescope to take clearer visible-light photographs of Earth.",
+                        "B) It allows observation through dust clouds and detection of redshifted distant light.",
+                        "C) It lowers the temperature of internal electronic components.",
+                        "D) It eliminates the need for large mirror assemblies."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The passage explicitly states infrared light penetrates dust clouds and observes light stretched by cosmic expansion."
+                },
+                {
+                    id: 2,
+                    passage: "In behavioral economics, 'choice overload' occurs when an abundance of options leads consumers to feel overwhelmed, resulting in delayed decision-making or decreased post-purchase satisfaction compared to smaller choice sets.",
+                    question: "Based on the text, what is a likely consequence of offering consumers too many choices?",
+                    options: [
+                        "A) Immediate increase in brand loyalty.",
+                        "B) Higher overall sales volume for every product.",
+                        "C) Hesitation to make a purchase decision.",
+                        "D) Complete elimination of buyer's remorse."
+                    ],
+                    answer: 2,
+                    explanation: "Correct! The passage cites 'delayed decision-making' as a primary result of choice overload."
+                },
+                {
+                    id: 3,
+                    passage: "Keystone species exert a disproportionately large effect on their natural environment relative to their abundance. For instance, sea otters suppress sea urchin populations, preventing urchins from overgrazing kelp forests and maintaining coastal biodiversity.",
+                    question: "Which choice best describes the role of sea otters as described in the text?",
+                    options: [
+                        "A) They consume kelp to prevent overgrowth in coastal waters.",
+                        "B) They regulate sea urchins, protecting kelp forest ecosystems.",
+                        "C) They serve as the primary food source for coastal sea urchins.",
+                        "D) They are a high-abundance species that dominates coastal zones."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! By controlling sea urchins, sea otters prevent kelp overgrazing and maintain ecosystem balance."
+                },
+                {
+                    id: 4,
+                    passage: "Although early silent films relied heavily on exaggerated physical acting and intertitles to convey narrative, the advent of synchronized sound in the late 1920s allowed cinema to adopt subtle vocal inflections and atmospheric audio design.",
+                    question: "As used in the text, what does 'advent' most nearly mean?",
+                    options: ["A) Departure", "B) Arrival", "C) Rejection", "D) Criticism"],
+                    answer: 1,
+                    explanation: "Correct! 'Advent' means the arrival or introduction of a notable event or technology."
+                },
+                {
+                    id: 5,
+                    passage: "In clinical drug trials, the double-blind setup prevents both researchers and participants from knowing who receives the active treatment versus the placebo. This setup minimizes observer bias and placebo expectations from skewing efficacy data.",
+                    question: "What is the main purpose of a double-blind setup in clinical trials?",
+                    options: [
+                        "A) To ensure all participants receive the active treatment.",
+                        "B) To eliminate the cost of manufacturing placebos.",
+                        "C) To reduce bias that could distort treatment evaluation results.",
+                        "D) To shorten the overall duration of medical studies."
+                    ],
+                    answer: 2,
+                    explanation: "Correct! The text states this setup minimizes observer bias and placebo expectations."
+                },
+                {
+                    id: 6,
+                    passage: "In 1911, physicist Ernest Rutherford bombarded thin gold foil with alpha particles. While most particles passed straight through, a small fraction deflected sharply, revealing that atomic mass is concentrated in a tiny, positively charged nucleus.",
+                    question: "Rutherford's gold foil experiment was significant because it revealed that:",
+                    options: [
+                        "A) Atoms are solid spheres with uniformly distributed mass.",
+                        "B) Electrons are heavier than the atomic nucleus.",
+                        "C) Atomic mass is concentrated in a small central nucleus.",
+                        "D) Gold is the only element capable of deflecting alpha particles."
+                    ],
+                    answer: 2,
+                    explanation: "Correct! The sharp deflection of particles proved the existence of a dense, concentrated central nucleus."
+                },
+                {
+                    id: 7,
+                    passage: "Paleontologist Dr. Clara Ruiz analyzed fossilized leaf stomata density from the late Cretaceous period. She discovered a sharp decline in stomata density, indicating a spike in atmospheric carbon dioxide levels prior to the mass extinction event.",
+                    question: "Which choice best describes the relationship between stomata density and carbon dioxide levels?",
+                    options: [
+                        "A) Lower stomata density correlates with higher atmospheric carbon dioxide.",
+                        "B) Higher stomata density causes rapid global warming.",
+                        "C) Stomata density remains constant regardless of atmospheric composition.",
+                        "D) Carbon dioxide increases cause leaf stomata to double in size."
+                    ],
+                    answer: 0,
+                    explanation: "Correct! The decline in stomata density indicated a corresponding spike in atmospheric CO2."
+                },
+                {
+                    id: 8,
+                    passage: "The Silk Road was not a single continuous highway, but rather a dynamic network of overland and maritime trade routes connecting East Asia with the Mediterranean. Goods, ideas, and cultural traditions moved incrementally through regional intermediaries.",
+                    question: "Which choice best characterizes the structure of the Silk Road?",
+                    options: [
+                        "A) A single pave road maintained by one central empire.",
+                        "B) An interconnected system of trade routes facilitated by regional traders.",
+                        "C) An exclusively ocean-based trade pathway between Asia and Europe.",
+                        "D) A military supply trail closed to commercial trade."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The text describes it as a dynamic network of overland and maritime routes with regional intermediaries."
+                },
+                {
+                    id: 9,
+                    passage: "Modern electric grids struggle to balance intermittent renewable power generation, such as wind and solar, with shifting electricity demand. Utility companies are increasingly deploying large-scale lithium-ion battery storage systems to absorb excess power during peak production and discharge it during low generation periods.",
+                    question: "Battery storage systems help stabilize electric grids primarily by:",
+                    options: [
+                        "A) Increasing total consumer demand during nighttime hours.",
+                        "B) Replacing wind and solar power generation permanently.",
+                        "C) Storing excess energy during high production and releasing it when needed.",
+                        "D) Reducing the need for high-voltage transmission lines."
+                    ],
+                    answer: 2,
+                    explanation: "Correct! The text notes batteries absorb excess power during peak production and discharge it during low generation times."
+                },
+                {
+                    id: 10,
+                    passage: "Ethnomusicologist Dr. Aris Thorne notes that traditional oral music traditions preserve history through mnemonic lyrical structures. When songs are digitized and detached from community performance contexts, subtle improvisational elements are often lost.",
+                    question: "Dr. Thorne's observation highlights a trade-off between:",
+                    options: [
+                        "A) Song duration and musical volume.",
+                        "B) Digital preservation and the living, fluid nature of oral performance.",
+                        "C) Instrument sales and live concert attendance.",
+                        "D) Lyrical complexity and studio recording costs."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Digitization preserves the song, but detaches it from dynamic community performance where improvisation occurs."
+                }
+            ]
+        };
+
+        let currentSetKey = "Set A";
+        let userAnswers = {};
+
+        function setTheme(colorHex) {
+            document.documentElement.style.setProperty('--primary-color', colorHex);
+        }
+
+        function loadSet(setName) {
+            currentSetKey = setName;
+            userAnswers = {};
+            document.getElementById('score-summary').style.display = 'none';
+            updateScoreDisplay();
+
+            const container = document.getElementById('questions-wrapper');
+            container.innerHTML = '';
+
+            const questions = questionBank[setName];
+
+            questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `q-card-${index}`;
+
+                card.innerHTML = `
+                    <div class="question-number">Question ${index + 1} of 10</div>
+                    <div class="passage">${q.passage}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options-group" id="options-${index}">
+                        ${q.options.map((opt, optIdx) => `
+                            <button class="option-btn" onclick="selectAnswer(${index},${optIdx})">
+                                ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div class="feedback-box" id="feedback-${index}"></div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function selectAnswer(questionIdx, selectedOptIdx) {
+            // Prevent changing answer once selected
+            if (userAnswers.hasOwnProperty(questionIdx)) return;
+
+            const qData = questionBank[currentSetKey][questionIdx];
+            const isCorrect = selectedOptIdx === qData.answer;
+            userAnswers[questionIdx] = isCorrect;
+
+            // UI styling for options
+            const optionsGroup = document.getElementById(`options-${questionIdx}`);
+            const buttons = optionsGroup.getElementsByClassName('option-btn');
+
+            Array.from(buttons).forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === qData.answer) {
+                    btn.classList.add('correct');
+                } else if (idx === selectedOptIdx && !isCorrect) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            // UI feedback box
+            const fbBox = document.getElementById(`feedback-${questionIdx}`);
+            fbBox.classList.add('show');
+            if (isCorrect) {
+                fbBox.classList.add('correct-fb');
+                fbBox.innerHTML = `<strong>Correct!</strong> ${qData.explanation}`;
+            } else {
+                fbBox.classList.add('incorrect-fb');
+                fbBox.innerHTML = `<strong>Incorrect.</strong> ${qData.explanation}`;
+            }
+
+            updateScoreDisplay();
+            checkSetCompletion();
+        }
+
+        function updateScoreDisplay() {
+            const correctCount = Object.values(userAnswers).filter(Boolean).length;
+            document.getElementById('score-tracker').innerText = `Score: ${correctCount} / 10`;
+        }
+
+        function checkSetCompletion() {
+            const totalAnswered = Object.keys(userAnswers).length;
+            if (totalAnswered === 10) {
+                const score = Object.values(userAnswers).filter(Boolean).length;
+                const summaryBox = document.getElementById('score-summary');
+                const scoreText = document.getElementById('final-score-text');
+                const msgText = document.getElementById('feedback-message');
+
+                scoreText.innerText = `${score} / 10`;
+                
+                if (score === 10) {
+                    msgText.innerText = "Outstanding! Perfect score!";
+                } else if (score >= 7) {
+                    msgText.innerText = "Great job! Keep practicing to master every question.";
+                } else {
+                    msgText.innerText = "Good effort! Review the explanations and try again.";
+                }
+
+                summaryBox.style.display = 'block';
+                summaryBox.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function resetCurrentSet() {
+            loadSet(currentSetKey);
+        }
+
+        // Initial Load
+        window.onload = () => {
+            loadSet("Set A");
+        };
+    </script>
+</body>
+</html>
