@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Weekend Workflow Tracker</title>
+<style>
+  :root{
+    --red:#9f1d2d;
+    --red-dark:#74131f;
+    --red-soft:#f8e9ec;
+    --ink:#2b2425;
+    --muted:#74686b;
+    --paper:#fffdf9;
+    --line:#dec8cc;
+    --cream:#f7f1e8;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: "Aptos","Segoe UI",Arial,sans-serif;
+    background:#eee9e6;
+    color:var(--ink);
+  }
+
+  .toolbar{
+    position:sticky;
+    top:0;
+    z-index:10;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    align-items:center;
+    padding:12px;
+    background:rgba(255,255,255,.96);
+    border-bottom:1px solid #ddd;
+    box-shadow:0 2px 12px rgba(0,0,0,.08);
+  }
+
+  button{
+    border:0;
+    border-radius:999px;
+    padding:10px 16px;
+    font-weight:800;
+    cursor:pointer;
+    font-size:14px;
+  }
+  .day-btn{background:#eadfe1;color:var(--red-dark)}
+  .day-btn.active{background:var(--red);color:white}
+  .print-btn{background:var(--red-dark);color:white}
+  .reset-btn{background:#333;color:white}
+
+  .sheet{
+    width:8.5in;
+    min-height:11in;
+    margin:18px auto;
+    background:
+      radial-gradient(circle at top left, rgba(159,29,45,.18), transparent 22%),
+      radial-gradient(circle at bottom right, rgba(159,29,45,.14), transparent 24%),
+      var(--paper);
+    position:relative;
+    padding:.35in .42in .32in;
+    box-shadow:0 12px 35px rgba(48,30,34,.15);
+    overflow:hidden;
+  }
+
+  .sheet::before{
+    content:"";
+    position:absolute;
+    inset:.16in;
+    border:2px solid var(--red);
+    border-radius:22px;
+    pointer-events:none;
+  }
+  .sheet::after{
+    content:"";
+    position:absolute;
+    inset:.23in;
+    border:1px solid rgba(159,29,45,.25);
+    border-radius:17px;
+    pointer-events:none;
+  }
+
+  .content{position:relative;z-index:1}
+  .header{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:14px;
+    align-items:end;
+    margin-bottom:10px;
+  }
+  h1{
+    margin:0;
+    color:var(--red-dark);
+    font-family:Georgia,serif;
+    font-size:27px;
+    line-height:1;
+    letter-spacing:.2px;
+  }
+  .subtitle{
+    margin-top:5px;
+    font-size:12px;
+    color:var(--muted);
+    font-weight:700;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+  }
+  .day-badge{
+    background:var(--red);
+    color:#fff;
+    border-radius:16px;
+    padding:8px 12px;
+    font-weight:900;
+    font-size:16px;
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,.25);
+  }
+
+  .info-row{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:8px;
+    margin:8px 0 10px;
+  }
+  .linebox{
+    border-bottom:1.5px solid var(--line);
+    padding:5px 4px 3px;
+    min-height:26px;
+    font-size:11px;
+    color:var(--muted);
+  }
+  .linebox b{color:var(--ink)}
+
+  .special{
+    display:none;
+    border:1.5px solid var(--red);
+    background:var(--red-soft);
+    padding:8px 10px;
+    border-radius:12px;
+    margin:0 0 9px;
+    font-size:12px;
+    font-weight:800;
+  }
+  .special.show{display:block}
+
+  .section-label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:7px 0 5px;
+    color:var(--red-dark);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-weight:900;
+  }
+  .section-label::before,
+  .section-label::after{
+    content:"";
+    height:1px;
+    background:var(--line);
+    flex:1;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+  }
+
+  .card{
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    background:rgba(255,255,255,.76);
+    break-inside:avoid;
+  }
+  .card-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    padding:6px 8px;
+    background:linear-gradient(90deg,var(--red-soft),#fff);
+    border-bottom:1px solid #eadadd;
+    font-size:11.5px;
+    font-weight:900;
+  }
+  .duration{
+    color:var(--red-dark);
+    font-size:10px;
+    white-space:nowrap;
+  }
+
+  .items{
+    display:grid;
+    gap:1px;
+    padding:4px 7px 5px;
+  }
+  label.item{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    min-height:20px;
+    font-size:10.5px;
+    line-height:1.15;
+    cursor:pointer;
+  }
+
+  input[type="checkbox"]{
+    appearance:none;
+    width:15px;
+    height:15px;
+    min-width:15px;
+    border:2px solid var(--red);
+    border-radius:4px;
+    background:white;
+    position:relative;
+    margin:0;
+  }
+  input[type="checkbox"]:checked{
+    background:var(--red);
+  }
+  input[type="checkbox"]:checked::after{
+    content:"✓";
+    position:absolute;
+    color:white;
+    font-size:12px;
+    font-weight:900;
+    left:1px;
+    top:-3px;
+  }
+
+  .wide{grid-column:1/-1}
+  .screen .card-title{background:linear-gradient(90deg,#f5dde2,#fff)}
+  .required .card-title{background:linear-gradient(90deg,#f8efe7,#fff)}
+
+  .bottom{
+    margin-top:8px;
+    border:1.5px solid var(--red);
+    border-radius:13px;
+    padding:8px 10px;
+    background:rgba(255,250,247,.9);
+  }
+  .loose-title{
+    margin:0 0 2px;
+    color:var(--red-dark);
+    font-weight:900;
+    font-size:11.5px;
+  }
+  .bottom p{
+    margin:0;
+    font-size:10.5px;
+    line-height:1.25;
+  }
+  .footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-top:7px;
+    color:var(--muted);
+    font-size:10px;
+  }
+  .progress{
+    font-weight:900;
+    color:var(--red-dark);
+  }
+
+  .ornament{
+    position:absolute;
+    width:72px;
+    height:72px;
+    border:2px solid rgba(159,29,45,.15);
+    border-radius:50%;
+    z-index:0;
+  }
+  .ornament.a{top:-26px;right:-20px}
+  .ornament.b{bottom:-28px;left:-24px}
+
+  @media (max-width: 900px){
+    .sheet{
+      width:calc(100% - 20px);
+      min-height:auto;
+      margin:10px;
+      padding:24px;
+    }
+    .grid{grid-template-columns:1fr}
+    .wide{grid-column:auto}
+    .info-row{grid-template-columns:1fr}
+  }
+
+  @page{
+    size: Letter portrait;
+    margin:0;
+  }
+  @media print{
+    body{background:white}
+    .toolbar{display:none !important}
+    .sheet{
+      width:8.5in;
+      height:11in;
+      min-height:11in;
+      margin:0;
+      box-shadow:none;
+      padding:.35in .42in .32in;
+      page-break-after:avoid;
+    }
+    .screen-only{display:none !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar screen-only">
+  <button id="satBtn" class="day-btn active" onclick="setDay('sat')">Saturday</button>
+  <button id="sunBtn" class="day-btn" onclick="setDay('sun')">Sunday</button>
+  <button class="print-btn" onclick="printPDF()">Download / Print PDF</button>
+  <button class="reset-btn" onclick="resetCurrentDay()">Reset Current Day</button>
+</div>
+
+<main class="sheet">
+  <div class="ornament a"></div>
+  <div class="ornament b"></div>
+  <div class="content">
+    <div class="header">
+      <div>
+        <h1>Weekend Workflow</h1>
+        <div class="subtitle">Minutes You Are Allowed / Required</div>
+      </div>
+      <div class="day-badge" id="dayBadge">Saturday</div>
+    </div>
+
+    <div class="info-row">
+      <div class="linebox"><b>Name:</b> ____________________</div>
+      <div class="linebox"><b>Date:</b> ____________________</div>
+      <div class="linebox"><b>Day Window:</b> 7:00 AM–8:30 PM</div>
+    </div>
+
+    <div class="special" id="churchBox">
+      ⛪ Sunday Church: 10:30 AM–1:00 PM
+    </div>
+
+    <div class="section-label">Allowed Screen Time</div>
+    <div class="grid" id="screenGrid"></div>
+
+    <div class="section-label">Required Learning + Activity</div>
+    <div class="grid" id="requiredGrid"></div>
+
+    <div class="bottom">
+      <div class="loose-title">Loose Time = Your Flexible Time</div>
+      <p>Eat, rest, take breaks, clean up after yourself, organize your things, or catch up on anything you still need to finish. The goal is to complete the blocks above and use the rest of the day responsibly.</p>
+      <div class="footer">
+        <span>Check each box when that session is complete.</span>
+        <span class="progress" id="progressText">0 of 0 complete</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const plans = {
+  sat: {
+    name: "Saturday",
+    church: false,
+    screen: [
+      {title:"Video Game on iPad", duration:"3 × 30 min", items:["1st 30-minute session","2nd 30-minute session","3rd 30-minute session"]},
+      {title:"TV Time", duration:"3 × 30 min", items:["1st 30-minute session","2nd 30-minute session","3rd 30-minute session"]},
+      {title:"Computer Screen Time", duration:"3 × 30 min", items:["1st 30-minute session","2nd 30-minute session","3rd 30-minute session"]}
+    ],
+    required: [
+      {title:"Math", duration:"30–40 min", items:["Complete math worksheet"]},
+      {title:"Reading", duration:"30–40 min", items:["Complete reading worksheet"]},
+      {title:"Writing", duration:"30–40 min", items:["Complete writing worksheet"]},
+      {title:"Speaking", duration:"5–10 min", items:["Read and present an idea or a reading"]},
+      {title:"Elliptical", duration:"30 min", items:["Complete elliptical session"]},
+      {title:"Violin Time", duration:"30 min", items:["Complete violin session"]}
+    ]
+  },
+  sun: {
+    name: "Sunday",
+    church: true,
+    screen: [
+      {title:"Video Game on iPad", duration:"2 × 30 min", items:["1st 30-minute session","2nd 30-minute session"]},
+      {title:"TV Time", duration:"2 × 30 min", items:["1st 30-minute session","2nd 30-minute session"]},
+      {title:"Computer Screen Time", duration:"2 × 30 min", items:["1st 30-minute session","2nd 30-minute session"]}
+    ],
+    required: [
+      {title:"Math", duration:"30–40 min", items:["Complete math worksheet"]},
+      {title:"Reading", duration:"30–40 min", items:["Complete reading worksheet"]},
+      {title:"Writing", duration:"20–40 min", items:["Complete writing worksheet"]},
+      {title:"Speaking", duration:"5–10 min", items:["Read and present an idea or a reading"]},
+      {title:"Elliptical", duration:"25 min", items:["Complete elliptical session"]},
+      {title:"Violin Time", duration:"25 min", items:["Complete violin session"]}
+    ]
+  }
+};
+
+let currentDay = localStorage.getItem("weekendWorkflow.currentDay") || "sat";
+
+function storageKey(day, section, cardIndex, itemIndex){
+  return `weekendWorkflow.${day}.${section}.${cardIndex}.${itemIndex}`;
+}
+
+function makeCard(day, section, card, cardIndex){
+  const div = document.createElement("div");
+  div.className = `card ${section === "screen" ? "screen" : "required"}`;
+
+  const title = document.createElement("div");
+  title.className = "card-title";
+  title.innerHTML = `<span>${card.title}</span><span class="duration">${card.duration}</span>`;
+  div.appendChild(title);
+
+  const items = document.createElement("div");
+  items.className = "items";
+
+  card.items.forEach((text, itemIndex) => {
+    const label = document.createElement("label");
+    label.className = "item";
+
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    const key = storageKey(day, section, cardIndex, itemIndex);
+    cb.checked = localStorage.getItem(key) === "1";
+    cb.dataset.key = key;
+    cb.addEventListener("change", () => {
+      localStorage.setItem(key, cb.checked ? "1" : "0");
+      updateProgress();
+    });
+
+    const span = document.createElement("span");
+    span.textContent = text;
+    label.append(cb, span);
+    items.appendChild(label);
+  });
+
+  div.appendChild(items);
+  return div;
+}
+
+function render(){
+  const plan = plans[currentDay];
+  document.getElementById("dayBadge").textContent = plan.name;
+  document.getElementById("churchBox").classList.toggle("show", plan.church);
+  document.getElementById("satBtn").classList.toggle("active", currentDay === "sat");
+  document.getElementById("sunBtn").classList.toggle("active", currentDay === "sun");
+
+  const screenGrid = document.getElementById("screenGrid");
+  const requiredGrid = document.getElementById("requiredGrid");
+  screenGrid.innerHTML = "";
+  requiredGrid.innerHTML = "";
+
+  plan.screen.forEach((card, i) => screenGrid.appendChild(makeCard(currentDay, "screen", card, i)));
+  plan.required.forEach((card, i) => requiredGrid.appendChild(makeCard(currentDay, "required", card, i)));
+
+  updateProgress();
+}
+
+function setDay(day){
+  currentDay = day;
+  localStorage.setItem("weekendWorkflow.currentDay", day);
+  render();
+}
+
+function updateProgress(){
+  const boxes = [...document.querySelectorAll('.sheet input[type="checkbox"]')];
+  const done = boxes.filter(x => x.checked).length;
+  document.getElementById("progressText").textContent = `${done} of ${boxes.length} complete`;
+}
+
+function resetCurrentDay(){
+  const name = plans[currentDay].name;
+  if(!confirm(`Reset all ${name} checkboxes?`)) return;
+  Object.keys(localStorage)
+    .filter(k => k.startsWith(`weekendWorkflow.${currentDay}.`))
+    .forEach(k => localStorage.removeItem(k));
+  render();
+}
+
+function printPDF(){
+  window.print();
+}
+
+render();
+</script>
+</body>
+</html>
