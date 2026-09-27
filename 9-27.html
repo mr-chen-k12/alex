@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Course 2 - Lesson 17 & Additional Practice Solutions</title>
+  <!-- MathJax Configuration -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background-color: #f4f7f6;
+      color: #333;
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #2980b9;
+      margin-top: 30px;
+      border-bottom: 2px solid #bdc3c7;
+      padding-bottom: 5px;
+    }
+    .toolbar {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+    .action-btn {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      font-size: 0.95em;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s ease;
+    }
+    .action-btn:hover {
+      background-color: #1b5e20;
+    }
+    .action-btn.secondary {
+      background-color: #3498db;
+    }
+    .action-btn.secondary:hover {
+      background-color: #2980b9;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 18px 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .question {
+      font-weight: 600;
+      font-size: 1.05em;
+      color: #2c3e50;
+      margin-bottom: 12px;
+    }
+    .toggle-btn {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 0.9em;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .toggle-btn:hover {
+      background-color: #2980b9;
+    }
+    .answer-box {
+      display: none;
+      margin-top: 15px;
+      padding: 15px;
+      background-color: #eef7fc;
+      border-left: 4px solid #3498db;
+      border-radius: 4px;
+    }
+    .step {
+      margin-bottom: 8px;
+    }
+    .final-answer {
+      font-weight: bold;
+      color: #27ae60;
+      margin-top: 10px;
+    }
+
+    /* Print Optimization - Answers Hidden */
+    @media print {
+      body {
+        background-color: #ffffff;
+        color: #000000;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        font-size: 11pt;
+      }
+      .no-print, .toggle-btn, .toolbar {
+        display: none !important;
+      }
+      .answer-box {
+        display: none !important; /* Fully hides all answers on print */
+      }
+      .card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        border-radius: 4px;
+        padding: 15px 18px;
+        margin-bottom: 25px;
+        min-height: 90px; /* Provides blank space for working out problems */
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      h1 {
+        font-size: 18pt;
+        border-bottom: 2px solid #000;
+      }
+      h2 {
+        font-size: 14pt;
+        border-bottom: 1px solid #666;
+        margin-top: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Saxon Math Course 2 - Lesson 17 & Additional Practice</h1>
+
+  <div class="toolbar no-print">
+    <button class="action-btn" onclick="window.print()">🖨️ Print Student Worksheet</button>
+    <button class="action-btn secondary" onclick="toggleAllAnswers(true)">Show All Answers</button>
+    <button class="action-btn secondary" onclick="toggleAllAnswers(false)">Hide All Answers</button>
+  </div>
+
+  <h2>Lesson 17: Protractor Practice</h2>
+
+  <!-- g -->
+  <div class="card">
+    <div class="question">g. REPRESENT: Use your protractor to draw an angle of $55^\circ$.</div>
+    <button class="toggle-btn" id="btn-g" onclick="toggleAnswer('ans-g')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-g">
+      <div class="step"><strong>Explanation:</strong> Align the center of the protractor baseline with the vertex, align one ray with $0^\circ$, and mark a point at $55^\circ$. Draw a ray from the vertex through the mark to create an acute angle measuring $55^\circ$.</div>
+      <div class="final-answer">Answer: An acute angle measuring $55^\circ$.</div>
+    </div>
+  </div>
+
+  <!-- h -->
+  <div class="card">
+    <div class="question">h. REPRESENT: Use your protractor to draw an angle of $135^\circ$.</div>
+    <button class="toggle-btn" id="btn-h" onclick="toggleAnswer('ans-h')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-h">
+      <div class="step"><strong>Explanation:</strong> Align the center of the protractor baseline with the vertex, set one side along $0^\circ$, and mark $135^\circ$ on the scale. Draw a ray from the vertex through the mark to form an obtuse angle.</div>
+      <div class="final-answer">Answer: An obtuse angle measuring $135^\circ$.</div>
+    </div>
+  </div>
+
+  <!-- i -->
+  <div class="card">
+    <div class="question">i. REPRESENT: Use your protractor to draw an angle of $115^\circ$.</div>
+    <button class="toggle-btn" id="btn-i" onclick="toggleAnswer('ans-i')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-i">
+      <div class="step"><strong>Explanation:</strong> Align the baseline of the protractor, locate $115^\circ$ starting from $0^\circ$, mark the point, and draw the second ray from the vertex.</div>
+      <div class="final-answer">Answer: An obtuse angle measuring $115^\circ$.</div>
+    </div>
+  </div>
+
+  <!-- j -->
+  <div class="card">
+    <div class="question">j. REPRESENT: Use your protractor to draw an angle of $70^\circ$.</div>
+    <button class="toggle-btn" id="btn-j" onclick="toggleAnswer('ans-j')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-j">
+      <div class="step"><strong>Explanation:</strong> Place the protractor center on the vertex, measure $70^\circ$ from the $0^\circ$ baseline, mark the point, and connect it to the vertex.</div>
+      <div class="final-answer">Answer: An acute angle measuring $70^\circ$.</div>
+    </div>
+  </div>
+
+  <!-- k -->
+  <div class="card">
+    <div class="question">k. ANALYZE: Samantha's protractor is marked at each degree. Assuming the protractor is used correctly, what is the greatest possible measurement error that can be made with Samantha's protractor? Express your answer as a fraction of a degree.</div>
+    <button class="toggle-btn" id="btn-k" onclick="toggleAnswer('ans-k')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-k">
+      <div class="step"><strong>Explanation:</strong> When a measuring instrument is calibrated in increments of $1^\circ$, any measurement rounds to the nearest marked unit. The maximum measurement error is half of the smallest calibration unit: $\frac{1}{2} \cdot 1^\circ = \frac{1}{2}^\circ$.</div>
+      <div class="final-answer">Answer: $\frac{1}{2}^\circ$</div>
+    </div>
+  </div>
+
+  <h2>Written Practice</h2>
+
+  <!-- 1 -->
+  <div class="card">
+    <div class="question">1. One thousand, eight hundred fifty sports fans arrived in the morning for a tournament. An additional four thousand, three hundred seventy fans arrived in the afternoon. How many fans in total attended the tournament?</div>
+    <button class="toggle-btn" id="btn-1" onclick="toggleAnswer('ans-1')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-1">
+      <div class="step"><strong>Explanation:</strong> Add the morning and afternoon attendance:</div>
+      <div class="step">$$1,850 + 4,370 = 6,220$$</div>
+      <div class="final-answer">Answer: 6,220 fans</div>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="card">
+    <div class="question">2. A standard six-sided number cube is rolled once.<br>a. What is the probability of rolling a 4?<br>b. What is the probability of not rolling a 4?</div>
+    <button class="toggle-btn" id="btn-2" onclick="toggleAnswer('ans-2')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-2">
+      <div class="step"><strong>a. Explanation:</strong> A number cube has 6 equally likely outcomes $\{1, 2, 3, 4, 5, 6\}$. There is 1 outcome that is 4.</div>
+      <div class="step">$$P(\text{rolling a } 4) = \frac{1}{6}$$</div>
+      <div class="step"><strong>b. Explanation:</strong> The outcomes that are not 4 are $\{1, 2, 3, 5, 6\}$, which are 5 outcomes out of 6.</div>
+      <div class="step">$$P(\text{not rolling a } 4) = 1 - \frac{1}{6} = \frac{5}{6}$$</div>
+      <div class="final-answer">Answer: a. $\frac{1}{6}$ &nbsp;|&nbsp; b. $\frac{5}{6}$</div>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="card">
+    <div class="question">3. There are 288 students participating in a field day. If they are equally divided into 18 sports teams, how many students will be on each team?</div>
+    <button class="toggle-btn" id="btn-3" onclick="toggleAnswer('ans-3')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-3">
+      <div class="step"><strong>Explanation:</strong> Divide the total number of students by the number of teams:</div>
+      <div class="step">$$288 \div 18 = 16$$</div>
+      <div class="final-answer">Answer: 16 students</div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="card">
+    <div class="question">4. Jamestown was established in 1607. The United States Declaration of Independence was signed in 1776. How many years passed between these two historical events?</div>
+    <button class="toggle-btn" id="btn-4" onclick="toggleAnswer('ans-4')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-4">
+      <div class="step"><strong>Explanation:</strong> Subtract the earlier year from the later year:</div>
+      <div class="step">$$1776 - 1607 = 169$$</div>
+      <div class="final-answer">Answer: 169 years</div>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="card">
+    <div class="question">5. Which of the following does not equal $1\frac{2}{5}$?<br>A. $\frac{7}{5}$ &nbsp;&nbsp; B. $1\frac{4}{10}$ &nbsp;&nbsp; C. $\frac{8}{5}$ &nbsp;&nbsp; D. $1\frac{6}{15}$</div>
+    <button class="toggle-btn" id="btn-5" onclick="toggleAnswer('ans-5')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-5">
+      <div class="step"><strong>Explanation:</strong> Check each option against $1\frac{2}{5}$:</div>
+      <div class="step">• $\frac{7}{5} = 1\frac{2}{5}$ (Equal)</div>
+      <div class="step">• $1\frac{4}{10} = 1\frac{2}{5}$ (Equal)</div>
+      <div class="step">• $\frac{8}{5} = 1\frac{3}{5} \neq 1\frac{2}{5}$ (NOT Equal)</div>
+      <div class="step">• $1\frac{6}{15} = 1\frac{2}{5}$ (Equal)</div>
+      <div class="final-answer">Answer: C. $\frac{8}{5}$</div>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="card">
+    <div class="question">6. ANALYZE: Given line $\overleftrightarrow{AB}$ parallel to line $\overleftrightarrow{CD}$, and line $\overleftrightarrow{BC}$ perpendicular to $\overleftrightarrow{CD}$:<br>a. Which line is parallel to $\overleftrightarrow{CD}$?<br>b. Which line is perpendicular to $\overleftrightarrow{CD}$?<br>c. Angle $ABC$ measures how many degrees?</div>
+    <button class="toggle-btn" id="btn-6" onclick="toggleAnswer('ans-6')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-6">
+      <div class="step"><strong>a. Explanation:</strong> Line $\overleftrightarrow{AB}$ is given as parallel to $\overleftrightarrow{CD}$.</div>
+      <div class="step"><strong>b. Explanation:</strong> Line $\overleftrightarrow{BC}$ intersects $\overleftrightarrow{CD}$ at a right angle, so $\overleftrightarrow{BC} \perp \overleftrightarrow{CD}$.</div>
+      <div class="step"><strong>c. Explanation:</strong> Because parallel lines form congruent interior angles with a perpendicular transversal, $\angle ABC = 90^\circ$.</div>
+      <div class="final-answer">Answer: a. Line $AB$ ($\overleftrightarrow{AB}$) &nbsp;|&nbsp; b. Line $BC$ ($\overleftrightarrow{BC}$) &nbsp;|&nbsp; c. $90^\circ$</div>
+    </div>
+  </div>
+
+  <!-- 7 -->
+  <div class="card">
+    <div class="question">7. Write each number as a reduced fraction or mixed number:<br>a. $\frac{15}{20}$ &nbsp;&nbsp; b. $4\frac{10}{15}$ &nbsp;&nbsp; c. $40\%$</div>
+    <button class="toggle-btn" id="btn-7" onclick="toggleAnswer('ans-7')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-7">
+      <div class="step"><strong>a.</strong> Divide numerator and denominator by $\text{GCF}(15, 20) = 5$: $\frac{15 \div 5}{20 \div 5} = \frac{3}{4}$</div>
+      <div class="step"><strong>b.</strong> Simplify fractional part by dividing by $\text{GCF}(10, 15) = 5$: $4\frac{10 \div 5}{15 \div 5} = 4\frac{2}{3}$</div>
+      <div class="step"><strong>c.</strong> Convert percentage to fraction and simplify: $40\% = \frac{40}{100} = \frac{2}{5}$</div>
+      <div class="final-answer">Answer: a. $\frac{3}{4}$ &nbsp;|&nbsp; b. $4\frac{2}{3}$ &nbsp;|&nbsp; c. $\frac{2}{5}$</div>
+    </div>
+  </div>
+
+  <!-- 8 -->
+  <div class="card">
+    <div class="question">8. GENERALIZE: A bag of apples weighs $3\text{ lb } 5\text{ oz}$. What is the total weight of the bag in ounces?</div>
+    <button class="toggle-btn" id="btn-8" onclick="toggleAnswer('ans-8')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-8">
+      <div class="step"><strong>Explanation:</strong> Since $1\text{ pound} = 16\text{ ounces}$:</div>
+      <div class="step">$$3\text{ lb} = 3 \times 16\text{ oz} = 48\text{ oz}$$</div>
+      <div class="step">$$48\text{ oz} + 5\text{ oz} = 53\text{ oz}$$</div>
+      <div class="final-answer">Answer: $53\text{ oz}$</div>
+    </div>
+  </div>
+
+  <!-- 9 -->
+  <div class="card">
+    <div class="question">9. Complete each equivalent fraction:<br>a. $\frac{3}{8} = \frac{?}{24}$ &nbsp;&nbsp; b. $\frac{1}{4} = \frac{?}{24}$ &nbsp;&nbsp; c. $\frac{5}{6} = \frac{?}{24}$</div>
+    <button class="toggle-btn" id="btn-9" onclick="toggleAnswer('ans-9')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-9">
+      <div class="step"><strong>a.</strong> Multiply top and bottom by $3$: $\frac{3 \times 3}{8 \times 3} = \frac{9}{24}$</div>
+      <div class="step"><strong>b.</strong> Multiply top and bottom by $6$: $\frac{1 \times 6}{4 \times 6} = \frac{6}{24}$</div>
+      <div class="step"><strong>c.</strong> Multiply top and bottom by $4$: $\frac{5 \times 4}{6 \times 4} = \frac{20}{24}$</div>
+      <div class="final-answer">Answer: a. 9 &nbsp;|&nbsp; b. 6 &nbsp;|&nbsp; c. 20</div>
+    </div>
+  </div>
+
+  <!-- 10 -->
+  <div class="card">
+    <div class="question">10. REPRESENT: Use a protractor to draw a $50^\circ$ angle.</div>
+    <button class="toggle-btn" id="btn-10" onclick="toggleAnswer('ans-10')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-10">
+      <div class="step"><strong>Explanation:</strong> Draw a straight base ray. Place protractor center at vertex, line up $0^\circ$, locate $50^\circ$, mark point, and connect to vertex.</div>
+      <div class="final-answer">Answer: An acute angle measuring $50^\circ$.</div>
+    </div>
+  </div>
+
+  <!-- 11 -->
+  <div class="card">
+    <div class="question">11.<br>a. What factors of 24 are also factors of 36?<br>b. What is the GCF of 24 and 36?</div>
+    <button class="toggle-btn" id="btn-11" onclick="toggleAnswer('ans-11')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-11">
+      <div class="step"><strong>a.</strong> Factors of 24: $\{1, 2, 3, 4, 6, 8, 12, 24\}$<br>Factors of 36: $\{1, 2, 3, 4, 6, 9, 12, 18, 36\}$<br>Common factors: $\{1, 2, 3, 4, 6, 12\}$</div>
+      <div class="step"><strong>b.</strong> The greatest common factor is $12$.</div>
+      <div class="final-answer">Answer: a. 1, 2, 3, 4, 6, 12 &nbsp;|&nbsp; b. 12</div>
+    </div>
+  </div>
+
+  <!-- 12 -->
+  <div class="card">
+    <div class="question">12. REPRESENT: Draw $\overline{MN}$ $2\frac{1}{4}\text{ in.}$ long. Then draw $\overline{NO}$ perpendicular to $\overline{MN}$.</div>
+    <button class="toggle-btn" id="btn-12" onclick="toggleAnswer('ans-12')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-12">
+      <div class="step"><strong>Explanation:</strong> Use a ruler to draw line segment $\overline{MN}$ measuring $2.25\text{ inches}$. At endpoint $N$, use a protractor to draw segment $\overline{NO}$ extending at a $90^\circ$ perpendicular angle.</div>
+      <div class="final-answer">Answer: Perpendicular segments $\overline{MN} \perp \overline{NO}$ with $MN = 2\frac{1}{4}\text{ in.}$</div>
+    </div>
+  </div>
+
+  <!-- 13 -->
+  <div class="card">
+    <div class="question">13. If $a = 3$ and $b = 9$, find:<br>a. $\frac{b}{a} - \frac{a}{b}$<br>b. $b - \frac{a}{b}$</div>
+    <button class="toggle-btn" id="btn-13" onclick="toggleAnswer('ans-13')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-13">
+      <div class="step"><strong>a.</strong> Substitute values:</div>
+      <div class="step">$$\frac{9}{3} - \frac{3}{9} = 3 - \frac{1}{3} = 2\frac{2}{3}$$</div>
+      <div class="step"><strong>b.</strong> Substitute values:</div>
+      <div class="step">$$9 - \frac{3}{9} = 9 - \frac{1}{3} = 8\frac{2}{3}$$</div>
+      <div class="final-answer">Answer: a. $2\frac{2}{3}$ &nbsp;|&nbsp; b. $8\frac{2}{3}$</div>
+    </div>
+  </div>
+
+  <!-- 14 -->
+  <div class="card">
+    <div class="question">14. Find the value of $x$ and check your work: $x - 345 = 182$</div>
+    <button class="toggle-btn" id="btn-14" onclick="toggleAnswer('ans-14')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-14">
+      <div class="step"><strong>Solving for $x$:</strong></div>
+      <div class="step">$$x = 182 + 345 = 527$$</div>
+      <div class="step"><strong>Check:</strong> $527 - 345 = 182$ $\checkmark$</div>
+      <div class="final-answer">Answer: $x = 527$</div>
+    </div>
+  </div>
+
+  <!-- 15 -->
+  <div class="card">
+    <div class="question">15. Find the value of $y$ and check your work: $\$8.45 + y = \$30.00$</div>
+    <button class="toggle-btn" id="btn-15" onclick="toggleAnswer('ans-15')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-15">
+      <div class="step"><strong>Solving for $y$:</strong></div>
+      <div class="step">$$y = \$30.00 - \$8.45 = \$21.55$$</div>
+      <div class="step"><strong>Check:</strong> $\$8.45 + \$21.55 = \$30.00$ $\checkmark$</div>
+      <div class="final-answer">Answer: $y = \$21.55$</div>
+    </div>
+  </div>
+
+  <!-- 16 -->
+  <div class="card">
+    <div class="question">16. Find the value of $w$ and check your work: $6w = \$45.00$</div>
+    <button class="toggle-btn" id="btn-16" onclick="toggleAnswer('ans-16')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-16">
+      <div class="step"><strong>Solving for $w$:</strong></div>
+      <div class="step">$$w = \frac{\$45.00}{6} = \$7.50$$</div>
+      <div class="step"><strong>Check:</strong> $6 \times \$7.50 = \$45.00$ $\checkmark$</div>
+      <div class="final-answer">Answer: $w = \$7.50$</div>
+    </div>
+  </div>
+
+  <!-- 17 -->
+  <div class="card">
+    <div class="question">17. Find the value of $m$ and check your work: $\frac{100\%}{m} = 25\%$</div>
+    <button class="toggle-btn" id="btn-17" onclick="toggleAnswer('ans-17')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-17">
+      <div class="step"><strong>Solving for $m$:</strong></div>
+      <div class="step">$$m = \frac{100\%}{25\%} = 4$$</div>
+      <div class="step"><strong>Check:</strong> $\frac{100\%}{4} = 25\%$ $\checkmark$</div>
+      <div class="final-answer">Answer: $m = 4$</div>
+    </div>
+  </div>
+
+  <!-- 18 -->
+  <div class="card">
+    <div class="question">18. Simplify: $4\frac{7}{8} - 2\frac{3}{8}$</div>
+    <button class="toggle-btn" id="btn-18" onclick="toggleAnswer('ans-18')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-18">
+      <div class="step"><strong>Explanation:</strong> Subtract whole numbers and fractions:</div>
+      <div class="step">$$(4 - 2) + \left(\frac{7}{8} - \frac{3}{8}\right) = 2 + \frac{4}{8} = 2\frac{1}{2}$$</div>
+      <div class="final-answer">Answer: $2\frac{1}{2}$</div>
+    </div>
+  </div>
+
+  <!-- 19 -->
+  <div class="card">
+    <div class="question">19. Simplify: $\frac{3}{4} \cdot \frac{2}{5}$</div>
+    <button class="toggle-btn" id="btn-19" onclick="toggleAnswer('ans-19')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-19">
+      <div class="step"><strong>Explanation:</strong> Multiply numerators and denominators:</div>
+      <div class="step">$$\frac{3 \times 2}{4 \times 5} = \frac{6}{20} = \frac{3}{10}$$</div>
+      <div class="final-answer">Answer: $\frac{3}{10}$</div>
+    </div>
+  </div>
+
+  <!-- 20 -->
+  <div class="card">
+    <div class="question">20. Simplify: $\frac{\$120.00}{50}$</div>
+    <button class="toggle-btn" id="btn-20" onclick="toggleAnswer('ans-20')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-20">
+      <div class="step"><strong>Explanation:</strong> Divide $120$ by $50$:</div>
+      <div class="step">$$120 \div 50 = 2.4 \implies \$2.40$$</div>
+      <div class="final-answer">Answer: $\$2.40$</div>
+    </div>
+  </div>
+
+  <!-- 21 -->
+  <div class="card">
+    <div class="question">21. Simplify: $65 \cdot 65$</div>
+    <button class="toggle-btn" id="btn-21" onclick="toggleAnswer('ans-21')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-21">
+      <div class="step"><strong>Explanation:</strong> Perform the multiplication:</div>
+      <div class="step">$$65 \times 65 = 4225$$</div>
+      <div class="final-answer">Answer: 4225</div>
+    </div>
+  </div>
+
+  <!-- 22 -->
+  <div class="card">
+    <div class="question">22. Simplify: $2(12\text{ in.} + 7\text{ in.})$</div>
+    <button class="toggle-btn" id="btn-22" onclick="toggleAnswer('ans-22')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-22">
+      <div class="step"><strong>Explanation:</strong> Add inside parentheses first:</div>
+      <div class="step">$$12\text{ in.} + 7\text{ in.} = 19\text{ in.}$$</div>
+      <div class="step">$$2 \times 19\text{ in.} = 38\text{ in.}$$</div>
+      <div class="final-answer">Answer: $38\text{ in.}$</div>
+    </div>
+  </div>
+
+  <!-- 23 -->
+  <div class="card">
+    <div class="question">23. Simplify: $\frac{5}{8}\text{ in.} + \frac{7}{8}\text{ in.}$</div>
+    <button class="toggle-btn" id="btn-23" onclick="toggleAnswer('ans-23')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-23">
+      <div class="step"><strong>Explanation:</strong> Add numerators:</div>
+      <div class="step">$$\frac{5+7}{8} = \frac{12}{8}\text{ in.} = \frac{3}{2}\text{ in.} = 1\frac{1}{2}\text{ in.}$$</div>
+      <div class="final-answer">Answer: $1\frac{1}{2}\text{ in.}$</div>
+    </div>
+  </div>
+
+  <!-- 24 -->
+  <div class="card">
+    <div class="question">24. Simplify: $\frac{11}{12}\text{ in.} - \frac{5}{12}\text{ in.}$</div>
+    <button class="toggle-btn" id="btn-24" onclick="toggleAnswer('ans-24')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-24">
+      <div class="step"><strong>Explanation:</strong> Subtract numerators:</div>
+      <div class="step">$$\frac{11 - 5}{12} = \frac{6}{12}\text{ in.} = \frac{1}{2}\text{ in.}$$</div>
+      <div class="final-answer">Answer: $\frac{1}{2}\text{ in.}$</div>
+    </div>
+  </div>
+
+  <!-- 25 -->
+  <div class="card">
+    <div class="question">25. Simplify: $\frac{2}{3} \cdot \frac{5}{4} \cdot \frac{6}{5}$</div>
+    <button class="toggle-btn" id="btn-25" onclick="toggleAnswer('ans-25')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-25">
+      <div class="step"><strong>Explanation:</strong> Multiply numerators together and denominators together:</div>
+      <div class="step">$$\text{Numerator: } 2 \times 5 \times 6 = 60$$</div>
+      <div class="step">$$\text{Denominator: } 3 \times 4 \times 5 = 60$$</div>
+      <div class="step">$$\frac{60}{60} = 1$$</div>
+      <div class="final-answer">Answer: 1</div>
+    </div>
+  </div>
+
+  <!-- 26 -->
+  <div class="card">
+    <div class="question">26. ANALYZE: The total cost of a meal was $\$12.33$. Clara handed the cashier a $\$20$ bill and a nickel ($\$0.05$). Name the fewest possible number of bills and coins she could receive in change.</div>
+    <button class="toggle-btn" id="btn-26" onclick="toggleAnswer('ans-26')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-26">
+      <div class="step"><strong>Explanation:</strong></div>
+      <div class="step">• Total paid: $\$20.00 + \$0.05 = \$20.05$</div>
+      <div class="step">• Change due: $\$20.05 - \$12.33 = \$7.72$</div>
+      <div class="step">• Breakdown into fewest bills & coins:</div>
+      <div class="step">&nbsp;&nbsp;- Bills: One $\$5$ bill and two $\$1$ bills (3 bills)</div>
+      <div class="step">&nbsp;&nbsp;- Coins: Two quarters ($50\text{¢}$), two dimes ($20\text{¢}$), and two pennies ($2\text{¢}$) (6 coins)</div>
+      <div class="final-answer">Answer: 9 total (One $\$5$ bill, two $\$1$ bills, 2 quarters, 2 dimes, and 2 pennies)</div>
+    </div>
+  </div>
+
+  <!-- 27 -->
+  <div class="card">
+    <div class="question">27.<br>a. Compare: $\left(\frac{1}{3} \cdot \frac{2}{5}\right) \cdot \frac{3}{2} \bigcirc \frac{1}{3}\left(\frac{2}{5} \cdot \frac{3}{2}\right)$<br>b. What property of multiplication is illustrated by this comparison?</div>
+    <button class="toggle-btn" id="btn-27" onclick="toggleAnswer('ans-27')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-27">
+      <div class="step"><strong>a. Calculation:</strong></div>
+      <div class="step">$$\text{Left side: } \left(\frac{2}{15}\right) \cdot \frac{3}{2} = \frac{6}{30} = \frac{1}{5}$$</div>
+      <div class="step">$$\text{Right side: } \frac{1}{3} \cdot \left(\frac{6}{10}\right) = \frac{6}{30} = \frac{1}{5}$$</div>
+      <div class="step">Since both sides equal $\frac{1}{5}$, the comparison symbol is $=$.</div>
+      <div class="step"><strong>b. Property:</strong> Regrouping factors does not change product.</div>
+      <div class="final-answer">Answer: a. $=$ &nbsp;|&nbsp; b. Associative Property of Multiplication</div>
+    </div>
+  </div>
+
+  <!-- 28 -->
+  <div class="card">
+    <div class="question">28. FORMULATE: Write a word problem about parts of a whole that fits this equation: $65\% + p = 100\%$</div>
+    <button class="toggle-btn" id="btn-28" onclick="toggleAnswer('ans-28')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-28">
+      <div class="step"><strong>Example Problem:</strong> "If $65\%$ of the registered voters voted in favor of a new town park proposal, what percentage of voters $p$ did not vote in favor of the proposal?"</div>
+      <div class="final-answer">Answer: Example word problem created above ($p = 35\%$).</div>
+    </div>
+  </div>
+
+  <!-- 29 -->
+  <div class="card">
+    <div class="question">29. Write $2\frac{4}{5}$ as an improper fraction. Then write its reciprocal.</div>
+    <button class="toggle-btn" id="btn-29" onclick="toggleAnswer('ans-29')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-29">
+      <div class="step"><strong>Improper Fraction:</strong></div>
+      <div class="step">$$2\frac{4}{5} = \frac{(2 \times 5) + 4}{5} = \frac{14}{5}$$</div>
+      <div class="step"><strong>Reciprocal:</strong> Invert numerator and denominator: $\frac{14}{5} \rightarrow \frac{5}{14}$</div>
+      <div class="final-answer">Answer: Improper fraction: $\frac{14}{5}$ &nbsp;|&nbsp; Reciprocal: $\frac{5}{14}$</div>
+    </div>
+  </div>
+
+  <!-- 30 -->
+  <div class="card">
+    <div class="question">30. Find a fraction equal to $\frac{2}{3}$ with a denominator of 12. Add this fraction to $\frac{7}{12}$. Write the sum as a simplified mixed number.</div>
+    <button class="toggle-btn" id="btn-30" onclick="toggleAnswer('ans-30')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-30">
+      <div class="step"><strong>Step 1:</strong> Convert $\frac{2}{3}$ to equivalent fraction with denominator 12:</div>
+      <div class="step">$$\frac{2 \times 4}{3 \times 4} = \frac{8}{12}$$</div>
+      <div class="step"><strong>Step 2:</strong> Add $\frac{8}{12}$ to $\frac{7}{12}$:</div>
+      <div class="step">$$\frac{8}{12} + \frac{7}{12} = \frac{15}{12}$$</div>
+      <div class="step"><strong>Step 3:</strong> Convert to simplified mixed number:</div>
+      <div class="step">$$\frac{15}{12} = 1\frac{3}{12} = 1\frac{1}{4}$$</div>
+      <div class="final-answer">Answer: Equivalent fraction: $\frac{8}{12}$ &nbsp;|&nbsp; Sum: $1\frac{1}{4}$</div>
+    </div>
+  </div>
+
+  <h2>Additional Skills Practice</h2>
+
+  <!-- 31 -->
+  <div class="card">
+    <div class="question">31. DIVIDING DECIMALS: Divide $13.95 \div 0.45$.</div>
+    <button class="toggle-btn" id="btn-31" onclick="toggleAnswer('ans-31')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-31">
+      <div class="step"><strong>Step 1:</strong> Move decimal point two places to the right in both divisor and dividend to divide by a whole number:</div>
+      <div class="step">$$0.45 \rightarrow 45$$</div>
+      <div class="step">$$13.95 \rightarrow 1395$$</div>
+      <div class="step"><strong>Step 2:</strong> Perform long division:</div>
+      <div class="step">$$1395 \div 45 = 31$$</div>
+      <div class="final-answer">Answer: $31$</div>
+    </div>
+  </div>
+
+  <!-- 32 -->
+  <div class="card">
+    <div class="question">32. REPEATING DECIMALS: Divide $5.2 \div 0.3$. Express your answer using overbar notation for the infinite repeating quotient.</div>
+    <button class="toggle-btn" id="btn-32" onclick="toggleAnswer('ans-32')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-32">
+      <div class="step"><strong>Step 1:</strong> Shift decimal point one place right in divisor and dividend:</div>
+      <div class="step">$$5.2 \div 0.3 = 52 \div 3$$</div>
+      <div class="step"><strong>Step 2:</strong> Divide $52$ by $3$:</div>
+      <div class="step">$$52 \div 3 = 17 \text{ R } 1 = 17.3333...$$</div>
+      <div class="step"><strong>Step 3:</strong> Write using overbar notation over repeating digit:</div>
+      <div class="step">$$17.\bar{3}$$</div>
+      <div class="final-answer">Answer: $17.\bar{3}$</div>
+    </div>
+  </div>
+
+  <!-- 33 -->
+  <div class="card">
+    <div class="question">33. PERCENTAGE PROBLEM: A winter coat originally costs $\$120.00$. During an end-of-season sale, it is discounted by $35\%$. What is the dollar amount of the discount, and what is the final sale price of the coat?</div>
+    <button class="toggle-btn" id="btn-33" onclick="toggleAnswer('ans-33')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-33">
+      <div class="step"><strong>Step 1 (Find Discount):</strong> Convert $35\%$ to decimal and multiply by original price:</div>
+      <div class="step">$$\text{Discount} = 0.35 \times \$120.00 = \$42.00$$</div>
+      <div class="step"><strong>Step 2 (Find Sale Price):</strong> Subtract discount from original price:</div>
+      <div class="step">$$\text{Sale Price} = \$120.00 - \$42.00 = \$78.00$$</div>
+      <div class="final-answer">Answer: Discount: $\$42.00$ &nbsp;|&nbsp; Final Price: $\$78.00$</div>
+    </div>
+  </div>
+
+  <!-- 34 -->
+  <div class="card">
+    <div class="question">34. PEMDAS / ORDER OF OPERATIONS: Simplify the following expression containing fractions, decimals, and signed numbers: $$-3.5 + \frac{3}{4} \cdot \left[8 - (-2.4) \div 0.6\right]$$</div>
+    <button class="toggle-btn" id="btn-34" onclick="toggleAnswer('ans-34')">Show Answer & Explanation</button>
+    <div class="answer-box" id="ans-34">
+      <div class="step"><strong>Step 1 (Parentheses - Division):</strong> Divide inside brackets first:</div>
+      <div class="step">$$(-2.4) \div 0.6 = -4$$</div>
+      <div class="step"><strong>Step 2 (Parentheses - Subtraction):</strong> Simplify inside brackets:</div>
+      <div class="step">$$8 - (-4) = 8 + 4 = 12$$</div>
+      <div class="step"><strong>Step 3 (Multiplication):</strong> Multiply fraction by bracket result:</div>
+      <div class="step">$$\frac{3}{4} \cdot 12 = 9$$</div>
+      <div class="step"><strong>Step 4 (Addition with Negative Decimal):</strong> Combine terms:</div>
+      <div class="step">$$-3.5 + 9 = 5.5 \quad \left(\text{or } 5\frac{1}{2}\right)$$</div>
+      <div class="final-answer">Answer: $5.5$ (or $5\frac{1}{2}$)</div>
+    </div>
+  </div>
+
+  <script>
+    function toggleAnswer(id) {
+      var element = document.getElementById(id);
+      var btn = document.getElementById('btn-' + id);
+      if (element.style.display === "none" || element.style.display === "") {
+        element.style.display = "block";
+        btn.textContent = "Hide Answer & Explanation";
+      } else {
+        element.style.display = "none";
+        btn.textContent = "Show Answer & Explanation";
+      }
+    }
+
+    function toggleAllAnswers(show) {
+      var answerBoxes = document.querySelectorAll('.answer-box');
+      var toggleButtons = document.querySelectorAll('.toggle-btn');
+      
+      answerBoxes.forEach(function(box) {
+        box.style.display = show ? "block" : "none";
+      });
+
+      toggleButtons.forEach(function(btn) {
+        btn.textContent = show ? "Hide Answer & Explanation" : "Show Answer & Explanation";
+      });
+    }
+  </script>
+
+</body>
+</html>
