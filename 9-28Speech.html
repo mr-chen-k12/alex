@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cyber Shield: Alex's Anti-Scam Public Speaking Kit</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rajdhani:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            hud: ['Rajdhani', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            cyber: {
+              bg: '#030712',
+              card: '#0f172a',
+              cardBorder: '#1e293b',
+              cyan: '#06b6d4',
+              emerald: '#10b981',
+              amber: '#f59e0b',
+              red: '#ef4444',
+              purple: '#a855f7'
+            }
+          },
+          boxShadow: {
+            'neon-cyan': '0 0 20px rgba(6, 182, 212, 0.35)',
+            'neon-emerald': '0 0 20px rgba(16, 185, 129, 0.35)',
+            'neon-amber': '0 0 20px rgba(245, 158, 11, 0.35)',
+            'neon-red': '0 0 20px rgba(239, 68, 68, 0.35)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      background-color: #030712;
+    }
+
+    /* Cyber Highlight Tags for Dynamic Inputs */
+    .blank-input {
+      background-color: #0b1329;
+      border: 2px solid #06b6d4;
+      color: #67e8f9;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+    }
+    .blank-input:focus {
+      outline: none;
+      border-color: #10b981;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+      background-color: #020617;
+    }
+
+    .filled-tag {
+      background-color: rgba(6, 182, 212, 0.15);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      color: #38bdf8;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      box-shadow: 0 0 8px rgba(6, 182, 212, 0.2);
+    }
+
+    /* Custom Scrollbar for HUD Containers */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #020617;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+      border: 1px solid #334155;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #06b6d4;
+    }
+
+    /* Animated Cyber Grid Overlay */
+    .cyber-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(1000%); }
+    }
+    .scanline-effect {
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 10px;
+      background: linear-gradient(to bottom, transparent, rgba(6, 182, 212, 0.15), transparent);
+      animation: scanline 8s linear infinite;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="cyber-grid text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-cyan-500 selection:text-black">
+
+  <!-- HEADER / CYBER SHIELD HUD NAVBAR -->
+  <header class="bg-slate-950/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 px-4 py-3 md:px-6">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+      
+      <!-- Logo & Profile Banner -->
+      <div class="flex items-center justify-between w-full sm:w-auto gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center shadow-neon-cyan font-hud font-black text-2xl text-slate-950 tracking-wider">
+            🛡️
+          </div>
+          <div>
+            <h1 class="font-hud font-black text-xl md:text-2xl tracking-wider text-white flex items-center gap-2">
+              CYBER SHIELD <span class="text-xs font-sans font-extrabold bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 px-2 py-0.5 rounded-md uppercase tracking-normal">Anti-Scam Guide</span>
+            </h1>
+            <p class="text-xs text-slate-400 font-medium">6th Grade Public Speaking Kit • Player: <strong class="text-cyan-300" id="headerPlayerName">Alex</strong></p>
+          </div>
+        </div>
+
+        <!-- Mobile XP Badge -->
+        <div class="sm:hidden flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1 rounded-xl">
+          <span class="text-xs font-hud font-bold text-emerald-400" id="mobileXpDisplay">LVL 1 • 100 XP</span>
+        </div>
+      </div>
+
+      <!-- XP Progress Tracker (Tablet / Desktop) -->
+      <div class="hidden sm:flex items-center gap-3 bg-slate-900/90 border border-slate-800 px-4 py-2 rounded-xl">
+        <div class="text-right">
+          <div class="text-xs font-hud font-bold text-emerald-400 uppercase tracking-wider" id="playerLvlTitle">LVL 1 • NOVICE NETIZEN</div>
+          <div class="text-[10px] text-slate-400 font-mono" id="xpText">100 / 300 XP</div>
+        </div>
+        <div class="w-32 bg-slate-950 h-3.5 rounded-full overflow-hidden border border-slate-800 p-0.5">
+          <div id="xpBarFill" class="bg-gradient-to-r from-cyan-500 to-emerald-400 h-full rounded-full transition-all duration-500 shadow-neon-emerald" style="width: 33%;"></div>
+        </div>
+      </div>
+
+      <!-- Navigation Mode Switcher -->
+      <div class="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800 w-full sm:w-auto justify-center">
+        <button id="nav-btn-studio" onclick="switchView('studio')" class="flex-1 sm:flex-none px-4 py-2 text-xs md:text-sm font-hud font-bold rounded-lg transition-all bg-cyan-600 text-white shadow-neon-cyan flex items-center justify-center gap-2">
+          <span>⚙️</span> Studio / Practice
+        </button>
+        <button id="nav-btn-prompter" onclick="switchView('prompter')" class="flex-1 sm:flex-none px-4 py-2 text-xs md:text-sm font-hud font-bold rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-900 flex items-center justify-center gap-2">
+          <span>📺</span> Teleprompter Mode
+        </button>
+        <button id="nav-btn-print" onclick="window.print()" class="px-3 py-2 text-xs md:text-sm font-hud font-bold rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-900 hidden md:flex items-center gap-1.5" title="Print Speech Sheet">
+          <span>🖨️</span> Print
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6">
+
+    <!-- VIEW 1: STUDIO & PRACTICE MODULES -->
+    <div id="view-studio" class="space-y-6">
+
+      <!-- STUDENT CUSTOMIZATION STATION -->
+      <section class="bg-slate-900/90 border-2 border-slate-800 rounded-2xl p-4 md:p-6 shadow-2xl relative overflow-hidden">
+        <div class="scanline-effect"></div>
+        <div class="absolute -right-12 -top-12 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-12 -bottom-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-5 border-b border-slate-800 pb-4">
+          <div>
+            <span class="text-xs font-hud font-bold text-cyan-400 tracking-widest uppercase flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span> Cyber Defense Command Center
+            </span>
+            <h2 class="text-2xl font-hud font-black text-white">Alex's Speech Personalizer</h2>
+          </div>
+          
+          <div class="flex items-center gap-3">
+            <button onclick="logPracticeRun()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-hud font-bold text-sm px-4 py-2.5 rounded-xl shadow-neon-emerald flex items-center gap-2 active:scale-95 transition-all">
+              <span>⚡</span> Log Practice Session (+50 XP)
+            </button>
+            <div class="bg-slate-950 border border-slate-800 px-3 py-2 rounded-xl text-center">
+              <div class="text-[10px] text-slate-400 uppercase font-hud font-bold">Total Runs</div>
+              <div id="practiceCounter" class="text-base font-hud font-extrabold text-amber-400">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Inputs Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs md:text-sm">
+          
+          <!-- Input 1: Favorite Game -->
+          <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-2">
+            <label class="font-hud font-bold text-slate-300 uppercase flex items-center justify-between">
+              <span>🎮 Favorite Online Game:</span>
+            </label>
+            <input type="text" id="inputGame" value="Roblox & Blox Fruits" class="w-full blank-input text-sm">
+            <div class="flex flex-wrap gap-1.5 pt-1">
+              <span class="text-[10px] text-slate-500 font-bold self-center">Quick Pick:</span>
+              <button onclick="setField('inputGame', 'Roblox & Blox Fruits')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-cyan-300 px-2 py-0.5 rounded-md border border-slate-800">Roblox</button>
+              <button onclick="setField('inputGame', 'BedWars & Pet Sim')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-cyan-300 px-2 py-0.5 rounded-md border border-slate-800">BedWars</button>
+              <button onclick="setField('inputGame', 'Fortnite & Minecraft')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-cyan-300 px-2 py-0.5 rounded-md border border-slate-800">Fortnite</button>
+            </div>
+          </div>
+
+          <!-- Input 2: Common Scam Example -->
+          <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-2">
+            <label class="font-hud font-bold text-slate-300 uppercase flex items-center justify-between">
+              <span>🚨 Common Scam Trap:</span>
+            </label>
+            <input type="text" id="inputScamType" value="Free Robux generators & fake glitch sites" class="w-full blank-input text-sm">
+            <div class="flex flex-wrap gap-1.5 pt-1">
+              <span class="text-[10px] text-slate-500 font-bold self-center">Quick Pick:</span>
+              <button onclick="setField('inputScamType', 'Free Robux generators')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-amber-300 px-2 py-0.5 rounded-md border border-slate-800">Free Robux</button>
+              <button onclick="setField('inputScamType', 'Fake trade links on Discord')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-amber-300 px-2 py-0.5 rounded-md border border-slate-800">Discord Links</button>
+              <button onclick="setField('inputScamType', 'Fake V-Bucks promo codes')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-amber-300 px-2 py-0.5 rounded-md border border-slate-800">Fake V-Bucks</button>
+            </div>
+          </div>
+
+          <!-- Input 3: Fake Item / Baited Loot -->
+          <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-2">
+            <label class="font-hud font-bold text-slate-300 uppercase flex items-center justify-between">
+              <span>🎁 Fake Baited Item / Skin:</span>
+            </label>
+            <input type="text" id="inputFakeItem" value="Dominus Empyreus or Kitsune Fruit" class="w-full blank-input text-sm">
+            <div class="flex flex-wrap gap-1.5 pt-1">
+              <span class="text-[10px] text-slate-500 font-bold self-center">Quick Pick:</span>
+              <button onclick="setField('inputFakeItem', 'Dominus Empyreus')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-emerald-300 px-2 py-0.5 rounded-md border border-slate-800">Dominus</button>
+              <button onclick="setField('inputFakeItem', 'Kitsune Fruit')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-emerald-300 px-2 py-0.5 rounded-md border border-slate-800">Kitsune Fruit</button>
+              <button onclick="setField('inputFakeItem', 'Mega Neon Dragon')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-emerald-300 px-2 py-0.5 rounded-md border border-slate-800">Neon Dragon</button>
+            </div>
+          </div>
+
+          <!-- Input 4: Scam Delivery Channel -->
+          <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-2">
+            <label class="font-hud font-bold text-slate-300 uppercase flex items-center justify-between">
+              <span>💬 Scam Delivery Method:</span>
+            </label>
+            <input type="text" id="inputScamChannel" value="sketchy Discord DMs & YouTube comments" class="w-full blank-input text-sm">
+            <div class="flex flex-wrap gap-1.5 pt-1">
+              <span class="text-[10px] text-slate-500 font-bold self-center">Quick Pick:</span>
+              <button onclick="setField('inputScamChannel', 'sketchy Discord DMs')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-purple-300 px-2 py-0.5 rounded-md border border-slate-800">Discord DM</button>
+              <button onclick="setField('inputScamChannel', 'YouTube video comments')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-purple-300 px-2 py-0.5 rounded-md border border-slate-800">YouTube</button>
+              <button onclick="setField('inputScamChannel', 'Tik Tok bio links')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-purple-300 px-2 py-0.5 rounded-md border border-slate-800">TikTok Bio</button>
+            </div>
+          </div>
+
+          <!-- Input 5: Trusted Adult -->
+          <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-2 lg:col-span-2">
+            <label class="font-hud font-bold text-slate-300 uppercase flex items-center justify-between">
+              <span>👨‍🏫 Trusted Adult Backup:</span>
+            </label>
+            <input type="text" id="inputTrustedAdult" value="Mom, Dad, or our Tech Teacher Mr. Davis" class="w-full blank-input text-sm">
+            <div class="flex flex-wrap gap-1.5 pt-1">
+              <span class="text-[10px] text-slate-500 font-bold self-center">Quick Pick:</span>
+              <button onclick="setField('inputTrustedAdult', 'Mom or Dad')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-red-300 px-2 py-0.5 rounded-md border border-slate-800">Mom / Dad</button>
+              <button onclick="setField('inputTrustedAdult', 'our Tech Teacher')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-red-300 px-2 py-0.5 rounded-md border border-slate-800">Tech Teacher</button>
+              <button onclick="setField('inputTrustedAdult', 'my older brother or parents')" class="text-[11px] bg-slate-900 hover:bg-slate-800 text-red-300 px-2 py-0.5 rounded-md border border-slate-800">Older Brother / Parents</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- INTERACTIVE CYBER SECURITY VOCABULARY BAR -->
+      <section class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 shadow-lg">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-hud font-bold text-base text-cyan-400 flex items-center gap-2">
+            <span>🔑</span> Key Cyber Security Vocab Cards (Click to inspect definition):
+          </h3>
+          <span class="text-[11px] text-slate-400">Click any keyword below!</span>
+        </div>
+        <div class="flex flex-wrap gap-2 text-xs">
+          <button onclick="openVocabModal('phishing')" class="bg-slate-950 hover:bg-cyan-950/60 text-cyan-300 border border-cyan-500/30 px-3 py-1.5 rounded-xl font-mono font-bold flex items-center gap-1.5 transition-all">
+            <span>🎣</span> Phishing
+          </button>
+          <button onclick="openVocabModal('2fa')" class="bg-slate-950 hover:bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 px-3 py-1.5 rounded-xl font-mono font-bold flex items-center gap-1.5 transition-all">
+            <span>🔐</span> 2FA (Two-Factor Auth)
+          </button>
+          <button onclick="openVocabModal('malware')" class="bg-slate-950 hover:bg-red-950/60 text-red-300 border border-red-500/30 px-3 py-1.5 rounded-xl font-mono font-bold flex items-center gap-1.5 transition-all">
+            <span>🦠</span> Malware
+          </button>
+          <button onclick="openVocabModal('social_engineering')" class="bg-slate-950 hover:bg-amber-950/60 text-amber-300 border border-amber-500/30 px-3 py-1.5 rounded-xl font-mono font-bold flex items-center gap-1.5 transition-all">
+            <span>🎭</span> Social Engineering
+          </button>
+          <button onclick="openVocabModal('cookie_theft')" class="bg-slate-950 hover:bg-purple-950/60 text-purple-300 border border-purple-500/30 px-3 py-1.5 rounded-xl font-mono font-bold flex items-center gap-1.5 transition-all">
+            <span>🍪</span> Cookie Hijacking
+          </button>
+          <button onclick="openVocabModal('digital_footprint')" class="bg-slate-950 hover:bg-blue-950/60 text-blue-300 border border-blue-500/30 px-3 py-1.5 rounded-xl font-mono font-bold flex items-center gap-1.5 transition-all">
+            <span>🐾</span> Digital Footprint
+          </button>
+        </div>
+      </section>
+
+      <!-- 5 SPEAKING PRACTICE MODULE CARDS -->
+      <div class="grid grid-cols-1 gap-6">
+
+        <!-- MODULE 1 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl hover:border-cyan-500/40 transition-all">
+          <div class="bg-gradient-to-r from-cyan-950 via-slate-900 to-slate-900 px-5 py-3.5 border-b border-slate-800 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-cyan-600 text-slate-950 font-hud font-black text-lg flex items-center justify-center shadow-neon-cyan">1</span>
+              <div>
+                <h3 class="font-hud font-bold text-lg text-white">Module 1: The Bait & The Trap (Speech Hook)</h3>
+                <p class="text-xs text-slate-400">Capturing class attention with real gamer scam stories</p>
+              </div>
+            </div>
+            <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs font-hud font-bold px-3 py-1 rounded-full">30-40 Secs</span>
+          </div>
+
+          <div class="p-5 space-y-4">
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+              <div class="font-hud font-bold text-cyan-400 uppercase tracking-wider text-[11px]">Pro-Gamer Speaker Strategy:</div>
+              <p>• Start with high energy and a question everyone in 6th grade relates to.</p>
+              <p>• Expose the shiny "bait" scammers use to trick kids into clicking.</p>
+            </div>
+
+            <div class="bg-slate-950/90 border-l-4 border-cyan-500 p-4 rounded-r-xl text-base md:text-lg leading-relaxed font-medium text-slate-200">
+              "Raise your hand if you've ever seen a video or pop-up promising <em>'FREE UNLIMITED ROBUX!'</em> or a free <span class="filled-tag tag-fakeItem">Dominus Empyreus or Kitsune Fruit</span>. When you're playing games like <span class="filled-tag tag-game">Roblox & Blox Fruits</span>, those deals look super tempting! But today, I want to reveal the truth: there is no secret glitch or free code generator. It’s a trap, and scammers are targeting 6th graders every single day."
+            </div>
+
+            <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400 pt-2 border-t border-slate-800/80">
+              <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                <input type="checkbox" onchange="toggleCheck(this)" class="w-4 h-4 rounded bg-slate-950 border-slate-700 text-cyan-500 focus:ring-0"> Hand gesture for "Raise your hand"
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                <input type="checkbox" onchange="toggleCheck(this)" class="w-4 h-4 rounded bg-slate-950 border-slate-700 text-cyan-500 focus:ring-0"> Clear vocal projection
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 2 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl hover:border-amber-500/40 transition-all">
+          <div class="bg-gradient-to-r from-amber-950 via-slate-900 to-slate-900 px-5 py-3.5 border-b border-slate-800 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-amber-600 text-slate-950 font-hud font-black text-lg flex items-center justify-center shadow-neon-amber">2</span>
+              <div>
+                <h3 class="font-hud font-bold text-lg text-white">Module 2: Spotting the Red Flags (Informative Speech)</h3>
+                <p class="text-xs text-slate-400">Identifying fake links, countdown timers, and password traps</p>
+              </div>
+            </div>
+            <span class="bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-hud font-bold px-3 py-1 rounded-full">45 Secs</span>
+          </div>
+
+          <div class="p-5 space-y-4">
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+              <div class="font-hud font-bold text-amber-400 uppercase tracking-wider text-[11px]">Pro-Gamer Speaker Strategy:</div>
+              <p>• Count off the 3 major Red Flags using your fingers for visual impact.</p>
+              <p>• Pause 2 seconds after naming each Red Flag.</p>
+            </div>
+
+            <div class="bg-slate-950/90 border-l-4 border-amber-500 p-4 rounded-r-xl text-base md:text-lg leading-relaxed font-medium text-slate-200">
+              "So how do you spot a scam before stepping into it? Look for three big <strong>Red Flags</strong>. <br>
+              <strong>Red Flag #1: Fake Sense of Urgency.</strong> Scammers use flashing timers saying <em>'CLAIM IN 2 MINUTES OR LOSE IT!'</em> to panic you. <br>
+              <strong>Red Flag #2: Weird Web Links.</strong> Instead of `roblox.com`, the URL says something sketchy like `robloxx-free-itemz.net`. <br>
+              <strong>Red Flag #3: Asking for Passwords or Codes.</strong> These traps pop up in <span class="filled-tag tag-scamChannel">sketchy Discord DMs & YouTube comments</span> asking for your login info. Real game admins will <em>NEVER</em> ask for your password!"
+            </div>
+
+            <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400 pt-2 border-t border-slate-800/80">
+              <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                <input type="checkbox" onchange="toggleCheck(this)" class="w-4 h-4 rounded bg-slate-950 border-slate-700 text-amber-500 focus:ring-0"> Counted Red Flags 1, 2, 3 with fingers
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                <input type="checkbox" onchange="toggleCheck(this)" class="w-4 h-4 rounded bg-slate-950 border-slate-700 text-amber-500 focus:ring-0"> Emphasized "NEVER ask for your password"
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 3 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl hover:border-red-500/40 transition-all">
+          <div class="bg-gradient-to-r from-red-950 via-slate-900 to-slate-900 px-5 py-3.5 border-b border-slate-800 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-red-600 text-white font-hud font-black text-lg flex items-center justify-center shadow-neon-red">3</span>
+              <div>
+                <h3 class="font-hud font-bold text-lg text-white">Module 3: The Hacker's Playbook: Phishing & Theft</h3>
+                <p class="text-xs text-slate-400">Explaining how hackers steal accounts, cookies, and personal data</p>
+              </div>
+            </div>
+            <span class="bg-red-500/10 text-red-400 border border-red-500/30 text-xs font-hud font-bold px-3 py-1 rounded-full">45 Secs</span>
+          </div>
+
+          <div class="p-5 space-y-4">
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+              <div class="font-hud font-bold text-red-400 uppercase tracking-wider text-[11px]">Pro-Gamer Speaker Strategy:</div>
+              <p>• Use a serious, authoritative tone to show the consequences of clicking scam links.</p>
+              <p>• Explain technical terms like <strong>Phishing</strong> in simple 6th-grade language.</p>
+            </div>
+
+            <div class="bg-slate-950/90 border-l-4 border-red-500 p-4 rounded-r-xl text-base md:text-lg leading-relaxed font-medium text-slate-200">
+              "What actually happens if someone falls for <span class="filled-tag tag-scamType">Free Robux generators & fake glitch sites</span>? Scammers use a trick called <strong>Phishing</strong>. They design a website that looks 100% identical to the real login page. But the second you type your username, password, or session cookies, your key is instantly sent to a hacker's computer. In less than 60 seconds, they trade away your rare pets, change your password, and lock you out of your account forever!"
+            </div>
+
+            <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400 pt-2 border-t border-slate-800/80">
+              <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                <input type="checkbox" onchange="toggleCheck(this)" class="w-4 h-4 rounded bg-slate-950 border-slate-700 text-red-500 focus:ring-0"> Used a dramatic pause at "lock you out"
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                <input type="checkbox" onchange="toggleCheck(this)" class="w-4 h-4 rounded bg-slate-950 border-slate-700 text-red-500 focus:ring-0"> Maintained solid eye contact
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 4 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl hover:border-emerald-500/40 transition-all">
+          <div class="bg-gradient-to-r from-emerald-950 via-slate-900 to-slate-900 px-5 py-3.5 border-b border-slate-800 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+              <span class="w-8 h-8 rounded-xl bg-emerald-600 text-slate-950 font-hud font-black text-lg flex items-center justify-center shadow-neon-emerald">4</span>
+              <div>
+                <h3 class="font-hud font-bold text-lg text-white">Module 4: My 4 Rules of Cyber Defense (Action Plan)</h3>
+                <p class="text-xs text-slate-400">Empowering classmates with 4 ironclad security rules</p>
+              </div>
+            </div>
+            <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-hud font-bold px-3 py-1 rounded-full">45 Secs</span>
+          </div>
+
+          <div class="p-5 space-y-4">
+            <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
+              <div class="font-hud font-bold text-emerald-400 uppercase tracking-wider text-[11px]">Pro-Gamer Speaker Strategy:</div>
+              <p>• Deliver these rules like an invincible shield defense strategy.</p>
+              <p>• Stand tall with strong posture and confident voice tone.</p>
+            </div>
+
+            <div class="bg-slate-950/90 border-l-4 border-emerald-500 p-4 rounded-r-xl text-base md:text-lg leading-relaxed font-medium text-slate-200">
+              "To keep your accounts completely unhackable, follow my <strong>4 Ironclad Rules of Cyber Defense</strong>:<br>
+              <strong>Rule 1: Enable 2FA (Two-Factor Authentication).</strong> This requires a 6-digit code sent to a parent's email whenever someone logs in.<br>
+              <strong>Rule 2: Inspect the Domain URL.</strong> Make sure it says official sites like `roblox.com` or `minecraft.net`.<br>
+              <strong>Rule 3: Keep Passwords Secret.</strong> Never share logins with friends, even on Discord.<br>
+              <strong>Rule 4: When in Doubt, Ask an Adult.</strong> If a link looks weird, immediately show <span class="filled-tag tag-trustedAdult">Mom, Dad, or our Tech Teacher Mr. Davis</span> before clicking!"
+            </div>
+
+            <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-400 pt-2 border-t border-slate-800/80">
+              <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                <input type="checkbox" onchange="toggleCheck(this)" class="w-4 h-4 rounded bg-slate-950 border-slate-700 text-emerald-500 focus:ring-0"> Stood up straight with shoulder confidence
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer hover:text-white">
+                <input type="checkbox" onchange="toggleCheck(this)" class="w-4 h-4 rounded bg-slate-950 border-slate-700 text-emerald-500 focus:ring-0"> Clear vocal emphasis on "Rule 1, 2, 3, 4"
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 5 -->
+        <div class="bg-slate-900 border-2 border-cyan-500/80 rounded-2xl overflow-hidden shadow-2xl relative">
+          <div class="bg-gradient-to-r from-cyan-600 via-slate-900 to-slate-900 px-5 py-4 border-b border-cyan-500/50 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-slate-950 text-cyan-400 border border-cyan-400 font-hud font-black text-xl flex items-center justify-center shadow-lg">5</span>
+              <div>
+                <h3 class="font-hud font-black text-xl text-white">Module 5: The Ultimate Cyber Security Briefing</h3>
+                <p class="text-xs text-slate-300">The Complete 6th-Grade Classroom Presentation Speech (1.5 - 2 Minutes)</p>
+              </div>
+            </div>
+            <button onclick="switchView('prompter')" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-hud font-extrabold text-xs px-4 py-2 rounded-xl shadow-neon-cyan flex items-center gap-2 transition-all">
+              <span>📺</span> Open iPad Teleprompter
+            </button>
+          </div>
+
+          <div class="p-6 space-y-4 bg-slate-950/80">
+            <div id="bossLevelScriptBox" class="bg-slate-950 border border-slate-800 p-5 rounded-2xl text-base md:text-lg leading-relaxed text-slate-200 space-y-4 font-medium">
+              <!-- Dynamically rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PUBLIC SPEAKING SKILL TREE FOR 6TH GRADERS -->
+      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
+        <h3 class="font-hud font-bold text-lg text-emerald-400 mb-3 flex items-center gap-2">
+          <span>🎯</span> Alex's Speaker Level-Up Skill Checklist
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80 flex items-center gap-2.5">
+            <input type="checkbox" onchange="toggleCheck(this)" class="w-4 h-4 text-cyan-500 bg-slate-900 border-slate-700 rounded">
+            <span><strong>Eye Contact Sweep:</strong> Make eye contact with left, center, and right sides of classroom.</span>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80 flex items-center gap-2.5">
+            <input type="checkbox" onchange="toggleCheck(this)" class="w-4 h-4 text-cyan-500 bg-slate-900 border-slate-700 rounded">
+            <span><strong>Vocal Power:</strong> Project voice so the back row hears every single word.</span>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80 flex items-center gap-2.5">
+            <input type="checkbox" onchange="toggleCheck(this)" class="w-4 h-4 text-cyan-500 bg-slate-900 border-slate-700 rounded">
+            <span><strong>Power Pauses:</strong> Stop for 2 full seconds after mentioning Red Flags.</span>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80 flex items-center gap-2.5">
+            <input type="checkbox" onchange="toggleCheck(this)" class="w-4 h-4 text-cyan-500 bg-slate-900 border-slate-700 rounded">
+            <span><strong>No Filler Words:</strong> Cut out "um", "like", and "so yeah" using silent breaths.</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- VIEW 2: IPAD TELEPROMPTER PRESENTER MODE -->
+    <div id="view-prompter" class="hidden space-y-4">
+
+      <!-- Prompter Control HUD -->
+      <div class="bg-slate-900/95 border border-slate-800 rounded-2xl p-3 md:p-4 shadow-2xl flex flex-wrap items-center justify-between gap-3 sticky top-16 z-40 backdrop-blur-md">
+        
+        <!-- Live Speech Timer -->
+        <div class="flex items-center gap-3 bg-slate-950 px-4 py-2 rounded-xl border border-slate-800">
+          <span class="text-xs font-hud font-bold uppercase text-slate-400">Speech Timer:</span>
+          <span id="prompterTimer" class="font-mono text-2xl font-black text-cyan-400 tracking-wider">00:00</span>
+          <div class="flex gap-1">
+            <button onclick="toggleTimer()" id="prompterTimerBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-hud font-bold text-xs px-3 py-1.5 rounded-lg active:scale-95 transition-all">Start</button>
+            <button onclick="resetTimer()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-hud font-bold text-xs px-2.5 py-1.5 rounded-lg">Reset</button>
+          </div>
+        </div>
+
+        <!-- Cue Cards Toggle (Full Script vs Bullet Cues) -->
+        <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
+          <button onclick="setCueMode('script')" id="btn-cue-script" class="px-3 py-1.5 text-xs font-hud font-bold rounded-lg bg-cyan-600 text-slate-950 shadow-neon-cyan">Full Script</button>
+          <button onclick="setCueMode('bullets')" id="btn-cue-bullets" class="px-3 py-1.5 text-xs font-hud font-bold rounded-lg text-slate-400 hover:text-white">Bullet Cues</button>
+        </div>
+
+        <!-- Font Size Resizer for iPad Distance Reading -->
+        <div class="flex items-center gap-2 bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800">
+          <span class="text-xs font-hud font-bold uppercase text-slate-400">Font Size:</span>
+          <button onclick="adjustPrompterFont(-2)" class="bg-slate-800 text-white font-bold w-8 h-8 rounded-lg hover:bg-slate-700 text-sm">-</button>
+          <span id="prompterFontSizeDisplay" class="text-xs font-mono font-bold text-emerald-400 w-10 text-center">26px</span>
+          <button onclick="adjustPrompterFont(2)" class="bg-slate-800 text-white font-bold w-8 h-8 rounded-lg hover:bg-slate-700 text-sm">+</button>
+        </div>
+
+        <!-- Section Jump Selector -->
+        <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 overflow-x-auto">
+          <button onclick="renderPrompterSection('all')" id="psec-all" class="px-2.5 py-1 text-xs font-hud font-bold rounded-lg bg-cyan-600 text-slate-950">All</button>
+          <button onclick="renderPrompterSection('1')" id="psec-1" class="px-2 py-1 text-xs font-hud font-bold rounded-lg text-slate-400 hover:text-white">P1</button>
+          <button onclick="renderPrompterSection('2')" id="psec-2" class="px-2 py-1 text-xs font-hud font-bold rounded-lg text-slate-400 hover:text-white">P2</button>
+          <button onclick="renderPrompterSection('3')" id="psec-3" class="px-2 py-1 text-xs font-hud font-bold rounded-lg text-slate-400 hover:text-white">P3</button>
+          <button onclick="renderPrompterSection('4')" id="psec-4" class="px-2 py-1 text-xs font-hud font-bold rounded-lg text-slate-400 hover:text-white">P4</button>
+          <button onclick="renderPrompterSection('5')" id="psec-5" class="px-2 py-1 text-xs font-hud font-bold rounded-lg text-slate-400 hover:text-white">Boss</button>
+        </div>
+
+      </div>
+
+      <!-- TELEPROMPTER CANVAS BOX -->
+      <div class="bg-slate-950 text-slate-100 rounded-3xl p-6 md:p-12 shadow-2xl border-4 border-slate-800 min-h-[580px] flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-6 opacity-5 pointer-events-none font-hud font-black text-9xl text-cyan-500">SECURE</div>
+
+        <!-- Dynamic Content Stream -->
+        <div id="prompterCanvas" class="font-medium leading-relaxed tracking-wide space-y-6 transition-all duration-200" style="font-size: 26px;">
+          <!-- Rendered via JS -->
+        </div>
+
+        <!-- Bottom iPad Stage Cue Banner -->
+        <div class="mt-10 pt-4 border-t border-slate-800/80 flex flex-wrap justify-between items-center text-xs text-slate-400 gap-3">
+          <div class="flex items-center gap-4 font-hud font-bold">
+            <span class="text-emerald-400">📢 VOCAL POWER: MAXIMUM</span>
+            <span class="text-cyan-400">👀 CLASSROOM SWEEP: ACTIVE</span>
+            <span class="text-amber-400">⏸️ POWER PAUSES: READY</span>
+          </div>
+          <span class="text-cyan-400 font-hud font-bold tracking-widest uppercase">iPad Stage Teleprompter Active</span>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- VOCABULARY MODAL POPUP -->
+  <div id="vocabModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border-2 border-cyan-500/80 rounded-2xl max-w-lg w-full p-6 shadow-neon-cyan relative space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 id="modalVocabTitle" class="font-hud font-black text-2xl text-cyan-400 flex items-center gap-2">
+          <!-- JS Title -->
+        </h3>
+        <button onclick="closeVocabModal()" class="text-slate-400 hover:text-white font-bold text-xl px-2">✕</button>
+      </div>
+      <p id="modalVocabDef" class="text-slate-200 text-sm md:text-base leading-relaxed">
+        <!-- JS Definition -->
+      </p>
+      <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs text-amber-300 font-mono">
+        <strong>💡 Gamer Defense Pro-Tip:</strong> <span id="modalVocabTip"></span>
+      </div>
+      <button onclick="closeVocabModal()" class="w-full bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-hud font-extrabold py-2.5 rounded-xl shadow-lg">
+        Got It, Back to Practice!
+      </button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APPLICATION LOGIC -->
+  <script>
+    // State Object
+    const state = {
+      playerName: 'Alex',
+      game: 'Roblox & Blox Fruits',
+      scamType: 'Free Robux generators & fake glitch sites',
+      fakeItem: 'Dominus Empyreus or Kitsune Fruit',
+      scamChannel: 'sketchy Discord DMs & YouTube comments',
+      trustedAdult: 'Mom, Dad, or our Tech Teacher Mr. Davis',
+      xp: 100,
+      level: 1,
+      practiceRuns: 0,
+      cueMode: 'script', // 'script' or 'bullets'
+      fontSize: 26,
+      timerSeconds: 0,
+      timerInterval: null,
+      isTimerRunning: false,
+      activePrompterSection: 'all'
+    };
+
+    // Dictionary of Cyber Vocabulary Definitions
+    const vocabData = {
+      phishing: {
+        title: "🎣 Phishing",
+        def: "A cyber trap where scammers build fake websites or messages that look identical to official logins (like Roblox or Discord) to trick you into typing your password.",
+        tip: "Always look at the URL in your web browser before logging in!"
+      },
+      "2fa": {
+        title: "🔐 Two-Factor Authentication (2FA)",
+        def: "A security shield that requires two things to log into your account: your password PLUS a 6-digit verification code sent to a parent's phone or email.",
+        tip: "Even if a scammer gets your password, 2FA stops them cold!"
+      },
+      malware: {
+        title: "🦠 Malware",
+        def: "Short for 'Malicious Software'. Hidden code or download files designed to steal files, record keystrokes, or break your computer or phone.",
+        tip: "Never download random '.exe' or zip files from unknown gamers!"
+      },
+      social_engineering: {
+        title: "🎭 Social Engineering",
+        def: "Psychological tricks scammers use to manipulate people—like pretending to be a friend, a game developer, or offering 'urgent' rare trade items.",
+        tip: "If someone is rushing you to make a decision, slow down!"
+      },
+      cookie_theft: {
+        title: "🍪 Cookie Hijacking",
+        def: "Special security files called 'cookies' keep you logged in. Scammers try to steal these cookie strings to bypass your password entirely.",
+        tip: "Never paste code or inspect element code given by strangers into your browser console!"
+      },
+      digital_footprint: {
+        title: "🐾 Digital Footprint",
+        def: "The permanent trail of information, comments, photos, and game profile data you leave online whenever you use the internet.",
+        tip: "Keep personal info like your real full name, age, and school private!"
+      }
+    };
+
+    // Web Audio API Synthesizer for Level Up Sound Effects
+    function playCyberSound(type) {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        const now = ctx.currentTime;
+
+        if (type === 'levelup') {
+          // Futuristic Cyber Level Up Chime
+          const osc1 = ctx.createOscillator();
+          const osc2 = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc1.type = 'sine';
+          osc2.type = 'triangle';
+
+          osc1.frequency.setValueAtTime(440, now); // A4
+          osc1.frequency.setValueAtTime(554.37, now + 0.08); // C#5
+          osc1.frequency.setValueAtTime(659.25, now + 0.16); // E5
+          osc1.frequency.setValueAtTime(880, now + 0.24); // A5
+
+          osc2.frequency.setValueAtTime(220, now);
+          osc2.frequency.setValueAtTime(440, now + 0.16);
+
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc1.start(now);
+          osc2.start(now);
+          osc1.stop(now + 0.65);
+          osc2.stop(now + 0.65);
+        } else if (type === 'click') {
+          // Subtle Cyber Blip
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, now);
+          osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
+          gain.gain.setValueAtTime(0.1, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.06);
+        }
+      } catch (e) {
+        // Fallback gracefully if Web Audio is blocked
+      }
+    }
+
+    // Set Input Fields via Quick Pick Suggestion Chips
+    function setField(fieldId, value) {
+      playCyberSound('click');
+      const input = document.getElementById(fieldId);
+      if (input) {
+        input.value = value;
+        syncStateFromInputs();
+      }
+    }
+
+    // Read all customization inputs into state
+    function syncStateFromInputs() {
+      state.game = document.getElementById('inputGame').value || 'Roblox & Blox Fruits';
+      state.scamType = document.getElementById('inputScamType').value || 'Free Robux generators & fake glitch sites';
+      state.fakeItem = document.getElementById('inputFakeItem').value || 'Dominus Empyreus or Kitsune Fruit';
+      state.scamChannel = document.getElementById('inputScamChannel').value || 'sketchy Discord DMs & YouTube comments';
+      state.trustedAdult = document.getElementById('inputTrustedAdult').value || 'Mom, Dad, or our Tech Teacher Mr. Davis';
+
+      updateDOMTags();
+    }
+
+    // Update all dynamic tag elements
+    function updateDOMTags() {
+      document.querySelectorAll('.tag-game').forEach(el => el.textContent = state.game);
+      document.querySelectorAll('.tag-scamType').forEach(el => el.textContent = state.scamType);
+      document.querySelectorAll('.tag-fakeItem').forEach(el => el.textContent = state.fakeItem);
+      document.querySelectorAll('.tag-scamChannel').forEach(el => el.textContent = state.scamChannel);
+      document.querySelectorAll('.tag-trustedAdult').forEach(el => el.textContent = state.trustedAdult);
+
+      renderBossLevelScript();
+      if (!document.getElementById('view-prompter').classList.contains('hidden')) {
+        renderPrompterCanvas();
+      }
+    }
+
+    // Render Full Presentation Script Box (Module 5)
+    function renderBossLevelScript() {
+      const box = document.getElementById('bossLevelScriptBox');
+      if (!box) return;
+
+      box.innerHTML = `
+        <p>
+          <strong class="text-cyan-400 font-hud">[1. THE BAIT & HOOK]</strong><br>
+          "Raise your hand if you've ever seen a pop-up promising <em>'FREE UNLIMITED ROBUX!'</em> or a free <span class="text-cyan-300 font-bold">${escapeHtml(state.fakeItem)}</span>. When playing games like <span class="text-cyan-300 font-bold">${escapeHtml(state.game)}</span>, those deals look awesome! But today, I want to expose the truth: free code generators are fake traps designed to trick 6th graders."
+        </p>
+        <p>
+          <strong class="text-amber-400 font-hud">[2. SPOTTING RED FLAGS]</strong><br>
+          "You can spot a scam fast if you look for three <strong>Red Flags</strong>. First, fake flashing countdown timers that panic you. Second, weird web links like `robloxx-free-itemz.net`. Third, messages in <span class="text-amber-300 font-bold">${escapeHtml(state.scamChannel)}</span> asking for your login info. Real game admins will NEVER ask for your password!"
+        </p>
+        <p>
+          <strong class="text-red-400 font-hud">[3. HOW PHISHING WORKS]</strong><br>
+          "When kids fall for <span class="text-red-300 font-bold">${escapeHtml(state.scamType)}</span>, scammers use <strong>Phishing</strong>. They copy the official login screen so you type in your account info. In less than 60 seconds, hackers trade away your rare pets and lock you out of your account!"
+        </p>
+        <p>
+          <strong class="text-emerald-400 font-hud">[4. MY 4 RULES OF CYBER DEFENSE]</strong><br>
+          "To stay completely unhackable: 1) Enable 2FA on your accounts. 2) Inspect the domain URL before typing logins. 3) Keep passwords secret from friends. 4) If a link looks weird, immediately ask <span class="text-emerald-300 font-bold">${escapeHtml(state.trustedAdult)}</span>!"
+        </p>
+        <p>
+          <strong class="text-cyan-300 font-hud">[5. CALL TO ACTION]</strong><br>
+          "I challenge everyone in our class to turn on 2FA today and stay safe online. Thank you!"
+        </p>
+      `;
+    }
+
+    // Render iPad Teleprompter Canvas Stream
+    function renderPrompterCanvas() {
+      const container = document.getElementById('prompterCanvas');
+      if (!container) return;
+
+      const sec = state.activePrompterSection;
+      let html = "";
+
+      if (state.cueMode === 'script') {
+        // FULL SCRIPT MODE
+        if (sec === '1' || sec === 'all') {
+          html += `
+            <div class="p-5 rounded-2xl bg-cyan-950/40 border border-cyan-800/50 mb-4">
+              <span class="text-xs font-hud font-bold text-cyan-400 tracking-widest uppercase block mb-1">PART 1: THE BAIT & THE TRAP</span>
+              "Raise your hand if you've ever seen a video or pop-up promising <em>'FREE UNLIMITED ROBUX!'</em> or a free <span class="text-cyan-300 font-bold">${escapeHtml(state.fakeItem)}</span>. When playing <span class="text-cyan-300 font-bold">${escapeHtml(state.game)}</span>, those deals look super tempting! But free code generators are fake traps targeting 6th graders."
+            </div>
+          `;
+        }
+        if (sec === '2' || sec === 'all') {
+          html += `
+            <div class="p-5 rounded-2xl bg-amber-950/40 border border-amber-800/50 mb-4">
+              <span class="text-xs font-hud font-bold text-amber-400 tracking-widest uppercase block mb-1">PART 2: SPOTTING RED FLAGS</span>
+              "Spot scams using three <strong class="text-amber-300">Red Flags</strong>: <br>
+              1) Urgent flashing timers saying 'Claim in 2 minutes!'. <br>
+              2) Weird web links like `robloxx-free-itemz.net`. <br>
+              3) Messages in <span class="text-amber-300 font-bold">${escapeHtml(state.scamChannel)}</span> asking for logins. Real admins NEVER ask for your password!"
+            </div>
+          `;
+        }
+        if (sec === '3' || sec === 'all') {
+          html += `
+            <div class="p-5 rounded-2xl bg-red-950/40 border border-red-800/50 mb-4">
+              <span class="text-xs font-hud font-bold text-red-400 tracking-widest uppercase block mb-1">PART 3: PHISHING & ACCOUNT THEFT</span>
+              "When kids fall for <span class="text-red-300 font-bold">${escapeHtml(state.scamType)}</span>, scammers use <strong class="text-red-300">Phishing</strong>. They copy official login screens so your password sends directly to a hacker. In 60 seconds, they trade away your items and lock you out!"
+            </div>
+          `;
+        }
+        if (sec === '4' || sec === 'all') {
+          html += `
+            <div class="p-5 rounded-2xl bg-emerald-950/40 border border-emerald-800/50 mb-4">
+              <span class="text-xs font-hud font-bold text-emerald-400 tracking-widest uppercase block mb-1">PART 4: 4 RULES OF CYBER DEFENSE</span>
+              "Follow my <strong class="text-emerald-300">4 Rules of Cyber Defense</strong>: <br>
+              Rule 1: Turn on Two-Factor Auth (2FA). <br>
+              Rule 2: Inspect website URLs before logging in. <br>
+              Rule 3: Keep passwords secret. <br>
+              Rule 4: Always ask <span class="text-emerald-300 font-bold">${escapeHtml(state.trustedAdult)}</span> before clicking!"
+            </div>
+          `;
+        }
+        if (sec === '5' || sec === 'all') {
+          html += `
+            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800">
+              <span class="text-xs font-hud font-bold text-cyan-300 tracking-widest uppercase block mb-1">PART 5: CLASSROOM CHALLENGE</span>
+              "I challenge everyone in class today to turn on 2FA and stay unhackable. Thank you!"
+            </div>
+          `;
+        }
+      } else {
+        // BULLET CUES MODE FOR CONFIDENT SPEAKERS
+        if (sec === '1' || sec === 'all') {
+          html += `
+            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 mb-4 space-y-2">
+              <div class="text-xs font-hud font-bold text-cyan-400 uppercase">Part 1 Cues:</div>
+              <ul class="list-disc list-inside space-y-1 text-slate-200">
+                <li>Audience hook: Ask for raised hands</li>
+                <li>Fake Loot Baits: <span class="text-cyan-300 font-bold">${escapeHtml(state.fakeItem)}</span> in <span class="text-cyan-300 font-bold">${escapeHtml(state.game)}</span></li>
+                <li>Main Message: Free generator links are fake traps</li>
+              </ul>
+            </div>
+          `;
+        }
+        if (sec === '2' || sec === 'all') {
+          html += `
+            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 mb-4 space-y-2">
+              <div class="text-xs font-hud font-bold text-amber-400 uppercase">Part 2 Cues:</div>
+              <ul class="list-disc list-inside space-y-1 text-slate-200">
+                <li>Count off 3 Red Flags with fingers</li>
+                <li>Urgent timers + weird URLs</li>
+                <li>Messages in <span class="text-amber-300 font-bold">${escapeHtml(state.scamChannel)}</span></li>
+                <li>Key line: "Admins NEVER ask for passwords!"</li>
+              </ul>
+            </div>
+          `;
+        }
+        if (sec === '3' || sec === 'all') {
+          html += `
+            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 mb-4 space-y-2">
+              <div class="text-xs font-hud font-bold text-red-400 uppercase">Part 3 Cues:</div>
+              <ul class="list-disc list-inside space-y-1 text-slate-200">
+                <li>Phishing concept: Fake identical login screens</li>
+                <li>Consequences: Pets stolen & account locked out in 60s</li>
+              </ul>
+            </div>
+          `;
+        }
+        if (sec === '4' || sec === 'all') {
+          html += `
+            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 mb-4 space-y-2">
+              <div class="text-xs font-hud font-bold text-emerald-400 uppercase">Part 4 Cues:</div>
+              <ul class="list-disc list-inside space-y-1 text-slate-200">
+                <li>4 Rules: 1) 2FA code, 2) URL check, 3) Secret password, 4) Ask <span class="text-emerald-300 font-bold">${escapeHtml(state.trustedAdult)}</span></li>
+              </ul>
+            </div>
+          `;
+        }
+        if (sec === '5' || sec === 'all') {
+          html += `
+            <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+              <div class="text-xs font-hud font-bold text-cyan-300 uppercase">Part 5 Cues:</div>
+              <ul class="list-disc list-inside space-y-1 text-slate-200">
+                <li>Call to Action: Enable 2FA on accounts today</li>
+                <li>Closing: "Thank you!"</li>
+              </ul>
+            </div>
+          `;
+        }
+      }
+
+      container.innerHTML = html;
+    }
+
+    // View Switcher (Studio vs Teleprompter)
+    function switchView(viewName) {
+      playCyberSound('click');
+      const studioView = document.getElementById('view-studio');
+      const prompterView = document.getElementById('view-prompter');
+      const btnStudio = document.getElementById('nav-btn-studio');
+      const btnPrompter = document.getElementById('nav-btn-prompter');
+
+      if (viewName === 'studio') {
+        studioView.classList.remove('hidden');
+        prompterView.classList.add('hidden');
+        btnStudio.className = "flex-1 sm:flex-none px-4 py-2 text-xs md:text-sm font-hud font-bold rounded-lg transition-all bg-cyan-600 text-slate-950 shadow-neon-cyan flex items-center justify-center gap-2";
+        btnPrompter.className = "flex-1 sm:flex-none px-4 py-2 text-xs md:text-sm font-hud font-bold rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-900 flex items-center justify-center gap-2";
+      } else {
+        studioView.classList.add('hidden');
+        prompterView.classList.remove('hidden');
+        btnPrompter.className = "flex-1 sm:flex-none px-4 py-2 text-xs md:text-sm font-hud font-bold rounded-lg transition-all bg-cyan-600 text-slate-950 shadow-neon-cyan flex items-center justify-center gap-2";
+        btnStudio.className = "flex-1 sm:flex-none px-4 py-2 text-xs md:text-sm font-hud font-bold rounded-lg transition-all text-slate-400 hover:text-white hover:bg-slate-900 flex items-center justify-center gap-2";
+        renderPrompterCanvas();
+      }
+    }
+
+    // Toggle Cue Mode (Full Script vs Bullets)
+    function setCueMode(mode) {
+      playCyberSound('click');
+      state.cueMode = mode;
+      const btnScript = document.getElementById('btn-cue-script');
+      const btnBullets = document.getElementById('btn-cue-bullets');
+
+      if (mode === 'script') {
+        btnScript.className = "px-3 py-1.5 text-xs font-hud font-bold rounded-lg bg-cyan-600 text-slate-950 shadow-neon-cyan";
+        btnBullets.className = "px-3 py-1.5 text-xs font-hud font-bold rounded-lg text-slate-400 hover:text-white";
+      } else {
+        btnBullets.className = "px-3 py-1.5 text-xs font-hud font-bold rounded-lg bg-cyan-600 text-slate-950 shadow-neon-cyan";
+        btnScript.className = "px-3 py-1.5 text-xs font-hud font-bold rounded-lg text-slate-400 hover:text-white";
+      }
+      renderPrompterCanvas();
+    }
+
+    // Render Prompter Section Jump
+    function renderPrompterSection(secKey) {
+      playCyberSound('click');
+      state.activePrompterSection = secKey;
+      ['all', '1', '2', '3', '4', '5'].forEach(s => {
+        const btn = document.getElementById('psec-' + s);
+        if (btn) {
+          if (s === secKey) {
+            btn.className = "px-2.5 py-1 text-xs font-hud font-bold rounded-lg bg-cyan-600 text-slate-950";
+          } else {
+            btn.className = "px-2 py-1 text-xs font-hud font-bold rounded-lg text-slate-400 hover:text-white";
+          }
+        }
+      });
+      renderPrompterCanvas();
+    }
+
+    // Font Scaling for Teleprompter
+    function adjustPrompterFont(delta) {
+      playCyberSound('click');
+      state.fontSize = Math.min(Math.max(18, state.fontSize + delta), 44);
+      document.getElementById('prompterFontSizeDisplay').textContent = state.fontSize + "px";
+      document.getElementById('prompterCanvas').style.fontSize = state.fontSize + "px";
+    }
+
+    // Timer Logic
+    function toggleTimer() {
+      playCyberSound('click');
+      const btn = document.getElementById('prompterTimerBtn');
+      if (state.isTimerRunning) {
+        clearInterval(state.timerInterval);
+        state.isTimerRunning = false;
+        btn.textContent = "Start";
+        btn.className = "bg-emerald-600 hover:bg-emerald-500 text-white font-hud font-bold text-xs px-3 py-1.5 rounded-lg active:scale-95 transition-all";
+      } else {
+        state.isTimerRunning = true;
+        btn.textContent = "Pause";
+        btn.className = "bg-amber-600 hover:bg-amber-500 text-white font-hud font-bold text-xs px-3 py-1.5 rounded-lg active:scale-95 transition-all";
+        state.timerInterval = setInterval(() => {
+          state.timerSeconds++;
+          const m = String(Math.floor(state.timerSeconds / 60)).padStart(2, '0');
+          const s = String(state.timerSeconds % 60).padStart(2, '0');
+          document.getElementById('prompterTimer').textContent = `${m}:${s}`;
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      playCyberSound('click');
+      if (state.isTimerRunning) toggleTimer();
+      state.timerSeconds = 0;
+      document.getElementById('prompterTimer').textContent = "00:00";
+    }
+
+    // Vocab Modal Logic
+    function openVocabModal(key) {
+      playCyberSound('click');
+      const item = vocabData[key];
+      if (!item) return;
+
+      document.getElementById('modalVocabTitle').innerHTML = item.title;
+      document.getElementById('modalVocabDef').textContent = item.def;
+      document.getElementById('modalVocabTip').textContent = item.tip;
+      document.getElementById('vocabModal').classList.remove('hidden');
+    }
+
+    function closeVocabModal() {
+      playCyberSound('click');
+      document.getElementById('vocabModal').classList.add('hidden');
+    }
+
+    // Gamification & XP Counter
+    function toggleCheck(checkbox) {
+      if (checkbox.checked) {
+        addXP(25);
+      }
+    }
+
+    function logPracticeRun() {
+      state.practiceRuns++;
+      document.getElementById('practiceCounter').textContent = state.practiceRuns;
+      addXP(50);
+      playCyberSound('levelup');
+    }
+
+    function addXP(amount) {
+      state.xp += amount;
+      const nextLvlXp = 300;
+      if (state.xp >= nextLvlXp) {
+        state.level++;
+        state.xp = state.xp - nextLvlXp;
+      }
+
+      // Update XP Bar UI
+      const percent = Math.min(100, Math.floor((state.xp / 300) * 100));
+      document.getElementById('xpBarFill').style.width = percent + '%';
+      document.getElementById('xpText').textContent = `${state.xp} / 300 XP`;
+      
+      let rankTitle = "NOVICE NETIZEN";
+      if (state.level === 2) rankTitle = "SCAM DETECTOR";
+      if (state.level >= 3) rankTitle = "CYBER SHIELD MASTER";
+
+      document.getElementById('playerLvlTitle').textContent = `LVL ${state.level} • ${rankTitle}`;
+      document.getElementById('mobileXpDisplay').textContent = `LVL ${state.level} • ${state.xp} XP`;
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    // Attach Input Event Listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      const inputs = ['inputGame', 'inputScamType', 'inputFakeItem', 'inputScamChannel', 'inputTrustedAdult'];
+      inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('input', syncStateFromInputs);
+        }
+      });
+
+      syncStateFromInputs();
+    });
+  </script>
+
+</body>
+</html>
