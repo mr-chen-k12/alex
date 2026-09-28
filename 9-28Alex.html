@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Problem Solutions - 9-28 Alex</title>
+    <!-- MathJax for rendering LaTeX -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-color: #2b5876;
+            --secondary-color: #4e4376;
+            --accent-color: #0076d6;
+            --bg-color: #f4f7f9;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --border-color: #e2e8f0;
+            --success-color: #2e7d32;
+            --explanation-bg: #f8fafc;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.2rem;
+        }
+
+        header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn-control {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-control:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-control:active {
+            transform: scale(0.98);
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .problem-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .problem-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .problem-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .problem-number {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--primary-color);
+        }
+
+        .problem-concept {
+            font-size: 0.85rem;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .problem-body {
+            font-size: 1.05rem;
+            margin-bottom: 15px;
+        }
+
+        .btn-toggle {
+            background-color: #edf2f7;
+            color: #2d3748;
+            border: 1px solid #cbd5e0;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-toggle:hover {
+            background-color: #e2e8f0;
+            color: #1a202c;
+        }
+
+        .solution-container {
+            display: none;
+            margin-top: 18px;
+            padding: 16px 20px;
+            background-color: var(--explanation-bg);
+            border-left: 4px solid var(--accent-color);
+            border-radius: 4px;
+        }
+
+        .solution-container.show {
+            display: block;
+        }
+
+        .answer-box {
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        .explanation {
+            font-size: 1rem;
+            color: #334155;
+        }
+
+        .explanation p {
+            margin: 6px 0;
+        }
+
+        .svg-diagram {
+            display: block;
+            margin: 15px auto;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Saxon Math Course 2 - Solutions</h1>
+        <p>Interactive Step-by-Step Solutions & Explanations</p>
+    </header>
+
+    <div class="controls">
+        <button class="btn-control" onclick="expandAll()">Expand All Answers</button>
+        <button class="btn-control" onclick="collapseAll()">Collapse All Answers</button>
+    </div>
+
+    <!-- Top Section Angles -->
+    <h2 class="section-title">Angle Practice (g – k)</h2>
+
+    <!-- Problem g -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem g</span>
+            <span class="problem-concept">REPRESENT</span>
+        </div>
+        <div class="problem-body">
+            Use your protractor to draw a $45^\circ$ angle.
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-g')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-g" class="solution-container">
+            <div class="answer-box">Answer: An acute angle measuring $45^\circ$.</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Align the baseline of your protractor with a ray. Place the vertex mark at the endpoint. Locate $45^\circ$ on the scale, make a mark, and draw a straight ray from the vertex through the mark.</p>
+                <svg class="svg-diagram" width="220" height="140" viewBox="0 0 220 140">
+                    <line x1="40" y1="110" x2="180" y2="110" stroke="#2b5876" stroke-width="2.5"/>
+                    <line x1="40" y1="110" x2="138.99" y2="11.01" stroke="#2b5876" stroke-width="2.5"/>
+                    <path d="M 80 110 A 40 40 0 0 0 68.28 81.72" fill="none" stroke="#0076d6" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <text x="85" y="95" font-size="14" fill="#0076d6" font-weight="bold">45°</text>
+                    <circle cx="40" cy="110" r="4" fill="#2b5876"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem h -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem h</span>
+            <span class="problem-concept">REPRESENT</span>
+        </div>
+        <div class="problem-body">
+            Use your protractor to draw a $120^\circ$ angle.
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-h')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-h" class="solution-container">
+            <div class="answer-box">Answer: An obtuse angle measuring $120^\circ$.</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Align your protractor's baseline and center mark with the endpoint of a ray. Find $120^\circ$ on the protractor scale, mark the point, and draw the second ray from the vertex through the point.</p>
+                <svg class="svg-diagram" width="220" height="140" viewBox="0 0 220 140">
+                    <line x1="100" y1="110" x2="200" y2="110" stroke="#2b5876" stroke-width="2.5"/>
+                    <line x1="100" y1="110" x2="50" y2="23.4" stroke="#2b5876" stroke-width="2.5"/>
+                    <path d="M 140 110 A 40 40 0 0 0 80 75.36" fill="none" stroke="#0076d6" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <text x="105" y="80" font-size="14" fill="#0076d6" font-weight="bold">120°</text>
+                    <circle cx="100" cy="110" r="4" fill="#2b5876"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem i -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem i</span>
+            <span class="problem-concept">REPRESENT</span>
+        </div>
+        <div class="problem-body">
+            Use your protractor to draw a $100^\circ$ angle.
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-i')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-i" class="solution-container">
+            <div class="answer-box">Answer: An obtuse angle measuring $100^\circ$.</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Measure $100^\circ$ from the baseline using a protractor. Since $100^\circ > 90^\circ$, it is a slightly obtuse angle.</p>
+                <svg class="svg-diagram" width="220" height="140" viewBox="0 0 220 140">
+                    <line x1="110" y1="110" x2="200" y2="110" stroke="#2b5876" stroke-width="2.5"/>
+                    <line x1="110" y1="110" x2="96.1" y2="21.36" stroke="#2b5876" stroke-width="2.5"/>
+                    <path d="M 150 110 A 40 40 0 0 0 103.05 70.6" fill="none" stroke="#0076d6" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <text x="115" y="75" font-size="14" fill="#0076d6" font-weight="bold">100°</text>
+                    <circle cx="110" cy="110" r="4" fill="#2b5876"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem j -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem j</span>
+            <span class="problem-concept">REPRESENT</span>
+        </div>
+        <div class="problem-body">
+            Use your protractor to draw an $80^\circ$ angle.
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-j')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-j" class="solution-container">
+            <div class="answer-box">Answer: An acute angle measuring $80^\circ$.</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Locate $80^\circ$ on the protractor scale. Since $80^\circ < 90^\circ$, this is an acute angle close to a right angle.</p>
+                <svg class="svg-diagram" width="220" height="140" viewBox="0 0 220 140">
+                    <line x1="50" y1="110" x2="160" y2="110" stroke="#2b5876" stroke-width="2.5"/>
+                    <line x1="50" y1="110" x2="63.89" y2="21.36" stroke="#2b5876" stroke-width="2.5"/>
+                    <path d="M 90 110 A 40 40 0 0 0 56.95 70.6" fill="none" stroke="#0076d6" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <text x="70" y="80" font-size="14" fill="#0076d6" font-weight="bold">80°</text>
+                    <circle cx="50" cy="110" r="4" fill="#2b5876"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem k -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem k</span>
+            <span class="problem-concept">ANALYZE</span>
+        </div>
+        <div class="problem-body">
+            Perry's protractor is marked at each degree. Assuming the protractor is used correctly, what is the greatest possible error that can be made with Perry's protractor? Express your answer as a fraction of a degree.
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-k')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-k" class="solution-container">
+            <div class="answer-box">Answer: $rac{1}{2}^\circ$ (or $rac{1}{2}$ degree)</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> The precision of a measuring instrument with unit increments is half of its smallest division. Since the scale is marked at every $1^\circ$, any angle measurement rounded to the nearest degree will differ from the true value by at most half a degree:</p>
+                <p>$$	ext{Greatest possible error} = rac{1}{2} 	imes 1^\circ = rac{1}{2}^\circ$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Written Practice Section -->
+    <h2 class="section-title">Written Practice (1 – 30)</h2>
+
+    <!-- Problem 1 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 1</span>
+            <span class="problem-concept">Lesson 11</span>
+        </div>
+        <div class="problem-body">
+            Two thousand, four hundred twenty people gathered before noon for the opening of a new park. An additional five thousand, ninety people arrived after noon. How many people were at the opening of the new park?
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-1')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-1" class="solution-container">
+            <div class="answer-box">Answer: $7{,}510	ext{ people}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Write the numbers in digits and add the two quantities together:</p>
+                <p>$$	ext{Before noon: } 2{,}420$$</p>
+                <p>$$	ext{After noon: } + 5{,}090$$</p>
+                <p>$$	ext{Total: } 2{,}420 + 5{,}090 = 7{,}510$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 2 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 2</span>
+            <span class="problem-concept">Lesson 14</span>
+        </div>
+        <div class="problem-body">
+            A number cube is rolled once.
+            <br>a. What is the probability of rolling a 5?
+            <br>b. What is the probability of not rolling a 5?
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-2')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-2" class="solution-container">
+            <div class="answer-box">Answer: a. $rac{1}{6}$ &nbsp;&nbsp;|&nbsp;&nbsp; b. $rac{5}{6}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> A standard number cube has $6$ equally likely outcomes $\{1, 2, 3, 4, 5, 6\}$.</p>
+                <p>a. Only 1 outcome is a 5:</p>
+                <p>$$P(	ext{rolling a } 5) = rac{	ext{favorable outcomes}}{	ext{total outcomes}} = rac{1}{6}$$</p>
+                <p>b. The remaining 5 outcomes $\{1, 2, 3, 4, 6\}$ are not 5:</p>
+                <p>$$P(	ext{not rolling a } 5) = 1 - rac{1}{6} = rac{5}{6}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 3 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 3</span>
+            <span class="problem-concept">Lesson 13</span>
+        </div>
+        <div class="problem-body">
+            There are 210 students in the first-year physical education class. If they are equally divided into 15 squads, how many students will be in each squad?
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-3')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-3" class="solution-container">
+            <div class="answer-box">Answer: $14	ext{ students}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Divide total students by the number of squads:</p>
+                <p>$$rac{210	ext{ students}}{15	ext{ squads}} = 14	ext{ students per squad}$$</p>
+                <p><em>Check:</em> $14 	imes 15 = 210$.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 4 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 4</span>
+            <span class="problem-concept">Lesson 12</span>
+        </div>
+        <div class="problem-body">
+            Columbus set sail for the New World in 1492. The Pilgrims set sail for the New World in 1620. How many years are there between the two dates?
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-4')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-4" class="solution-container">
+            <div class="answer-box">Answer: $128	ext{ years}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Subtract the earlier year from the later year:</p>
+                <p>$$1620 - 1492 = 128	ext{ years}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 5 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 5</span>
+            <span class="problem-concept">Lessons 10, 15</span>
+        </div>
+        <div class="problem-body">
+            Which of the following does not equal $1rac{1}{3}$?
+            <br><strong>A.</strong> $rac{4}{3}$ &nbsp;&nbsp;&nbsp; <strong>B.</strong> $1rac{2}{6}$ &nbsp;&nbsp;&nbsp; <strong>C.</strong> $rac{5}{3}$ &nbsp;&nbsp;&nbsp; <strong>D.</strong> $1rac{4}{12}$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-5')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-5" class="solution-container">
+            <div class="answer-box">Answer: C ($rac{5}{3}$)</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Let's simplify each choice to compare with $1rac{1}{3} = rac{4}{3}$:</p>
+                <ul>
+                    <li><strong>A:</strong> $rac{4}{3} = 1rac{1}{3}$ (Equal)</li>
+                    <li><strong>B:</strong> $1rac{2}{6} = 1rac{1}{3}$ (Equal, reducing $rac{2}{6} = rac{1}{3}$)</li>
+                    <li><strong>C:</strong> $rac{5}{3} = 1rac{2}{3} 
+eq 1rac{1}{3}$ (<strong>NOT Equal</strong>)</li>
+                    <li><strong>D:</strong> $1rac{4}{12} = 1rac{1}{3}$ (Equal, reducing $rac{4}{12} = rac{1}{3}$)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 6 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 6</span>
+            <span class="problem-concept">Lessons 7, 17 | ANALYZE</span>
+        </div>
+        <div class="problem-body">
+            Refer to the figure to answer a–c:
+            <svg class="svg-diagram" width="220" height="150" viewBox="0 0 220 150">
+                <!-- Base horizontal line RT -->
+                <line x1="30" y1="120" x2="190" y2="120" stroke="#2b5876" stroke-width="2"/>
+                <!-- Line QR -->
+                <line x1="70" y1="20" x2="70" y2="140" stroke="#2b5876" stroke-width="2"/>
+                <!-- Line ST -->
+                <line x1="150" y1="20" x2="150" y2="140" stroke="#2b5876" stroke-width="2"/>
+                <!-- Right angle symbols -->
+                <rect x="70" y="105" width="15" height="15" fill="none" stroke="#2b5876" stroke-width="1.5"/>
+                <rect x="135" y="105" width="15" height="15" fill="none" stroke="#2b5876" stroke-width="1.5"/>
+                <!-- Arrows for lines -->
+                <polygon points="70,15 65,23 75,23" fill="#2b5876"/>
+                <polygon points="70,145 65,137 75,137" fill="#2b5876"/>
+                <polygon points="150,15 145,23 155,23" fill="#2b5876"/>
+                <polygon points="150,145 145,137 155,137" fill="#2b5876"/>
+                <!-- Labels -->
+                <text x="50" y="35" font-size="14" font-weight="bold" fill="#2b5876">Q</text>
+                <text x="50" y="118" font-size="14" font-weight="bold" fill="#2b5876">R</text>
+                <text x="160" y="35" font-size="14" font-weight="bold" fill="#2b5876">S</text>
+                <text x="160" y="118" font-size="14" font-weight="bold" fill="#2b5876">T</text>
+            </svg>
+            <br>a. Which line is parallel to $\overleftrightarrow{ST}$?
+            <br>b. Which line is perpendicular to $\overleftrightarrow{ST}$?
+            <br>c. Angle $QRT$ measures how many degrees?
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-6')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-6" class="solution-container">
+            <div class="answer-box">Answer: a. Line $QR$ ($\overleftrightarrow{QR}$) &nbsp;&nbsp;|&nbsp;&nbsp; b. Line $RT$ ($\overleftrightarrow{RT}$) &nbsp;&nbsp;|&nbsp;&nbsp; c. $90^\circ$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong></p>
+                <p>a. Two lines in the same plane that are perpendicular to the same line ($\overleftrightarrow{RT}$) are parallel to each other. Thus, $\overleftrightarrow{QR}$ is parallel to $\overleftrightarrow{ST}$.</p>
+                <p>b. The line segment/line forming a right angle with $\overleftrightarrow{ST}$ is line $RT$ ($\overleftrightarrow{RT}$).</p>
+                <p>c. Since $\overleftrightarrow{QR}$ is perpendicular to $\overleftrightarrow{RT}$, $ngle QRT$ is a right angle, measuring $90^\circ$.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 7 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 7</span>
+            <span class="problem-concept">Lesson 15</span>
+        </div>
+        <div class="problem-body">
+            Write each number as a reduced fraction or mixed number:
+            <br>a. $rac{12}{16}$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b. $3rac{12}{18}$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c. $25\%$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-7')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-7" class="solution-container">
+            <div class="answer-box">Answer: a. $rac{3}{4}$ &nbsp;&nbsp;|&nbsp;&nbsp; b. $3rac{2}{3}$ &nbsp;&nbsp;|&nbsp;&nbsp; c. $rac{1}{4}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong></p>
+                <p>a. Divide numerator and denominator by $4$: $$rac{12 \div 4}{16 \div 4} = rac{3}{4}$$</p>
+                <p>b. Reduce the fractional part by dividing by $6$: $$3rac{12 \div 6}{18 \div 6} = 3rac{2}{3}$$</p>
+                <p>c. Convert percent to fraction and divide by $25$: $$25\% = rac{25}{100} = rac{1}{4}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 8 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 8</span>
+            <span class="problem-concept">Lesson 16 | GENERALIZE</span>
+        </div>
+        <div class="problem-body">
+            At the grocery store Len put five apples in a bag and weighed them. The scale showed the weight to be $2	ext{ lb } 8	ext{ oz}$. What is this weight in ounces?
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-8')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-8" class="solution-container">
+            <div class="answer-box">Answer: $40	ext{ oz}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Know that $1	ext{ pound (lb)} = 16	ext{ ounces (oz)}$.</p>
+                <p>$$2	ext{ lb} = 2 	imes 16	ext{ oz} = 32	ext{ oz}$$</p>
+                <p>$$	ext{Total weight} = 32	ext{ oz} + 8	ext{ oz} = 40	ext{ oz}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 9 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 9</span>
+            <span class="problem-concept">Lesson 15</span>
+        </div>
+        <div class="problem-body">
+            Complete each equivalent fraction:
+            <br>a. $rac{2}{9} = rac{?}{18}$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b. $rac{1}{3} = rac{?}{18}$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c. $rac{5}{6} = rac{?}{18}$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-9')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-9" class="solution-container">
+            <div class="answer-box">Answer: a. $rac{4}{18}$ &nbsp;&nbsp;|&nbsp;&nbsp; b. $rac{6}{18}$ &nbsp;&nbsp;|&nbsp;&nbsp; c. $rac{15}{18}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Multiply both numerator and denominator by the factor needed to get 18 in the denominator:</p>
+                <p>a. Since $9 	imes 2 = 18$: $$rac{2 	imes 2}{9 	imes 2} = rac{4}{18}$$</p>
+                <p>b. Since $3 	imes 6 = 18$: $$rac{1 	imes 6}{3 	imes 6} = rac{6}{18}$$</p>
+                <p>c. Since $6 	imes 3 = 18$: $$rac{5 	imes 3}{6 	imes 3} = rac{15}{18}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 10 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 10</span>
+            <span class="problem-concept">REPRESENT</span>
+        </div>
+        <div class="problem-body">
+            Use a protractor to draw a $30^\circ$ angle.
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-10')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-10" class="solution-container">
+            <div class="answer-box">Answer: An acute angle measuring $30^\circ$.</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Place the protractor center mark at the angle's vertex and align the zero line with one ray. Mark the paper at the $30^\circ$ tick mark and draw a straight ray connecting the vertex through the mark.</p>
+                <svg class="svg-diagram" width="220" height="120" viewBox="0 0 220 120">
+                    <line x1="30" y1="90" x2="180" y2="90" stroke="#2b5876" stroke-width="2.5"/>
+                    <line x1="30" y1="90" x2="159.9" y2="15" stroke="#2b5876" stroke-width="2.5"/>
+                    <path d="M 80 90 A 50 50 0 0 0 73.3 65" fill="none" stroke="#0076d6" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <text x="88" y="78" font-size="14" fill="#0076d6" font-weight="bold">30°</text>
+                    <circle cx="30" cy="90" r="4" fill="#2b5876"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 11 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 11</span>
+            <span class="problem-concept">Lesson 15</span>
+        </div>
+        <div class="problem-body">
+            a. What factors of 20 are also factors of 50?
+            <br>b. What is the GCF of 20 and 50?
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-11')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-11" class="solution-container">
+            <div class="answer-box">Answer: a. $1, 2, 5, 10$ &nbsp;&nbsp;|&nbsp;&nbsp; b. $10$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong></p>
+                <p>List all factors for each number:</p>
+                <p>$$	ext{Factors of } 20: \{1, 2, 4, 5, 10, 20\}$$</p>
+                <p>$$	ext{Factors of } 50: \{1, 2, 5, 10, 25, 50\}$$</p>
+                <p>a. Common factors are the numbers that appear in both lists: $\{1, 2, 5, 10\}$.</p>
+                <p>b. The Greatest Common Factor (GCF) is the largest number in the common factors list: $10$.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 12 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 12</span>
+            <span class="problem-concept">Lessons 7, 8 | REPRESENT</span>
+        </div>
+        <div class="problem-body">
+            Draw $\overline{RS}$ $1rac{3}{4}	ext{ in.}$ long. Then draw $\overline{ST}$ perpendicular to $\overline{RS}$.
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-12')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-12" class="solution-container">
+            <div class="answer-box">Answer: Diagram with line segment $RS = 1rac{3}{4}	ext{ in.}$ and perpendicular segment $ST$.</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Use a ruler to measure and draw segment $\overline{RS}$ with length $1rac{3}{4}	ext{ in.}$ ($1.75	ext{ in.}$). At endpoint $S$, use a protractor or square corner to draw segment $\overline{ST}$ extending at a right angle ($90^\circ$) relative to $\overline{RS}$.</p>
+                <svg class="svg-diagram" width="220" height="150" viewBox="0 0 220 150">
+                    <line x1="30" y1="110" x2="170" y2="110" stroke="#2b5876" stroke-width="2.5"/>
+                    <line x1="170" y1="110" x2="170" y2="20" stroke="#2b5876" stroke-width="2.5"/>
+                    <rect x="155" y="95" width="15" height="15" fill="none" stroke="#0076d6" stroke-width="1.5"/>
+                    <text x="20" y="115" font-size="14" font-weight="bold" fill="#2b5876">R</text>
+                    <text x="175" y="125" font-size="14" font-weight="bold" fill="#2b5876">S</text>
+                    <text x="175" y="25" font-size="14" font-weight="bold" fill="#2b5876">T</text>
+                    <text x="80" y="130" font-size="12" fill="#64748b">1 ¾ in.</text>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 13 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 13</span>
+            <span class="problem-concept">Lessons 1, 9</span>
+        </div>
+        <div class="problem-body">
+            If $x = 4$ and $y = 8$, find:
+            <br>a. $rac{y}{x} - rac{x}{y}$
+            <br>b. $x - rac{x}{y}$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-13')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-13" class="solution-container">
+            <div class="answer-box">Answer: a. $1rac{1}{2}$ (or $rac{3}{2}$) &nbsp;&nbsp;|&nbsp;&nbsp; b. $3rac{1}{2}$ (or $rac{7}{2}$)</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Substitute $x = 4$ and $y = 8$ into each expression:</p>
+                <p>a. $$rac{8}{4} - rac{4}{8} = 2 - rac{1}{2} = 1rac{1}{2}$$</p>
+                <p>b. $$4 - rac{4}{8} = 4 - rac{1}{2} = 3rac{1}{2}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 14 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 14</span>
+            <span class="problem-concept">Lesson 3</span>
+        </div>
+        <div class="problem-body">
+            Find the value of the variable. Check your work.
+            <br>$$x - 231 = 141$$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-14')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-14" class="solution-container">
+            <div class="answer-box">Answer: $x = 372$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> To solve for $x$, add $231$ to both sides of the equation:</p>
+                <p>$$x = 141 + 231 = 372$$</p>
+                <p><strong>Check:</strong> Substitute $x = 372$ into the original equation:</p>
+                <p>$$372 - 231 = 141 \quad \checkmark$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 15 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 15</span>
+            <span class="problem-concept">Lesson 3</span>
+        </div>
+        <div class="problem-body">
+            Find the value of the variable. Check your work.
+            <br>$$\$6.30 + y = \$25$$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-15')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-15" class="solution-container">
+            <div class="answer-box">Answer: $y = \$18.70$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Subtract $\$6.30$ from $\$25.00$:</p>
+                <p>$$y = \$25.00 - \$6.30 = \$18.70$$</p>
+                <p><strong>Check:</strong> Substitute $y = \$18.70$ back into the equation:</p>
+                <p>$$\$6.30 + \$18.70 = \$25.00 \quad \checkmark$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 16 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 16</span>
+            <span class="problem-concept">Lesson 3</span>
+        </div>
+        <div class="problem-body">
+            Find the value of the variable. Check your work.
+            <br>$$8w = \$30.00$$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-16')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-16" class="solution-container">
+            <div class="answer-box">Answer: $w = \$3.75$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Divide both sides by $8$:</p>
+                <p>$$w = rac{\$30.00}{8} = \$3.75$$</p>
+                <p><strong>Check:</strong> Substitute $w = \$3.75$ back into the equation:</p>
+                <p>$$8 	imes \$3.75 = \$30.00 \quad \checkmark$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 17 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 17</span>
+            <span class="problem-concept">Lesson 3</span>
+        </div>
+        <div class="problem-body">
+            Find the value of the variable. Check your work.
+            <br>$$rac{100\%}{m} = 20\%$$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-17')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-17" class="solution-container">
+            <div class="answer-box">Answer: $m = 5$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Solve for $m$ by dividing $100\%$ by $20\%$:</p>
+                <p>$$m = rac{100\%}{20\%} = 5$$</p>
+                <p><strong>Check:</strong> Substitute $m = 5$ back into the equation:</p>
+                <p>$$rac{100\%}{5} = 20\% \quad \checkmark$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 18 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 18</span>
+            <span class="problem-concept">Lesson 15</span>
+        </div>
+        <div class="problem-body">
+            Simplify:
+            <br>$$3rac{5}{6} - 1rac{1}{6}$$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-18')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-18" class="solution-container">
+            <div class="answer-box">Answer: $2rac{2}{3}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Subtract whole numbers and fractions separately:</p>
+                <p>$$(3 - 1) + \left(rac{5}{6} - rac{1}{6}ight) = 2 + rac{4}{6}$$</p>
+                <p>Reduce $rac{4}{6}$ to $rac{2}{3}$ by dividing numerator and denominator by $2$:</p>
+                <p>$$2 + rac{2}{3} = 2rac{2}{3}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 19 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 19</span>
+            <span class="problem-concept">Lesson 15</span>
+        </div>
+        <div class="problem-body">
+            Simplify:
+            <br>$$rac{1}{2} \cdot rac{2}{3}$$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-19')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-19" class="solution-container">
+            <div class="answer-box">Answer: $rac{1}{3}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Multiply numerators together and denominators together (or cancel out common factor 2):</p>
+                <p>$$rac{1 \cdot 2}{2 \cdot 3} = rac{2}{6} = rac{1}{3}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 20 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 20</span>
+            <span class="problem-concept">Lesson 1</span>
+        </div>
+        <div class="problem-body">
+            Simplify:
+            <br>$$rac{\$100.00}{40}$$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-20')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-20" class="solution-container">
+            <div class="answer-box">Answer: $\$2.50$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Divide $100$ by $40$:</p>
+                <p>$$rac{100}{40} = rac{10}{4} = 2.5$$</p>
+                <p>Expressed as currency, $2.5$ is $\$2.50$.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 21 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 21</span>
+            <span class="problem-concept">Lesson 1</span>
+        </div>
+        <div class="problem-body">
+            Simplify:
+            <br>$$55 \cdot 55$$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-21')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-21" class="solution-container">
+            <div class="answer-box">Answer: $3{,}025$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Perform multiplication:</p>
+                <p>$$55 	imes 50 = 2750$$</p>
+                <p>$$55 	imes 5 = 275$$</p>
+                <p>$$2750 + 275 = 3{,}025$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 22 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 22</span>
+            <span class="problem-concept">Lessons 1, 16</span>
+        </div>
+        <div class="problem-body">
+            Simplify:
+            <br>$$2(8	ext{ in.} + 6	ext{ in.})$$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-22')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-22" class="solution-container">
+            <div class="answer-box">Answer: $28	ext{ in.}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> First simplify inside the parentheses according to order of operations:</p>
+                <p>$$8	ext{ in.} + 6	ext{ in.} = 14	ext{ in.}$$</p>
+                <p>Then multiply by $2$:</p>
+                <p>$$2 	imes 14	ext{ in.} = 28	ext{ in.}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 23 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 23</span>
+            <span class="problem-concept">Lessons 15, 16</span>
+        </div>
+        <div class="problem-body">
+            Simplify:
+            <br>$$rac{3}{4}	ext{ in.} + rac{3}{4}	ext{ in.}$$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-23')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-23" class="solution-container">
+            <div class="answer-box">Answer: $1rac{1}{2}	ext{ in.}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Add fractions with common denominators:</p>
+                <p>$$rac{3}{4} + rac{3}{4} = rac{6}{4}	ext{ in.}$$</p>
+                <p>Convert to a mixed number and reduce:</p>
+                <p>$$rac{6}{4} = rac{3}{2} = 1rac{1}{2}	ext{ in.}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 24 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 24</span>
+            <span class="problem-concept">Lessons 15, 16</span>
+        </div>
+        <div class="problem-body">
+            Simplify:
+            <br>$$rac{15}{16}	ext{ in.} - rac{3}{16}	ext{ in.}$$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-24')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-24" class="solution-container">
+            <div class="answer-box">Answer: $rac{3}{4}	ext{ in.}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Subtract the numerators:</p>
+                <p>$$rac{15 - 3}{16} = rac{12}{16}	ext{ in.}$$</p>
+                <p>Reduce by dividing numerator and denominator by $4$:</p>
+                <p>$$rac{12 \div 4}{16 \div 4} = rac{3}{4}	ext{ in.}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 25 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 25</span>
+            <span class="problem-concept">Lesson 10</span>
+        </div>
+        <div class="problem-body">
+            Simplify:
+            <br>$$rac{1}{2} \cdot rac{4}{3} \cdot rac{9}{2}$$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-25')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-25" class="solution-container">
+            <div class="answer-box">Answer: $3$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong> Multiply numerators and denominators together, or cancel common factors:</p>
+                <p>$$rac{1 \cdot 4 \cdot 9}{2 \cdot 3 \cdot 2} = rac{36}{12} = 3$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 26 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 26</span>
+            <span class="problem-concept">Lesson 1 | ANALYZE</span>
+        </div>
+        <div class="problem-body">
+            The cost of the meal was $\$15.17$. Loretha gave the cashier a $\$20$ bill and a quarter. Name the fewest possible number of bills and coins she could have received in change.
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-26')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-26" class="solution-container">
+            <div class="answer-box">Answer: 5 pieces of change (1 five-dollar bill, 1 nickel, and 3 pennies)</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong></p>
+                <p>1. Total money given = $\$20.00 + \$0.25 = \$20.25$.</p>
+                <p>2. Change owed = $\$20.25 - \$15.17 = \$5.08$.</p>
+                <p>3. To get $\$5.08$ with the fewest bills and coins:</p>
+                <ul>
+                    <li><strong>1</strong> $	imes$ $\$5$ bill = $\$5.00$</li>
+                    <li><strong>1</strong> $	imes$ nickel ($5	ext{¢}$) = $\$0.05$</li>
+                    <li><strong>3</strong> $	imes$ pennies ($1	ext{¢}$) = $\$0.03$</li>
+                </ul>
+                <p>Total items: $1 + 1 + 3 = 5$ (One $\$5$ bill, one nickel, and three pennies).</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 27 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 27</span>
+            <span class="problem-concept">Lessons 2, 9</span>
+        </div>
+        <div class="problem-body">
+            a. Compare: $\left(rac{1}{2} \cdot rac{3}{4}ight) \cdot rac{2}{3} \quad igcirc \quad rac{1}{2}\left(rac{3}{4} \cdot rac{2}{3}ight)$
+            <br>b. What property is illustrated by the comparison?
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-27')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-27" class="solution-container">
+            <div class="answer-box">Answer: a. $=$ &nbsp;&nbsp;|&nbsp;&nbsp; b. Associative Property of Multiplication</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong></p>
+                <p>a. Evaluate left side: $$\left(rac{1}{2} \cdot rac{3}{4}ight) \cdot rac{2}{3} = rac{3}{8} \cdot rac{2}{3} = rac{6}{24} = rac{1}{4}$$</p>
+                <p>Evaluate right side: $$rac{1}{2}\left(rac{3}{4} \cdot rac{2}{3}ight) = rac{1}{2} \cdot rac{6}{12} = rac{1}{2} \cdot rac{1}{2} = rac{1}{4}$$</p>
+                <p>Since both equal $rac{1}{4}$, the relationship is equal ($=$).</p>
+                <p>b. Changing the grouping of factors in multiplication does not change the product. This is the <strong>Associative Property of Multiplication</strong>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 28 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 28</span>
+            <span class="problem-concept">Lesson 14 | FORMULATE</span>
+        </div>
+        <div class="problem-body">
+            Write a word problem about parts of a whole that fits this equation:
+            <br>$$85\% + w = 100\%$$
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-28')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-28" class="solution-container">
+            <div class="answer-box">Answer: Example word problem provided below (where $w = 15\%$).</div>
+            <div class="explanation">
+                <p><strong>Sample Word Problem:</strong></p>
+                <p><em>"Eighty-five percent of the students in class passed the math exam. What percent of the class, $w$, did not pass the exam?"</em></p>
+                <p><strong>Solution:</strong> $$w = 100\% - 85\% = 15\%$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 29 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 29</span>
+            <span class="problem-concept">Lessons 9, 10</span>
+        </div>
+        <div class="problem-body">
+            Write $3rac{3}{4}$ as an improper fraction. Then write its reciprocal.
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-29')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-29" class="solution-container">
+            <div class="answer-box">Answer: Improper fraction: $rac{15}{4}$ &nbsp;&nbsp;|&nbsp;&nbsp; Reciprocal: $rac{4}{15}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong></p>
+                <p>1. Convert mixed number to improper fraction:</p>
+                <p>$$3rac{3}{4} = rac{(3 	imes 4) + 3}{4} = rac{12 + 3}{4} = rac{15}{4}$$</p>
+                <p>2. Flip numerator and denominator to get the reciprocal:</p>
+                <p>$$	ext{Reciprocal of } rac{15}{4} = rac{4}{15}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem 30 -->
+    <div class="problem-card">
+        <div class="problem-header">
+            <span class="problem-number">Problem 30</span>
+            <span class="problem-concept">Lesson 15</span>
+        </div>
+        <div class="problem-body">
+            Find a fraction equal to $rac{3}{4}$ with a denominator of 8. Add the fraction to $rac{5}{8}$. Write the sum as a mixed number.
+        </div>
+        <button class="btn-toggle" onclick="toggleSolution('sol-30')">
+            <span>Show Answer & Explanation</span>
+        </button>
+        <div id="sol-30" class="solution-container">
+            <div class="answer-box">Answer: Fraction: $rac{6}{8}$ &nbsp;&nbsp;|&nbsp;&nbsp; Sum as mixed number: $1rac{3}{8}$</div>
+            <div class="explanation">
+                <p><strong>Explanation:</strong></p>
+                <p>1. Find equivalent fraction with denominator 8: $$rac{3 	imes 2}{4 	imes 2} = rac{6}{8}$$</p>
+                <p>2. Add to $rac{5}{8}$: $$rac{6}{8} + rac{5}{8} = rac{11}{8}$$</p>
+                <p>3. Convert improper fraction $rac{11}{8}$ to a mixed number: $$rac{11}{8} = 1rac{3}{8}$$</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Created for Alex &bull; Saxon Math Course 2 Practice Solutions</p>
+    </footer>
+</div>
+
+<script>
+    function toggleSolution(id) {
+        const sol = document.getElementById(id);
+        const button = sol.previousElementSibling;
+        if (sol.classList.contains('show')) {
+            sol.classList.remove('show');
+            button.innerHTML = '<span>Show Answer & Explanation</span>';
+        } else {
+            sol.classList.add('show');
+            button.innerHTML = '<span>Hide Answer & Explanation</span>';
+            if (window.MathJax) {
+                MathJax.typesetPromise([sol]);
+            }
+        }
+    }
+
+    function expandAll() {
+        const solutions = document.querySelectorAll('.solution-container');
+        solutions.forEach(sol => {
+            sol.classList.add('show');
+            const button = sol.previousElementSibling;
+            if (button && button.classList.contains('btn-toggle')) {
+                button.innerHTML = '<span>Hide Answer & Explanation</span>';
+            }
+        });
+        if (window.MathJax) {
+            MathJax.typesetPromise();
+        }
+    }
+
+    function collapseAll() {
+        const solutions = document.querySelectorAll('.solution-container');
+        solutions.forEach(sol => {
+            sol.classList.remove('show');
+            const button = sol.previousElementSibling;
+            if (button && button.classList.contains('btn-toggle')) {
+                button.innerHTML = '<span>Show Answer & Explanation</span>';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
