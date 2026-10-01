@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAT Reading Practice - 10-1Reading</title>
+    <style>
+        :root {
+            --primary-color: #a51c30; /* Harvard Crimson Default */
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --success-color: #27ae60;
+            --danger-color: #c0392b;
+            --warning-color: #f39c12;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Teacher Audit Dashboard (?check=true) */
+        .audit-banner {
+            display: none;
+            background-color: #1e293b;
+            color: #ffffff;
+            padding: 20px;
+            border-bottom: 5px solid #ef4444;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+        .audit-banner.active {
+            display: block;
+        }
+
+        .audit-container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .audit-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .audit-title h2 {
+            margin: 0;
+            font-size: 1.3rem;
+            color: #f59e0b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .audit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .audit-card {
+            background: #334155;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .audit-card.flagged {
+            border-left-color: #ef4444;
+            background: #451a1d;
+        }
+
+        .audit-card .num {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .audit-card .label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        .audit-log-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            margin-top: 10px;
+            background: #0f172a;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .audit-log-table th, .audit-log-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .audit-log-table th {
+            background-color: #020617;
+            color: #f59e0b;
+        }
+
+        .btn-clear-audit {
+            background-color: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        /* Standard Header */
+        header {
+            background-color: #ffffff;
+            border-bottom: 4px solid var(--primary-color);
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: border-color 0.3s;
+        }
+
+        .header-container {
+            max-width: 950px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-title h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: #1a252f;
+        }
+
+        .header-title p {
+            margin: 5px 0 0;
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+
+        .badges-preview {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .badge-item {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            opacity: 0.35;
+            transition: opacity 0.3s;
+        }
+
+        .badge-item.unlocked {
+            opacity: 1;
+        }
+
+        .badge-item img {
+            height: 38px;
+            display: block;
+            margin: 0 auto 3px;
+        }
+
+        /* Controls Bar */
+        .controls-bar {
+            max-width: 950px;
+            margin: 25px auto 10px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .selector-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 1.05rem;
+        }
+
+        select {
+            padding: 10px 18px;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 2px solid var(--primary-color);
+            background-color: #fff;
+            cursor: pointer;
+            outline: none;
+            font-weight: 600;
+            transition: border-color 0.3s;
+        }
+
+        .score-tracker {
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: #ffffff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: 1px solid #dcdde1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            max-width: 950px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-left: 6px solid var(--primary-color);
+            transition: border-color 0.3s;
+        }
+
+        .question-number {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #7f8c8d;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .passage {
+            background-color: #f8f9fa;
+            padding: 18px;
+            border-radius: 8px;
+            font-size: 0.98rem;
+            margin-bottom: 18px;
+            border-left: 4px solid #bdc3c7;
+            line-height: 1.65;
+        }
+
+        .question-text {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 15px;
+        }
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            text-align: left;
+            padding: 12px 18px;
+            border: 1px solid #dcdde1;
+            border-radius: 6px;
+            background-color: #fff;
+            cursor: pointer;
+            font-size: 0.98rem;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            background-color: #ebf5fb;
+            border-color: #2980b9;
+        }
+
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            border-color: var(--success-color) !important;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .option-btn.incorrect {
+            background-color: #f8d7da !important;
+            border-color: var(--danger-color) !important;
+            color: #721c24;
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .feedback-box.correct-fb {
+            background-color: #e8f8f5;
+            color: #117864;
+            border: 1px solid #a3e4d7;
+        }
+
+        .feedback-box.incorrect-fb {
+            background-color: #fadbd8;
+            color: #78281f;
+            border: 1px solid #f5b7b1;
+        }
+
+        /* Summary & Badge Unlocks */
+        .score-summary-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            display: none;
+        }
+
+        .score-summary-card h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .score-display {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: var(--primary-color);
+        }
+
+        .reward-badge-container {
+            margin: 25px 0;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fcfcfc;
+            border: 2px dashed #bdc3c7;
+            display: inline-block;
+            min-width: 280px;
+        }
+
+        .reward-badge-container img {
+            max-height: 100px;
+            margin-bottom: 10px;
+        }
+
+        .reward-badge-container h3 {
+            margin: 5px 0;
+            font-size: 1.3rem;
+        }
+
+        .btn-retry {
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-retry:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Anti-Cheating Teacher Inspection Panel (Activated via ?check=true in URL) -->
+    <div id="teacher-audit-panel" class="audit-banner">
+        <div class="audit-container">
+            <div class="audit-title">
+                <h2>🕵‍♂️ Teacher Audit Dashboard <span style="font-size: 0.8rem; color:#94a3b8;">(?check=true active)</span></h2>
+                <button class="btn-clear-audit" onclick="clearAuditLog()">Clear Audit Logs</button>
+            </div>
+            
+            <div class="audit-grid">
+                <div class="audit-card" id="card-total-refreshes">
+                    <div class="num" id="stat-total-refreshes">0</div>
+                    <div class="label">Total Page Refreshes</div>
+                </div>
+                <div class="audit-card" id="card-mid-refreshes">
+                    <div class="num" id="stat-mid-refreshes">0</div>
+                    <div class="label">Mid-Attempt Refreshes</div>
+                </div>
+                <div class="audit-card">
+                    <div class="num" id="stat-manual-resets">0</div>
+                    <div class="label">Manual Reset Clicks</div>
+                </div>
+                <div class="audit-card" id="card-risk-status">
+                    <div class="num" id="stat-risk-level" style="font-size: 1.2rem; margin-top: 8px;">Clear</div>
+                    <div class="label">Cheating Risk Status</div>
+                </div>
+            </div>
+
+            <div style="font-weight: bold; margin-bottom: 6px; color: #f59e0b;">Student Activity History:</div>
+            <table class="audit-log-table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Event Type</th>
+                        <th>Activity Details / Progress</th>
+                    </tr>
+                </thead>
+                <tbody id="audit-log-rows">
+                    <tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <div class="header-title">
+                <h1>Digital SAT Reading Module</h1>
+                <p>30 Questions • Sets A, B & C • Integrity-Tracked Assessment</p>
+            </div>
+            <div class="badges-preview">
+                <div class="badge-item" id="badge-harvard">
+                    <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard">
+                    <span>Harvard</span>
+                </div>
+                <div class="badge-item" id="badge-bu">
+                    <img src="https://mr-chen-k12.github.io/books/IMG_0121.png" alt="Boston University">
+                    <span>Boston Univ.</span>
+                </div>
+                <div class="badge-item" id="badge-yale">
+                    <img src="https://mr-chen-k12.github.io/books/IMG_0122.png" alt="Yale">
+                    <span>Yale</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+        <div class="selector-group">
+            <label for="set-select">Choose Question Set:</label>
+            <select id="set-select" onchange="switchSet(this.value)">
+                <option value="Set A">Set A (10 Questions)</option>
+                <option value="Set B">Set B (10 Questions)</option>
+                <option value="Set C">Set C (10 Questions)</option>
+            </select>
+        </div>
+        <div class="score-tracker" id="score-tracker">
+            Score: 0 / 10
+        </div>
+    </div>
+
+    <!-- Main Practice Area -->
+    <main class="quiz-container">
+        <div id="questions-wrapper"></div>
+
+        <div id="score-summary" class="score-summary-card">
+            <h2>Set Complete!</h2>
+            <p>Your Final Score for this set:</p>
+            <div class="score-display" id="final-score-text">0 / 10</div>
+            
+            <div id="reward-section"></div>
+
+            <p id="feedback-message" style="font-size: 1.1rem; font-weight: 500;"></p>
+            <button class="btn-retry" onclick="resetCurrentSet()">Try This Set Again</button>
+        </div>
+    </main>
+
+    <script>
+        // University Reward Logos & Colors
+        const universityRewards = {
+            "Set A": {
+                name: "Harvard University",
+                img: "https://mr-chen-k12.github.io/math/IMG_0232.png",
+                color: "#a51c30",
+                badgeId: "badge-harvard"
+            },
+            "Set B": {
+                name: "Boston University",
+                img: "https://mr-chen-k12.github.io/books/IMG_0121.png",
+                color: "#CC0000",
+                badgeId: "badge-bu"
+            },
+            "Set C": {
+                name: "Yale University",
+                img: "https://mr-chen-k12.github.io/books/IMG_0122.png",
+                color: "#00356B",
+                badgeId: "badge-yale"
+            }
+        };
+
+        // Anti-Cheating & Audit Tracker Local Storage Keys
+        const AUDIT_STORAGE_KEY = 'sat_audit_tracker_101';
+        const ACTIVE_PROGRESS_KEY = 'sat_active_progress_101';
+
+        function getAuditData() {
+            const stored = localStorage.getItem(AUDIT_STORAGE_KEY);
+            return stored ? JSON.parse(stored) : {
+                totalRefreshes: 0,
+                midQuizRefreshes: 0,
+                manualResets: 0,
+                events: []
+            };
+        }
+
+        function saveAuditData(data) {
+            localStorage.setItem(AUDIT_STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function trackPageLoad(setName) {
+            let audit = getAuditData();
+            audit.totalRefreshes += 1;
+
+            // Detect if student refreshed mid-quiz before finishing
+            const activeProgress = localStorage.getItem(ACTIVE_PROGRESS_KEY);
+            if (activeProgress) {
+                const prog = JSON.parse(activeProgress);
+                const answeredCount = Object.keys(prog.answers || {}).length;
+                
+                // If student answered 1-9 questions and refreshed, flag as suspicious mid-quiz refresh
+                if (answeredCount > 0 && answeredCount < 10) {
+                    audit.midQuizRefreshes += 1;
+                    audit.events.unshift({
+                        timestamp: new Date().toLocaleString(),
+                        type: '⚠️ SUSPICIOUS REFRESH',
+                        detail: `Refreshed page mid-quiz during ${prog.setName} at Q${answeredCount + 1} (${answeredCount}/10 answered)`
+                    });
+                }
+            } else {
+                audit.events.unshift({
+                    timestamp: new Date().toLocaleString(),
+                    type: 'PAGE_LOAD',
+                    detail: `Opened or reloaded page on ${setName}`
+                });
+            }
+
+            saveAuditData(audit);
+            renderAuditDashboard();
+        }
+
+        function trackAnswerProgress(setName, answersObj) {
+            localStorage.setItem(ACTIVE_PROGRESS_KEY, JSON.stringify({
+                setName: setName,
+                answers: answersObj,
+                lastUpdated: new Date().toISOString()
+            }));
+        }
+
+        function trackSetCompletion(setName, score, total) {
+            let audit = getAuditData();
+            audit.events.unshift({
+                timestamp: new Date().toLocaleString(),
+                type: 'SET_COMPLETED',
+                detail: `Completed ${setName} - Final Score: ${score}/${total}`
+            });
+            saveAuditData(audit);
+            localStorage.removeItem(ACTIVE_PROGRESS_KEY); // Clear active attempt on legitimate completion
+            renderAuditDashboard();
+        }
+
+        function trackManualReset(setName) {
+            let audit = getAuditData();
+            audit.manualResets += 1;
+            audit.events.unshift({
+                timestamp: new Date().toLocaleString(),
+                type: 'MANUAL_RESET',
+                detail: `Student clicked 'Try This Set Again' button for ${setName}`
+            });
+            saveAuditData(audit);
+            localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+            renderAuditDashboard();
+        }
+
+        function renderAuditDashboard() {
+            const audit = getAuditData();
+            document.getElementById('stat-total-refreshes').innerText = audit.totalRefreshes;
+            document.getElementById('stat-mid-refreshes').innerText = audit.midQuizRefreshes;
+            document.getElementById('stat-manual-resets').innerText = audit.manualResets;
+
+            const riskCard = document.getElementById('card-risk-status');
+            const midCard = document.getElementById('card-mid-refreshes');
+            const riskText = document.getElementById('stat-risk-level');
+
+            if (audit.midQuizRefreshes > 0) {
+                riskText.innerText = "⚠️ High Risk (Skeptical)";
+                riskText.style.color = "#ef4444";
+                riskCard.classList.add('flagged');
+                midCard.classList.add('flagged');
+            } else if (audit.totalRefreshes > 5) {
+                riskText.innerText = "⚡ Frequent Refreshes";
+                riskText.style.color = "#f59e0b";
+                riskCard.classList.remove('flagged');
+                midCard.classList.remove('flagged');
+            } else {
+                riskText.innerText = "✅ Normal / Clean";
+                riskText.style.color = "#10b981";
+                riskCard.classList.remove('flagged');
+                midCard.classList.remove('flagged');
+            }
+
+            const tbody = document.getElementById('audit-log-rows');
+            if (audit.events.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr>`;
+            } else {
+                tbody.innerHTML = audit.events.slice(0, 15).map(evt => `
+                    <tr>
+                        <td style="white-space:nowrap; color:#94a3b8;">${evt.timestamp}</td>
+                        <td style="font-weight:bold; color:${evt.type.includes('SUSPICIOUS') ? '#ef4444' : (evt.type.includes('COMPLETED') ? '#10b981' : '#f59e0b')};">${evt.type}</td>
+                        <td>${evt.detail}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function clearAuditLog() {
+            if (confirm("Clear all local storage audit tracking data?")) {
+                localStorage.removeItem(AUDIT_STORAGE_KEY);
+                localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+                renderAuditDashboard();
+            }
+        }
+
+        // --- Question Bank (30 SAT Reading Questions) ---
+        const questionBank = {
+            "Set A": [
+                {
+                    id: 1,
+                    passage: "Effective public speaking relies heavily on nonverbal immediacy—behaviors such as maintaining direct eye contact, using purposeful gestures, and varying vocal inflection to reduce psychological distance between the speaker and the audience. Communication scholars note that speakers who master nonverbal immediacy cultivate greater audience trust and information retention, whereas rigid, monotone delivery often induces listener fatigue regardless of content quality.",
+                    question: "According to the passage, how does nonverbal immediacy impact public speaking effectiveness?",
+                    options: [
+                        "A) It eliminates the necessity for thorough topic research prior to speaking.",
+                        "B) It cultivates audience trust and retention by reducing psychological distance.",
+                        "C) It forces the audience to agree with the speaker's political perspectives.",
+                        "D) It requires speakers to maintain a uniform, monotone vocal pitch throughout."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The text states that nonverbal immediacy (eye contact, gestures, vocal variation) reduces psychological distance and fosters trust and retention."
+                },
+                {
+                    id: 2,
+                    passage: "In plant ecology, 'masting' refers to the synchronized production of large seed crops at irregular multi-year intervals by a population of trees, such as oaks or beeches. Evolutionary biologists hypothesize that masting evolved as a predator satiation strategy, swamping seed consumers like squirrels in mast years so that surviving seeds can germinate.",
+                    question: "Which choice best describes the primary function of 'masting' according to the passage?",
+                    options: [
+                        "A) To ensure that seed predators exhaust local water supplies.",
+                        "B) To overwhelm seed predators so that a portion of seeds survive to germinate.",
+                        "C) To produce identical seed quantities at predictable annual intervals.",
+                        "D) To attract herbivorous birds to nest in tree canopies."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Masting produces huge seed crops irregularly to swamp predators, ensuring surviving seeds germinate."
+                },
+                {
+                    id: 3,
+                    passage: "In 1913, Niels Bohr proposed a quantum model of the hydrogen atom where electrons orbit the nucleus in discrete energy levels. When an electron transitions from a higher orbit to a lower orbit, it emits a photon whose energy corresponds precisely to the difference between those two energy states.",
+                    question: "According to Bohr's model, a photon is emitted when an electron:",
+                    options: [
+                        "A) Escalates to an orbit infinitely far from the nucleus.",
+                        "B) Collides directly with protons inside the atomic nucleus.",
+                        "C) Transitions from a higher energy level orbit to a lower energy orbit.",
+                        "D) Absorbs continuous electromagnetic waves from neighboring atoms."
+                    ],
+                    answer: 2,
+                    explanation: "Correct! The passage explicitly states that photons are emitted when an electron drops from a higher orbit to a lower one."
+                },
+                {
+                    id: 4,
+                    passage: "Historian Dr. Maria Santos argues that the spread of coffee houses in 17th-century London fostered an egalitarian public sphere. By providing spaces where merchants, scholars, and artisans gathered over affordable coffee rather than alcohol, coffee houses facilitated lively intellectual exchange and political discourse.",
+                    question: "As used in the text, what does 'egalitarian' most nearly mean?",
+                    options: ["A) Exclusive", "B) Equalitarian/Inclusive", "C) Authoritarian", "D) Financial"],
+                    answer: 1,
+                    explanation: "Correct! In this context, 'egalitarian' refers to an inclusive environment where individuals across social classes gathered equally."
+                },
+                {
+                    id: 5,
+                    passage: "Glaciologists measuring ice sheet movement in West Antarctica observed that warming sub-surface ocean currents are melting ice shelves from below. This basal melting weakens the structural buttresses that hold back inland glaciers, accelerating glacier flow into the sea.",
+                    question: "Based on the text, basal melting promotes faster glacier movement into the sea by:",
+                    options: [
+                        "A) Freezing the ocean surface near coastal ice margins.",
+                        "B) Weakening the ice shelf buttresses that impede inland glacier flow.",
+                        "C) Evaporating inland snowfall before it accumulates.",
+                        "D) Increasing friction between glacier beds and underlying bedrock."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Basal melting weakens the structural ice shelf buttresses, accelerating the inward glacier flow into the ocean."
+                },
+                {
+                    id: 6,
+                    passage: "In Mary Shelley's 1818 novel *Frankenstein*, Victor Frankenstein's obsession with scientific achievement causes him to neglect familial duties and ethical considerations. Shelley uses Victor's tragic isolation to critique unrestrained ambition divorced from moral responsibility.",
+                    question: "Which choice best states the primary critique expressed in Shelley's novel according to the passage?",
+                    options: [
+                        "A) Unchecked scientific ambition without ethical responsibility leads to destructive isolation.",
+                        "B) Scientific experimentation should be funded exclusively by private patron organizations.",
+                        "C) Domestic family life naturally hinders scientific discovery.",
+                        "D) Technological progress automatically guarantees moral enlightenment."
+                    ],
+                    answer: 0,
+                    explanation: "Correct! The passage notes that Shelley uses Victor's downfall to critique unrestrained ambition divorced from ethical responsibility."
+                },
+                {
+                    id: 7,
+                    passage: "Synthetic biology researchers recently engineered microalgae strains capable of producing high concentrations of bio-lipids suitable for sustainable jet fuel. However, scaling production from laboratory bioreactors to commercial open-pond facilities remains cost-prohibitive due to biological contamination risks.",
+                    question: "What primary obstacle prevents widespread commercial deployment of the engineered microalgae?",
+                    options: [
+                        "A) Inability of microalgae to synthesize any usable lipids in laboratory settings.",
+                        "B) High cost and contamination risks associated with scaling up production facilities.",
+                        "C) Complete refusal of aviation industries to test biofuel alternatives.",
+                        "D) Excessive oxygen emissions produced during microalgae cultivation."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Scaling production to open-pond facilities is cost-prohibitive due to contamination risks."
+                },
+                {
+                    id: 8,
+                    passage: "Neurologists examining neuroplasticity demonstrate that motor skill learning reorganizes cortical representations in the brain. Individuals practicing complex piano compositions exhibit measurable expansion in cortical areas dedicated to fine motor finger control within weeks.",
+                    question: "As used in the text, what does 'reorganizes' most nearly mean?",
+                    options: ["A) Restructures", "B) Erases", "C) Divides", "D) Slows"],
+                    answer: 0,
+                    explanation: "Correct! In this context, 'reorganizes' means restructuring or reconfiguring cortical brain areas."
+                },
+                {
+                    id: 9,
+                    passage: "In international economics, tariffs are taxes imposed on imported goods. While tariffs aim to protect domestic manufacturers from foreign competition, economists warn that retaliatory tariffs from trade partners often escalate costs for domestic consumers and depress global exports.",
+                    question: "According to the passage, an unintended drawback of protective tariffs is:",
+                    options: [
+                        "A) Immediate elimination of domestic manufacturing jobs.",
+                        "B) Retaliatory tariffs from trading partners that harm domestic consumers and exports.",
+                        "C) Rapid appreciation of foreign currency reserves.",
+                        "D) Complete cessation of domestic consumer purchasing power."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The passage states retaliatory tariffs escalate costs for consumers and reduce global export volumes."
+                },
+                {
+                    id: 10,
+                    passage: "Conservation biologists studying urban biodiversity discovered that green roofs planted with drought-tolerant sedum species provide crucial stopover habitats for migratory songbirds. Fields with native wildflower mixes attracted twice as many native bee pollinators as monoculture grass roofs.",
+                    question: "Which finding, if true, would most directly support the conservation biologists' conclusions?",
+                    options: [
+                        "A) Wildflower green roofs harbored 120 native bee species compared to 45 on grass roofs.",
+                        "B) Sedum plants require irrigation twice daily during summer months.",
+                        "C) Migratory songbirds prefer building nests in remote woodland forests.",
+                        "D) Commercial roofing materials are cheaper than installing soil substrates."
+                    ],
+                    answer: 0,
+                    explanation: "Correct! Showing significantly higher native bee counts on wildflower roofs directly supports the conclusion that diverse green roofs aid native pollinators."
+                }
+            ],
+            "Set B": [
+                {
+                    id: 1,
+                    passage: "In oceanography, thermohaline circulation is driven by deep-water formation in polar regions, where cold, high-salinity surface water becomes dense and sinks. This global ocean conveyor belt distributes heat, carbon, and nutrients across planetary ocean basins.",
+                    question: "Thermohaline circulation is initiated primarily when surface water:",
+                    options: [
+                        "A) Warms rapidly near equatorial solar heating zones.",
+                        "B) Becomes dense due to cold temperatures and high salinity, causing it to sink.",
+                        "C) Evaporates completely in shallow coastal estuaries.",
+                        "D) Mixes with freshwater runoff from agricultural river systems."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Thermohaline circulation is driven by deep-water formation when surface water cools, gains salinity, becomes dense, and sinks."
+                },
+                {
+                    id: 2,
+                    passage: "In Ralph Waldo Emerson's 1836 essay 'Nature,' he articulated the philosophy of Transcendentalism, asserting that spiritual truth is experienced directly through intuitive contemplation of the natural world rather than mediated by religious institutions.",
+                    question: "Which choice best describes Emerson's view of spiritual truth as detailed in the text?",
+                    options: [
+                        "A) It can only be understood through formal academic theological studies.",
+                        "B) It is directly accessible through intuitive personal immersion in nature.",
+                        "C) It is entirely illusory and irrelevant to human existence.",
+                        "D) It requires strict adherence to institutional dogmas."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Emerson asserts that spiritual truth is experienced directly through intuitive contemplation of nature."
+                },
+                {
+                    id: 3,
+                    passage: "Volcanologists analyzing basaltic shield volcanoes like Mauna Loa observe that low-viscosity lava flows continuously over long distances without explosive eruptions. In contrast, stratovolcanoes produce explosive eruptions due to high-viscosity, silica-rich magma trapping pressurized gas bubbles.",
+                    question: "Explosive volcanic eruptions occur primarily when magma:",
+                    options: [
+                        "A) Has low silica content and flows smoothly across basaltic plains.",
+                        "B) Possesses high viscosity and silica levels that trap pressurized gases.",
+                        "C) Cools instantly upon encountering deep subterranean water aquifers.",
+                        "D) Contains zero dissolved gas particles."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! High viscosity, silica-rich magma traps gas bubbles under pressure, producing explosive eruptions."
+                },
+                {
+                    id: 4,
+                    passage: "In linguistics, 'code-switching' refers to the seamless alternation between two or more languages or dialects within a single conversation. Sociolinguists emphasize that code-switching is a sophisticated rule-governed cognitive skill that reinforces social solidarity within multilingual communities.",
+                    question: "As used in the text, what does 'sophisticated' most nearly mean?",
+                    options: ["A) Complicated/Advanced", "B) Artificial", "C) Pretentious", "D) Fragile"],
+                    answer: 0,
+                    explanation: "Correct! In this context, 'sophisticated' means advanced, complex, and highly developed."
+                },
+                {
+                    id: 5,
+                    passage: "Paleontologists examining fossilized amber specimens from the Cretaceous period uncovered preserved feathers retaining microscopic melanosomes. Analyzing the structural shape of these melanosomes enabled researchers to reconstruct the iridescent coloration of non-avian dinosaurs.",
+                    question: "The discovery of fossilized melanosomes in Cretaceous amber allowed paleontologists to:",
+                    options: [
+                        "A) Calculate the exact flight speed of prehistoric Pterosaurs.",
+                        "B) Reconstruct the color patterns and iridescence of dinosaur feathers.",
+                        "C) Determine the exact mineral composition of ancient ocean floors.",
+                        "D) Clone extinct dinosaur species in modern laboratory facilities."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Analyzing melanosome structural shapes allowed scientists to reconstruct color patterns."
+                },
+                {
+                    id: 6,
+                    passage: "Behavioral economists studying the 'framing effect' found that consumers were significantly more likely to purchase beef labeled '80% lean' than beef labeled '20% fat,' despite both descriptions being mathematically identical.",
+                    question: "The framing effect demonstrates that consumer choices are heavily influenced by:",
+                    options: [
+                        "A) Pure mathematical logic independent of word phrasing.",
+                        "B) The positive or negative presentation format of information.",
+                        "C) Price discounts offered during seasonal clearance sales.",
+                        "D) The physical packaging dimensions of consumer products."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The framing effect proves decision-making is shaped by how information is presented (positive vs. negative framing)."
+                },
+                {
+                    id: 7,
+                    passage: "In cell biology, mitochondria generate cellular ATP energy through oxidative phosphorylation along the inner mitochondrial membrane. When cellular oxygen levels drop during anaerobic exercise, cells temporarily shift to glycolysis to sustain energy output.",
+                    question: "According to the passage, cells rely on glycolysis during anaerobic conditions because:",
+                    options: [
+                        "A) Oxygen depletion prevents efficient ATP production via oxidative phosphorylation.",
+                        "B) Mitochondria absorb all remaining cellular glucose molecules.",
+                        "C) Muscle fibers require zero energy during physical exertion.",
+                        "D) Oxidative phosphorylation generates excessive lactic acid."
+                    ],
+                    answer: 0,
+                    explanation: "Correct! When oxygen drops (anaerobic), cells rely on glycolysis because oxidative phosphorylation requires oxygen."
+                },
+                {
+                    id: 8,
+                    passage: "In Chinua Achebe's 1958 novel *Things Fall Apart*, the downfall of protagonist Okonkwo reflects the cultural disruption experienced by traditional Igbo society during the arrival of British colonial administrators and missionaries.",
+                    question: "Which choice best describes the central theme of Achebe's novel as noted in the text?",
+                    options: [
+                        "A) The technological benefits of European industrialization in Africa.",
+                        "B) The tragic clash and disruption of traditional Igbo society during colonization.",
+                        "C) The historical origins of agricultural irrigation in Nigeria.",
+                        "D) The economic dominance of Atlantic trading networks."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The passage highlights how Okonkwo's downfall symbolizes the disruption of Igbo culture by colonialism."
+                },
+                {
+                    id: 9,
+                    passage: "Astrophysicists analyzing gravitational wave signals detected by LIGO confirmed the collision of two binary neutron stars. The event produced a kilonova burst, providing empirical proof that heavy chemical elements like gold and platinum originate in cosmic neutron star mergers.",
+                    question: "The LIGO gravitational wave observation was significance because it confirmed that:",
+                    options: [
+                        "A) Stars generate energy exclusively through hydrogen fusion.",
+                        "B) Heavy elements such as gold are synthesized during neutron star collisions.",
+                        "C) Black holes emit visible light continuously across galaxy clusters.",
+                        "D) Solar flares create magnetic storms in Earth's ionosphere."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The kilonova event proved that heavy elements like gold and platinum originate in neutron star mergers."
+                },
+                {
+                    id: 10,
+                    passage: "Agricultural researchers evaluated no-till farming practices, where soil is left undisturbed rather than plowed before planting. The study revealed that no-till fields retained 35% more soil moisture and exhibited higher earthworm populations than conventionally tilled soil.",
+                    question: "Which conclusion is best supported by the agricultural study's findings?",
+                    options: [
+                        "A) Conventional plowing improves soil moisture retention better than no-till techniques.",
+                        "B) No-till farming preserves soil moisture and promotes beneficial soil biological activity.",
+                        "C) Earthworm populations reduce crop yields by feeding on plant root systems.",
+                        "D) Soil moisture levels have no impact on crop vitality."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Retaining more moisture and supporting earthworms indicates that no-till preserves moisture and soil life."
+                }
+            ],
+            "Set C": [
+                {
+                    id: 1,
+                    passage: "Cybersecurity experts advocate for Zero Trust Architecture (ZTA), a security model operating on the principle 'never trust, always verify.' Unlike perimeter-based defenses that trust internal network users, ZTA requires continuous identity authentication and strict access controls for every digital transaction.",
+                    question: "A core principle of Zero Trust Architecture is:",
+                    options: [
+                        "A) Automatically granting full network access to internal devices.",
+                        "B) Requiring continuous authentication and verification for all network activity.",
+                        "C) Eliminating password requirements for administrative accounts.",
+                        "D) Relying entirely on physical security guards to prevent data breaches."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! ZTA operates on 'never trust, always verify,' requiring continuous identity verification."
+                },
+                {
+                    id: 2,
+                    passage: "In 1928, Alexander Fleming discovered penicillin when he noticed that *Penicillium* mold contamination in a Petri dish inhibited the surrounding growth of *Staphylococcus* bacteria. This accidental observation birthed the modern era of antibiotic medicine.",
+                    question: "Fleming discovered penicillin primarily by observing that:",
+                    options: [
+                        "A) *Staphylococcus* bacteria accelerated the growth of blue mold.",
+                        "B) *Penicillium* mold prevented surrounding bacterial growth.",
+                        "C) Boiling bacterial cultures rendered them immune to mold.",
+                        "D) Synthetic chemicals destroyed viral particles in Petri dishes."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Fleming observed that the *Penicillium* mold inhibited bacterial growth in its vicinity."
+                },
+                {
+                    id: 3,
+                    passage: "In James Joyce's 1914 short story collection *Dubliners*, characters frequently experience sudden moments of profound spiritual or emotional revelation, which Joyce termed 'epiphanies.' These epiphanies expose the emotional paralysis gripping early 20th-century Dublin society.",
+                    question: "As used by Joyce, an 'epiphany' refers to:",
+                    options: [
+                        "A) A sudden, profound moment of realization or insight.",
+                        "B) A state of physical paralysis caused by illness.",
+                        "C) A historical conflict between rival political parties.",
+                        "D) A formal musical composition for choir."
+                    ],
+                    answer: 0,
+                    explanation: "Correct! In Joyce's works, an epiphany is a sudden moment of psychological or emotional insight."
+                },
+                {
+                    id: 4,
+                    passage: "Hydrothermal vents along mid-ocean ridges support chemosynthetic ecosystems independent of solar energy. Chemolithoautotrophic bacteria metabolize hydrogen sulfide emitted from vents, converting inorganic chemicals into biomass that feeds tube worms and deep-sea crabs.",
+                    question: "Deep-sea hydrothermal vent ecosystems differ fundamentally from surface ecosystems because they:",
+                    options: [
+                        "A) Lack any bacterial organisms in their food webs.",
+                        "B) Rely on bacterial chemosynthesis rather than solar-driven photosynthesis.",
+                        "C) Exist only in shallow freshwater lakes.",
+                        "D) Do not require carbon or nitrogen to sustain life."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Vent ecosystems rely on bacterial chemosynthesis of inorganic compounds rather than sunlight."
+                },
+                {
+                    id: 5,
+                    passage: "In psychology, the 'bystander effect' states that individuals are less likely to offer help to a victim when other people are present. This phenomenon is driven by diffusion of responsibility, where each onlooker assumes someone else will intervene.",
+                    question: "The bystander effect occurs primarily because onlookers experience:",
+                    options: [
+                        "A) A heightened sense of personal accountability.",
+                        "B) A diffusion of responsibility among surrounding individuals.",
+                        "C) An immediate instinct to contact emergency personnel.",
+                        "D) Severe physical exhaustion during public gatherings."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The bystander effect is driven by diffusion of responsibility, as people assume others will act."
+                },
+                {
+                    id: 6,
+                    passage: "The research consortium noted that preliminary lab findings were promising, but cautioning that additional longitudinal clinical studies were imperative to validate safety protocols.",
+                    question: "As used in the text, what does 'imperative' most nearly mean?",
+                    options: ["A) Essential/Crucial", "B) Optional", "C) Irrelevant", "D) Hazardous"],
+                    answer: 0,
+                    explanation: "Correct! 'Imperative' means vital, crucial, or essential."
+                },
+                {
+                    id: 7,
+                    passage: "Geophysicists analyzing paleomagnetism discovered that iron minerals in cooling lava align with Earth's magnetic field. Examining seafloor basalt rocks revealed alternating magnetic stripes, providing conclusive evidence for seafloor spreading and plate tectonics.",
+                    question: "Magnetic stripe patterns in seafloor basalt provided evidence for:",
+                    options: [
+                        "A) The permanent fixity of Earth's ocean basins.",
+                        "B) Seafloor spreading and continental drift driven by plate tectonics.",
+                        "C) The gradual cooling of the Earth's inner core.",
+                        "D) Atmospheric ozone depletion over coastal zones."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Alternating magnetic stripes proved that new ocean floor is created at mid-ocean ridges (seafloor spreading)."
+                },
+                {
+                    id: 8,
+                    passage: "In Gabriel García Márquez's 1967 novel *One Hundred Years of Solitude*, magical realism blends fantastical elements seamlessly with mundane reality, serving as an allegorical reflection of Latin American historical struggles and post-colonial solitude.",
+                    question: "Which choice best describes the function of magical realism in Márquez's novel?",
+                    options: [
+                        "A) To strictly document industrial mining techniques in Colombia.",
+                        "B) To weave fantastical elements into real-world narrative as a historical allegory.",
+                        "C) To reject imaginative storytelling in favor of non-fiction biography.",
+                        "D) To translate European fairy tales into modern prose."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The passage notes that magical realism blends fantasy with reality to reflect historical struggles."
+                },
+                {
+                    id: 9,
+                    passage: "Solid-state batteries replace flammable liquid electrolytes found in lithium-ion batteries with solid ceramic or polymer materials. This modification drastically reduces fire risks while enabling higher energy density and faster charging cycles.",
+                    question: "A primary safety advantage of solid-state batteries over lithium-ion batteries is:",
+                    options: [
+                        "A) Complete reliance on heavy toxic lead components.",
+                        "B) Reduced flammability due to replacing liquid electrolytes with solid materials.",
+                        "C) Slower battery charging rates during winter temperatures.",
+                        "D) Lower energy density suitable only for low-power wristwatches."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Solid-state batteries eliminate flammable liquid electrolytes, reducing fire risks."
+                },
+                {
+                    id: 10,
+                    passage: "Cognitive neuroscientists studying bilingualism found that managing two languages enhances executive control networks in the prefrontal cortex. Bilingual individuals consistently outperformed monolinguals on task-switching tests and cognitive flexibility assessments.",
+                    question: "The study's findings suggest that bilingualism benefits cognitive functioning by:",
+                    options: [
+                        "A) Decreasing brain activity in executive control centers.",
+                        "B) Strengthening executive control and enhancing cognitive flexibility.",
+                        "C) Preventing individuals from learning secondary academic subjects.",
+                        "D) Forcing the brain to rely solely on short-term memory storage."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Managing two languages enhances executive control networks, improving cognitive flexibility and task-switching."
+                }
+            ]
+        };
+
+        // --- App Execution Logic ---
+        let currentSetKey = "Set A";
+        let userAnswers = {};
+
+        function initApp() {
+            // Check for ?check=true parameter in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('check') === 'true') {
+                document.getElementById('teacher-audit-panel').classList.add('active');
+            }
+
+            // Log page load to local storage for integrity monitoring
+            trackPageLoad(currentSetKey);
+
+            // Load Set A default
+            loadSet(currentSetKey);
+        }
+
+        function switchSet(setName) {
+            currentSetKey = setName;
+            loadSet(setName);
+        }
+
+        function loadSet(setName) {
+            userAnswers = {};
+            document.getElementById('score-summary').style.display = 'none';
+            
+            // Set primary color palette according to university reward theme
+            const reward = universityRewards[setName];
+            document.documentElement.style.setProperty('--primary-color', reward.color);
+
+            updateScoreDisplay();
+
+            const container = document.getElementById('questions-wrapper');
+            container.innerHTML = '';
+
+            const questions = questionBank[setName];
+
+            questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `q-card-${index}`;
+
+                card.innerHTML = `
+                    <div class="question-number">Question ${index + 1} of 10</div>
+                    <div class="passage">${q.passage}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options-group" id="options-${index}">
+                        ${q.options.map((opt, optIdx) => `
+                            <button class="option-btn" onclick="selectAnswer(${index}, ${optIdx})">
+                                ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div class="feedback-box" id="feedback-${index}"></div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function selectAnswer(questionIdx, selectedOptIdx) {
+            if (userAnswers.hasOwnProperty(questionIdx)) return; // Prevent changing choice once locked
+
+            const qData = questionBank[currentSetKey][questionIdx];
+            const isCorrect = selectedOptIdx === qData.answer;
+            userAnswers[questionIdx] = isCorrect;
+
+            // Track answer attempt in active progress
+            trackAnswerProgress(currentSetKey, userAnswers);
+
+            const optionsGroup = document.getElementById(`options-${questionIdx}`);
+            const buttons = optionsGroup.getElementsByClassName('option-btn');
+
+            Array.from(buttons).forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === qData.answer) {
+                    btn.classList.add('correct');
+                } else if (idx === selectedOptIdx && !isCorrect) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            const fbBox = document.getElementById(`feedback-${questionIdx}`);
+            fbBox.classList.add('show');
+            if (isCorrect) {
+                fbBox.classList.add('correct-fb');
+                fbBox.innerHTML = `<strong>✓ Correct!</strong> ${qData.explanation}`;
+            } else {
+                fbBox.classList.add('incorrect-fb');
+                fbBox.innerHTML = `<strong>✗ Incorrect.</strong> ${qData.explanation}`;
+            }
+
+            updateScoreDisplay();
+            checkSetCompletion();
+        }
+
+        function updateScoreDisplay() {
+            const correctCount = Object.values(userAnswers).filter(Boolean).length;
+            document.getElementById('score-tracker').innerText = `Score: ${correctCount} / 10`;
+        }
+
+        function checkSetCompletion() {
+            const totalAnswered = Object.keys(userAnswers).length;
+            if (totalAnswered === 10) {
+                const score = Object.values(userAnswers).filter(Boolean).length;
+                const summaryBox = document.getElementById('score-summary');
+                const scoreText = document.getElementById('final-score-text');
+                const msgText = document.getElementById('feedback-message');
+                const rewardSection = document.getElementById('reward-section');
+
+                const currentReward = universityRewards[currentSetKey];
+                scoreText.innerText = `${score} / 10`;
+
+                // Log legitimate set completion into audit record
+                trackSetCompletion(currentSetKey, score, 10);
+                
+                if (score === 10) {
+                    document.getElementById(currentReward.badgeId).classList.add('unlocked');
+                    
+                    msgText.innerHTML = `<span style="color: ${currentReward.color}; font-weight:bold;">Congratulations! Perfect Score!</span> You unlocked the official <strong>${currentReward.name}</strong> reward logo!`;
+                    
+                    rewardSection.innerHTML = `
+                        <div class="reward-badge-container" style="border-color: ${currentReward.color};">
+                            <img src="${currentReward.img}" alt="${currentReward.name}">
+                            <h3 style="color: ${currentReward.color};">${currentReward.name}</h3>
+                            <p style="margin: 0; font-weight: bold; color: green;">🏆 100% Mastery Unlocked!</p>
+                        </div>
+                    `;
+                } else {
+                    rewardSection.innerHTML = ``;
+                    msgText.innerText = `You scored ${score}/10. Score 10/10 on this set to unlock the ${currentReward.name} badge!`;
+                }
+
+                summaryBox.style.display = 'block';
+                summaryBox.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function resetCurrentSet() {
+            trackManualReset(currentSetKey);
+            loadSet(currentSetKey);
+        }
+
+        // Initialize application on page load
+        window.onload = initApp;
+    </script>
+</body>
+</html>
