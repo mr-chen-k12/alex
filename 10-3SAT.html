@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAT Reading Practice - 10-3Reading</title>
+    <style>
+        :root {
+            --primary-color: #a51c30; /* Default Harvard Crimson */
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --success-color: #27ae60;
+            --danger-color: #c0392b;
+            --warning-color: #f39c12;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Anti-Cheating Teacher Inspection Panel (?check=true) */
+        .audit-banner {
+            display: none;
+            background-color: #1e293b;
+            color: #ffffff;
+            padding: 20px;
+            border-bottom: 5px solid #ef4444;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+        .audit-banner.active {
+            display: block;
+        }
+
+        .audit-container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .audit-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .audit-title h2 {
+            margin: 0;
+            font-size: 1.3rem;
+            color: #f59e0b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .audit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .audit-card {
+            background: #334155;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .audit-card.flagged {
+            border-left-color: #ef4444;
+            background: #451a1d;
+        }
+
+        .audit-card .num {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .audit-card .label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        .audit-log-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            margin-top: 10px;
+            background: #0f172a;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .audit-log-table th, .audit-log-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .audit-log-table th {
+            background-color: #020617;
+            color: #f59e0b;
+        }
+
+        .btn-clear-audit {
+            background-color: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        /* Header Layout */
+        header {
+            background-color: #ffffff;
+            border-bottom: 4px solid var(--primary-color);
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: border-color 0.3s;
+        }
+
+        .header-container {
+            max-width: 950px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-title h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: #1a252f;
+        }
+
+        .header-title p {
+            margin: 5px 0 0;
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+
+        .badges-preview {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .badge-item {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            opacity: 0.35;
+            transition: opacity 0.3s;
+        }
+
+        .badge-item.unlocked {
+            opacity: 1;
+        }
+
+        .badge-item img {
+            height: 38px;
+            display: block;
+            margin: 0 auto 3px;
+        }
+
+        /* Controls Bar */
+        .controls-bar {
+            max-width: 950px;
+            margin: 25px auto 10px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .selector-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 1.05rem;
+        }
+
+        select {
+            padding: 10px 18px;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 2px solid var(--primary-color);
+            background-color: #fff;
+            cursor: pointer;
+            outline: none;
+            font-weight: 600;
+            transition: border-color 0.3s;
+        }
+
+        .score-tracker {
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: #ffffff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: 1px solid #dcdde1;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            max-width: 950px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-left: 6px solid var(--primary-color);
+            transition: border-color 0.3s;
+        }
+
+        .question-number {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #7f8c8d;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .passage {
+            background-color: #f8f9fa;
+            padding: 18px;
+            border-radius: 8px;
+            font-size: 0.98rem;
+            margin-bottom: 18px;
+            border-left: 4px solid #bdc3c7;
+            line-height: 1.65;
+        }
+
+        .question-text {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 15px;
+        }
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            text-align: left;
+            padding: 12px 18px;
+            border: 1px solid #dcdde1;
+            border-radius: 6px;
+            background-color: #fff;
+            cursor: pointer;
+            font-size: 0.98rem;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            background-color: #ebf5fb;
+            border-color: #2980b9;
+        }
+
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            border-color: var(--success-color) !important;
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .option-btn.incorrect {
+            background-color: #f8d7da !important;
+            border-color: var(--danger-color) !important;
+            color: #721c24;
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .feedback-box.correct-fb {
+            background-color: #e8f8f5;
+            color: #117864;
+            border: 1px solid #a3e4d7;
+        }
+
+        .feedback-box.incorrect-fb {
+            background-color: #fadbd8;
+            color: #78281f;
+            border: 1px solid #f5b7b1;
+        }
+
+        /* Summary & Badge Unlocks */
+        .score-summary-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            display: none;
+        }
+
+        .score-summary-card h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .score-display {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: var(--primary-color);
+        }
+
+        .reward-badge-container {
+            margin: 25px 0;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fcfcfc;
+            border: 2px dashed #bdc3c7;
+            display: inline-block;
+            min-width: 280px;
+        }
+
+        .reward-badge-container img {
+            max-height: 100px;
+            margin-bottom: 10px;
+        }
+
+        .reward-badge-container h3 {
+            margin: 5px 0;
+            font-size: 1.3rem;
+        }
+
+        .btn-retry {
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-retry:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Teacher Audit Dashboard (Activated via ?check=true in URL) -->
+    <div id="teacher-audit-panel" class="audit-banner">
+        <div class="audit-container">
+            <div class="audit-title">
+                <h2>🕵‍♂️ Teacher Audit Dashboard <span style="font-size: 0.8rem; color:#94a3b8;">(?check=true active)</span></h2>
+                <button class="btn-clear-audit" onclick="clearAuditLog()">Clear Audit Logs</button>
+            </div>
+            
+            <div class="audit-grid">
+                <div class="audit-card" id="card-total-refreshes">
+                    <div class="num" id="stat-total-refreshes">0</div>
+                    <div class="label">Total Page Refreshes</div>
+                </div>
+                <div class="audit-card" id="card-mid-refreshes">
+                    <div class="num" id="stat-mid-refreshes">0</div>
+                    <div class="label">Mid-Attempt Refreshes</div>
+                </div>
+                <div class="audit-card">
+                    <div class="num" id="stat-manual-resets">0</div>
+                    <div class="label">Manual Reset Clicks</div>
+                </div>
+                <div class="audit-card" id="card-risk-status">
+                    <div class="num" id="stat-risk-level" style="font-size: 1.2rem; margin-top: 8px;">Clear</div>
+                    <div class="label">Cheating Risk Assessment</div>
+                </div>
+            </div>
+
+            <div style="font-weight: bold; margin-bottom: 6px; color: #f59e0b;">Student Event Log:</div>
+            <table class="audit-log-table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Event Type</th>
+                        <th>Activity Details / Progress</th>
+                    </tr>
+                </thead>
+                <tbody id="audit-log-rows">
+                    <tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <div class="header-title">
+                <h1>Digital SAT Reading Module</h1>
+                <p>30 Questions • Sets A, B & C • Integrity-Tracked Assessment</p>
+            </div>
+            <div class="badges-preview">
+                <div class="badge-item" id="badge-harvard">
+                    <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard">
+                    <span>Harvard</span>
+                </div>
+                <div class="badge-item" id="badge-bu">
+                    <img src="https://mr-chen-k12.github.io/books/IMG_0121.png" alt="Boston University">
+                    <span>Boston Univ.</span>
+                </div>
+                <div class="badge-item" id="badge-yale">
+                    <img src="https://mr-chen-k12.github.io/books/IMG_0122.png" alt="Yale">
+                    <span>Yale</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+        <div class="selector-group">
+            <label for="set-select">Choose Question Set:</label>
+            <select id="set-select" onchange="switchSet(this.value)">
+                <option value="Set A">Set A (10 Questions)</option>
+                <option value="Set B">Set B (10 Questions)</option>
+                <option value="Set C">Set C (10 Questions)</option>
+            </select>
+        </div>
+        <div class="score-tracker" id="score-tracker">
+            Score: 0 / 10
+        </div>
+    </div>
+
+    <!-- Main Practice Area -->
+    <main class="quiz-container">
+        <div id="questions-wrapper"></div>
+
+        <div id="score-summary" class="score-summary-card">
+            <h2>Set Complete!</h2>
+            <p>Your Final Score for this set:</p>
+            <div class="score-display" id="final-score-text">0 / 10</div>
+            
+            <div id="reward-section"></div>
+
+            <p id="feedback-message" style="font-size: 1.1rem; font-weight: 500;"></p>
+            <button class="btn-retry" onclick="resetCurrentSet()">Try This Set Again</button>
+        </div>
+    </main>
+
+    <script>
+        // University Reward Logos & Color Themes
+        const universityRewards = {
+            "Set A": {
+                name: "Harvard University",
+                img: "https://mr-chen-k12.github.io/math/IMG_0232.png",
+                color: "#a51c30",
+                badgeId: "badge-harvard"
+            },
+            "Set B": {
+                name: "Boston University",
+                img: "https://mr-chen-k12.github.io/books/IMG_0121.png",
+                color: "#CC0000",
+                badgeId: "badge-bu"
+            },
+            "Set C": {
+                name: "Yale University",
+                img: "https://mr-chen-k12.github.io/books/IMG_0122.png",
+                color: "#00356B",
+                badgeId: "badge-yale"
+            }
+        };
+
+        // Anti-Cheating & Audit Storage Keys
+        const AUDIT_STORAGE_KEY = 'sat_audit_tracker_103';
+        const ACTIVE_PROGRESS_KEY = 'sat_active_progress_103';
+
+        function getAuditData() {
+            const stored = localStorage.getItem(AUDIT_STORAGE_KEY);
+            return stored ? JSON.parse(stored) : {
+                totalRefreshes: 0,
+                midQuizRefreshes: 0,
+                manualResets: 0,
+                events: []
+            };
+        }
+
+        function saveAuditData(data) {
+            localStorage.setItem(AUDIT_STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function trackPageLoad(setName) {
+            let audit = getAuditData();
+            audit.totalRefreshes += 1;
+
+            // Detect if student refreshed mid-quiz before finishing
+            const activeProgress = localStorage.getItem(ACTIVE_PROGRESS_KEY);
+            if (activeProgress) {
+                const prog = JSON.parse(activeProgress);
+                const answeredCount = Object.keys(prog.answers || {}).length;
+                
+                // Flag suspicious reload if 1-9 questions answered before refresh
+                if (answeredCount > 0 && answeredCount < 10) {
+                    audit.midQuizRefreshes += 1;
+                    audit.events.unshift({
+                        timestamp: new Date().toLocaleString(),
+                        type: '⚠️ SUSPICIOUS REFRESH',
+                        detail: `Refreshed page mid-quiz during ${prog.setName} at Q${answeredCount + 1} (${answeredCount}/10 answered)`
+                    });
+                }
+            } else {
+                audit.events.unshift({
+                    timestamp: new Date().toLocaleString(),
+                    type: 'PAGE_LOAD',
+                    detail: `Opened or reloaded page on ${setName}`
+                });
+            }
+
+            saveAuditData(audit);
+            renderAuditDashboard();
+        }
+
+        function trackAnswerProgress(setName, answersObj) {
+            localStorage.setItem(ACTIVE_PROGRESS_KEY, JSON.stringify({
+                setName: setName,
+                answers: answersObj,
+                lastUpdated: new Date().toISOString()
+            }));
+        }
+
+        function trackSetCompletion(setName, score, total) {
+            let audit = getAuditData();
+            audit.events.unshift({
+                timestamp: new Date().toLocaleString(),
+                type: 'SET_COMPLETED',
+                detail: `Completed ${setName} - Final Score: ${score}/${total}`
+            });
+            saveAuditData(audit);
+            localStorage.removeItem(ACTIVE_PROGRESS_KEY); // Clear active attempt on legitimate completion
+            renderAuditDashboard();
+        }
+
+        function trackManualReset(setName) {
+            let audit = getAuditData();
+            audit.manualResets += 1;
+            audit.events.unshift({
+                timestamp: new Date().toLocaleString(),
+                type: 'MANUAL_RESET',
+                detail: `Student clicked 'Try This Set Again' button for ${setName}`
+            });
+            saveAuditData(audit);
+            localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+            renderAuditDashboard();
+        }
+
+        function renderAuditDashboard() {
+            const audit = getAuditData();
+            document.getElementById('stat-total-refreshes').innerText = audit.totalRefreshes;
+            document.getElementById('stat-mid-refreshes').innerText = audit.midQuizRefreshes;
+            document.getElementById('stat-manual-resets').innerText = audit.manualResets;
+
+            const riskCard = document.getElementById('card-risk-status');
+            const midCard = document.getElementById('card-mid-refreshes');
+            const riskText = document.getElementById('stat-risk-level');
+
+            if (audit.midQuizRefreshes > 0) {
+                riskText.innerText = "⚠️ High Risk (Skeptical)";
+                riskText.style.color = "#ef4444";
+                riskCard.classList.add('flagged');
+                midCard.classList.add('flagged');
+            } else if (audit.totalRefreshes > 5) {
+                riskText.innerText = "⚡ Frequent Refreshes";
+                riskText.style.color = "#f59e0b";
+                riskCard.classList.remove('flagged');
+                midCard.classList.remove('flagged');
+            } else {
+                riskText.innerText = "✅ Normal / Clean";
+                riskText.style.color = "#10b981";
+                riskCard.classList.remove('flagged');
+                midCard.classList.remove('flagged');
+            }
+
+            const tbody = document.getElementById('audit-log-rows');
+            if (audit.events.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr>`;
+            } else {
+                tbody.innerHTML = audit.events.slice(0, 15).map(evt => `
+                    <tr>
+                        <td style="white-space:nowrap; color:#94a3b8;">${evt.timestamp}</td>
+                        <td style="font-weight:bold; color:${evt.type.includes('SUSPICIOUS') ? '#ef4444' : (evt.type.includes('COMPLETED') ? '#10b981' : '#f59e0b')};">${evt.type}</td>
+                        <td>${evt.detail}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function clearAuditLog() {
+            if (confirm("Clear all local storage audit tracking data?")) {
+                localStorage.removeItem(AUDIT_STORAGE_KEY);
+                localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+                renderAuditDashboard();
+            }
+        }
+
+        // --- Question Bank (30 Digital SAT Reading Questions) ---
+        const questionBank = {
+            "Set A": [
+                {
+                    id: 1,
+                    passage: "In public speaking, effective orators utilize strategic rhetorical pauses—deliberate silence inserted before or after key assertions. Rather than signaling hesitation, these intentional pauses heighten listener anticipation, emphasize crucial arguments, and allow the audience time to mentally process complex ideas.",
+                    question: "According to the passage, what primary purpose do strategic rhetorical pauses serve in public speaking?",
+                    options: [
+                        "A) They demonstrate that the speaker needs time to recall forgotten notes.",
+                        "B) They heighten listener anticipation and emphasize key arguments.",
+                        "C) They prevent audience members from asking unexpected questions.",
+                        "D) They replace the need for clear vocal articulation and tone variation."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The passage notes that deliberate pauses heighten listener anticipation and emphasize crucial arguments."
+                },
+                {
+                    id: 2,
+                    passage: "Underground mycorrhizal fungi networks establish symbiotic links between neighboring tree roots in forest ecosystems. Through these fungal highways, mature canopy trees actively transfer excess carbohydrates and carbon to shaded saplings, significantly enhancing sapling survival rates.",
+                    question: "The passage indicates that mycorrhizal fungi networks assist young saplings primarily by:",
+                    options: [
+                        "A) Blocking direct sunlight from reaching forest undergrowth.",
+                        "B) Facilitating nutrient and carbon transfer from mature trees to saplings.",
+                        "C) Absorbing excess water to prevent soil flooding around roots.",
+                        "D) Eliminating herbivorous insect populations near tree trunks."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The text states mature canopy trees transfer excess carbohydrates and carbon to shaded saplings through the fungal network."
+                },
+                {
+                    id: 3,
+                    passage: "In her 1792 treatise *A Vindication of the Rights of Woman*, Mary Wollstonecraft argued that contemporary educational systems intentionally kept women frivolous and dependent. She contended that providing women with rigorous intellectual instruction was essential for cultivating moral virtue and societal progress.",
+                    question: "Wollstonecraft's central argument in the passage is that educational reform for women is necessary to:",
+                    options: [
+                        "A) Maintain traditional 18th-century social hierarchies.",
+                        "B) Promote intellectual rigor, moral virtue, and social progress.",
+                        "C) Encourage domestic dependency over academic achievements.",
+                        "D) Replace public school systems entirely with private tutoring."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Wollstonecraft argued that rigorous intellectual instruction for women fosters moral virtue and societal progress."
+                },
+                {
+                    id: 4,
+                    passage: "Along the ancient Silk Road trading routes, merchants transported luxury commodities like silk, spices, and glass across Eurasia. Equally significant was the inadvertent exchange of ideas, religious philosophies, and agricultural techniques that permanently reshaped Eurasian civilizations.",
+                    question: "Which choice best summarizes the broader significance of the Silk Road as described in the text?",
+                    options: [
+                        "A) It functioned exclusively as a monetary trade route for rare minerals.",
+                        "B) It facilitated both commercial exchange and profound cross-cultural diffusion.",
+                        "C) It caused severe economic isolation among Mediterranean city-states.",
+                        "D) It restricted agricultural technology to eastern East Asia."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The passage emphasizes that along with luxury commodities, the Silk Road facilitated cultural, religious, and agricultural exchanges."
+                },
+                {
+                    id: 5,
+                    passage: "The sudden collapse of negotiations between the railway union and management served to precipitate a nationwide transit strike that halted freight transport for over two weeks.",
+                    question: "As used in the text, what does 'precipitate' most nearly mean?",
+                    options: ["A) Trigger or hasten", "B) Delay", "C) Predict", "D) Resolve"],
+                    answer: 0,
+                    explanation: "Correct! In this context, 'precipitate' means to bring about, trigger, or cause to happen suddenly."
+                },
+                {
+                    id: 6,
+                    passage: "Lithium-sulfur (Li-S) battery technology offers a theoretical energy density nearly five times greater than conventional lithium-ion cells. However, practical application has been limited by the 'polysulfide shuttle effect,' wherein dissolved sulfur compounds degrade the anode, drastically reducing cycle life.",
+                    question: "According to the passage, what key challenge limits the commercial adoption of lithium-sulfur batteries?",
+                    options: [
+                        "A) Their theoretical energy density is lower than lithium-ion cells.",
+                        "B) The polysulfide shuttle effect degrades the anode and reduces battery life.",
+                        "C) Sulfur is extremely rare and expensive to extract.",
+                        "D) Li-S batteries cannot function at standard room temperatures."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The text states that the polysulfide shuttle effect degrades the anode and drastically reduces cycle life."
+                },
+                {
+                    id: 7,
+                    passage: "Urban heat islands occur when dense concrete infrastructure absorbs solar radiation, raising city temperatures higher than surrounding rural areas. Environmental engineers demonstrated that installing highly reflective 'cool roofs' reduced urban surface temperatures by up to 11°F.",
+                    question: "Which choice, if true, would most directly support the environmental engineers' claims about cool roofs?",
+                    options: [
+                        "A) Neighborhoods with cool roof retrofits saw roof surface temperatures drop by 10.5°F and reduced AC energy consumption by 22%.",
+                        "B) Reflective paint costs slightly more than standard dark asphalt shingles.",
+                        "C) Rural areas naturally experience lower wind speeds than urban downtown areas.",
+                        "D) Solar panel installations generate renewable electricity on residential roofs."
+                    ],
+                    answer: 0,
+                    explanation: "Correct! Showing measurable temperature drops and energy reductions on retrofitted cool roofs directly supports the claims."
+                },
+                {
+                    id: 8,
+                    passage: "Using spectroscopic instruments aboard the James Webb Space Telescope, astronomers analyzed light passing through the atmosphere of exoplanet WASP-96b. The resulting transmission spectrum revealed clear molecular signatures of water vapor, disproving prior models that suggested the planet was completely arid.",
+                    question: "The JWST atmospheric analysis of WASP-96b was significant because it:",
+                    options: [
+                        "A) Confirmed the planet supported liquid surface oceans and plant life.",
+                        "B) Revealed water vapor signatures that overturned prior assumptions of aridity.",
+                        "C) Proved that WASP-96b orbits our solar system's sun.",
+                        "D) Detected industrial artificial satellite emissions in deep space."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The transmission spectrum revealed water vapor signatures, disproving previous arid planet models."
+                },
+                {
+                    id: 9,
+                    passage: "In Herman Melville's 1851 novel *Moby-Dick*, Captain Ahab's obsessive pursuit of the white whale symbolizes humanity's futile struggle against the inscrutable forces of nature and fate.",
+                    question: "Which choice best describes the symbolic meaning of Moby Dick as discussed in the passage?",
+                    options: [
+                        "A) The commercial profitability of 19th-century whaling industries.",
+                        "B) The inscrutable and unconquerable power of nature and fate.",
+                        "C) The technological superiority of American naval vessels.",
+                        "D) The harmonious coexistence between humanity and wildlife."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Melville uses Ahab's chase of the white whale to symbolize humanity's struggle against nature and fate."
+                },
+                {
+                    id: 10,
+                    passage: "As keystone predators in North Pacific coastal ecosystems, sea otters feed on herbivorous sea urchins. In areas where otter populations declined, unchecked sea urchin grazing destroyed coastal kelp forests, creating underwater barrens devoid of marine biodiversity.",
+                    question: "According to the passage, the absence of sea otters leads to:",
+                    options: [
+                        "A) Rapid expansion of lush underwater kelp forests.",
+                        "B) Overpopulation of sea urchins that decimate kelp forest ecosystems.",
+                        "C) An increase in coastal commercial fish populations.",
+                        "D) A reduction in ocean water salinity."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Without sea otters to prey on them, sea urchin populations explode and decimate kelp forests."
+                }
+            ],
+            "Set B": [
+                {
+                    id: 1,
+                    passage: "The suprachiasmatic nucleus (SCN) in the hypothalamus regulates human circadian rhythms by responding to ambient light cues. Exposure to short-wavelength blue light from digital screens in the evening suppresses melatonin production, delaying sleep onset.",
+                    question: "Evening exposure to blue light disrupts sleep primarily by:",
+                    options: [
+                        "A) Elevating daytime alertness levels in the early morning.",
+                        "B) Suppressing melatonin production regulated by the suprachiasmatic nucleus.",
+                        "C) Increasing deep REM sleep cycles prematurely.",
+                        "D) Lowering body temperature below normal metabolic baselines."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The passage explicitly states blue light suppresses melatonin production, delaying sleep onset."
+                },
+                {
+                    id: 2,
+                    passage: "In Jane Austen's 1813 novel *Pride and Prejudice*, Mr. Darcy's initial haughty disdain for Elizabeth Bennet's modest social standing reflects the rigid class prejudices of Regency England, which Elizabeth counters with her sharp wit and independence.",
+                    question: "Austen utilizes the dynamic between Darcy and Elizabeth primarily to explore:",
+                    options: [
+                        "A) The economic instability of British naval officers.",
+                        "B) Social class prejudices and individual intellectual independence.",
+                        "C) The political battles of parliamentary elections.",
+                        "D) The transition from agrarian farming to industrial manufacturing."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The interaction highlights rigid class prejudice countered by independence and wit."
+                },
+                {
+                    id: 3,
+                    passage: "The 'tragedy of the commons' occurs when individual users, acting independently according to their self-interest, deplete a shared finite resource, such as international ocean fisheries, even when it is clear that collapse harms the collective group.",
+                    question: "Which scenario best illustrates the 'tragedy of the commons'?",
+                    options: [
+                        "A) A private farm owner rotationally grazes livestock to preserve soil fertility.",
+                        "B) Multiple competing fishing fleets overfish open ocean waters to depletion.",
+                        "C) A government establishes protected national park reserves.",
+                        "D) A company invests in solar technology to reduce factory emissions."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Competing fishing fleets overharvesting shared open waters perfectly exemplifies the tragedy of the commons."
+                },
+                {
+                    id: 4,
+                    passage: "Multiple independent clinical trials served to corroborate the hypothesis that regular moderate cardiovascular exercise improves executive cognitive function in older adults.",
+                    question: "As used in the text, what does 'corroborate' most nearly mean?",
+                    options: ["A) Confirm or support", "B) Question", "C) Complicate", "D) Dismiss"],
+                    answer: 0,
+                    explanation: "Correct! 'Corroborate' means to confirm, support, or substantiate with evidence."
+                },
+                {
+                    id: 5,
+                    passage: "Coastal mangrove forests act as vital blue carbon sinks, trapping organic sediment in their dense root systems. Researchers estimated that mangroves sequester carbon at rates up to four times higher per hectare than terrestrial tropical rainforests.",
+                    question: "According to the passage, mangrove forests are particularly effective at carbon sequestration because they:",
+                    options: [
+                        "A) Grow exclusively in dry desert topsoils.",
+                        "B) Trap organic sediment in roots, sequestering carbon faster than rainforests.",
+                        "C) Release captured carbon directly into coastal atmosphere.",
+                        "D) Prevent marine algae from absorbing sunlight."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Mangroves trap organic sediment in dense roots, sequestering carbon up to four times faster than tropical rainforests."
+                },
+                {
+                    id: 6,
+                    passage: "In 1799, French soldiers in Egypt uncovered the Rosetta Stone, a granodiorite stele inscribed with a decree in three scripts: Ancient Greek, Demotic, and Hieroglyphic. Because scholars understood Ancient Greek, Jean-François Champollion deciphered Egyptian hieroglyphs in 1822.",
+                    question: "The Rosetta Stone was crucial for deciphering hieroglyphs primarily because:",
+                    options: [
+                        "A) It was the only written artifact surviving from ancient Egypt.",
+                        "B) It contained the same text in Greek, enabling cross-translation of hieroglyphs.",
+                        "C) It proved that hieroglyphs were purely decorative artistic drawings.",
+                        "D) It was written entirely in modern European languages."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The parallel text in known Ancient Greek allowed Champollion to decipher the unknown hieroglyphic script."
+                },
+                {
+                    id: 7,
+                    passage: "Superconductors expel internal magnetic fields when cooled below a critical temperature—a phenomenon known as the Meissner effect. This quantum property allows superconducting materials to levitate above permanent magnets without physical contact.",
+                    question: "The Meissner effect enables quantum levitation by causing superconductors to:",
+                    options: [
+                        "A) Absorb heat from surrounding copper wiring.",
+                        "B) Expel internal magnetic fields when cooled below critical temperatures.",
+                        "C) Increase electrical resistance to maximum capacity.",
+                        "D) Dissolve permanent magnetic minerals."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The text states that expelling internal magnetic fields (Meissner effect) enables magnetic levitation."
+                },
+                {
+                    id: 8,
+                    passage: "In cognitive psychology, 'cognitive dissonance' describes the psychological discomfort felt when holding two contradictory beliefs simultaneously. To alleviate this tension, individuals often rationalize their behavior or discount conflicting facts.",
+                    question: "According to the passage, individuals typically resolve cognitive dissonance by:",
+                    options: [
+                        "A) Seeking out additional facts that disprove their assumptions.",
+                        "B) Rationalizing their actions or dismissing contradictory information.",
+                        "C) Experiencing permanent memory loss regarding the decision.",
+                        "D) Increasing psychological discomfort deliberately."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! To reduce discomfort, people rationalize their behavior or discount conflicting evidence."
+                },
+                {
+                    id: 9,
+                    passage: "CRISPR-Cas9 base editors allow scientists to make precise single-nucleotide conversions in DNA without creating double-stranded breaks. This precision lowers the risk of unintended off-target mutations during genetic gene therapy treatments.",
+                    question: "What primary advantage of CRISPR base editors is highlighted in the text?",
+                    options: [
+                        "A) They eliminate the need for cellular DNA in genetic research.",
+                        "B) They convert single nucleotides precisely without double-stranded breaks.",
+                        "C) They increase off-target genomic mutations for diversity.",
+                        "D) They function only in non-living viral proteins."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Base editors allow precise single-letter conversions without double-stranded breaks, reducing off-target risks."
+                },
+                {
+                    id: 10,
+                    passage: "A study on freshwater ecosystems measured microplastic concentrations across aquatic food webs. Researchers found that apex predator fish contained 100 times higher microplastic particles per gram of tissue than herbivorous zooplankton.",
+                    question: "Which choice best describes the process illustrated by the study's findings?",
+                    options: [
+                        "A) Biomagnification of microplastics as they move up trophic levels.",
+                        "B) Natural biodegradation of plastics by apex predator digestive systems.",
+                        "C) Equal distribution of pollutants across all lake organisms.",
+                        "D) Rapid elimination of synthetic fibers by zooplankton."
+                    ],
+                    answer: 0,
+                    explanation: "Correct! Higher concentrations in apex predators compared to lower-level zooplankton demonstrates biomagnification."
+                }
+            ],
+            "Set C": [
+                {
+                    id: 1,
+                    passage: "Carbon pricing mechanisms, such as cap-and-trade systems, assign a financial cost to greenhouse gas emissions. By capping total allowable emissions and allowing firms to trade carbon credits, market incentives encourage industrial facilities to adopt low-emission technologies.",
+                    question: "Cap-and-trade systems reduce emissions primarily by:",
+                    options: [
+                        "A) Mandating identical factory designs for all manufacturing corporations.",
+                        "B) Using market incentives and tradable emission allowances to encourage clean tech.",
+                        "C) Imposing complete bans on industrial energy consumption.",
+                        "D) Subsidizing fossil fuel extraction in coastal waters."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Cap-and-trade uses market incentives and emission credit trading to drive technology adoption."
+                },
+                {
+                    id: 2,
+                    passage: "In Ralph Ellison's 1952 novel *Invisible Man*, the unnamed protagonist's invisibility is not literal, but figurative—a consequence of white society's refusal to recognize his individuality beyond racial stereotypes.",
+                    question: "Ellison uses the concept of 'invisibility' primarily as a metaphor for:",
+                    options: [
+                        "A) A scientific experiment involving optical camouflage.",
+                        "B) Societal refusal to acknowledge Black individuality beyond stereotypes.",
+                        "C) The financial secrecy of 20th-century banking institutions.",
+                        "D) Physical isolation in rural farming communities."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The protagonist's invisibility represents society's refusal to perceive his true identity beyond racial stereotypes."
+                },
+                {
+                    id: 3,
+                    passage: "Massive galaxy clusters curve space-time around them, acting as gravitational lenses that bend and amplify light from background galaxies. This natural phenomenon enables astronomers to observe faint early-universe galaxies that would otherwise remain invisible.",
+                    question: "Gravitational lensing benefits astronomers primarily by:",
+                    options: [
+                        "A) Preventing interstellar gas clouds from blocking radio signals.",
+                        "B) Bending and magnifying light to reveal distant, faint background galaxies.",
+                        "C) Cooling high-temperature cosmic dust in nearby nebulae.",
+                        "D) Eliminating optical noise from terrestrial telescope lenses."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Gravitational lenses bend and magnify light, acting as natural cosmic magnifying glasses for faint distant galaxies."
+                },
+                {
+                    id: 4,
+                    passage: "Desert wildflower superblooms are inherently ephemeral events; dormant seeds germinate rapidly after rare spring rains, blossom into vibrant carpets for a few brief weeks, and set seeds before scorching heat arrives.",
+                    question: "As used in the text, what does 'ephemeral' most nearly mean?",
+                    options: ["A) Short-lived or fleeting", "B) Continuous", "C) Destructive", "D) Predictable"],
+                    answer: 0,
+                    explanation: "Correct! 'Ephemeral' means lasting for a very short time, fleeting, or short-lived."
+                },
+                {
+                    id: 5,
+                    passage: "The Hawaiian Island chain was formed as the Pacific tectonic plate slowly drifted northwestward over a stationary mantle plume. As magma erupted through the oceanic crust, it constructed a linear sequence of volcanic islands varying systematically in age.",
+                    question: "The geological formation of the Hawaiian Islands is attributed to:",
+                    options: [
+                        "A) Tectonic plate collisions collapsing continental mountain ranges.",
+                        "B) A Pacific plate moving over a stationary subterranean mantle plume.",
+                        "C) Sudden ocean floor dropping due to glacial melting.",
+                        "D) Meteorite impacts fracturing deep ocean beds."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The text explains the Pacific plate drifted over a stationary mantle plume, creating the island chain."
+                },
+                {
+                    id: 6,
+                    passage: "Sociological studies on the 'digital divide' reveal that disparities in high-speed broadband access correlate strongly with educational outcomes. Rural students without reliable internet face substantial hurdles in completing digital coursework compared to suburban peers.",
+                    question: "The passage suggests that the 'digital divide' impacts education primarily by:",
+                    options: [
+                        "A) Forcing suburban schools to eliminate online learning tools.",
+                        "B) Disadvantaging students without reliable broadband in completing coursework.",
+                        "C) Equalizing academic performance across urban and rural districts.",
+                        "D) Reducing the overall time students spend reading physical books."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Students lacking reliable broadband face significant disadvantages in completing online coursework."
+                },
+                {
+                    id: 7,
+                    passage: "Working memory has a limited capacity, typically holding about 4 to 7 items simultaneously. Cognitive scientists demonstrated that 'chunking'—organizing individual numbers or letters into meaningful groups—significantly expands effective working memory recall.",
+                    question: "The technique of 'chunking' improves working memory performance by:",
+                    options: [
+                        "A) Replacing short-term memory with permanent neural storage.",
+                        "B) Grouping individual items into meaningful units to overcome capacity limits.",
+                        "C) Preventing the brain from processing visual information.",
+                        "D) Doubling the physical speed of neural impulse transmission."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Chunking groups isolated data into meaningful clusters, allowing more information to be held in working memory."
+                },
+                {
+                    id: 8,
+                    passage: "In Willa Cather's 1913 novel *O Pioneers!*, protagonist Alexandra Bergson's unwavering commitment to farming the Nebraska frontier during economic hardship highlights themes of human resilience and deep connection to the land.",
+                    question: "Which theme is central to Cather's novel based on the passage?",
+                    options: [
+                        "A) The quick financial gains of urban real estate speculation.",
+                        "B) Human resilience and deep connection to the land despite hardship.",
+                        "C) The abandonment of rural agricultural life for industrial factory work.",
+                        "D) The decline of European artistic traditions in America."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The text highlights Alexandra's commitment to farming, symbolizing resilience and connection to the land."
+                },
+                {
+                    id: 9,
+                    passage: "Competitive enzyme inhibitors bind directly to an enzyme's active site, blocking substrate molecules from attaching. In contrast, non-competitive inhibitors bind to an allosteric site, altering the enzyme's three-dimensional shape so the active site no longer functions effectively.",
+                    question: "Unlike competitive inhibitors, non-competitive inhibitors affect enzymes by:",
+                    options: [
+                        "A) Binding to the active site in place of substrate molecules.",
+                        "B) Attaching to an allosteric site and altering the enzyme's structural shape.",
+                        "C) Increasing the overall rate of enzymatic reactions.",
+                        "D) Permanently destroying all cellular protein synthesis."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! Non-competitive inhibitors attach to an allosteric site rather than the active site, altering the enzyme's shape."
+                },
+                {
+                    id: 10,
+                    passage: "Regenerative agriculture emphasizes minimal soil disturbance, cover cropping, and crop rotation. Long-term field trials established that regenerative practices increased soil organic carbon retention by 28% over ten years compared to conventional intensive farming.",
+                    question: "Which statement is best supported by the long-term field trial results?",
+                    options: [
+                        "A) Intensive plowing retains significantly more carbon than cover cropping.",
+                        "B) Regenerative farming practices enhance soil organic carbon retention over time.",
+                        "C) Cover crops deplete subterranean groundwater reserves.",
+                        "D) Crop rotation reduces soil biological activity."
+                    ],
+                    answer: 1,
+                    explanation: "Correct! The trial results showed a 28% increase in soil organic carbon retention using regenerative agriculture."
+                }
+            ]
+        };
+
+        // --- Application State & Execution Logic ---
+        let currentSetKey = "Set A";
+        let userAnswers = {};
+
+        function initApp() {
+            // Check for ?check=true parameter in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('check') === 'true') {
+                document.getElementById('teacher-audit-panel').classList.add('active');
+            }
+
+            // Log page load for audit tracker
+            trackPageLoad(currentSetKey);
+
+            // Load Set A as default
+            loadSet(currentSetKey);
+        }
+
+        function switchSet(setName) {
+            currentSetKey = setName;
+            loadSet(setName);
+        }
+
+        function loadSet(setName) {
+            userAnswers = {};
+            document.getElementById('score-summary').style.display = 'none';
+            
+            // Apply theme color based on current university reward
+            const reward = universityRewards[setName];
+            document.documentElement.style.setProperty('--primary-color', reward.color);
+
+            updateScoreDisplay();
+
+            const container = document.getElementById('questions-wrapper');
+            container.innerHTML = '';
+
+            const questions = questionBank[setName];
+
+            questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `q-card-${index}`;
+
+                card.innerHTML = `
+                    <div class="question-number">Question ${index + 1} of 10</div>
+                    <div class="passage">${q.passage}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options-group" id="options-${index}">
+                        ${q.options.map((opt, optIdx) => `
+                            <button class="option-btn" onclick="selectAnswer(${index}, ${optIdx})">
+                                ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div class="feedback-box" id="feedback-${index}"></div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function selectAnswer(questionIdx, selectedOptIdx) {
+            if (userAnswers.hasOwnProperty(questionIdx)) return; // Lock choices once selected
+
+            const qData = questionBank[currentSetKey][questionIdx];
+            const isCorrect = selectedOptIdx === qData.answer;
+            userAnswers[questionIdx] = isCorrect;
+
+            // Save state in active attempt tracker
+            trackAnswerProgress(currentSetKey, userAnswers);
+
+            const optionsGroup = document.getElementById(`options-${questionIdx}`);
+            const buttons = optionsGroup.getElementsByClassName('option-btn');
+
+            Array.from(buttons).forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === qData.answer) {
+                    btn.classList.add('correct');
+                } else if (idx === selectedOptIdx && !isCorrect) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            const fbBox = document.getElementById(`feedback-${questionIdx}`);
+            fbBox.classList.add('show');
+            if (isCorrect) {
+                fbBox.classList.add('correct-fb');
+                fbBox.innerHTML = `<strong>✓ Correct!</strong> ${qData.explanation}`;
+            } else {
+                fbBox.classList.add('incorrect-fb');
+                fbBox.innerHTML = `<strong>✗ Incorrect.</strong> ${qData.explanation}`;
+            }
+
+            updateScoreDisplay();
+            checkSetCompletion();
+        }
+
+        function updateScoreDisplay() {
+            const correctCount = Object.values(userAnswers).filter(Boolean).length;
+            document.getElementById('score-tracker').innerText = `Score: ${correctCount} / 10`;
+        }
+
+        function checkSetCompletion() {
+            const totalAnswered = Object.keys(userAnswers).length;
+            if (totalAnswered === 10) {
+                const score = Object.values(userAnswers).filter(Boolean).length;
+                const summaryBox = document.getElementById('score-summary');
+                const scoreText = document.getElementById('final-score-text');
+                const msgText = document.getElementById('feedback-message');
+                const rewardSection = document.getElementById('reward-section');
+
+                const currentReward = universityRewards[currentSetKey];
+                scoreText.innerText = `${score} / 10`;
+
+                // Log legitimate set completion into audit tracker
+                trackSetCompletion(currentSetKey, score, 10);
+                
+                if (score === 10) {
+                    document.getElementById(currentReward.badgeId).classList.add('unlocked');
+                    
+                    msgText.innerHTML = `<span style="color: ${currentReward.color}; font-weight:bold;">Congratulations! Perfect Score!</span> You unlocked the official <strong>${currentReward.name}</strong> reward logo!`;
+                    
+                    rewardSection.innerHTML = `
+                        <div class="reward-badge-container" style="border-color: ${currentReward.color};">
+                            <img src="${currentReward.img}" alt="${currentReward.name}">
+                            <h3 style="color: ${currentReward.color};">${currentReward.name}</h3>
+                            <p style="margin: 0; font-weight: bold; color: green;">🏆 100% Mastery Unlocked!</p>
+                        </div>
+                    `;
+                } else {
+                    rewardSection.innerHTML = ``;
+                    msgText.innerText = `You scored ${score}/10. Score 10/10 on this set to unlock the ${currentReward.name} badge!`;
+                }
+
+                summaryBox.style.display = 'block';
+                summaryBox.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function resetCurrentSet() {
+            trackManualReset(currentSetKey);
+            loadSet(currentSetKey);
+        }
+
+        // Run application setup on page load
+        window.onload = initApp;
+    </script>
+</body>
+</html>
