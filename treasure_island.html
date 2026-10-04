@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="theme-color" content="#0c2438" />
+<title>Treasure Island Vocabulary Study Lab</title>
+<style>
+  :root{
+    --navy:#0c2438;
+    --navy2:#15364f;
+    --paper:#f6f1e5;
+    --cream:#fffaf0;
+    --gold:#e5b44b;
+    --gold2:#f3d27a;
+    --teal:#2a8b86;
+    --green:#2f8f5b;
+    --red:#ba4b4b;
+    --ink:#17212b;
+    --muted:#677787;
+    --shadow:0 18px 45px rgba(5,18,28,.16);
+    --radius:22px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;min-height:100%;background:linear-gradient(160deg,#eaf1f3 0%,#f8f1e3 52%,#e7eef0 100%);color:var(--ink);font-family:Inter,ui-rounded,"SF Pro Rounded","Avenir Next",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  body{min-height:100vh;padding-bottom:max(24px,env(safe-area-inset-bottom))}
+  button{font:inherit}
+  .app{max-width:980px;margin:0 auto;padding:18px clamp(14px,3vw,28px) 40px}
+  .hero{background:linear-gradient(135deg,var(--navy),var(--navy2));color:white;border-radius:28px;padding:20px clamp(18px,4vw,34px);box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .hero:after{content:"☠";position:absolute;right:20px;top:-8px;font-size:94px;opacity:.07;transform:rotate(8deg)}
+  .eyebrow{letter-spacing:.16em;text-transform:uppercase;font-size:.74rem;font-weight:800;color:var(--gold2)}
+  h1{margin:5px 0 6px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.85rem,5vw,3.15rem);line-height:1.05}
+  .subtitle{margin:0;color:#d8e4ea;max-width:740px;font-size:.98rem}
+  .progress-wrap{margin-top:18px}
+  .progress-line{display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:.84rem;color:#eaf2f5;margin-bottom:7px}
+  .bar{height:12px;background:rgba(255,255,255,.17);border-radius:999px;overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+  .bar > span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#f5d992);border-radius:999px;transition:width .35s ease}
+  .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0 18px;position:sticky;top:8px;z-index:30;background:rgba(246,241,229,.82);backdrop-filter:blur(12px);padding:8px;border-radius:18px;box-shadow:0 8px 24px rgba(10,28,42,.08)}
+  .tab{border:0;background:transparent;color:var(--navy);border-radius:13px;padding:11px 8px;font-weight:800;cursor:pointer;min-height:46px}
+  .tab.active{background:var(--navy);color:white;box-shadow:0 5px 14px rgba(12,36,56,.25)}
+  .panel{display:none}.panel.active{display:block}
+  .card{background:rgba(255,255,255,.86);border:1px solid rgba(21,54,79,.08);border-radius:var(--radius);box-shadow:0 12px 30px rgba(9,30,45,.09);padding:clamp(16px,3vw,26px)}
+  .dashboard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+  .mode-card{background:white;border:1px solid #e4e9eb;border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:10px;min-height:220px}
+  .mode-icon{font-size:2rem}.mode-card h3{margin:0;color:var(--navy);font-size:1.14rem}.mode-card p{margin:0;color:var(--muted);line-height:1.45;font-size:.92rem;flex:1}
+  .mini-bar{height:8px;background:#e8edef;border-radius:999px;overflow:hidden}.mini-bar span{display:block;height:100%;background:var(--teal);width:0;transition:width .3s}
+  .btn{border:0;border-radius:14px;padding:12px 16px;font-weight:850;cursor:pointer;min-height:46px;touch-action:manipulation;transition:transform .08s ease,opacity .2s;background:var(--navy);color:white}
+  .btn:active{transform:scale(.98)}.btn.secondary{background:#e9f0f2;color:var(--navy)}.btn.gold{background:var(--gold);color:#302308}.btn.green{background:var(--green)}.btn.red{background:var(--red)}.btn:disabled{opacity:.45;cursor:default}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.spread{justify-content:space-between}.muted{color:var(--muted)}
+  .section-title{margin:0 0 6px;color:var(--navy);font-size:clamp(1.35rem,3vw,1.9rem)}
+  .instruction{margin:0 0 14px;color:var(--muted);line-height:1.45}
+  .mode-progress{margin:12px 0 16px}.mode-progress .bar{background:#e5ebed;border:0;height:10px}.mode-progress .bar span{background:linear-gradient(90deg,var(--teal),#5eaaa5)}
+
+  /* Flashcards */
+  .flash-shell{perspective:1200px;margin:14px auto 12px;max-width:720px}
+  .flash-card{height:min(53vh,410px);min-height:300px;position:relative;transform-style:preserve-3d;transition:transform .48s cubic-bezier(.2,.8,.2,1);cursor:pointer;touch-action:pan-y;user-select:none}
+  .flash-card.flipped{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;border-radius:28px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:34px;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 18px 42px rgba(8,30,44,.16);border:1px solid rgba(12,36,56,.1)}
+  .front{background:linear-gradient(145deg,#fffdf7,#f3ecdd)}
+  .back{background:linear-gradient(145deg,var(--navy),#1a506b);color:white;transform:rotateY(180deg)}
+  .term{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2rem,7vw,4rem);font-weight:700;color:var(--navy);line-height:1.05}
+  .definition{font-size:clamp(1.25rem,3.7vw,2rem);line-height:1.35;max-width:600px}
+  .face-label{position:absolute;top:20px;left:22px;text-transform:uppercase;letter-spacing:.12em;font-weight:850;font-size:.72rem;color:var(--muted)}
+  .back .face-label{color:#bed4df}.tap-hint{position:absolute;bottom:18px;color:var(--muted);font-size:.83rem}.back .tap-hint{color:#c5d8df}
+  .flash-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:720px;margin:0 auto}
+  .swipe-legend{text-align:center;font-size:.82rem;color:var(--muted);margin:10px auto 0;line-height:1.5}
+  .status-pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;background:#eef3f4;color:var(--navy);padding:7px 10px;font-size:.8rem;font-weight:800}
+
+  /* Multiple choice */
+  .question-box{background:linear-gradient(145deg,#fffdf8,#f2ecdf);border:1px solid #e7dfcf;border-radius:22px;padding:clamp(20px,4vw,34px);margin:14px 0 16px;text-align:center}
+  .q-label{text-transform:uppercase;letter-spacing:.13em;color:var(--teal);font-weight:900;font-size:.76rem}
+  .question{font-size:clamp(1.25rem,3.6vw,1.9rem);line-height:1.45;margin:10px auto 2px;max-width:760px}
+  .blank{display:inline-block;min-width:130px;border-bottom:3px solid var(--navy);color:transparent;transform:translateY(-2px)}
+  .answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .answer{border:2px solid #dce5e8;background:white;border-radius:16px;padding:16px;text-align:left;min-height:64px;font-weight:850;color:var(--navy);cursor:pointer;touch-action:manipulation;transition:.15s}
+  .answer:hover{border-color:#a8c3cc}.answer.correct{background:#e4f5eb;border-color:#66aa7e;color:#1e6b42}.answer.wrong{background:#fde7e7;border-color:#d77777;color:#923535}.answer.dim{opacity:.5}
+  .feedback{min-height:52px;padding:12px 14px;border-radius:14px;margin:12px 0 0;font-weight:700;line-height:1.4;display:none}.feedback.show{display:block}.feedback.good{background:#e8f6ee;color:#256a45}.feedback.bad{background:#fbecec;color:#8f3737}
+
+  /* Matching */
+  .match-board{display:grid;grid-template-columns:minmax(170px,.85fr) minmax(260px,1.3fr);gap:18px;align-items:start;margin-top:14px}
+  .match-col{display:flex;flex-direction:column;gap:10px}.col-title{font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;font-weight:900;color:var(--muted);margin-bottom:2px}
+  .term-chip,.match-def{background:white;border:2px solid #dce5e8;border-radius:15px;padding:13px 14px;min-height:54px;display:flex;align-items:center;line-height:1.28}
+  .term-chip{font-weight:900;color:var(--navy);cursor:grab;touch-action:none;user-select:none;box-shadow:0 5px 12px rgba(12,36,56,.06)}
+  .term-chip.selected{border-color:var(--gold);background:#fff8df}.term-chip.matched{opacity:.2;pointer-events:none}
+  .match-def{font-size:.92rem;color:#334653;cursor:pointer;touch-action:manipulation}.match-def.hover{border-color:var(--teal);background:#eaf7f5}.match-def.matched{background:#e8f6ee;border-color:#7ab18d;color:#276846;opacity:.5;pointer-events:none}
+  .drag-ghost{position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-50%) rotate(-2deg);background:var(--navy);color:white;border-radius:14px;padding:12px 16px;font-weight:900;box-shadow:0 14px 30px rgba(0,0,0,.25);max-width:220px}
+  .shake{animation:shake .28s linear}@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .completion{display:none;text-align:center;padding:22px;background:#edf7f1;border-radius:18px;margin-top:16px}.completion.show{display:block}
+  .trophy{font-size:3rem}
+  .tiny{font-size:.8rem;color:var(--muted)}
+  .footer-tools{margin-top:18px;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+  .reset-link{background:transparent;border:0;color:#7a5960;text-decoration:underline;font-weight:700;cursor:pointer;padding:8px}
+
+  @media(max-width:760px){
+    .dashboard-grid{grid-template-columns:1fr}
+    .mode-card{min-height:0}
+    .tabs{grid-template-columns:repeat(4,1fr);gap:4px;padding:5px}.tab{font-size:.76rem;padding:9px 4px}
+    .answers{grid-template-columns:1fr}
+    .match-board{grid-template-columns:1fr;gap:14px}.match-col{gap:8px}
+    .flash-card{height:48vh;min-height:315px}
+  }
+  @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="eyebrow">Treasure Island • Chapters 16–34</div>
+    <h1>Vocabulary Study Lab</h1>
+    <p class="subtitle">Master every study-guide term three ways: swipeable index cards, fill-in-the-blank multiple choice, and drag-and-drop matching.</p>
+    <div class="progress-wrap">
+      <div class="progress-line"><strong>Overall mastery journey</strong><span id="overallText">0 / 129 activities</span></div>
+      <div class="bar"><span id="overallBar"></span></div>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Study modes">
+    <button class="tab active" data-panel="home">Home</button>
+    <button class="tab" data-panel="flash">Cards</button>
+    <button class="tab" data-panel="quiz">Quiz</button>
+    <button class="tab" data-panel="match">Match</button>
+  </nav>
+
+  <main>
+    <section id="home" class="panel active">
+      <div class="card">
+        <div class="row spread">
+          <div>
+            <h2 class="section-title">Your 3-way study plan</h2>
+            <p class="instruction">There are <strong>43 vocabulary terms</strong>. A term counts toward overall progress after you complete it in each of the three modes.</p>
+          </div>
+          <span class="status-pill" id="masteryBadge">0% complete</span>
+        </div>
+        <div class="dashboard-grid">
+          <div class="mode-card">
+            <div class="mode-icon">🃏</div><h3>1. Swipe Index Cards</h3>
+            <p>Tap to flip. Swipe left/right to move. Swipe up for “Know it” and down for “Needs work.”</p>
+            <div class="mini-bar"><span id="homeFlashBar"></span></div><div class="tiny" id="homeFlashText">0 / 43 rated</div>
+            <button class="btn" data-go="flash">Study cards</button>
+          </div>
+          <div class="mode-card">
+            <div class="mode-icon">✍️</div><h3>2. Fill-in-the-Blank Quiz</h3>
+            <p>Choose the vocabulary word that correctly completes each definition. Missed words return until you get them right.</p>
+            <div class="mini-bar"><span id="homeQuizBar"></span></div><div class="tiny" id="homeQuizText">0 / 43 correct</div>
+            <button class="btn" data-go="quiz">Start quiz</button>
+          </div>
+          <div class="mode-card">
+            <div class="mode-icon">🧩</div><h3>3. Drag & Drop Matching</h3>
+            <p>Drag each word onto its definition. On iPad, you can also tap a word and then tap its matching definition.</p>
+            <div class="mini-bar"><span id="homeMatchBar"></span></div><div class="tiny" id="homeMatchText">0 / 43 matched</div>
+            <button class="btn" data-go="match">Match terms</button>
+          </div>
+        </div>
+        <div class="footer-tools"><button class="reset-link" id="resetAll">Reset all saved progress</button></div>
+      </div>
+    </section>
+
+    <section id="flash" class="panel">
+      <div class="card">
+        <div class="row spread">
+          <div><h2 class="section-title">Swipe Index Cards</h2><p class="instruction">Tap the card to reveal the definition. Rate every term at least once.</p></div>
+          <span class="status-pill" id="flashCounter">Card 1 of 43</span>
+        </div>
+        <div class="mode-progress"><div class="bar"><span id="flashBar"></span></div></div>
+        <div class="row spread">
+          <button class="btn secondary" id="shuffleCards">Shuffle</button>
+          <button class="btn secondary" id="reviewNeeds">Review needs-work</button>
+        </div>
+        <div class="flash-shell">
+          <div class="flash-card" id="flashCard" role="button" tabindex="0" aria-label="Vocabulary flashcard. Tap to flip.">
+            <div class="face front"><div class="face-label">Vocabulary word</div><div class="term" id="flashTerm"></div><div class="tap-hint">Tap to flip • swipe ← → to move</div></div>
+            <div class="face back"><div class="face-label">Definition</div><div class="definition" id="flashDefinition"></div><div class="tap-hint">Tap to flip back</div></div>
+          </div>
+        </div>
+        <div class="flash-actions"><button class="btn red" id="needsBtn">↓ Needs work</button><button class="btn green" id="knowBtn">↑ Know it</button></div>
+        <div class="swipe-legend">iPad gestures: <strong>swipe up</strong> = know it · <strong>swipe down</strong> = needs work · <strong>swipe left/right</strong> = next/previous</div>
+      </div>
+    </section>
+
+    <section id="quiz" class="panel">
+      <div class="card">
+        <div class="row spread"><div><h2 class="section-title">Fill-in-the-Blank Multiple Choice</h2><p class="instruction">Every term appears as the correct answer once. Wrong answers cycle back later.</p></div><span class="status-pill" id="quizCounter">0 / 43 correct</span></div>
+        <div class="mode-progress"><div class="bar"><span id="quizBar"></span></div></div>
+        <div id="quizArea">
+          <div class="question-box"><div class="q-label">Fill in the blank</div><div class="question" id="questionText"></div></div>
+          <div class="answers" id="answers"></div>
+          <div class="feedback" id="feedback"></div>
+          <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn" id="nextQuestion" style="display:none">Continue</button></div>
+        </div>
+        <div class="completion" id="quizDone"><div class="trophy">🏆</div><h3>Quiz round complete!</h3><p>You answered all 43 terms correctly at least once.</p><button class="btn" id="restartQuiz">Practice all 43 again</button></div>
+      </div>
+    </section>
+
+    <section id="match" class="panel">
+      <div class="card">
+        <div class="row spread"><div><h2 class="section-title">Drag & Drop Matching</h2><p class="instruction">Work in small batches. Drag a word to its definition, or tap a word and then tap the definition.</p></div><span class="status-pill" id="matchCounter">0 / 43 matched</span></div>
+        <div class="mode-progress"><div class="bar"><span id="matchBar"></span></div></div>
+        <div class="row spread"><span class="tiny" id="batchLabel">Batch 1</span><button class="btn secondary" id="shuffleMatch">Shuffle this batch</button></div>
+        <div class="match-board" id="matchBoard">
+          <div class="match-col"><div class="col-title">Words</div><div id="termColumn" class="match-col"></div></div>
+          <div class="match-col"><div class="col-title">Definitions</div><div id="defColumn" class="match-col"></div></div>
+        </div>
+        <div class="feedback" id="matchFeedback"></div>
+        <div class="completion" id="batchDone"><div class="trophy">⚓</div><h3>Batch cleared!</h3><p id="batchDoneText">Ready for the next set?</p><button class="btn gold" id="nextBatch">Next batch</button></div>
+        <div class="completion" id="matchDone"><div class="trophy">🏴‍☠️</div><h3>All matches complete!</h3><p>You matched every vocabulary term to its definition.</p><button class="btn" id="restartMatch">Practice matching again</button></div>
+      </div>
+    </section>
+  </main>
+</div>
+<script>
+const TERMS = [
+  {t:"bustle",d:"excited activity and movement"},
+  {t:"laden",d:"heavily loaded or weighed down"},
+  {t:"slacken",d:"stop in movement or flow"},
+  {t:"provisions",d:"food, drink, or equipment, especially for a journey"},
+  {t:"hoisted",d:"raised or lifted"},
+  {t:"inquired",d:"asked"},
+  {t:"clattering",d:"a loud, rattling sound"},
+  {t:"truce",d:"an agreement between enemies or opponents to stop fighting or arguing"},
+  {t:"embassy",d:"a person or group of people sent as representatives"},
+  {t:"desertion",d:"to leave a person, place, etc. without intending to return"},
+  {t:"treachery",d:"betrayal of trust; deceptive action"},
+  {t:"vigor",d:"physical strength and good health"},
+  {t:"interior",d:"the inner or indoor part of something"},
+  {t:"recommence",d:"begin again"},
+  {t:"envy",d:"to feel jealous"},
+  {t:"folly",d:"lack of good sense; foolishness"},
+  {t:"maneuver",d:"a movement or series of moves requiring skill and care"},
+  {t:"lurch",d:"an abrupt uncontrolled movement"},
+  {t:"formidable",d:"causing fear, apprehension, or dread"},
+  {t:"notion",d:"a belief or idea"},
+  {t:"overhaul",d:"to catch up with; overtake"},
+  {t:"ghastly",d:"causing great horror or fear"},
+  {t:"elated",d:"very happy or proud"},
+  {t:"pretext",d:"a reason given to explain an action that is not the real reason"},
+  {t:"laborious",d:"requiring a lot of time and effort"},
+  {t:"conceited",d:"excessively proud of oneself; vain"},
+  {t:"peril",d:"serious and immediate danger"},
+  {t:"radiance",d:"light or heat shining or reflecting"},
+  {t:"perish",d:"to die or be destroyed through violence"},
+  {t:"incensed",d:"very angry; enraged"},
+  {t:"depose",d:"remove from power suddenly and forcefully"},
+  {t:"grievances",d:"complaints"},
+  {t:"insolence",d:"rude or disrespectful behavior"},
+  {t:"contemptuously",d:"expressing deep hatred or disapproval"},
+  {t:"grim",d:"harsh or uninviting"},
+  {t:"ascend",d:"go up or climb"},
+  {t:"excavation",d:"a hole formed by digging"},
+  {t:"cache",d:"an amount of goods or valuables kept in a hidden place"},
+  {t:"amassing",d:"gather together or accumulate"},
+  {t:"obsequious",d:"overly eager to help or obey someone important"},
+  {t:"briskly",d:"quickly or lively"},
+  {t:"ingratiate",d:"to gain favor or approval by doing or saying things that people like"},
+  {t:"ample",d:"plenty; more than enough"}
+];
+const TOTAL = TERMS.length;
+const STORE_KEY = "treasureIslandVocabStudy_v1";
+const emptyState = () => ({flashDone:[],flashNeeds:[],quizDone:[],matchDone:[]});
+let state = loadState();
+function loadState(){try{const x=JSON.parse(localStorage.getItem(STORE_KEY));return {...emptyState(),...(x||{})};}catch(e){return emptyState();}}
+function saveState(){localStorage.setItem(STORE_KEY,JSON.stringify(state));updateProgress();}
+function uniqValid(arr){return [...new Set((arr||[]).filter(x=>TERMS.some(y=>y.t===x)))];}
+state.flashDone=uniqValid(state.flashDone);state.flashNeeds=uniqValid(state.flashNeeds);state.quizDone=uniqValid(state.quizDone);state.matchDone=uniqValid(state.matchDone);
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function pct(n){return Math.round((n/TOTAL)*100)}
+function setWidth(id,p){document.getElementById(id).style.width=Math.max(0,Math.min(100,p))+"%";}
+function updateProgress(){
+  const f=state.flashDone.length,q=state.quizDone.length,m=state.matchDone.length,done=f+q+m,total=TOTAL*3,p=Math.round(done/total*100);
+  setWidth("overallBar",p);document.getElementById("overallText").textContent=`${done} / ${total} activities`;document.getElementById("masteryBadge").textContent=`${p}% complete`;
+  setWidth("homeFlashBar",pct(f));setWidth("homeQuizBar",pct(q));setWidth("homeMatchBar",pct(m));
+  document.getElementById("homeFlashText").textContent=`${f} / ${TOTAL} rated`;document.getElementById("homeQuizText").textContent=`${q} / ${TOTAL} correct`;document.getElementById("homeMatchText").textContent=`${m} / ${TOTAL} matched`;
+  setWidth("flashBar",pct(f));setWidth("quizBar",pct(q));setWidth("matchBar",pct(m));
+  document.getElementById("quizCounter").textContent=`${q} / ${TOTAL} correct`;document.getElementById("matchCounter").textContent=`${m} / ${TOTAL} matched`;
+}
+function goPanel(id){document.querySelectorAll(".panel").forEach(x=>x.classList.toggle("active",x.id===id));document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.dataset.panel===id));window.scrollTo({top:0,behavior:"smooth"});if(id==="quiz")ensureQuiz();if(id==="match")renderMatch();}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>goPanel(b.dataset.panel)));
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>goPanel(b.dataset.go)));
+
+// Flashcards
+let flashOrder=shuffle(TERMS.map(x=>x.t)),flashIndex=0;
+const flashCard=document.getElementById("flashCard");
+function flashObj(){return TERMS.find(x=>x.t===flashOrder[flashIndex]) || TERMS[0];}
+function renderFlash(){const o=flashObj();flashCard.classList.remove("flipped");document.getElementById("flashTerm").textContent=o.t;document.getElementById("flashDefinition").textContent=o.d;document.getElementById("flashCounter").textContent=`Card ${flashIndex+1} of ${flashOrder.length}`;}
+function stepFlash(delta){flashIndex=(flashIndex+delta+flashOrder.length)%flashOrder.length;renderFlash();}
+function rateFlash(kind){const t=flashObj().t;if(!state.flashDone.includes(t))state.flashDone.push(t);if(kind==="needs"){if(!state.flashNeeds.includes(t))state.flashNeeds.push(t);}else{state.flashNeeds=state.flashNeeds.filter(x=>x!==t);}saveState();stepFlash(1);}
+flashCard.addEventListener("click",()=>flashCard.classList.toggle("flipped"));flashCard.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flashCard.classList.toggle("flipped");}});
+document.getElementById("knowBtn").addEventListener("click",()=>rateFlash("know"));document.getElementById("needsBtn").addEventListener("click",()=>rateFlash("needs"));
+document.getElementById("shuffleCards").addEventListener("click",()=>{flashOrder=shuffle(TERMS.map(x=>x.t));flashIndex=0;renderFlash();});
+document.getElementById("reviewNeeds").addEventListener("click",()=>{if(state.flashNeeds.length){flashOrder=shuffle(state.flashNeeds);flashIndex=0;renderFlash();}else{alert("No cards are currently marked ‘Needs work.’");}});
+let swipeStart=null;
+flashCard.addEventListener("pointerdown",e=>{swipeStart={x:e.clientX,y:e.clientY,id:e.pointerId};});
+flashCard.addEventListener("pointerup",e=>{if(!swipeStart||swipeStart.id!==e.pointerId)return;const dx=e.clientX-swipeStart.x,dy=e.clientY-swipeStart.y;swipeStart=null;if(Math.max(Math.abs(dx),Math.abs(dy))<55)return;if(Math.abs(dx)>Math.abs(dy)){dx<0?stepFlash(1):stepFlash(-1);}else{dy<0?rateFlash("know"):rateFlash("needs");}});
+
+// Quiz
+let quizQueue=[], currentQuiz=null, quizLocked=false;
+function remainingQuiz(){return TERMS.map(x=>x.t).filter(t=>!state.quizDone.includes(t));}
+function ensureQuiz(){if(state.quizDone.length>=TOTAL){showQuizDone();return;}if(!quizQueue.length)quizQueue=shuffle(remainingQuiz());nextQuizItem();}
+function nextQuizItem(){if(state.quizDone.length>=TOTAL){showQuizDone();return;}if(!quizQueue.length)quizQueue=shuffle(remainingQuiz());const t=quizQueue.shift();if(state.quizDone.includes(t)){nextQuizItem();return;}currentQuiz=TERMS.find(x=>x.t===t);quizLocked=false;renderQuizQuestion();}
+function renderQuizQuestion(){document.getElementById("quizArea").style.display="block";document.getElementById("quizDone").classList.remove("show");document.getElementById("feedback").className="feedback";document.getElementById("nextQuestion").style.display="none";document.getElementById("questionText").innerHTML=`<span class="blank">_____</span> means “${escapeHTML(currentQuiz.d)}.”`;
+  const distractors=shuffle(TERMS.filter(x=>x.t!==currentQuiz.t)).slice(0,3).map(x=>x.t);const opts=shuffle([currentQuiz.t,...distractors]);const box=document.getElementById("answers");box.innerHTML="";opts.forEach(t=>{const b=document.createElement("button");b.className="answer";b.textContent=t;b.dataset.term=t;b.addEventListener("click",()=>answerQuiz(b,t));box.appendChild(b);});}
+function answerQuiz(btn,t){if(quizLocked)return;quizLocked=true;const correct=t===currentQuiz.t;document.querySelectorAll(".answer").forEach(b=>{b.disabled=true;if(b.dataset.term===currentQuiz.t)b.classList.add("correct");else if(b===btn&&!correct)b.classList.add("wrong");else b.classList.add("dim");});const fb=document.getElementById("feedback");fb.classList.add("show",correct?"good":"bad");if(correct){fb.textContent=`Yes — ${currentQuiz.t} means ${currentQuiz.d}.`;if(!state.quizDone.includes(currentQuiz.t))state.quizDone.push(currentQuiz.t);saveState();}else{fb.textContent=`Not quite. “${t}” is not this definition. The correct word is “${currentQuiz.t}.” You’ll see this word again later.`;quizQueue.push(currentQuiz.t);}document.getElementById("nextQuestion").style.display="inline-flex";}
+document.getElementById("nextQuestion").addEventListener("click",nextQuizItem);
+function showQuizDone(){document.getElementById("quizArea").style.display="none";document.getElementById("quizDone").classList.add("show");}
+document.getElementById("restartQuiz").addEventListener("click",()=>{state.quizDone=[];saveState();quizQueue=shuffle(TERMS.map(x=>x.t));document.getElementById("quizArea").style.display="block";document.getElementById("quizDone").classList.remove("show");nextQuizItem();});
+
+// Matching
+const BATCH=6;let matchBatch=0,selectedTerm=null,drag=null,matchBatchOrder=[];
+function firstIncompleteBatch(){for(let b=0;b<Math.ceil(TOTAL/BATCH);b++){const slice=TERMS.slice(b*BATCH,Math.min(TOTAL,(b+1)*BATCH));if(slice.some(x=>!state.matchDone.includes(x.t)))return b;}return Math.ceil(TOTAL/BATCH)-1;}
+function renderMatch(){if(state.matchDone.length>=TOTAL){document.getElementById("matchBoard").style.display="none";document.getElementById("matchDone").classList.add("show");document.getElementById("batchDone").classList.remove("show");return;}document.getElementById("matchBoard").style.display="grid";document.getElementById("matchDone").classList.remove("show");matchBatch=Math.max(matchBatch,firstIncompleteBatch());renderBatch();}
+function batchTerms(){return TERMS.slice(matchBatch*BATCH,Math.min(TOTAL,(matchBatch+1)*BATCH));}
+function renderBatch(){selectedTerm=null;document.getElementById("matchFeedback").className="feedback";document.getElementById("batchDone").classList.remove("show");const items=batchTerms();matchBatchOrder=shuffle(items.map(x=>x.t));document.getElementById("batchLabel").textContent=`Batch ${matchBatch+1} of ${Math.ceil(TOTAL/BATCH)} • ${items.length} terms`;
+ const tc=document.getElementById("termColumn"),dc=document.getElementById("defColumn");tc.innerHTML="";dc.innerHTML="";
+ matchBatchOrder.forEach(t=>{const el=document.createElement("div");el.className="term-chip"+(state.matchDone.includes(t)?" matched":"");el.dataset.term=t;el.textContent=t;enableTermDrag(el);el.addEventListener("click",()=>selectTerm(el));tc.appendChild(el);});
+ shuffle(items).forEach(o=>{const el=document.createElement("div");el.className="match-def"+(state.matchDone.includes(o.t)?" matched":"");el.dataset.term=o.t;el.textContent=o.d;el.addEventListener("click",()=>{if(selectedTerm)attemptMatch(selectedTerm,o.t,el);});dc.appendChild(el);});checkBatch();}
+function selectTerm(el){if(el.classList.contains("matched"))return;document.querySelectorAll(".term-chip").forEach(x=>x.classList.remove("selected"));selectedTerm=el.dataset.term;el.classList.add("selected");}
+function enableTermDrag(el){let start={x:0,y:0},moved=false;el.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse"&&e.button!==0)return;start={x:e.clientX,y:e.clientY};moved=false;drag={term:el.dataset.term,source:el,ghost:null,id:e.pointerId};el.setPointerCapture?.(e.pointerId);});el.addEventListener("pointermove",e=>{if(!drag||drag.id!==e.pointerId)return;const dist=Math.hypot(e.clientX-start.x,e.clientY-start.y);if(dist>8)moved=true;if(!moved)return;if(!drag.ghost){drag.ghost=document.createElement("div");drag.ghost.className="drag-ghost";drag.ghost.textContent=drag.term;document.body.appendChild(drag.ghost);}drag.ghost.style.left=e.clientX+"px";drag.ghost.style.top=e.clientY+"px";document.querySelectorAll(".match-def").forEach(x=>x.classList.remove("hover"));const under=document.elementFromPoint(e.clientX,e.clientY)?.closest(".match-def");if(under&&!under.classList.contains("matched"))under.classList.add("hover");});el.addEventListener("pointerup",e=>{if(!drag||drag.id!==e.pointerId)return;const info=drag;drag=null;info.source.releasePointerCapture?.(e.pointerId);if(info.ghost)info.ghost.remove();document.querySelectorAll(".match-def").forEach(x=>x.classList.remove("hover"));if(moved){const under=document.elementFromPoint(e.clientX,e.clientY)?.closest(".match-def");if(under&&!under.classList.contains("matched"))attemptMatch(info.term,under.dataset.term,under);}else selectTerm(info.source);});el.addEventListener("pointercancel",()=>{if(drag?.ghost)drag.ghost.remove();drag=null;});}
+function attemptMatch(term,target,defEl){const termEl=[...document.querySelectorAll(".term-chip")].find(x=>x.dataset.term===term);const fb=document.getElementById("matchFeedback");fb.className="feedback show";if(term===target){termEl?.classList.add("matched");defEl.classList.add("matched");termEl?.classList.remove("selected");selectedTerm=null;if(!state.matchDone.includes(term))state.matchDone.push(term);fb.classList.add("good");fb.textContent=`Matched: ${term}.`;saveState();setTimeout(checkBatch,200);}else{fb.classList.add("bad");fb.textContent=`That definition does not match “${term}.” Try again.`;defEl.classList.add("shake");setTimeout(()=>defEl.classList.remove("shake"),300);}}
+function checkBatch(){const items=batchTerms();if(items.length&&items.every(x=>state.matchDone.includes(x.t))){if(state.matchDone.length>=TOTAL){document.getElementById("matchBoard").style.display="none";document.getElementById("batchDone").classList.remove("show");document.getElementById("matchDone").classList.add("show");}else{document.getElementById("batchDone").classList.add("show");document.getElementById("batchDoneText").textContent=`You matched all ${items.length} terms in this batch.`;}}}
+document.getElementById("nextBatch").addEventListener("click",()=>{matchBatch=Math.min(matchBatch+1,Math.ceil(TOTAL/BATCH)-1);renderBatch();});document.getElementById("shuffleMatch").addEventListener("click",renderBatch);
+document.getElementById("restartMatch").addEventListener("click",()=>{state.matchDone=[];saveState();matchBatch=0;document.getElementById("matchBoard").style.display="grid";document.getElementById("matchDone").classList.remove("show");renderBatch();});
+
+function escapeHTML(s){return String(s).replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));}
+document.getElementById("resetAll").addEventListener("click",()=>{if(confirm("Reset all flashcard, quiz, and matching progress?")){state=emptyState();saveState();flashOrder=shuffle(TERMS.map(x=>x.t));flashIndex=0;quizQueue=[];currentQuiz=null;matchBatch=0;renderFlash();alert("Progress reset.");}});
+
+updateProgress();renderFlash();
+</script>
+</body>
+</html>
