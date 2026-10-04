@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Treasure Island Study Suite & Smart Flashcards</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        pirate: {
+                            gold: '#f59e0b',
+                            goldHover: '#d97706',
+                            navy: '#0b1329',
+                            card: '#1e293b',
+                            accent: '#38bdf8',
+                            emerald: '#10b981',
+                            crimson: '#ef4444'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Cinzel', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* 3D Card Flip Perspective */
+        .card-perspective {
+            perspective: 1200px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .card-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Swipe indicator overlay animations */
+        .swipe-overlay {
+            opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(245, 158, 11, 0.4);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(245, 158, 11, 0.7);
+        }
+
+        /* Pulse glow effect for 3/3 mastery */
+        .mastery-glow {
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Touch dragging styles */
+        .dragging-ghost {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center justify-between w-full sm:w-auto">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center text-slate-950 font-bold text-xl shadow-lg">
+                        <i class="fa-solid fa-skull-crossbones"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-heading text-lg font-bold tracking-wide text-amber-400 leading-tight">TREASURE ISLAND</h1>
+                        <p class="text-xs text-slate-400">Chapters 16–34 Study Guide</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 sm:hidden">
+                    <button id="themeToggleMobile" class="p-2 text-slate-400 hover:text-amber-400 rounded-lg bg-slate-800">
+                        <i class="fa-solid fa-moon text-lg"></i>
+                    </button>
+                    <button id="resetBtnMobile" class="p-2 text-red-400 hover:bg-red-950/40 rounded-lg bg-slate-800" title="Reset All Progress">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Master Progress Meter -->
+            <div class="w-full sm:max-w-xs flex flex-col gap-1">
+                <div class="flex justify-between items-center text-xs font-semibold">
+                    <span class="text-slate-400">Overall Mastery (3-Way)</span>
+                    <span id="masteryPercent" class="text-amber-400">0%</span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden p-0.5 border border-slate-700">
+                    <div id="masteryProgressBar" class="bg-gradient-to-r from-amber-500 via-amber-400 to-emerald-400 h-full rounded-full transition-all duration-500 w-0"></div>
+                </div>
+            </div>
+
+            <!-- Mode Selector Tabs -->
+            <nav class="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 w-full sm:w-auto justify-center overflow-x-auto">
+                <button data-tab="flashcards" class="nav-tab active flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all bg-amber-500 text-slate-950 shadow-md">
+                    <i class="fa-solid fa-layer-group"></i> <span>Cards</span>
+                </button>
+                <button data-tab="mc-quiz" class="nav-tab flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all">
+                    <i class="fa-solid fa-[#list-check] fa-list-check"></i> <span>MC Quiz</span>
+                </button>
+                <button data-tab="matching-quiz" class="nav-tab flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all">
+                    <i class="fa-solid fa-puzzle-piece"></i> <span>Match</span>
+                </button>
+                <button data-tab="dashboard" class="nav-tab flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all">
+                    <i class="fa-solid fa-chart-pie"></i> <span>Stats</span>
+                </button>
+                <button data-tab="manage" class="nav-tab flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all">
+                    <i class="fa-solid fa-plus"></i> <span>Deck</span>
+                </button>
+            </nav>
+
+            <div class="hidden sm:flex items-center gap-2">
+                <button id="themeToggleDesktop" class="p-2 text-slate-400 hover:text-amber-400 rounded-lg bg-slate-800 border border-slate-700 transition" title="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button id="resetBtnDesktop" class="p-2 text-red-400 hover:text-red-300 hover:bg-red-950/40 rounded-lg bg-slate-800 border border-slate-700 transition" title="Reset Progress">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 flex flex-col justify-center">
+        <!-- Toast Notification Banner -->
+        <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-3 bg-slate-800 text-slate-100 border border-amber-500/50 px-4 py-3 rounded-xl shadow-2xl pointer-events-none">
+            <i id="toastIcon" class="fa-solid fa-circle-info text-amber-400 text-lg"></i>
+            <span id="toastMessage" class="text-sm font-medium">Notification message</span>
+        </div>
+
+        <!-- ==================== TAB 1: SMART FLASHCARDS MODE ==================== -->
+        <section id="tab-flashcards" class="tab-content flex flex-col items-center justify-center max-w-2xl mx-auto w-full gap-4">
+            
+            <!-- Controls Toolbar -->
+            <div class="w-full flex flex-wrap items-center justify-between gap-2 bg-slate-900/60 p-3 rounded-2xl border border-slate-800">
+                <!-- Filter Dropdown -->
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-filter text-amber-400 text-sm"></i>
+                    <select id="deckFilter" class="bg-slate-800 text-slate-200 text-xs font-medium rounded-lg px-2.5 py-1.5 border border-slate-700 focus:outline-none focus:border-amber-500">
+                        <option value="all">All Cards (<span id="countAll">0</span>)</option>
+                        <option value="review">Saved for Review (<span id="countReview">0</span>)</option>
+                        <option value="unmastered">Needs Practice (<span id="countUnmastered">0</span>)</option>
+                        <option value="vocab">Vocabulary Only</option>
+                        <option value="comprehension">Comprehension Only</option>
+                    </select>
+                </div>
+
+                <!-- Deck Counter & Mode Badges -->
+                <div class="flex items-center gap-2">
+                    <span id="cardCounter" class="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-lg">
+                        1 / 53
+                    </span>
+                    <button id="speechBtn" class="p-2 text-slate-300 hover:text-amber-400 bg-slate-800 hover:bg-slate-700 rounded-lg border border-slate-700 transition" title="Read Term Aloud">
+                        <i class="fa-solid fa-volume-high text-sm"></i>
+                    </button>
+                    <button id="bookmarkBtn" class="p-2 text-slate-400 hover:text-amber-400 bg-slate-800 rounded-lg border border-slate-700 transition" title="Save for Review Later">
+                        <i class="fa-regular fa-bookmark text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- iPad Swiping Guidance Banner -->
+            <div class="text-center text-xs text-slate-400 flex items-center justify-center gap-4 py-1">
+                <span><i class="fa-solid fa-arrow-left text-red-400"></i> Swipe Left: Practice</span>
+                <span><i class="fa-solid fa-hand-pointer text-amber-400"></i> Tap: Flip</span>
+                <span><i class="fa-solid fa-arrow-right text-emerald-400"></i> Swipe Right: Mastered</span>
+            </div>
+
+            <!-- Interactive 3D Card Stack Container -->
+            <div class="relative w-full h-[380px] sm:h-[420px] card-perspective cursor-pointer select-none">
+                
+                <!-- Swipe Feedback Badges -->
+                <div id="swipeOverlayMastered" class="swipe-overlay pointer-events-none absolute inset-0 z-30 rounded-2xl border-4 border-emerald-500 bg-emerald-500/10 flex items-center justify-center">
+                    <span class="bg-emerald-500 text-slate-950 font-heading font-bold text-2xl px-6 py-2 rounded-xl shadow-xl flex items-center gap-2">
+                        <i class="fa-solid fa-check"></i> MASTERED
+                    </span>
+                </div>
+                <div id="swipeOverlayPractice" class="swipe-overlay pointer-events-none absolute inset-0 z-30 rounded-2xl border-4 border-red-500 bg-red-500/10 flex items-center justify-center">
+                    <span class="bg-red-500 text-white font-heading font-bold text-2xl px-6 py-2 rounded-xl shadow-xl flex items-center gap-2">
+                        <i class="fa-solid fa-rotate"></i> NEEDS PRACTICE
+                    </span>
+                </div>
+                <div id="swipeOverlayReview" class="swipe-overlay pointer-events-none absolute inset-0 z-30 rounded-2xl border-4 border-amber-500 bg-amber-500/10 flex items-center justify-center">
+                    <span class="bg-amber-500 text-slate-950 font-heading font-bold text-2xl px-6 py-2 rounded-xl shadow-xl flex items-center gap-2">
+                        <i class="fa-solid fa-bookmark"></i> REVIEW LATER
+                    </span>
+                </div>
+
+                <!-- 3D Flip Card -->
+                <div id="flashcard" class="card-inner shadow-2xl">
+                    
+                    <!-- Card Front (Term) -->
+                    <div class="card-face card-front bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 border-2 border-slate-700/80 p-6 sm:p-8">
+                        <div class="flex justify-between items-start">
+                            <span id="cardCategory" class="text-xs font-semibold uppercase tracking-wider text-amber-400/90 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
+                                Vocabulary
+                            </span>
+                            <div class="flex items-center gap-1.5">
+                                <span id="masteryBadges" class="flex gap-1">
+                                    <!-- Dynamic 3-Way Badges -->
+                                </span>
+                                <span id="reviewIndicator" class="hidden text-amber-400 text-sm">
+                                    <i class="fa-solid fa-bookmark"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="my-auto text-center px-2">
+                            <h2 id="cardTerm" class="font-heading text-3xl sm:text-4xl font-bold text-slate-100 tracking-wide mb-3">
+                                Term
+                            </h2>
+                            <p id="cardContextHint" class="text-xs text-slate-400 italic">
+                                Tap or click card to flip answer
+                            </p>
+                        </div>
+
+                        <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-800 pt-3">
+                            <span><i class="fa-solid fa-arrows-rotate mr-1"></i> Mode 1 Self-Assess</span>
+                            <span>Flip <i class="fa-solid fa-rotate"></i></span>
+                        </div>
+                    </div>
+
+                    <!-- Card Back (Definition / Answer) -->
+                    <div class="card-face card-back bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-2 border-amber-500/40 p-6 sm:p-8">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+                                Answer / Definition
+                            </span>
+                            <button id="speechBtnBack" class="text-slate-400 hover:text-amber-400 text-sm p-1">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                        </div>
+
+                        <div class="my-auto text-center px-2 overflow-y-auto max-h-[220px] py-2">
+                            <p id="cardDefinition" class="text-lg sm:text-xl font-medium text-slate-200 leading-relaxed">
+                                Definition text goes here.
+                            </p>
+                            <div id="cardExampleBox" class="mt-4 pt-3 border-t border-slate-800 text-xs text-amber-300/80 italic text-left">
+                                <span class="font-bold uppercase tracking-wider text-[10px] text-slate-400 block not-italic mb-1">Key Context / Example:</span>
+                                <span id="cardExample">Example text...</span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-800 pt-3">
+                            <span>Swipe Right if Correct</span>
+                            <span>Swipe Left to Retry</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Flashcard Manual Action Controls -->
+            <div class="flex items-center justify-between w-full gap-3 mt-2">
+                <button id="prevBtn" class="flex-1 py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 font-semibold border border-slate-700 flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-chevron-left"></i> <span>Prev</span>
+                </button>
+
+                <button id="markPracticeBtn" class="flex-1 py-3 px-3 rounded-xl bg-red-950/50 hover:bg-red-900/60 text-red-300 border border-red-800/60 font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition">
+                    <i class="fa-solid fa-xmark text-base"></i> <span>Practice</span>
+                </button>
+
+                <button id="markMasteredBtn" class="flex-1 py-3 px-3 rounded-xl bg-emerald-950/50 hover:bg-emerald-900/60 text-emerald-300 border border-emerald-800/60 font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 active:scale-95 transition">
+                    <i class="fa-solid fa-check text-base"></i> <span>Mastered</span>
+                </button>
+
+                <button id="nextBtn" class="flex-1 py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 font-semibold border border-slate-700 flex items-center justify-center gap-2 transition">
+                    <span>Next</span> <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: MULTIPLE CHOICE QUIZ MODE ==================== -->
+        <section id="tab-mc-quiz" class="tab-content hidden flex-col items-center justify-center max-w-2xl mx-auto w-full gap-4">
+            
+            <!-- Quiz Status Header -->
+            <div class="w-full flex items-center justify-between bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-100">Multiple Choice / Fill-in-Blank</h3>
+                        <p class="text-xs text-slate-400">Mode 2 Mastery Challenge</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="text-right">
+                        <span class="text-[10px] text-slate-400 uppercase font-semibold block">Streak</span>
+                        <span id="mcStreak" class="text-lg font-extrabold text-amber-400 flex items-center gap-1">
+                            <i class="fa-solid fa-fire text-amber-500"></i> 0
+                        </span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[10px] text-slate-400 uppercase font-semibold block">Score</span>
+                        <span id="mcScore" class="text-lg font-extrabold text-emerald-400">0/0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Card Box -->
+            <div class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col gap-6 shadow-xl relative">
+                <div class="flex justify-between items-center text-xs font-semibold text-slate-400">
+                    <span id="mcCategoryBadge" class="bg-amber-500/10 text-amber-400 px-3 py-1 rounded-full border border-amber-500/20">
+                        Category
+                    </span>
+                    <span id="mcQuestionNum" class="text-slate-400">Question 1 of 53</span>
+                </div>
+
+                <div class="text-center sm:text-left">
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-wider block mb-2">Prompt / Definition:</span>
+                    <p id="mcPrompt" class="text-lg sm:text-xl font-medium text-slate-100 leading-relaxed">
+                        "Loading definition prompt..."
+                    </p>
+                </div>
+
+                <!-- 4 Dynamic Multiple Choice Options -->
+                <div id="mcOptionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                    <!-- Dynamic option buttons rendered via JS -->
+                </div>
+
+                <!-- Immediate Feedback Panel -->
+                <div id="mcFeedback" class="hidden p-4 rounded-xl border flex flex-col gap-2 transition-all">
+                    <div class="flex items-center gap-2 font-bold text-sm" id="mcFeedbackTitle">
+                        <!-- Correct/Incorrect Icon + Text -->
+                    </div>
+                    <p id="mcFeedbackDetail" class="text-xs text-slate-300"></p>
+                    <button id="mcNextQuestionBtn" class="mt-2 py-2 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-lg self-end transition">
+                        Next Question <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: DRAG & DROP MATCHING QUIZ MODE ==================== -->
+        <section id="tab-matching-quiz" class="tab-content hidden flex-col items-center justify-center max-w-4xl mx-auto w-full gap-4">
+            
+            <!-- Matching Header Controls -->
+            <div class="w-full flex flex-col sm:flex-row items-center justify-between bg-slate-900/60 p-4 rounded-2xl border border-slate-800 gap-3">
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-100">Drag & Drop Matching</h3>
+                        <p class="text-xs text-slate-400">Mode 3 Mastery Challenge (Tap or Drag)</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between w-full sm:w-auto gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="text-center">
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold block">Timer</span>
+                            <span id="matchTimer" class="text-base font-extrabold text-amber-400">00:00</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold block">Matched</span>
+                            <span id="matchProgressText" class="text-base font-extrabold text-emerald-400">0 / 5</span>
+                        </div>
+                    </div>
+                    <button id="startMatchRoundBtn" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition">
+                        <i class="fa-solid fa-shuffle mr-1"></i> New Round
+                    </button>
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-400 text-center">
+                <i class="fa-solid fa-circle-info text-amber-400 mr-1"></i> 
+                <strong>iPad Friendly:</strong> Tap a term on the left, then tap its matching definition on the right—or drag across!
+            </p>
+
+            <!-- Matching Interactive Board -->
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                <!-- Terms Column (Draggables) -->
+                <div class="flex flex-col gap-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
+                        <i class="fa-solid fa-font"></i> Terms (Drag / Tap First)
+                    </h4>
+                    <div id="matchTermsContainer" class="flex flex-col gap-2 min-h-[300px]">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+
+                <!-- Definitions Column (Drop Targets) -->
+                <div class="flex flex-col gap-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+                        <i class="fa-solid fa-book-open"></i> Definitions (Drop / Tap Second)
+                    </h4>
+                    <div id="matchDefsContainer" class="flex flex-col gap-2 min-h-[300px]">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: MASTERY MATRIX / DASHBOARD ==================== -->
+        <section id="tab-dashboard" class="tab-content hidden flex-col max-w-4xl mx-auto w-full gap-6">
+            
+            <!-- Overall Stats Summary Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 block font-semibold">3/3 Fully Mastered</span>
+                        <span id="statTripleMastered" class="text-2xl font-extrabold text-slate-100">0 / 53</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 block font-semibold">Mode 1 Cards</span>
+                        <span id="statMode1" class="text-2xl font-extrabold text-slate-100">0</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 block font-semibold">Mode 2 Quiz</span>
+                        <span id="statMode2" class="text-2xl font-extrabold text-slate-100">0</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 block font-semibold">Mode 3 Match</span>
+                        <span id="statMode3" class="text-2xl font-extrabold text-slate-100">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Cards Mastery Table -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 overflow-hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+                    <h3 class="text-base font-bold text-slate-100 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-amber-400"></i> Terms Mastery Matrix
+                    </h3>
+                    <input type="text" id="matrixSearch" placeholder="Search terms..." class="bg-slate-800 text-xs text-slate-200 border border-slate-700 rounded-xl px-3 py-2 w-full sm:w-64 focus:outline-none focus:border-amber-500">
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+                            <tr>
+                                <th class="p-3">Term</th>
+                                <th class="p-3">Category</th>
+                                <th class="p-3 text-center">Mode 1 (Cards)</th>
+                                <th class="p-3 text-center">Mode 2 (MC Quiz)</th>
+                                <th class="p-3 text-center">Mode 3 (Match)</th>
+                                <th class="p-3 text-center">Saved Review</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matrixTableBody" class="divide-y divide-slate-800/60">
+                            <!-- Matrix rows injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: MANAGE / ADD CUSTOM CARDS ==================== -->
+        <section id="tab-manage" class="tab-content hidden flex-col max-w-2xl mx-auto w-full gap-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <h3 class="text-lg font-bold text-slate-100 mb-1 flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-amber-400"></i> Add Custom Study Term
+                </h3>
+                <p class="text-xs text-slate-400 mb-6">Expand your Treasure Island study deck with extra notes or questions.</p>
+
+                <form id="addCardForm" class="flex flex-col gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Term / Question *</label>
+                        <input type="text" id="newTerm" required placeholder="e.g., Captain Smollett" class="w-full bg-slate-800 text-slate-100 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-amber-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Definition / Answer *</label>
+                        <textarea id="newDefinition" required rows="3" placeholder="e.g., The disciplined and brave captain of the Hispaniola..." class="w-full bg-slate-800 text-slate-100 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-amber-500"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Category</label>
+                            <select id="newCategory" class="w-full bg-slate-800 text-slate-100 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-amber-500">
+                                <option value="Vocabulary">Vocabulary</option>
+                                <option value="Comprehension">Comprehension</option>
+                                <option value="Characters">Characters</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Key Context / Hint (Optional)</label>
+                            <input type="text" id="newExample" placeholder="e.g., Chapter 16 quote or scene" class="w-full bg-slate-800 text-slate-100 border border-slate-700 rounded-xl p-3 text-sm focus:outline-none focus:border-amber-500">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="mt-2 py-3 px-6 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl shadow-lg transition">
+                        <i class="fa-solid fa-floppy-disk mr-2"></i> Save Term to Study Deck
+                    </button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const PRELOADED_CARDS = [
+            // --- 43 VOCABULARY TERMS ---
+            { id: "v1", category: "Vocabulary", term: "bustle", definition: "excited activity and movement", example: "The deck was full of bustle as the crew prepared to sail." },
+            { id: "v2", category: "Vocabulary", term: "laden", definition: "heavily loaded or weighed down", example: "The jolly boat was laden with provisions and ammunition." },
+            { id: "v3", category: "Vocabulary", term: "slacken", definition: "stop in movement or flow; slow down", example: "The wind began to slacken near the island anchorage." },
+            { id: "v4", category: "Vocabulary", term: "provisions", definition: "food, drink, or equipment, especially for a journey", example: "They packed provisions before deserting the ship." },
+            { id: "v5", category: "Vocabulary", term: "hoisted", definition: "raised or lifted", example: "The Union Jack flag was hoisted high above the stockade." },
+            { id: "v6", category: "Vocabulary", term: "inquired", definition: "asked for information", example: "Silver inquired about the terms of surrender." },
+            { id: "v7", category: "Vocabulary", term: "clattering", definition: "a loud, rattling sound", example: "A clattering of muskets echoed through the woods." },
+            { id: "v8", category: "Vocabulary", term: "truce", definition: "an agreement between enemies to stop fighting or arguing", example: "Long John Silver came to the stockade carrying a white flag of truce." },
+            { id: "v9", category: "Vocabulary", term: "embassy", definition: "a person or group of people sent as representatives", example: "Silver acted as a one-man embassy for the mutineers." },
+            { id: "v10", category: "Vocabulary", term: "desertion", definition: "to leave without intending to return", example: "Jim's desertion of the stockade was a risky foolish gamble." },
+            { id: "v11", category: "Vocabulary", term: "treachery", definition: "betrayal of trust; deceptive action", example: "The pirate crew showed treachery against Captain Smollett." },
+            { id: "v12", category: "Vocabulary", term: "vigor", definition: "physical strength and good health", example: "Ben Gunn ran across the hills with surprising vigor." },
+            { id: "v13", category: "Vocabulary", term: "interior", definition: "the inner or indoor part of something", example: "Jim crept into the interior of the log house." },
+            { id: "v14", category: "Vocabulary", term: "recommence", definition: "begin again", example: "The firing began to recommence after the truce broke down." },
+            { id: "v15", category: "Vocabulary", term: "envy", definition: "to feel jealous of someone else", example: "The mutineers looked at Silver's rum with envy." },
+            { id: "v16", category: "Vocabulary", term: "folly", definition: "lack of good sense; foolishness", example: "Leaving the stockade was Jim's second major folly." },
+            { id: "v17", category: "Vocabulary", term: "maneuver", definition: "a movement requiring skill and care", example: "Jim tried to maneuver Ben Gunn's coracle towards the ship." },
+            { id: "v18", category: "Vocabulary", term: "lurch", definition: "an abrupt uncontrolled movement", example: "The Hispaniola gave a sudden lurch on the ocean tide." },
+            { id: "v19", category: "Vocabulary", term: "formidable", definition: "causing fear, apprehension, or dread", example: "Long John Silver was a formidable opponent on land and sea." },
+            { id: "v20", category: "Vocabulary", term: "notion", definition: "a belief or idea", example: "Jim had a wild notion to cut the ship's hawser cable." },
+            { id: "v21", category: "Vocabulary", term: "overhaul", definition: "to catch up with; overtake", example: "The pirates tried to overhaul Jim's drifting boat." },
+            { id: "v22", category: "Vocabulary", term: "ghastly", definition: "causing great horror or fear", example: "The pale face of Israel Hands was a ghastly sight." },
+            { id: "v23", category: "Vocabulary", term: "elated", definition: "very happy or proud", example: "Jim was elated when he brought the ship safely to beach." },
+            { id: "v24", category: "Vocabulary", term: "pretext", definition: "a reason given to explain an action that is not the real reason", example: "Silver used the map as a pretext to keep Jim alive." },
+            { id: "v25", category: "Vocabulary", term: "laborious", definition: "requiring a lot of time and effort", example: "Digging up the treasure cache was laborious work." },
+            { id: "v26", category: "Vocabulary", term: "conceited", definition: "excessively proud of oneself; vain", example: "The pirate Israel Hands was conceited about his knife skills." },
+            { id: "v27", category: "Vocabulary", term: "peril", definition: "serious and immediate danger", example: "Jim was in mortal peril when pinned to the mast." },
+            { id: "v28", category: "Vocabulary", term: "radiance", definition: "light or heat shining or reflecting", example: "The campfire cast a warm radiance across the clearing." },
+            { id: "v29", category: "Vocabulary", term: "perish", definition: "to die or be destroyed through violence", example: "Many mutineers perished from malaria and fighting." },
+            { id: "v30", category: "Vocabulary", term: "incensed", definition: "very angry; enraged", example: "The pirates were incensed when they found the treasure pit empty." },
+            { id: "v31", category: "Vocabulary", term: "depose", definition: "remove from power suddenly and forcefully", example: "The mutineers gave Silver the Black Spot to depose him." },
+            { id: "v32", category: "Vocabulary", term: "grievances", definition: "complaints or resentment over unfair treatment", example: "The crew presented a list of grievances to Captain Silver." },
+            { id: "v33", category: "Vocabulary", term: "insolence", definition: "rude or disrespectful behavior", example: "George Merry spoke with open insolence to Silver." },
+            { id: "v34", category: "Vocabulary", term: "contemptuously", definition: "expressing deep hatred or disapproval", example: "Silver looked at the mutineers contemptuously." },
+            { id: "v35", category: "Vocabulary", term: "grim", definition: "harsh or uninviting", example: "The sight of Flint's skeleton pointer was grim." },
+            { id: "v36", category: "Vocabulary", term: "ascend", definition: "go up or climb", example: "The party began to ascend the steep hillside toward the tall tree." },
+            { id: "v37", category: "Vocabulary", term: "excavation", definition: "a hole formed by digging", example: "They stood staring into the deep excavation where treasure had been." },
+            { id: "v38", category: "Vocabulary", term: "cache", definition: "an amount of goods or valuables kept in a hidden place", example: "Ben Gunn had moved the treasure cache to his cave months before." },
+            { id: "v39", category: "Vocabulary", term: "amassing", definition: "gather together or accumulate", example: "Flint spent years amassing his enormous gold fortune." },
+            { id: "v40", category: "Vocabulary", term: "obsequious", definition: "overly eager to help or obey someone important", example: "Silver became obsequious to Dr. Livesey when the tables turned." },
+            { id: "v41", category: "Vocabulary", term: "briskly", definition: "quickly or lively", example: "Dr. Livesey walked briskly through the woods to rescue Jim." },
+            { id: "v42", category: "Vocabulary", term: "ingratiate", definition: "to gain favor or approval by doing or saying things people like", example: "Silver tried to ingratiate himself with the doctor and squire." },
+            { id: "v43", category: "Vocabulary", term: "ample", definition: "plenty; more than enough", example: "They had an ample share of treasure for everyone." },
+
+            // --- COMPREHENSION & CHARACTER QUESTIONS ---
+            {
+                id: "c1", category: "Comprehension",
+                term: "Jim's Two Follies",
+                definition: "1) Going ashore on a jolly boat with mutineers; 2) Deserting the stockade leaving Gray & Squire behind while Captain Smollett was injured.",
+                example: "Jim admits both spontaneous decisions were foolish but ended up saving everyone."
+            },
+            {
+                id: "c2", category: "Comprehension",
+                term: "Pirates' First Camp Location & Consequences",
+                definition: "Pirates camped near a marshy swamp/lowland. Consequence: Malaria/fever broke out, making them easy targets and sickening the crew.",
+                example: "Dr. Livesey knew the swamp location would bring fever upon the mutineers."
+            },
+            {
+                id: "c3", category: "Comprehension",
+                term: "Jim's Sea Adventure",
+                definition: "Escaped stockade, took Ben Gunn's coracle, cut Hispaniola adrift, boarded ship, and wrestled Israel Hands to beach the ship.",
+                example: "Jim hid the Hispaniola in North Inlet after defeating Hands."
+            },
+            {
+                id: "c4", category: "Comprehension",
+                term: "Who saves Jim's life in stockade?",
+                definition: "Long John Silver protected Jim from the enraged mutineers who wanted to kill him when he sneaked back into the stockade.",
+                example: "Silver stood in front of Jim and demanded the Black Spot paper."
+            },
+            {
+                id: "c5", category: "Comprehension",
+                term: "Flint's Pointer",
+                definition: "A skeleton lying extended on the ground pointing toward the treasure, designed by Flint to intimidate and frighten scavengers.",
+                example: "The pirates were terrified thinking Flint's ghost was watching."
+            },
+            {
+                id: "c6", category: "Comprehension",
+                term: "Dr. Livesey's Treasure & Stockade Plan",
+                definition: "Dr. Livesey gave Silver the stockade and map because Ben Gunn had ALREADY dug up the treasure and stored it in his cave.",
+                example: "The map was useless to Silver since the pit was empty."
+            },
+            {
+                id: "c7", category: "Comprehension",
+                term: "Long John Silver's Fate",
+                definition: "Silver escaped at a Spanish American port with a bag of gold coins. Jim and friends were glad to be rid of him.",
+                example: "Jim remarked they were happy he made his escape safely."
+            },
+            {
+                id: "c8", category: "Comprehension",
+                term: "Jim's Final Quote (p. 254)",
+                definition: "'All of us had an ample share of the treasure, and used it wisely or foolishly according to our natures.'",
+                example: "Reflects how wealth reveals true character."
+            },
+            {
+                id: "c9", category: "Comprehension",
+                term: "Father Figures: Silver vs. Livesey (Similarities)",
+                definition: "Both protect Jim, influence his growth, watch over him while giving freedom, saved his life, and stay calm under pressure.",
+                example: "Both men serve as primary mentor figures throughout the voyage."
+            },
+            {
+                id: "c10", category: "Comprehension",
+                term: "Father Figures: Silver vs. Livesey (Differences)",
+                definition: "Silver is complex, deceptive, manipulative, and strong; Livesey is consistent, honest, intelligent, and bound by duty.",
+                example: "Silver acts for self-preservation while Livesey acts for honor."
+            }
+        ];
+
+        let state = {
+            cards: [],
+            filter: 'all',
+            currentIndex: 0,
+            isFlipped: false,
+            // Quiz MC state
+            mcIndex: 0,
+            mcScore: 0,
+            mcStreak: 0,
+            mcTotal: 0,
+            // Matching Quiz state
+            matchRoundTerms: [],
+            matchSelectedTermId: null,
+            matchSelectedDefId: null,
+            matchCount: 0,
+            matchTimerSeconds: 0,
+            matchTimerInterval: null,
+            // Drag state for touch
+            activeDragCard: null
+        };
+
+        // Load or initialize state from localStorage
+        function initStore() {
+            const saved = localStorage.getItem('ti_study_cards');
+            if (saved) {
+                try {
+                    state.cards = JSON.parse(saved);
+                } catch(e) {
+                    state.cards = JSON.parse(JSON.stringify(PRELOADED_CARDS));
+                }
+            } else {
+                state.cards = JSON.parse(JSON.stringify(PRELOADED_CARDS));
+            }
+
+            // Ensure all card objects have mastery and review flags
+            state.cards.forEach(c => {
+                if (!c.mastery) c.mastery = { mode1: false, mode2: false, mode3: false };
+                if (c.reviewLater === undefined) c.reviewLater = false;
+            });
+
+            saveStore();
+        }
+
+        function saveStore() {
+            localStorage.setItem('ti_study_cards', JSON.stringify(state.cards));
+            updateOverallProgress();
+        }
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+                if (type === 'flip') {
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.exponentialRampToValueAtTime(150, now + 0.1);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+                    osc.start(now);
+                    osc.stop(now + 0.1);
+                } else if (type === 'correct') {
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                } else if (type === 'wrong') {
+                    osc.frequency.setValueAtTime(220, now); // A3
+                    osc.frequency.setValueAtTime(180, now + 0.15);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'bookmark') {
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.setValueAtTime(880, now + 0.08);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
+                    osc.start(now);
+                    osc.stop(now + 0.18);
+                }
+            } catch(e) {
+                // Audio fallback silence
+            }
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.95;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                showToast("Text-to-speech not supported in this browser.", "info");
+            }
+        }
+
+        function showToast(msg, icon = 'info') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.textContent = msg;
+            toastIcon.className = icon === 'success' ? 'fa-solid fa-circle-check text-emerald-400 text-lg' :
+                                  icon === 'review' ? 'fa-solid fa-bookmark text-amber-400 text-lg' :
+                                  'fa-solid fa-circle-info text-amber-400 text-lg';
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2600);
+        }
+
+        function updateOverallProgress() {
+            let totalPointsPossible = state.cards.length * 3;
+            let currentPoints = 0;
+            let tripleMasteredCount = 0;
+
+            state.cards.forEach(c => {
+                let count = 0;
+                if (c.mastery.mode1) count++;
+                if (c.mastery.mode2) count++;
+                if (c.mastery.mode3) count++;
+                currentPoints += count;
+                if (count === 3) tripleMasteredCount++;
+            });
+
+            const pct = Math.round((currentPoints / totalPointsPossible) * 100) || 0;
+            document.getElementById('masteryPercent').textContent = `${pct}%`;
+            document.getElementById('masteryProgressBar').style.width = `${pct}%`;
+
+            // Dashboard stats
+            document.getElementById('statTripleMastered').textContent = `${tripleMasteredCount} / ${state.cards.length}`;
+            document.getElementById('statMode1').textContent = state.cards.filter(c => c.mastery.mode1).length;
+            document.getElementById('statMode2').textContent = state.cards.filter(c => c.mastery.mode2).length;
+            document.getElementById('statMode3').textContent = state.cards.filter(c => c.mastery.mode3).length;
+
+            updateFilterCounts();
+        }
+
+        function updateFilterCounts() {
+            document.getElementById('countAll').textContent = state.cards.length;
+            document.getElementById('countReview').textContent = state.cards.filter(c => c.reviewLater).length;
+            document.getElementById('countUnmastered').textContent = state.cards.filter(c => !(c.mastery.mode1 && c.mastery.mode2 && c.mastery.mode3)).length;
+        }
+
+        function getFilteredCards() {
+            const f = state.filter;
+            if (f === 'review') return state.cards.filter(c => c.reviewLater);
+            if (f === 'unmastered') return state.cards.filter(c => !(c.mastery.mode1 && c.mastery.mode2 && c.mastery.mode3));
+            if (f === 'vocab') return state.cards.filter(c => c.category === 'Vocabulary');
+            if (f === 'comprehension') return state.cards.filter(c => c.category === 'Comprehension');
+            return state.cards;
+        }
+
+        function renderCurrentCard() {
+            const filtered = getFilteredCards();
+            const flashcardEl = document.getElementById('flashcard');
+
+            if (filtered.length === 0) {
+                document.getElementById('cardTerm').textContent = "No Cards Match Filter";
+                document.getElementById('cardDefinition').textContent = "Try changing your deck filter or saving terms for review.";
+                document.getElementById('cardCategory').textContent = "Empty Deck";
+                document.getElementById('cardContextHint').textContent = "";
+                document.getElementById('cardExampleBox').classList.add('hidden');
+                document.getElementById('cardCounter').textContent = `0 / 0`;
+                return;
+            }
+
+            if (state.currentIndex >= filtered.length) state.currentIndex = 0;
+            if (state.currentIndex < 0) state.currentIndex = filtered.length - 1;
+
+            const card = filtered[state.currentIndex];
+
+            // Reset flip
+            state.isFlipped = false;
+            flashcardEl.classList.remove('is-flipped');
+
+            // Render text
+            document.getElementById('cardTerm').textContent = card.term;
+            document.getElementById('cardDefinition').textContent = card.definition;
+            document.getElementById('cardCategory').textContent = card.category;
+            document.getElementById('cardCounter').textContent = `${state.currentIndex + 1} / ${filtered.length}`;
+
+            if (card.example) {
+                document.getElementById('cardExample').textContent = card.example;
+                document.getElementById('cardExampleBox').classList.remove('hidden');
+            } else {
+                document.getElementById('cardExampleBox').classList.add('hidden');
+            }
+
+            // Bookmark button & state
+            const bookmarkBtn = document.getElementById('bookmarkBtn');
+            const reviewIndicator = document.getElementById('reviewIndicator');
+
+            if (card.reviewLater) {
+                bookmarkBtn.className = "p-2 text-amber-400 bg-amber-500/20 border border-amber-500/40 rounded-lg transition";
+                reviewIndicator.classList.remove('hidden');
+            } else {
+                bookmarkBtn.className = "p-2 text-slate-400 hover:text-amber-400 bg-slate-800 rounded-lg border border-slate-700 transition";
+                reviewIndicator.classList.add('hidden');
+            }
+
+            // Render 3-Way Mastery Badges on Card Front
+            const badgeContainer = document.getElementById('masteryBadges');
+            badgeContainer.innerHTML = '';
+            
+            const isTriple = card.mastery.mode1 && card.mastery.mode2 && card.mastery.mode3;
+            if (isTriple) {
+                badgeContainer.innerHTML = `<span class="bg-amber-500 text-slate-950 text-[10px] font-extrabold px-2 py-0.5 rounded-full mastery-glow flex items-center gap-1"><i class="fa-solid fa-crown"></i> 3/3 MASTERED</span>`;
+            } else {
+                badgeContainer.innerHTML = `
+                    <span class="text-[10px] px-1.5 py-0.5 rounded ${card.mastery.mode1 ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'bg-slate-800 text-slate-600'}" title="Mode 1 Flashcard"><i class="fa-solid fa-layer-group"></i></span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded ${card.mastery.mode2 ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' : 'bg-slate-800 text-slate-600'}" title="Mode 2 MC Quiz"><i class="fa-solid fa-list-check"></i></span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded ${card.mastery.mode3 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-slate-800 text-slate-600'}" title="Mode 3 Match"><i class="fa-solid fa-puzzle-piece"></i></span>
+                `;
+            }
+        }
+
+        function setupSwipeGestures() {
+            const cardInner = document.getElementById('flashcard');
+            let startX = 0, startY = 0;
+            let diffX = 0, diffY = 0;
+            let isDragging = false;
+
+            const overlayMastered = document.getElementById('swipeOverlayMastered');
+            const overlayPractice = document.getElementById('swipeOverlayPractice');
+            const overlayReview = document.getElementById('swipeOverlayReview');
+
+            function resetOverlays() {
+                overlayMastered.style.opacity = '0';
+                overlayPractice.style.opacity = '0';
+                overlayReview.style.opacity = '0';
+            }
+
+            cardInner.addEventListener('pointerdown', (e) => {
+                // Ignore if clicked speech button
+                if (e.target.closest('#speechBtn') || e.target.closest('#speechBtnBack')) return;
+                startX = e.clientX;
+                startY = e.clientY;
+                isDragging = true;
+                cardInner.style.transition = 'none';
+            });
+
+            window.addEventListener('pointermove', (e) => {
+                if (!isDragging) return;
+                diffX = e.clientX - startX;
+                diffY = e.clientY - startY;
+
+                // Move and rotate card with drag
+                const rot = diffX * 0.05;
+                cardInner.style.transform = `translate3d(${diffX}px, ${diffY}px, 0) rotate(${rot}deg) ${state.isFlipped ? 'rotateY(180deg)' : ''}`;
+
+                // Show directional overlays
+                resetOverlays();
+                if (diffX > 60) {
+                    overlayMastered.style.opacity = Math.min((diffX - 60) / 100, 1);
+                } else if (diffX < -60) {
+                    overlayPractice.style.opacity = Math.min((-diffX - 60) / 100, 1);
+                } else if (Math.abs(diffY) > 60) {
+                    overlayReview.style.opacity = Math.min((Math.abs(diffY) - 60) / 100, 1);
+                }
+            });
+
+            window.addEventListener('pointerup', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                cardInner.style.transition = 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                resetOverlays();
+
+                const filtered = getFilteredCards();
+                if (filtered.length === 0) return;
+
+                // Swipe Right -> Mastered Mode 1
+                if (diffX > 100) {
+                    const card = filtered[state.currentIndex];
+                    card.mastery.mode1 = true;
+                    saveStore();
+                    playSound('correct');
+                    showToast(`Marked "${card.term}" as Mastered!`, "success");
+                    state.currentIndex++;
+                    renderCurrentCard();
+                } 
+                // Swipe Left -> Needs Practice Mode 1
+                else if (diffX < -100) {
+                    const card = filtered[state.currentIndex];
+                    card.mastery.mode1 = false;
+                    saveStore();
+                    playSound('wrong');
+                    showToast(`Marked "${card.term}" for Practice`, "info");
+                    state.currentIndex++;
+                    renderCurrentCard();
+                } 
+                // Swipe Up / Down -> Toggle Save for Review
+                else if (Math.abs(diffY) > 90) {
+                    toggleSaveForReview();
+                    cardInner.style.transform = state.isFlipped ? 'rotateY(180deg)' : 'translate3d(0,0,0)';
+                } 
+                // Simple Tap -> Flip Card
+                else if (Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
+                    state.isFlipped = !state.isFlipped;
+                    playSound('flip');
+                    cardInner.classList.toggle('is-flipped', state.isFlipped);
+                    cardInner.style.transform = '';
+                } 
+                // Reset card position
+                else {
+                    cardInner.style.transform = state.isFlipped ? 'rotateY(180deg)' : 'translate3d(0,0,0)';
+                }
+
+                diffX = 0;
+                diffY = 0;
+            });
+        }
+
+        function toggleSaveForReview() {
+            const filtered = getFilteredCards();
+            if (filtered.length === 0) return;
+            const card = filtered[state.currentIndex];
+            card.reviewLater = !card.reviewLater;
+            saveStore();
+            playSound('bookmark');
+            showToast(card.reviewLater ? `Saved "${card.term}" for Review Later` : `Removed "${card.term}" from Review`, "review");
+            renderCurrentCard();
+        }
+
+        function setupMCQuiz() {
+            const filtered = state.cards;
+            if (filtered.length === 0) return;
+
+            // Pick random card for question
+            const card = filtered[Math.floor(Math.random() * filtered.length)];
+            document.getElementById('mcCategoryBadge').textContent = card.category;
+            document.getElementById('mcPrompt').textContent = `"${card.definition}"`;
+            document.getElementById('mcQuestionNum').textContent = `Question #${state.mcTotal + 1}`;
+
+            // Generate 4 options (1 correct, 3 distractors)
+            let options = [card.term];
+            let otherTerms = filtered.map(c => c.term).filter(t => t !== card.term);
+            
+            // Shuffle distractors
+            otherTerms.sort(() => 0.5 - Math.random());
+            for (let i = 0; i < 3 && i < otherTerms.length; i++) {
+                options.push(otherTerms[i]);
+            }
+            options.sort(() => 0.5 - Math.random());
+
+            const container = document.getElementById('mcOptionsContainer');
+            container.innerHTML = '';
+            document.getElementById('mcFeedback').classList.add('hidden');
+
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "p-4 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-100 font-semibold border border-slate-700 rounded-xl text-left transition flex items-center justify-between";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle text-slate-500"></i>`;
+                
+                btn.addEventListener('click', () => {
+                    handleMCAnswer(opt, card, btn);
+                });
+                container.appendChild(btn);
+            });
+        }
+
+        function handleMCAnswer(selectedTerm, correctCard, selectedBtn) {
+            const container = document.getElementById('mcOptionsContainer');
+            const buttons = container.querySelectorAll('button');
+            buttons.forEach(b => b.disabled = true);
+
+            state.mcTotal++;
+            const isCorrect = (selectedTerm === correctCard.term);
+
+            const feedback = document.getElementById('mcFeedback');
+            const feedbackTitle = document.getElementById('mcFeedbackTitle');
+            const feedbackDetail = document.getElementById('mcFeedbackDetail');
+
+            if (isCorrect) {
+                correctCard.mastery.mode2 = true;
+                saveStore();
+                playSound('correct');
+                state.mcScore++;
+                state.mcStreak++;
+
+                selectedBtn.className = "p-4 bg-emerald-950/80 text-emerald-200 border-2 border-emerald-500 font-bold rounded-xl text-left flex items-center justify-between";
+                selectedBtn.querySelector('i').className = "fa-solid fa-circle-check text-emerald-400";
+
+                feedbackTitle.className = "flex items-center gap-2 font-bold text-sm text-emerald-400";
+                feedbackTitle.innerHTML = `<i class="fa-solid fa-circle-check"></i> Correct! Mode 2 Mastery Recorded!`;
+                feedbackDetail.textContent = `Excellent! "${correctCard.term}" matches this definition.`;
+            } else {
+                correctCard.mastery.mode2 = false;
+                saveStore();
+                playSound('wrong');
+                state.mcStreak = 0;
+
+                selectedBtn.className = "p-4 bg-red-950/80 text-red-200 border-2 border-red-500 font-bold rounded-xl text-left flex items-center justify-between";
+                selectedBtn.querySelector('i').className = "fa-solid fa-circle-xmark text-red-400";
+
+                // Highlight correct button
+                buttons.forEach(b => {
+                    if (b.textContent.trim().startsWith(correctCard.term)) {
+                        b.className = "p-4 bg-emerald-950/40 text-emerald-300 border border-emerald-500/50 font-bold rounded-xl text-left flex items-center justify-between";
+                    }
+                });
+
+                feedbackTitle.className = "flex items-center gap-2 font-bold text-sm text-red-400";
+                feedbackTitle.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Incorrect!`;
+                feedbackDetail.textContent = `The correct term is "${correctCard.term}".`;
+            }
+
+            document.getElementById('mcStreak').innerHTML = `<i class="fa-solid fa-fire text-amber-500"></i> ${state.mcStreak}`;
+            document.getElementById('mcScore').textContent = `${state.mcScore}/${state.mcTotal}`;
+            feedback.classList.remove('hidden');
+        }
+
+        function setupMatchingQuiz() {
+            clearInterval(state.matchTimerInterval);
+            state.matchTimerSeconds = 0;
+            state.matchCount = 0;
+            state.matchSelectedTermId = null;
+            state.matchSelectedDefId = null;
+
+            document.getElementById('matchTimer').textContent = "00:00";
+            document.getElementById('matchProgressText').textContent = `0 / 5`;
+
+            // Start timer
+            state.matchTimerInterval = setInterval(() => {
+                state.matchTimerSeconds++;
+                const mins = String(Math.floor(state.matchTimerSeconds / 60)).padStart(2, '0');
+                const secs = String(state.matchTimerSeconds % 60).padStart(2, '0');
+                document.getElementById('matchTimer').textContent = `${mins}:${secs}`;
+            }, 1000);
+
+            // Pick 5 random cards from deck
+            let available = [...state.cards].sort(() => 0.5 - Math.random());
+            state.matchRoundTerms = available.slice(0, 5);
+
+            const termsContainer = document.getElementById('matchTermsContainer');
+            const defsContainer = document.getElementById('matchDefsContainer');
+            termsContainer.innerHTML = '';
+            defsContainer.innerHTML = '';
+
+            let shuffledDefs = [...state.matchRoundTerms].sort(() => 0.5 - Math.random());
+
+            // Render Terms (Left)
+            state.matchRoundTerms.forEach(card => {
+                const termCard = document.createElement('div');
+                termCard.dataset.id = card.id;
+                termCard.className = "match-term-card bg-slate-800 hover:bg-slate-700 border border-slate-700 p-4 rounded-xl font-bold text-amber-400 text-sm cursor-pointer transition select-none flex items-center justify-between";
+                termCard.innerHTML = `<span>${card.term}</span> <i class="fa-solid fa-grip-dots-vertical text-slate-500"></i>`;
+                
+                termCard.addEventListener('click', () => handleMatchTermClick(card.id, termCard));
+                termsContainer.appendChild(termCard);
+            });
+
+            // Render Definitions (Right)
+            shuffledDefs.forEach(card => {
+                const defCard = document.createElement('div');
+                defCard.dataset.id = card.id;
+                defCard.className = "match-def-card bg-slate-800 hover:bg-slate-700 border border-slate-700 p-4 rounded-xl text-slate-200 text-xs font-medium cursor-pointer transition select-none flex items-center justify-between";
+                defCard.innerHTML = `<span>${card.definition}</span> <i class="fa-regular fa-square text-slate-500"></i>`;
+                
+                defCard.addEventListener('click', () => handleMatchDefClick(card.id, defCard));
+                defsContainer.appendChild(defCard);
+            });
+        }
+
+        function handleMatchTermClick(id, element) {
+            document.querySelectorAll('.match-term-card').forEach(c => c.classList.remove('border-amber-500', 'bg-amber-500/20'));
+            state.matchSelectedTermId = id;
+            element.classList.add('border-amber-500', 'bg-amber-500/20');
+            checkMatchPair();
+        }
+
+        function handleMatchDefClick(id, element) {
+            document.querySelectorAll('.match-def-card').forEach(c => c.classList.remove('border-amber-500', 'bg-amber-500/20'));
+            state.matchSelectedDefId = id;
+            element.classList.add('border-amber-500', 'bg-amber-500/20');
+            checkMatchPair();
+        }
+
+        function checkMatchPair() {
+            if (state.matchSelectedTermId && state.matchSelectedDefId) {
+                const termCardEl = document.querySelector(`.match-term-card[data-id="${state.matchSelectedTermId}"]`);
+                const defCardEl = document.querySelector(`.match-def-card[data-id="${state.matchSelectedDefId}"]`);
+
+                if (state.matchSelectedTermId === state.matchSelectedDefId) {
+                    // Correct Match
+                    playSound('correct');
+                    const card = state.cards.find(c => c.id === state.matchSelectedTermId);
+                    if (card) card.mastery.mode3 = true;
+                    saveStore();
+
+                    termCardEl.className = "bg-emerald-950/60 border-2 border-emerald-500 text-emerald-300 p-4 rounded-xl text-sm font-bold opacity-60 pointer-events-none flex items-center justify-between";
+                    termCardEl.querySelector('i').className = "fa-solid fa-check text-emerald-400";
+
+                    defCardEl.className = "bg-emerald-950/60 border-2 border-emerald-500 text-emerald-300 p-4 rounded-xl text-xs font-medium opacity-60 pointer-events-none flex items-center justify-between";
+                    defCardEl.querySelector('i').className = "fa-solid fa-check-double text-emerald-400";
+
+                    state.matchCount++;
+                    document.getElementById('matchProgressText').textContent = `${state.matchCount} / 5`;
+
+                    if (state.matchCount === 5) {
+                        clearInterval(state.matchTimerInterval);
+                        showToast(`Matching Round Cleared in ${state.matchTimerSeconds}s!`, 'success');
+                    }
+                } else {
+                    // Incorrect Match
+                    playSound('wrong');
+                    termCardEl.classList.add('border-red-500', 'bg-red-500/20');
+                    defCardEl.classList.add('border-red-500', 'bg-red-500/20');
+
+                    setTimeout(() => {
+                        termCardEl.classList.remove('border-red-500', 'bg-red-500/20', 'border-amber-500', 'bg-amber-500/20');
+                        defCardEl.classList.remove('border-red-500', 'bg-red-500/20', 'border-amber-500', 'bg-amber-500/20');
+                    }, 500);
+                }
+
+                state.matchSelectedTermId = null;
+                state.matchSelectedDefId = null;
+            }
+        }
+
+        function renderMasteryMatrix(query = '') {
+            const tbody = document.getElementById('matrixTableBody');
+            tbody.innerHTML = '';
+
+            const filtered = state.cards.filter(c => 
+                c.term.toLowerCase().includes(query.toLowerCase()) || 
+                c.definition.toLowerCase().includes(query.toLowerCase())
+            );
+
+            filtered.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-800/50 transition";
+
+                const isTriple = c.mastery.mode1 && c.mastery.mode2 && c.mastery.mode3;
+
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-slate-100 flex items-center gap-2">
+                        ${isTriple ? '<i class="fa-solid fa-crown text-amber-400 text-xs"></i>' : ''}
+                        ${c.term}
+                    </td>
+                    <td class="p-3"><span class="bg-slate-800 text-slate-400 px-2 py-0.5 rounded text-[10px] font-semibold">${c.category}</span></td>
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-1 rounded text-[10px] font-bold ${c.mastery.mode1 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-500'}">
+                            ${c.mastery.mode1 ? 'Mastered' : 'Pending'}
+                        </span>
+                    </td>
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-1 rounded text-[10px] font-bold ${c.mastery.mode2 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-500'}">
+                            ${c.mastery.mode2 ? 'Mastered' : 'Pending'}
+                        </span>
+                    </td>
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-1 rounded text-[10px] font-bold ${c.mastery.mode3 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-500'}">
+                            ${c.mastery.mode3 ? 'Mastered' : 'Pending'}
+                        </span>
+                    </td>
+                    <td class="p-3 text-center">
+                        <button onclick="toggleCardReview('${c.id}')" class="text-xs ${c.reviewLater ? 'text-amber-400' : 'text-slate-600 hover:text-slate-400'}">
+                            <i class="${c.reviewLater ? 'fa-solid' : 'fa-regular'} fa-bookmark"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function toggleCardReview(id) {
+            const card = state.cards.find(c => c.id === id);
+            if (card) {
+                card.reviewLater = !card.reviewLater;
+                saveStore();
+                renderMasteryMatrix(document.getElementById('matrixSearch').value);
+                showToast(card.reviewLater ? "Saved for review" : "Removed from review", "review");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initStore();
+
+            // Tab navigation switching
+            const navTabs = document.querySelectorAll('.nav-tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.dataset.tab;
+                    
+                    navTabs.forEach(t => {
+                        t.className = "nav-tab flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all";
+                    });
+                    tab.className = "nav-tab active flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-slate-950 shadow-md transition-all";
+
+                    tabContents.forEach(c => c.classList.add('hidden'));
+                    document.getElementById(`tab-${target}`).classList.remove('hidden');
+
+                    if (target === 'flashcards') renderCurrentCard();
+                    if (target === 'mc-quiz') setupMCQuiz();
+                    if (target === 'matching-quiz') setupMatchingQuiz();
+                    if (target === 'dashboard') renderMasteryMatrix();
+                });
+            });
+
+            // Card navigation buttons
+            document.getElementById('prevBtn').addEventListener('click', () => {
+                state.currentIndex--;
+                renderCurrentCard();
+            });
+
+            document.getElementById('nextBtn').addEventListener('click', () => {
+                state.currentIndex++;
+                renderCurrentCard();
+            });
+
+            document.getElementById('markMasteredBtn').addEventListener('click', () => {
+                const filtered = getFilteredCards();
+                if (filtered.length > 0) {
+                    filtered[state.currentIndex].mastery.mode1 = true;
+                    saveStore();
+                    playSound('correct');
+                    showToast("Marked as Mastered!", "success");
+                    state.currentIndex++;
+                    renderCurrentCard();
+                }
+            });
+
+            document.getElementById('markPracticeBtn').addEventListener('click', () => {
+                const filtered = getFilteredCards();
+                if (filtered.length > 0) {
+                    filtered[state.currentIndex].mastery.mode1 = false;
+                    saveStore();
+                    playSound('wrong');
+                    showToast("Marked for Practice", "info");
+                    state.currentIndex++;
+                    renderCurrentCard();
+                }
+            });
+
+            document.getElementById('bookmarkBtn').addEventListener('click', toggleSaveForReview);
+
+            document.getElementById('deckFilter').addEventListener('change', (e) => {
+                state.filter = e.target.value;
+                state.currentIndex = 0;
+                renderCurrentCard();
+            });
+
+            // Text-to-speech buttons
+            document.getElementById('speechBtn').addEventListener('click', () => {
+                const filtered = getFilteredCards();
+                if (filtered.length > 0) speakText(filtered[state.currentIndex].term);
+            });
+            document.getElementById('speechBtnBack').addEventListener('click', () => {
+                const filtered = getFilteredCards();
+                if (filtered.length > 0) speakText(filtered[state.currentIndex].definition);
+            });
+
+            // MC Next Question Button
+            document.getElementById('mcNextQuestionBtn').addEventListener('click', setupMCQuiz);
+
+            // Match Round Reset
+            document.getElementById('startMatchRoundBtn').addEventListener('click', setupMatchingQuiz);
+
+            // Matrix Search
+            document.getElementById('matrixSearch').addEventListener('input', (e) => {
+                renderMasteryMatrix(e.target.value);
+            });
+
+            // Reset Deck Progress
+            const handleReset = () => {
+                if (window.confirm("Are you sure you want to reset all quiz progress and bookmarks?")) {
+                    localStorage.removeItem('ti_study_cards');
+                    initStore();
+                    renderCurrentCard();
+                    showToast("Study progress reset successfully.", "info");
+                }
+            };
+            document.getElementById('resetBtnDesktop').addEventListener('click', handleReset);
+            document.getElementById('resetBtnMobile').addEventListener('click', handleReset);
+
+            // Add Custom Card Form
+            document.getElementById('addCardForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const term = document.getElementById('newTerm').value.trim();
+                const definition = document.getElementById('newDefinition').value.trim();
+                const category = document.getElementById('newCategory').value;
+                const example = document.getElementById('newExample').value.trim();
+
+                const newCard = {
+                    id: 'custom-' + Date.now(),
+                    category,
+                    term,
+                    definition,
+                    example,
+                    reviewLater: false,
+                    mastery: { mode1: false, mode2: false, mode3: false }
+                };
+
+                state.cards.push(newCard);
+                saveStore();
+                e.target.reset();
+                showToast(`Added custom term "${term}"!`, 'success');
+            });
+
+            // Initialize Swipe Gestures & Initial Card
+            setupSwipeGestures();
+            renderCurrentCard();
+        });
+    </script>
+</body>
+</html>
