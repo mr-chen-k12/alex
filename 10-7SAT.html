@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAT Reading Practice - 10-7 Alex</title>
+<style>
+  :root { --primary-color: #A51C30; --ink:#1c1c1e; --muted:#6b7280; --bg:#f4f6fa; }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--ink);
+         margin: 0; padding: 0; line-height: 1.6; }
+  .page { max-width: 860px; margin: 0 auto; padding: 18px 16px 60px; }
+
+  /* ---- Teacher audit panel (hidden unless ?check=true) ---- */
+  #teacher-audit-panel { display: none; }
+  #teacher-audit-panel.active { display: block; }
+  .audit-banner { background: #1a1a2e; color: #eee; border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+  .audit-container { max-width: 100%; }
+  .audit-title { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .audit-title h2 { margin: 0; font-size: 1.2rem; }
+  .btn-clear-audit { background: #e74c3c; color: #fff; border: none; border-radius: 8px;
+    padding: 8px 14px; cursor: pointer; font-family: inherit; }
+  .audit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px; margin: 14px 0; }
+  .audit-card { background: #16213e; border-radius: 10px; padding: 12px; text-align: center; }
+  .audit-card.flagged { border: 2px solid #e74c3c; }
+  .audit-card .num { font-size: 1.8rem; font-weight: bold; }
+  .audit-card .label { font-size: 0.85rem; color: #bdc3c7; }
+  .audit-log-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 8px; }
+  .audit-log-table th, .audit-log-table td { border: 1px solid #34495e; padding: 6px 8px; text-align: left; }
+  .audit-log-table th { background: #16213e; }
+
+  /* ---- Header ---- */
+  header { background: var(--primary-color); color: #fff; border-radius: 12px;
+    padding: 20px 22px; margin-bottom: 16px; transition: background 0.3s; }
+  .header-container { display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px; }
+  .header-title h1 { margin: 0; font-size: 1.5rem; }
+  .header-title p { margin: 4px 0 0; opacity: 0.9; font-size: 0.95rem; }
+  .badges-preview { display: flex; gap: 12px; }
+  .badge-item { text-align: center; font-size: 0.75rem; opacity: 0.55; filter: grayscale(80%); }
+  .badge-item img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover;
+    border: 3px solid rgba(255,255,255,.5); background: #fff; display: block; margin: 0 auto 4px; }
+  .badge-item.unlocked { opacity: 1; filter: none; }
+  .badge-item.unlocked img { border-color: gold; box-shadow: 0 0 12px gold; }
+
+  /* ---- Controls ---- */
+  .controls-bar { display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px; background: #fff; border-radius: 12px;
+    padding: 12px 18px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .selector-group label { font-weight: bold; margin-right: 8px; }
+  .selector-group select { font-size: 1rem; padding: 8px 12px; border-radius: 8px;
+    border: 2px solid var(--primary-color); font-family: inherit; cursor: pointer; }
+  .score-tracker { font-weight: bold; font-size: 1.1rem; color: var(--primary-color); }
+
+  /* ---- Question cards ---- */
+  .question-card { background: #fff; border-radius: 12px; padding: 20px 22px;
+    margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .question-number { font-weight: bold; color: var(--primary-color); margin-bottom: 8px; }
+  .passage { background: #f8fafc; border-left: 5px solid var(--primary-color);
+    padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 12px; }
+  .question-text { font-weight: bold; font-size: 1.08rem; margin: 10px 0; }
+  .options-group { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .option-btn { text-align: left; background: #f1f5f9; border: 2px solid #e2e8f0;
+    border-radius: 10px; padding: 10px 14px; font-size: 1rem; cursor: pointer;
+    font-family: inherit; color: var(--ink); line-height: 1.5; }
+  .option-btn:hover:not(:disabled) { border-color: var(--primary-color); background: #fff; }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct { border-color: #16a34a; background: #f0fdf4; }
+  .option-btn.incorrect { border-color: #dc2626; background: #fef2f2; }
+  .feedback-box { display: none; margin-top: 12px; padding: 12px 14px; border-radius: 10px; }
+  .feedback-box.show { display: block; }
+  .feedback-box.good { background: #f0fdf4; border: 2px solid #16a34a; }
+  .feedback-box.bad { background: #fef2f2; border: 2px solid #dc2626; }
+  .feedback-box .verdict { font-weight: bold; font-size: 1.05rem; }
+  .feedback-box .expl { margin-top: 6px; color: #334155; }
+
+  /* ---- Score summary ---- */
+  .score-summary-card { display: none; background: #fff; border-radius: 12px; padding: 26px;
+    text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .score-summary-card h2 { margin-top: 0; }
+  .score-display { font-size: 2.6rem; font-weight: bold; color: var(--primary-color); margin: 8px 0; }
+  .reward-badge { margin: 14px 0; }
+  .reward-badge img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
+    border: 4px solid gold; box-shadow: 0 0 18px gold; background: #fff; }
+  .reward-name { font-weight: bold; font-size: 1.2rem; margin-top: 6px; }
+  .btn-retry { background: var(--primary-color); color: #fff; border: none; border-radius: 999px;
+    padding: 12px 28px; font-size: 1.05rem; font-weight: bold; cursor: pointer;
+    font-family: inherit; margin-top: 10px; }
+  @media print {
+    .controls-bar, #teacher-audit-panel, .btn-retry { display: none !important; }
+    .option-btn { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Anti-Cheating Teacher Inspection Panel (Triggered by ?check=true) -->
+  <div id="teacher-audit-panel" class="audit-banner">
+    <div class="audit-container">
+      <div class="audit-title">
+        <h2>🕵️ Teacher Audit Dashboard <span style="font-size: 0.8rem; color:#bdc3c7;">(?check=true mode)</span></h2>
+        <button class="btn-clear-audit" onclick="clearAuditLog()">Reset Audit Data</button>
+      </div>
+      <div class="audit-grid">
+        <div class="audit-card" id="card-total-refreshes">
+          <div class="num" id="stat-total-refreshes">0</div>
+          <div class="label">Total Page Refreshes</div>
+        </div>
+        <div class="audit-card" id="card-mid-refreshes">
+          <div class="num" id="stat-mid-refreshes">0</div>
+          <div class="label">Mid-Attempt Refreshes</div>
+        </div>
+        <div class="audit-card">
+          <div class="num" id="stat-manual-resets">0</div>
+          <div class="label">Manual Reset Attempts</div>
+        </div>
+        <div class="audit-card" id="card-risk-status">
+          <div class="num" id="stat-risk-level" style="font-size: 1.2rem; margin-top: 8px;">Clear</div>
+          <div class="label">Cheating Risk Assessment</div>
+        </div>
+      </div>
+      <div style="font-weight: bold; margin-bottom: 6px; color: #f39c12;">Student Activity &amp; Completion History:</div>
+      <table class="audit-log-table">
+        <thead><tr><th>Timestamp</th><th>Event Type</th><th>Details / Set Progress</th></tr></thead>
+        <tbody id="audit-log-rows"><tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Header & Badges -->
+  <header>
+    <div class="header-container">
+      <div class="header-title">
+        <h1>Digital SAT Reading Practice</h1>
+        <p>30 Questions • Sets A, B &amp; C • Integrity-Tracked Assessment</p>
+      </div>
+      <div class="badges-preview">
+        <div class="badge-item" id="badge-harvard">
+          <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard" onerror="this.style.display='none'">
+          <span>Harvard</span>
+        </div>
+        <div class="badge-item" id="badge-bu">
+          <img src="https://mr-chen-k12.github.io/books/IMG_0121.png" alt="Boston University" onerror="this.style.display='none'">
+          <span>Boston Univ.</span>
+        </div>
+        <div class="badge-item" id="badge-yale">
+          <img src="https://mr-chen-k12.github.io/books/IMG_0122.png" alt="Yale" onerror="this.style.display='none'">
+          <span>Yale</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation & Score Bar -->
+  <div class="controls-bar">
+    <div class="selector-group">
+      <label for="set-select">Choose Question Set:</label>
+      <select id="set-select" onchange="switchSet(this.value)">
+        <option value="Set A">Set A (10 Questions)</option>
+        <option value="Set B">Set B (10 Questions)</option>
+        <option value="Set C">Set C (10 Questions)</option>
+      </select>
+    </div>
+    <div class="score-tracker" id="score-tracker">Score: 0 / 10</div>
+  </div>
+
+  <!-- Main Quiz Area -->
+  <main class="quiz-container">
+    <div id="questions-wrapper"></div>
+    <div id="score-summary" class="score-summary-card">
+      <h2>Set Complete!</h2>
+      <p>Your Final Score for this set:</p>
+      <div class="score-display" id="final-score-text">0 / 10</div>
+      <div id="reward-section"></div>
+      <p id="feedback-message" style="font-size: 1.1rem; font-weight: 500;"></p>
+      <button class="btn-retry" onclick="resetCurrentSet()">Try This Set Again</button>
+    </div>
+  </main>
+
+</div>
+
+<script>
+/* ============ Integrity audit (localStorage) ============ */
+const AUDIT_STORAGE_KEY = "sat_10_7_alex_audit_v1";
+const ACTIVE_PROGRESS_KEY = "sat_10_7_alex_active_v1";
+
+function getAuditData() {
+  const stored = localStorage.getItem(AUDIT_STORAGE_KEY);
+  return stored ? JSON.parse(stored) : {
+    totalRefreshes: 0, midQuizRefreshes: 0, manualResets: 0, events: []
+  };
+}
+function saveAuditData(data) { localStorage.setItem(AUDIT_STORAGE_KEY, JSON.stringify(data)); }
+
+function trackPageLoad(setName) {
+  let audit = getAuditData();
+  audit.totalRefreshes += 1;
+  const activeProgress = localStorage.getItem(ACTIVE_PROGRESS_KEY);
+  if (activeProgress) {
+    const prog = JSON.parse(activeProgress);
+    const answeredCount = Object.keys(prog.answers || {}).length;
+    if (answeredCount > 0 && answeredCount < 10) {
+      audit.midQuizRefreshes += 1;
+      audit.events.unshift({
+        timestamp: new Date().toLocaleString(),
+        type: "⚠️ SUSPICIOUS REFRESH",
+        detail: "Page refreshed mid-attempt during " + prog.setName + " at Q" + (answeredCount + 1) + " (" + answeredCount + "/10 answered)"
+      });
+    }
+  } else {
+    audit.events.unshift({
+      timestamp: new Date().toLocaleString(),
+      type: "PAGE_LOAD",
+      detail: "Opened or reloaded page on " + setName
+    });
+  }
+  saveAuditData(audit);
+  renderAuditDashboard();
+}
+function trackAnswerProgress(setName, answersObj) {
+  localStorage.setItem(ACTIVE_PROGRESS_KEY, JSON.stringify({
+    setName: setName, answers: answersObj, lastUpdated: new Date().toISOString()
+  }));
+}
+function trackSetCompletion(setName, score, total) {
+  let audit = getAuditData();
+  audit.events.unshift({
+    timestamp: new Date().toLocaleString(),
+    type: "SET_COMPLETED",
+    detail: "Completed " + setName + " — Final Score: " + score + "/" + total
+  });
+  saveAuditData(audit);
+  localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+  renderAuditDashboard();
+}
+function trackManualReset(setName) {
+  let audit = getAuditData();
+  audit.manualResets += 1;
+  audit.events.unshift({
+    timestamp: new Date().toLocaleString(),
+    type: "MANUAL_RESET",
+    detail: "Student clicked 'Try Again' to restart " + setName
+  });
+  saveAuditData(audit);
+  localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+  renderAuditDashboard();
+}
+function renderAuditDashboard() {
+  const audit = getAuditData();
+  const setText = (id, v) => { const e = document.getElementById(id); if (e) e.innerText = v; };
+  setText("stat-total-refreshes", audit.totalRefreshes);
+  setText("stat-mid-refreshes", audit.midQuizRefreshes);
+  setText("stat-manual-resets", audit.manualResets);
+  const riskCard = document.getElementById("card-risk-status");
+  const midCard = document.getElementById("card-mid-refreshes");
+  const riskText = document.getElementById("stat-risk-level");
+  if (riskText) {
+    if (audit.midQuizRefreshes > 0) {
+      riskText.innerText = "⚠️ High Risk (Skeptical)";
+      riskText.style.color = "#e74c3c";
+      if (riskCard) riskCard.classList.add("flagged");
+      if (midCard) midCard.classList.add("flagged");
+    } else if (audit.totalRefreshes > 6) {
+      riskText.innerText = "⚠️ Medium Risk";
+      riskText.style.color = "#f39c12";
+    } else {
+      riskText.innerText = "✅ Clear";
+      riskText.style.color = "#2ecc71";
+    }
+  }
+  const tbody = document.getElementById("audit-log-rows");
+  if (tbody) {
+    if (!audit.events.length) {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr>';
+    } else {
+      tbody.innerHTML = audit.events.slice(0, 80).map(e =>
+        "<tr><td>" + e.timestamp + "</td><td>" + e.type + "</td><td>" + e.detail + "</td></tr>"
+      ).join("");
+    }
+  }
+}
+function clearAuditLog() {
+  if (confirm("Are you sure you want to clear all local audit tracking logs?")) {
+    localStorage.removeItem(AUDIT_STORAGE_KEY);
+    localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+    renderAuditDashboard();
+  }
+}
+
+/* ============ University rewards ============ */
+const universityRewards = {
+  "Set A": { name: "Harvard University", img: "https://mr-chen-k12.github.io/math/IMG_0232.png",
+             color: "#A51C30", badgeId: "badge-harvard" },
+  "Set B": { name: "Boston University", img: "https://mr-chen-k12.github.io/books/IMG_0121.png",
+             color: "#CC0000", badgeId: "badge-bu" },
+  "Set C": { name: "Yale University", img: "https://mr-chen-k12.github.io/books/IMG_0122.png",
+             color: "#00356B", badgeId: "badge-yale" }
+};
+
+/* ============ Question Bank: 30 original SAT Reading questions ============ */
+const questionBank = {
+  "Set A": [
+    {
+      id: 1,
+      passage: "Skilled public speakers rarely rely on inspiration alone; they rehearse under conditions that mimic the actual performance. Speaking coaches recommend practicing before a small, honest audience, because the mild nervousness it produces ________ speakers to the adrenaline they will feel on stage, making the real event feel familiar rather than overwhelming.",
+      question: "Which choice completes the text with the most logical and precise word?",
+      options: [
+        "A) exposes",
+        "B) acclimates",
+        "C) subjects",
+        "D) surrenders"
+      ],
+      answer: 1,
+      explanation: "Correct! 'Acclimates' means gradually adapting to a new condition — precisely what rehearsing under mild pressure does. 'Exposes' lacks the sense of adaptation, 'subjects' is too harsh, and 'surrenders' points the wrong way."
+    },
+    {
+      id: 2,
+      passage: "The mimic octopus can impersonate more than fifteen different marine animals, from lionfish to sea snakes. Unlike most camouflage, which aims to make an animal invisible, the mimic octopus's impersonations are conspicuous — they advertise danger. A predator that has learned to avoid venomous lionfish will likewise avoid anything that looks like one. Researchers believe the octopus selects its disguise based on which predator is approaching, suggesting a remarkable degree of situational awareness.",
+      question: "Which choice best states the main idea of the text?",
+      options: [
+        "A) The mimic octopus survives by imitating dangerous animals that predators already avoid.",
+        "B) Most octopuses are completely incapable of changing their appearance.",
+        "C) Lionfish and sea snakes are the mimic octopus's primary prey.",
+        "D) Camouflage in nature is always intended to make animals invisible."
+      ],
+      answer: 0,
+      explanation: "Correct! The passage centers on the octopus's strategy: conspicuously copying dangerous animals to deter predators. The other choices are contradicted by the text (B, C, D)."
+    },
+    {
+      id: 3,
+      passage: "Before the printing press, books were copied by hand, a single volume requiring months of a scribe's labor; as a result, books were luxury goods owned almost exclusively by churches, universities, and the wealthy. Within fifty years of Gutenberg's invention, presses across Europe had produced an estimated twenty million volumes, and literacy rates began a slow but steady climb.",
+      question: "Which choice best states an inference supported by the text?",
+      options: [
+        "A) The printing press made books more affordable and contributed to rising literacy.",
+        "B) Scribes welcomed the printing press because it reduced their workload.",
+        "C) Churches banned printed books in order to protect their libraries.",
+        "D) Gutenberg personally printed all twenty million volumes himself."
+      ],
+      answer: 0,
+      explanation: "Correct! The shift from scarce hand-copied books to twenty million printed volumes, alongside climbing literacy, supports this inference. The other choices go beyond or contradict the text."
+    },
+    {
+      id: 4,
+      passage: "Traditional banks often deny small loans to low-income entrepreneurs, judging the administrative costs too high relative to the modest sums involved. Microfinance institutions fill this gap by issuing tiny loans — sometimes less than a hundred dollars — which borrowers use to buy sewing machines, livestock, or market inventory. Repayment rates are strikingly high, challenging the ________ that the poor are unreliable borrowers.",
+      question: "Which choice completes the text with the most logical and precise word?",
+      options: [
+        "A) notion",
+        "B) celebration",
+        "C) repayment",
+        "D) fortune"
+      ],
+      answer: 0,
+      explanation: "Correct! 'Notion' (a belief or idea) fits: the high repayment rates challenge the belief that the poor are unreliable borrowers. The other words make no sense in context."
+    },
+    {
+      id: 5,
+      passage: "Astronomers detect most exoplanets indirectly: when a planet passes in front of its star, the star's brightness dips by a tiny fraction, and this periodic dimming reveals the planet's orbit. The depth of the dip indicates the planet's size relative to the star.",
+      question: "According to the text, what does the depth of a star's brightness dip indicate?",
+      options: [
+        "A) The planet's size relative to its star.",
+        "B) The star's distance from Earth.",
+        "C) The planet's orbital speed.",
+        "D) The age of the star."
+      ],
+      answer: 0,
+      explanation: "Correct! The final sentence states this directly: the depth of the dip indicates the planet's size relative to the star."
+    },
+    {
+      id: 6,
+      passage: "Students who cram the night before an exam often perform worse than those who distribute the same hours of study across several days — a phenomenon psychologists call the spacing effect. Each time a learner revisits material after a delay, retrieval requires effort, and that effort strengthens the memory trace more than passive rereading does.",
+      question: "Which choice best states the main idea of the text?",
+      options: [
+        "A) Distributing study sessions over time improves retention because effortful retrieval strengthens memory.",
+        "B) Cramming the night before is the most efficient way to prepare for exams.",
+        "C) Rereading notes is more effective than testing oneself.",
+        "D) Memory improves only when individual study sessions are very long."
+      ],
+      answer: 0,
+      explanation: "Correct! The passage explains the spacing effect: spreading out study and effortfully retrieving material builds stronger memories than cramming or rereading."
+    },
+    {
+      id: 7,
+      passage: "On summer afternoons, neighborhoods with dense tree cover can measure several degrees cooler than nearby treeless blocks. Leaves intercept sunlight before it strikes pavement, and transpiration — the release of water vapor from leaves — carries heat away much as sweating cools human skin. City planners now treat street trees as infrastructure, as essential as storm drains.",
+      question: "Which choice is best supported by the text?",
+      options: [
+        "A) Urban trees reduce heat through shade and transpiration.",
+        "B) Trees cool cities primarily by blocking the wind.",
+        "C) Pavement stays cooler than grass on hot summer days.",
+        "D) Storm drains become unnecessary wherever trees are planted."
+      ],
+      answer: 0,
+      explanation: "Correct! The text names two cooling mechanisms: leaves intercepting sunlight (shade) and transpiration carrying heat away. The other choices contradict the passage."
+    },
+    {
+      id: 8,
+      passage: "Each GPS satellite broadcasts the precise time from its onboard atomic clock. A receiver compares the timestamps from multiple satellites; because the signals arrive at slightly different moments, the receiver can ________ its distance from each satellite and pinpoint its location by triangulation.",
+      question: "Which choice completes the text with the most logical and precise word?",
+      options: [
+        "A) calculate",
+        "B) imagine",
+        "C) disregard",
+        "D) conceal"
+      ],
+      answer: 0,
+      explanation: "Correct! The receiver determines distances from timing differences — it 'calculates' them. The other verbs don't fit the scientific context."
+    },
+    {
+      id: 9,
+      passage: "When Monet exhibited 'Impression, Sunrise' in 1874, critics mocked its unfinished appearance — visible brushstrokes, blurred forms, ordinary subject matter. Yet within two decades, the style those critics derided had revolutionized European painting, shifting attention from precise detail to the fleeting effects of light.",
+      question: "Which choice best describes the function of the first sentence in the text as a whole?",
+      options: [
+        "A) It establishes the hostile reception that makes the style's later triumph surprising.",
+        "B) It proves that Monet was an unskilled and careless painter.",
+        "C) It lists the most famous paintings of the Impressionist movement.",
+        "D) It argues that art critics are always wrong about new styles."
+      ],
+      answer: 0,
+      explanation: "Correct! The first sentence sets up the critics' mockery, which contrasts with — and heightens — the revolution described in the second sentence."
+    },
+    {
+      id: 10,
+      passage: "In the 1840s, physician Ignaz Semmelweis noticed that mothers in doctors' maternity wards died of fever far more often than those in midwives' wards. He hypothesized that doctors carried 'cadaverous particles' from autopsies to patients, and ordered handwashing with chlorinated lime. Death rates plummeted — yet his colleagues rejected the idea, offended by the suggestion that gentlemen's hands could be unclean.",
+      question: "Which choice best states the main idea of the text?",
+      options: [
+        "A) Semmelweis showed that handwashing saves lives, though his peers resisted the finding.",
+        "B) Midwives in the 1840s were better trained than doctors.",
+        "C) Chlorinated lime was discovered to be poisonous to patients.",
+        "D) Doctors in the 1840s never performed autopsies."
+      ],
+      answer: 0,
+      explanation: "Correct! The passage's arc is Semmelweis's discovery, its dramatic success, and his colleagues' unjustified rejection. The other choices misstate the text."
+    }
+  ],
+  "Set B": [
+    {
+      id: 1,
+      passage: "Gothic cathedrals soar because their weight is channeled outward as well as downward. Flying buttresses — arched stone supports standing outside the walls — intercept this lateral thrust and carry it to the ground, ________ the walls themselves of the burden and allowing them to rise higher and hold vast stained-glass windows.",
+      question: "Which choice completes the text with the most logical and precise word?",
+      options: [
+        "A) relieving",
+        "B) reminding",
+        "C) accusing",
+        "D) informing"
+      ],
+      answer: 0,
+      explanation: "Correct! 'Relieving the walls of the burden' precisely describes the buttresses taking on the structural load. The other verbs don't fit the engineering context."
+    },
+    {
+      id: 2,
+      passage: "Monarch butterflies migrate up to 3,000 miles to a few mountaintop forests in Mexico, yet no single butterfly makes the round trip: the southbound migrants are the great-grandchildren of those that flew north. How these insects, which have never made the journey, navigate to a forest they have never seen remains one of biology's great puzzles.",
+      question: "What can most reasonably be inferred from the text?",
+      options: [
+        "A) The navigational ability is inherited rather than learned through experience.",
+        "B) Individual monarch butterflies live for several years.",
+        "C) The Mexican mountaintop forests were planted specifically for the butterflies.",
+        "D) Migration over long distances is unique to monarch butterflies."
+      ],
+      answer: 0,
+      explanation: "Correct! Since the migrants have never made the journey, their navigation cannot come from experience — it must be inherited. The text contradicts B and gives no support for C or D."
+    },
+    {
+      id: 3,
+      passage: "The Silk Road was less a single road than a shifting web of trade routes linking China to the Mediterranean. Along it traveled not only silk and spices but also papermaking, the magnetic compass, and religions — Buddhism reached China, and later Islam spread eastward, along these same corridors.",
+      question: "Which choice best states the main idea of the text?",
+      options: [
+        "A) The Silk Road spread ideas, technologies, and religions as well as goods.",
+        "B) The Silk Road was a single paved highway built and maintained by China.",
+        "C) Only silk and spices were ever traded along the Silk Road.",
+        "D) The Silk Road prevented meaningful cultural exchange between civilizations."
+      ],
+      answer: 0,
+      explanation: "Correct! The passage emphasizes that the routes carried technologies and religions alongside merchandise. Choices B, C, and D are directly contradicted."
+    },
+    {
+      id: 4,
+      passage: "English has absorbed words from every language it has encountered: 'shampoo' from Hindi, 'piano' from Italian, 'kindergarten' from German. Such borrowing accelerates when cultures meet through trade, conquest, or migration, and the adopted words often ________ to fit English pronunciation — 'yogurt,' for instance, lost sounds that English speakers found difficult.",
+      question: "Which choice completes the text with the most logical and precise word?",
+      options: [
+        "A) adapt",
+        "B) object",
+        "C) vanish",
+        "D) translate"
+      ],
+      answer: 0,
+      explanation: "Correct! Borrowed words change ('adapt') to fit English pronunciation, as the yogurt example shows. The other choices don't describe this process."
+    },
+    {
+      id: 5,
+      passage: "Text 1: The bystander effect describes how individuals are less likely to intervene in an emergency when others are present: responsibility diffuses across the crowd, and each person assumes someone else will act.\n\nText 2: Recent studies complicate this picture. When bystanders are trained in first aid, intervention rates rise sharply, and in online settings, a single person who breaks the silence often triggers a cascade of help — suggesting that diffusion of responsibility is conditional, not inevitable.",
+      question: "Based on the texts, how would the author of Text 2 most likely respond to the claim in Text 1?",
+      options: [
+        "A) By arguing that the effect can be overcome through training and decisive leadership.",
+        "B) By denying that emergencies ever occur in the presence of crowds.",
+        "C) By insisting that first aid training has no effect on helping behavior.",
+        "D) By claiming that online settings contain no bystanders at all."
+      ],
+      answer: 0,
+      explanation: "Correct! Text 2 qualifies Text 1's claim, offering evidence (training, one person breaking the silence) that the effect is conditional and can be overcome."
+    },
+    {
+      id: 6,
+      passage: "Economists warn against the sunk-cost fallacy: continuing a failing project merely because money has already been spent. The dollars already invested are gone regardless; rational decision-making considers only future costs and benefits. Yet executives routinely ________ failing ventures, unwilling to admit the earlier investment was wasted.",
+      question: "Which choice completes the text with the most logical and precise word or phrase?",
+      options: [
+        "A) abandon",
+        "B) prop up",
+        "C) ignore",
+        "D) audit"
+      ],
+      answer: 1,
+      explanation: "Correct! 'Prop up' (keep supporting) captures executives continuing failing ventures. 'Abandon' is the opposite of the described behavior, and C and D don't fit."
+    },
+    {
+      id: 7,
+      passage: "During deep sleep, the brain replays the day's experiences, transferring fragile memories from the hippocampus to long-term storage in the cortex. Students deprived of sleep after learning retain significantly less, even if they study the same number of hours.",
+      question: "Which choice best states the main idea of the text?",
+      options: [
+        "A) Sleep consolidates memories by moving them into long-term storage.",
+        "B) Studying more hours always guarantees better test scores.",
+        "C) The hippocampus is unnecessary for forming memories.",
+        "D) Deep sleep erases the day's experiences from the brain."
+      ],
+      answer: 0,
+      explanation: "Correct! Both sentences support this: sleep transfers memories to long-term storage, and losing sleep after learning impairs retention."
+    },
+    {
+      id: 8,
+      passage: "When Mendeleev arranged the elements by atomic weight in 1869, he left gaps where the pattern demanded elements no one had yet discovered — and predicted their properties. Within decades, gallium and germanium were found, matching his forecasts almost exactly.",
+      question: "Which choice best states an inference supported by the text?",
+      options: [
+        "A) The table's successful predictions confirmed it captured a genuine pattern in nature.",
+        "B) Mendeleev personally discovered gallium and germanium in his laboratory.",
+        "C) Atomic weight has no relationship to chemical properties.",
+        "D) The periodic table has never been revised since 1869."
+      ],
+      answer: 0,
+      explanation: "Correct! Accurate predictions of unknown elements strongly imply the arrangement reflects real underlying order. The text doesn't support B, and C and D are false."
+    },
+    {
+      id: 9,
+      passage: "Earth's outer shell is broken into rigid plates that drift a few centimeters per year atop the ductile mantle. Where plates collide, one may dive beneath the other in a subduction zone, generating earthquakes and volcanic arcs like the Andes.",
+      question: "According to the text, what happens at a subduction zone?",
+      options: [
+        "A) One plate dives beneath another, causing earthquakes and volcanoes.",
+        "B) Colliding plates fuse into a single stationary shell.",
+        "C) The mantle beneath the plates freezes completely solid.",
+        "D) New crust is created without any seismic activity."
+      ],
+      answer: 0,
+      explanation: "Correct! The text defines a subduction zone exactly this way: one plate diving beneath another, producing earthquakes and volcanic arcs."
+    },
+    {
+      id: 10,
+      passage: "Every choice forgoes alternatives: the true cost of attending college includes not only tuition but the wages a student could have earned working instead. Economists call these forgone alternatives the opportunity cost, and ignoring it leads to systematically ________ the price of any decision.",
+      question: "Which choice completes the text with the most logical and precise word?",
+      options: [
+        "A) understating",
+        "B) celebrating",
+        "C) doubling",
+        "D) paying"
+      ],
+      answer: 0,
+      explanation: "Correct! Ignoring forgone alternatives means leaving part of the cost uncounted — 'understating' the price. The other choices don't fit the logic."
+    }
+  ],
+  "Set C": [
+    {
+      id: 1,
+      passage: "Sea otters eat sea urchins, and sea urchins eat kelp. When otters were hunted nearly to extinction, urchin populations exploded and kelp forests — nurseries for countless fish — were grazed to rubble. The otters' return reversed the collapse, demonstrating how a single species can ________ an entire ecosystem.",
+      question: "Which choice completes the text with the most logical and precise word?",
+      options: [
+        "A) stabilize",
+        "B) observe",
+        "C) photograph",
+        "D) endanger"
+      ],
+      answer: 0,
+      explanation: "Correct! The otters' return reversed the collapse — they 'stabilize' the ecosystem. 'Endanger' is the opposite; B and C describe researchers, not otters."
+    },
+    {
+      id: 2,
+      passage: "Each winter's snowfall in Greenland buries the last, trapping tiny air bubbles as it compresses into ice. Drilling two miles down, scientists extract cores containing 100,000 years of layered atmosphere — a direct archive of past carbon dioxide levels and temperatures.",
+      question: "Which choice best states the main idea of the text?",
+      options: [
+        "A) Ice cores preserve a layered record of Earth's ancient atmosphere.",
+        "B) Greenland's snowfall has recently stopped accumulating.",
+        "C) Air bubbles in ice are too small to be scientifically useful.",
+        "D) Scientists drill ice cores mainly to find buried artifacts."
+      ],
+      answer: 0,
+      explanation: "Correct! The passage describes how layered ice traps ancient air, creating an archive of past atmosphere — exactly what ice cores preserve."
+    },
+    {
+      id: 3,
+      passage: "Students who believe intelligence is fixed tend to avoid challenges, fearing failure will expose their limits. Those who believe ability grows with effort seek harder problems, and — crucially — their brains show stronger responses to mistakes, treating errors as information rather than indictment.",
+      question: "Which choice is best supported by the text?",
+      options: [
+        "A) A growth mindset helps students use mistakes as learning opportunities.",
+        "B) Human intelligence cannot be changed by any belief or effort.",
+        "C) Avoiding difficult challenges is the best way to improve test scores.",
+        "D) Making mistakes causes permanent damage to the brain."
+      ],
+      answer: 0,
+      explanation: "Correct! The text contrasts fixed and growth mindsets, showing that believing ability grows leads students to treat errors as information — learning opportunities."
+    },
+    {
+      id: 4,
+      passage: "Text 1: Automation pessimists warn that robots will permanently displace workers, pointing to self-checkout lanes and warehouse robots as the leading edge of mass unemployment.\n\nText 2: Economic historians note that every wave of automation — from power looms to spreadsheets — eliminated specific jobs while creating new categories of work that were previously unimaginable, suggesting displacement is painful but not permanent.",
+      question: "Based on the texts, how would the author of Text 2 most likely respond to the claim in Text 1?",
+      options: [
+        "A) By arguing that history shows automation displaces some jobs while creating new ones.",
+        "B) By agreeing that permanent mass unemployment is now unavoidable.",
+        "C) By denying that robots or self-checkout lanes actually exist.",
+        "D) By claiming that spreadsheets created no new categories of work."
+      ],
+      answer: 0,
+      explanation: "Correct! Text 2 counters the pessimists with historical evidence: past automation waves eliminated jobs but created new ones, so displacement is 'painful but not permanent.'"
+    },
+    {
+      id: 5,
+      passage: "Two miles beneath the ocean surface, where sunlight never reaches, volcanic vents spew mineral-rich water hot enough to melt lead. Around them thrive giant tube worms and eyeless shrimp, sustained not by photosynthesis but by bacteria that harvest chemical energy from hydrogen sulfide.",
+      question: "According to the text, what energy source sustains these deep-sea vent communities?",
+      options: [
+        "A) Chemical energy from hydrogen sulfide, harvested by bacteria.",
+        "B) Sunlight filtering down through the deep ocean water.",
+        "C) Heat absorbed directly by the tube worms themselves.",
+        "D) Minerals eaten directly by the eyeless shrimp."
+      ],
+      answer: 0,
+      explanation: "Correct! The text states this directly: the communities are sustained 'not by photosynthesis but by bacteria that harvest chemical energy from hydrogen sulfide.'"
+    },
+    {
+      id: 6,
+      passage: "In the 1930s, deep plowing had stripped the Great Plains of native grasses whose roots anchored the soil. When drought struck, winds lifted the exposed earth into choking black blizzards that buried farms. The Dust Bowl was not merely a natural disaster; it was an ecological lesson in the cost of ignoring how land works.",
+      question: "The author mentions native grasses primarily to…",
+      options: [
+        "A) explain what had protected the soil before plowing removed it.",
+        "B) argue that all forms of farming should be permanently banned.",
+        "C) describe the most profitable crop grown in the 1930s.",
+        "D) prove that droughts never occurred on the Plains before 1930."
+      ],
+      answer: 0,
+      explanation: "Correct! The grasses' roots 'anchored the soil' — mentioning them explains the protection that was lost when plowing stripped them away, setting up the disaster."
+    },
+    {
+      id: 7,
+      passage: "Songs get stuck in our heads when melodies are simple, repetitive, and slightly unpredictable — a combination that ________ the brain's pattern-completion machinery, which keeps rehearsing the tune in search of a resolution that never quite arrives.",
+      question: "Which choice completes the text with the most logical and precise word?",
+      options: [
+        "A) engages",
+        "B) exhausts",
+        "C) embarrasses",
+        "D) silences"
+      ],
+      answer: 0,
+      explanation: "Correct! The melody activates ('engages') the brain's pattern-completion system, which is why the tune keeps rehearsing. The other verbs contradict the described effect."
+    },
+    {
+      id: 8,
+      passage: "A suspension bridge's deck hangs from vertical cables attached to massive main cables draped between towers. Those main cables transfer the deck's weight — and the weight of traffic — to the towers and then to anchorages in bedrock, allowing spans far longer than any beam bridge could achieve.",
+      question: "Which choice best states the main idea of the text?",
+      options: [
+        "A) Suspension bridges achieve long spans by transferring weight through cables to towers and anchorages.",
+        "B) Beam bridges are always superior to suspension bridges.",
+        "C) Suspension bridge cables serve a purely decorative purpose.",
+        "D) Towers on suspension bridges bear no structural load."
+      ],
+      answer: 0,
+      explanation: "Correct! The passage traces how weight flows from deck through cables to towers and anchorages, explaining the long spans. The other choices contradict the text."
+    },
+    {
+      id: 9,
+      passage: "The 1848 Seneca Falls Convention issued a Declaration of Sentiments modeled on the Declaration of Independence, asserting that 'all men and women are created equal.' Newspapers ridiculed the demand for women's suffrage as absurd; seventy-two years passed before the Nineteenth Amendment made it law.",
+      question: "Which choice best states an inference supported by the text?",
+      options: [
+        "A) Demands dismissed as absurd can, over time, become law.",
+        "B) Newspapers in 1848 strongly supported women's suffrage.",
+        "C) The Nineteenth Amendment was ratified in 1848.",
+        "D) The Seneca Falls Convention had no lasting historical significance."
+      ],
+      answer: 0,
+      explanation: "Correct! A demand ridiculed as 'absurd' in 1848 became constitutional law 72 years later — supporting the inference that mocked demands can eventually succeed."
+    },
+    {
+      id: 10,
+      passage: "A black hole's gravity is so intense that within a boundary called the event horizon, escape would require exceeding the speed of light — impossible under physics as we know it. Yet black holes are not cosmic vacuum cleaners: a star orbiting far away feels their pull no differently than it would from any ordinary object of the same ________.",
+      question: "Which choice completes the text with the most logical and precise word?",
+      options: [
+        "A) mass",
+        "B) brightness",
+        "C) mystery",
+        "D) speed"
+      ],
+      answer: 0,
+      explanation: "Correct! Gravitational pull at a distance depends on mass — a faraway star feels the same pull from a black hole as from any object of the same 'mass.'"
+    }
+  ]
+};
+
+/* ============ Application state & logic ============ */
+let currentSetKey = "Set A";
+let userAnswers = {};
+
+function initApp() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("check") === "true") {
+    document.getElementById("teacher-audit-panel").classList.add("active");
+  }
+  trackPageLoad(currentSetKey);
+  loadSet(currentSetKey);
+}
+
+function switchSet(setName) {
+  currentSetKey = setName;
+  document.getElementById("set-select").value = setName;
+  loadSet(setName);
+}
+
+function loadSet(setName) {
+  userAnswers = {};
+  document.getElementById("score-summary").style.display = "none";
+  document.getElementById("reward-section").innerHTML = "";
+  const reward = universityRewards[setName];
+  document.documentElement.style.setProperty("--primary-color", reward.color);
+  updateScoreDisplay();
+  const container = document.getElementById("questions-wrapper");
+  container.innerHTML = "";
+  const questions = questionBank[setName];
+  questions.forEach((q, index) => {
+    const card = document.createElement("div");
+    card.className = "question-card";
+    card.id = "q-card-" + index;
+    const optsHtml = q.options.map((opt, oi) =>
+      '<button class="option-btn" onclick="selectAnswer(' + index + ',' + oi + ')">' + opt + "</button>"
+    ).join("");
+    card.innerHTML =
+      '<div class="question-number">Question ' + (index + 1) + " of 10</div>" +
+      '<div class="passage">' + q.passage.replace(/\n\n/g, "</p><p>") + "</div>" +
+      '<div class="question-text">' + q.question + "</div>" +
+      '<div class="options-group" id="options-' + index + '">' + optsHtml + "</div>" +
+      '<div class="feedback-box" id="feedback-' + index + '"></div>';
+    container.appendChild(card);
+  });
+}
+
+function selectAnswer(questionIdx, selectedOptIdx) {
+  if (userAnswers.hasOwnProperty(questionIdx)) return;
+  const qData = questionBank[currentSetKey][questionIdx];
+  const isCorrect = selectedOptIdx === qData.answer;
+  userAnswers[questionIdx] = isCorrect;
+  trackAnswerProgress(currentSetKey, userAnswers);
+  const optionsGroup = document.getElementById("options-" + questionIdx);
+  const buttons = optionsGroup.getElementsByClassName("option-btn");
+  Array.from(buttons).forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === qData.answer) btn.classList.add("correct");
+    else if (idx === selectedOptIdx && !isCorrect) btn.classList.add("incorrect");
+  });
+  const fbBox = document.getElementById("feedback-" + questionIdx);
+  fbBox.classList.add("show");
+  fbBox.classList.add(isCorrect ? "good" : "bad");
+  fbBox.innerHTML =
+    '<div class="verdict">' + (isCorrect ? "✅ Correct!" : "❌ Incorrect.") + "</div>" +
+    '<div class="expl">' + qData.explanation + "</div>";
+  updateScoreDisplay();
+  checkSetCompletion();
+}
+
+function updateScoreDisplay() {
+  const correctCount = Object.values(userAnswers).filter(Boolean).length;
+  document.getElementById("score-tracker").innerText = "Score: " + correctCount + " / 10";
+}
+
+function checkSetCompletion() {
+  if (Object.keys(userAnswers).length !== 10) return;
+  const score = Object.values(userAnswers).filter(Boolean).length;
+  const summaryBox = document.getElementById("score-summary");
+  const scoreText = document.getElementById("final-score-text");
+  const msgText = document.getElementById("feedback-message");
+  const rewardSection = document.getElementById("reward-section");
+  const currentReward = universityRewards[currentSetKey];
+  scoreText.innerText = score + " / 10";
+  trackSetCompletion(currentSetKey, score, 10);
+  if (score === 10) {
+    document.getElementById(currentReward.badgeId).classList.add("unlocked");
+    msgText.innerHTML = '<span style="color:' + currentReward.color + '; font-weight:bold;">Congratulations! Perfect Score!</span> You earned the ' + currentReward.name + " award! 🏆";
+    rewardSection.innerHTML =
+      '<div class="reward-badge"><img src="' + currentReward.img + '" alt="' + currentReward.name + '" onerror="this.style.display=\'none\'">' +
+      '<div class="reward-name" style="color:' + currentReward.color + ';">' + currentReward.name + "</div></div>";
+  } else if (score >= 7) {
+    msgText.innerHTML = "Great effort! You scored " + score + "/10. Review the explanations and try for a perfect score!";
+  } else {
+    msgText.innerHTML = "Keep practicing! You scored " + score + "/10. Read each explanation carefully and try the set again.";
+  }
+  summaryBox.style.display = "block";
+  summaryBox.scrollIntoView({ behavior: "smooth" });
+}
+
+function resetCurrentSet() {
+  trackManualReset(currentSetKey);
+  loadSet(currentSetKey);
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>
