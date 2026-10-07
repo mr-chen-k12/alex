@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saxon Math Course 2 — Lesson 22 Solutions</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  chtml: { scale: 1.05 }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+<style>
+  :root { --ink:#1c1c1e; --accent:#0b5fff; --card:#ffffff; --bg:#f4f6fa; --muted:#6b7280; }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--ink);
+         margin: 0; padding: 18px; line-height: 1.55; }
+  .wrap { max-width: 780px; margin: 0 auto; }
+  header.page { text-align: center; margin-bottom: 18px; }
+  header.page h1 { font-size: 1.5rem; margin: 0.2em 0; }
+  header.page p { color: var(--muted); margin: 0.2em 0; font-size: 0.95rem; }
+  h2.section { font-size: 1.15rem; margin: 26px 0 12px; padding-bottom: 6px;
+               border-bottom: 2px solid var(--accent); color: var(--accent); }
+  .card { background: var(--card); border: 1px solid #dfe3ea; border-radius: 12px;
+          padding: 16px 18px; margin: 12px 0; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .qnum { font-weight: bold; font-size: 1.05rem; margin-bottom: 6px; }
+  .tag { display: inline-block; background: #dbeafe; color: #1d4ed8; font-size: 0.78rem;
+         font-weight: bold; border-radius: 6px; padding: 1px 8px; margin-left: 6px; vertical-align: middle; }
+  .question { margin: 6px 0 4px; }
+  .question p { margin: 0.4em 0; }
+  figure.fig { margin: 10px 0 4px; text-align: center; }
+  figure.fig svg { max-width: 100%; height: auto; }
+  .show-btn { display: inline-block; margin-top: 10px; background: var(--accent); color: #fff;
+              border: none; border-radius: 8px; padding: 8px 16px; font-size: 0.95rem;
+              cursor: pointer; font-family: inherit; }
+  .show-btn:hover { background: #0849c4; }
+  .show-btn.open { background: #374151; }
+  .answer { display: none; margin-top: 12px; padding: 12px 14px; background: #f0fdf4;
+            border: 1px solid #bbf7d0; border-radius: 8px; }
+  .answer.show { display: block; }
+  .answer .ans-label { font-weight: bold; color: #166534; }
+  .answer .sol-label { font-weight: bold; }
+  .answer p { margin: 0.45em 0; }
+  .answer ol.steps { margin: 0.4em 0 0.4em 1.3em; padding: 0; }
+  .answer ol.steps li { margin: 0.25em 0; }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .show-btn, .answer { display: none !important; }
+    .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+    header.page p.hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="page">
+  <h1>Saxon Math Course 2 — Lesson 22</h1>
+  <p>Solutions (hidden until you press the button)</p>
+  <p class="hint">Tap <b>Show answer &amp; solution</b> on any problem to reveal it. Printing shows questions only.</p>
+</header>
+
+<h2 class="section">Written Practice</h2>
+
+<!-- Q1 -->
+<div class="card">
+  <div class="qnum">1</div>
+  <div class="question"><p>In Room 7 there are 28 students. In Room 9 there are 30 students. In Room 11 there are 23 students. How many students are in all three rooms?</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> 81 students</p>
+    <p><span class="sol-label">Solution:</span> Add the three rooms: \(28 + 30 + 23 = 58 + 23 = 81\).</p>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="card">
+  <div class="qnum">2</div>
+  <div class="question"><p>If the total number of students in problem 1 were equally divided among three rooms, how many students would be in each room?</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> 27 students</p>
+    <p><span class="sol-label">Solution:</span> Divide the total from problem 1 equally: \(81 \div 3 = 27\).</p>
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="card">
+  <div class="qnum">3</div>
+  <div class="question"><p>The largest state is Alaska. It has an area of about 663,000 square miles. The smallest state, Rhode Island, has an area of about 1,500 square miles. About how many more square miles is Alaska than Rhode Island?</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> About 661,500 square miles</p>
+    <p><span class="sol-label">Solution:</span> Subtract: \(663{,}000 - 1{,}500 = 661{,}500\). Since the given areas are already rounded ("about"), the answer is about 661,500 square miles.</p>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="card">
+  <div class="qnum">4</div>
+  <div class="question">
+    <p><b>a.</b> Write the formula for the perimeter of a square.</p>
+    <p><b>b.</b> A landscape planner designed a square garden that is 24 feet long per side. How many feet of border are needed to surround the garden?</p>
+  </div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. \(P = 4s\) &nbsp; b. 96 feet</p>
+    <p><span class="sol-label">Solution:</span> a. A square has 4 equal sides, so perimeter \(= 4 \times \text{side}\), or \(P = 4s\).<br>b. \(P = 4 \times 24 = 96\) feet of border.</p>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="card">
+  <div class="qnum">5 <span class="tag">Model</span></div>
+  <div class="question"><p>Diagram this statement. Then answer the questions that follow.<br>Five ninths of the 36 spectators were happy with the outcome.</p>
+    <p><b>a.</b> How many spectators were happy with the outcome?</p>
+    <p><b>b.</b> How many spectators were not happy with the outcome?</p></div>
+  <figure class="fig">
+  <svg width="480" height="90" viewBox="0 0 480 90" role="img" aria-label="Bar diagram: 5 of 9 parts shaded for happy spectators">
+    <g stroke="#111" stroke-width="2">
+      <rect x="15" y="20" width="50" height="40" fill="#9db8dd"/><rect x="65" y="20" width="50" height="40" fill="#9db8dd"/><rect x="115" y="20" width="50" height="40" fill="#9db8dd"/><rect x="165" y="20" width="50" height="40" fill="#9db8dd"/><rect x="215" y="20" width="50" height="40" fill="#9db8dd"/>
+      <rect x="265" y="20" width="50" height="40" fill="#ffffff"/><rect x="315" y="20" width="50" height="40" fill="#ffffff"/><rect x="365" y="20" width="50" height="40" fill="#ffffff"/><rect x="415" y="20" width="50" height="40" fill="#ffffff"/>
+    </g>
+    <text x="140" y="80" text-anchor="middle" font-family="Georgia,serif" font-size="14">happy: 5/9</text>
+    <text x="340" y="80" text-anchor="middle" font-family="Georgia,serif" font-size="14">not happy: 4/9</text>
+    <text x="240" y="12" text-anchor="middle" font-family="Georgia,serif" font-size="14">36 spectators</text>
+  </svg>
+  </figure>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. 20 spectators &nbsp; b. 16 spectators</p>
+    <p><span class="sol-label">Solution:</span> a. \(\frac{5}{9} \times 36 = \frac{5 \times 36}{9} = \frac{180}{9} = 20\) happy spectators.<br>b. \(36 - 20 = 16\) spectators were not happy (equivalently, \(\frac{4}{9} \times 36 = 16\)).</p>
+  </div>
+</div>
+
+<!-- Q6 -->
+<div class="card">
+  <div class="qnum">6</div>
+  <div class="question"><p>In the following statement, change the percent to a reduced fraction. Then diagram the statement and answer the questions.<br><i>Twenty-five percent of three dozen plants are blooming.</i></p>
+    <p><b>a.</b> What fraction of the total number of plants are not blooming?</p>
+    <p><b>b.</b> How many plants are not blooming?</p></div>
+  <figure class="fig">
+  <svg width="240" height="200" viewBox="0 0 240 200" role="img" aria-label="Circle diagram: one fourth blooming, three fourths not blooming">
+    <circle cx="110" cy="95" r="70" fill="#ffffff" stroke="#111" stroke-width="2.5"/>
+    <path d="M 110 95 L 110 25 A 70 70 0 0 1 180 95 Z" fill="#9db8dd" stroke="#111" stroke-width="2"/>
+    <line x1="110" y1="95" x2="110" y2="25" stroke="#111" stroke-width="2"/>
+    <line x1="110" y1="95" x2="180" y2="95" stroke="#111" stroke-width="2"/>
+    <text x="140" y="70" text-anchor="middle" font-family="Georgia,serif" font-size="14">1/4</text>
+    <text x="140" y="88" text-anchor="middle" font-family="Georgia,serif" font-size="13">blooming</text>
+    <text x="75" y="130" text-anchor="middle" font-family="Georgia,serif" font-size="14">3/4</text>
+    <text x="75" y="148" text-anchor="middle" font-family="Georgia,serif" font-size="13">not blooming</text>
+  </svg>
+  </figure>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(25\% = \frac{1}{4}\) &nbsp; a. \(\frac{3}{4}\) &nbsp; b. 27 plants</p>
+    <p><span class="sol-label">Solution:</span> \(25\% = \frac{25}{100} = \frac{1}{4}\). Three dozen = \(3 \times 12 = 36\) plants.<br>a. Not blooming \(= 1 - \frac{1}{4} = \frac{3}{4}\) of the plants.<br>b. \(\frac{3}{4} \times 36 = 27\) plants are not blooming (9 are blooming).</p>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="card">
+  <div class="qnum">7</div>
+  <div class="question">
+    <p><b>a.</b> What fraction of the rectangle is shaded?</p>
+    <p><b>b.</b> What percent of the rectangle is not shaded?</p></div>
+  <figure class="fig">
+  <svg width="300" height="140" viewBox="0 0 300 140" role="img" aria-label="2 by 5 rectangle grid with 4 cells shaded">
+    <g stroke="#111" stroke-width="2.5">
+      <rect x="25" y="15" width="50" height="50" fill="#9db8dd"/><rect x="75" y="15" width="50" height="50" fill="#9db8dd"/><rect x="125" y="15" width="50" height="50" fill="#ffffff"/><rect x="175" y="15" width="50" height="50" fill="#ffffff"/><rect x="225" y="15" width="50" height="50" fill="#ffffff"/>
+      <rect x="25" y="65" width="50" height="50" fill="#9db8dd"/><rect x="75" y="65" width="50" height="50" fill="#9db8dd"/><rect x="125" y="65" width="50" height="50" fill="#ffffff"/><rect x="175" y="65" width="50" height="50" fill="#ffffff"/><rect x="225" y="65" width="50" height="50" fill="#ffffff"/>
+    </g>
+  </svg>
+  </figure>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. \(\frac{2}{5}\) &nbsp; b. 60%</p>
+    <p><span class="sol-label">Solution:</span> a. 4 of the 10 equal parts are shaded: \(\frac{4}{10} = \frac{2}{5}\).<br>b. \(10 - 4 = 6\) parts are not shaded: \(\frac{6}{10} = \frac{60}{100} = 60\%\).</p>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="card">
+  <div class="qnum">8</div>
+  <div class="question">
+    <p><b>a.</b> How many \(\frac{1}{4}\)s are in 1?</p>
+    <p><b>b.</b> <span class="tag">Explain</span> Explain how you can use the answer to part <b>a</b> to find the number of \(\frac{1}{4}\)s in 3.</p>
+  </div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. 4 &nbsp; b. Multiply by 3: \(3 \times 4 = 12\)</p>
+    <p><span class="sol-label">Solution:</span> a. \(1 \div \frac{1}{4} = 4\) — it takes four quarters to make one whole.<br>b. Since each whole contains four \(\frac{1}{4}\)s, three wholes contain \(3 \times 4 = 12\) quarters: \(3 \div \frac{1}{4} = 12\).</p>
+  </div>
+</div>
+
+<!-- Q9 -->
+<div class="card">
+  <div class="qnum">9</div>
+  <div class="question">
+    <p><b>a.</b> Multiply: \(6 \cdot 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1 \cdot 0\)</p>
+    <p><b>b.</b> <span class="tag">Analyze</span> What property is illustrated by the multiplication in part <b>a</b>?</p>
+  </div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. 0 &nbsp; b. Zero property of multiplication</p>
+    <p><span class="sol-label">Solution:</span> a. Because one factor is 0, the entire product is 0.<br>b. The <b>zero property of multiplication</b>: any number multiplied by 0 equals 0.</p>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="card">
+  <div class="qnum">10 <span class="tag">Analyze</span></div>
+  <div class="question"><p>Simplify and compare: \(\frac{3}{3} - \left(\frac{1}{3} \cdot \frac{3}{1}\right) \bigcirc \left(\frac{3}{3} - \frac{1}{3}\right) \cdot \frac{3}{1}\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(\frac{3}{3} - \left(\frac{1}{3} \cdot \frac{3}{1}\right) < \left(\frac{3}{3} - \frac{1}{3}\right) \cdot \frac{3}{1}\) &nbsp; (that is, \(0 < 2\))</p>
+    <p><span class="sol-label">Solution:</span> Left side: \(\frac{3}{3} - \left(\frac{1}{3} \cdot \frac{3}{1}\right) = 1 - \frac{3}{3} = 1 - 1 = 0\).<br>Right side: \(\left(\frac{3}{3} - \frac{1}{3}\right) \cdot \frac{3}{1} = \frac{2}{3} \cdot 3 = 2\).<br>Since \(0 < 2\), the correct symbol is \(<\).</p>
+  </div>
+</div>
+
+<!-- Q11 -->
+<div class="card">
+  <div class="qnum">11</div>
+  <div class="question"><p>Draw a rectangle \(ABCD\) so that \(AB\) is 2 in. and \(BC\) is 1 in.</p>
+    <p><b>a.</b> What is the perimeter of rectangle \(ABCD\)?</p>
+    <p><b>b.</b> What is the area of the rectangle?</p>
+    <p><b>c.</b> What is the sum of the measures of all four angles of the rectangle?</p></div>
+  <figure class="fig">
+  <svg width="340" height="180" viewBox="0 0 340 180" role="img" aria-label="Rectangle ABCD, 2 inches by 1 inch">
+    <rect x="70" y="40" width="200" height="100" fill="#eef4ff" stroke="#111" stroke-width="2.5"/>
+    <g font-family="Georgia,serif" font-size="18" font-weight="bold" fill="#111">
+      <text x="58" y="36">A</text><text x="274" y="36">B</text>
+      <text x="274" y="162">C</text><text x="58" y="162">D</text>
+    </g>
+    <text x="170" y="30" text-anchor="middle" font-family="Georgia,serif" font-size="15">2 in.</text>
+    <text x="288" y="95" text-anchor="middle" font-family="Georgia,serif" font-size="15">1 in.</text>
+  </svg>
+  </figure>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. 6 in. &nbsp; b. 2 sq in. &nbsp; c. 360°</p>
+    <p><span class="sol-label">Solution:</span> a. \(P = 2(2 + 1) = 6\) inches.<br>b. \(A = 2 \times 1 = 2\) square inches.<br>c. Each angle of a rectangle is 90°, so \(4 \times 90° = 360°\).</p>
+  </div>
+</div>
+
+<!-- Q12 -->
+<div class="card">
+  <div class="qnum">12 <span class="tag">Generalize</span></div>
+  <div class="question"><p>Write the prime factorization of each number:</p>
+    <p><b>a.</b> 32 &nbsp;&nbsp; <b>b.</b> 900 &nbsp;&nbsp; <b>c.</b> \(\sqrt{900}\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. \(2^5\) &nbsp; b. \(2^2 \cdot 3^2 \cdot 5^2\) &nbsp; c. \(2 \cdot 3 \cdot 5\)</p>
+    <p><span class="sol-label">Solution:</span> a. \(32 = 2 \cdot 2 \cdot 2 \cdot 2 \cdot 2 = 2^5\).<br>b. \(900 = 9 \cdot 100 = (3 \cdot 3) \cdot (2 \cdot 2 \cdot 5 \cdot 5) = 2^2 \cdot 3^2 \cdot 5^2\).<br>c. \(\sqrt{900} = 30 = 2 \cdot 3 \cdot 5\).</p>
+  </div>
+</div>
+
+<!-- Q13 -->
+<div class="card">
+  <div class="qnum">13</div>
+  <div class="question"><p>For each fraction, write an equivalent fraction that has a denominator of 60.</p>
+    <p><b>a.</b> \(\frac{5}{6}\) &nbsp;&nbsp; <b>b.</b> \(\frac{3}{5}\) &nbsp;&nbsp; <b>c.</b> \(\frac{7}{12}\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. \(\frac{50}{60}\) &nbsp; b. \(\frac{36}{60}\) &nbsp; c. \(\frac{35}{60}\)</p>
+    <p><span class="sol-label">Solution:</span> a. \(\frac{5}{6} = \frac{5 \times 10}{6 \times 10} = \frac{50}{60}\).<br>b. \(\frac{3}{5} = \frac{3 \times 12}{5 \times 12} = \frac{36}{60}\).<br>c. \(\frac{7}{12} = \frac{7 \times 5}{12 \times 5} = \frac{35}{60}\).</p>
+  </div>
+</div>
+
+<!-- Q14 -->
+<div class="card">
+  <div class="qnum">14</div>
+  <div class="question"><p>Add the three fractions with denominators of 60 from problem 13; and write their sum as a mixed number.</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(2\frac{1}{60}\)</p>
+    <p><span class="sol-label">Solution:</span> \(\frac{50}{60} + \frac{36}{60} + \frac{35}{60} = \frac{121}{60}\). Since \(121 = 2 \times 60 + 1\), \(\frac{121}{60} = 2\frac{1}{60}\).</p>
+  </div>
+</div>
+
+<!-- Q15 -->
+<div class="card">
+  <div class="qnum">15</div>
+  <div class="question">
+    <p><b>a.</b> Arrange these numbers in order from least to greatest:</p>
+    <p>\[0,\ -\frac{2}{3},\ 1,\ \frac{3}{2},\ -2\]</p>
+    <p><b>b.</b> Which of these numbers are positive?</p>
+  </div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. \(-2,\ -\frac{2}{3},\ 0,\ 1,\ \frac{3}{2}\) &nbsp; b. \(1\) and \(\frac{3}{2}\)</p>
+    <p><span class="sol-label">Solution:</span> a. On the number line, negatives are left of 0: \(-2 < -\frac{2}{3} < 0 < 1 < \frac{3}{2}\) (note \(\frac{3}{2} = 1\frac{1}{2} > 1\)).<br>b. Positive numbers are greater than 0: \(1\) and \(\frac{3}{2}\).</p>
+  </div>
+</div>
+
+<!-- Q16 -->
+<div class="card">
+  <div class="qnum">16 <span class="tag">Predict</span></div>
+  <div class="question"><p>If one card is drawn from a regular deck of cards, what is the probability the card will be a heart?</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(\frac{1}{4}\)</p>
+    <p><span class="sol-label">Solution:</span> A regular deck has 52 cards with 13 hearts. \(P(\text{heart}) = \frac{13}{52} = \frac{1}{4}\).</p>
+  </div>
+</div>
+
+<!-- Q17 -->
+<div class="card">
+  <div class="qnum">17 <span class="tag">Evaluate</span></div>
+  <div class="question"><p>Find the value of each variable: \(\frac{5}{12} + a = \frac{11}{12}\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(a = \frac{1}{2}\)</p>
+    <p><span class="sol-label">Solution:</span> \(a = \frac{11}{12} - \frac{5}{12} = \frac{6}{12} = \frac{1}{2}\). Check: \(\frac{5}{12} + \frac{6}{12} = \frac{11}{12}\) ✓</p>
+  </div>
+</div>
+
+<!-- Q18 -->
+<div class="card">
+  <div class="qnum">18</div>
+  <div class="question"><p>\(121 = 11x\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(x = 11\)</p>
+    <p><span class="sol-label">Solution:</span> Divide both sides by 11: \(x = \frac{121}{11} = 11\). Check: \(11 \times 11 = 121\) ✓</p>
+  </div>
+</div>
+
+<!-- Q19 -->
+<div class="card">
+  <div class="qnum">19</div>
+  <div class="question"><p>\(2\frac{2}{3} + y = 1\frac{1}{3}\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(y = -1\frac{1}{3}\)</p>
+    <p><span class="sol-label">Solution:</span> \(y = 1\frac{1}{3} - 2\frac{2}{3} = \frac{4}{3} - \frac{8}{3} = -\frac{4}{3} = -1\frac{1}{3}\). Check: \(2\frac{2}{3} + \left(-1\frac{1}{3}\right) = 1\frac{1}{3}\) ✓</p>
+  </div>
+</div>
+
+<!-- Q20 -->
+<div class="card">
+  <div class="qnum">20</div>
+  <div class="question"><p>\(10^2 \cdot 10^5 = 10^n\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(n = 7\)</p>
+    <p><span class="sol-label">Solution:</span> When multiplying powers of 10, add the exponents: \(10^2 \cdot 10^5 = 10^{2+5} = 10^7\), so \(n = 7\).</p>
+  </div>
+</div>
+
+<!-- Q21 -->
+<div class="card">
+  <div class="qnum">21 <span class="tag">Simplify</span></div>
+  <div class="question"><p>\(\frac{5}{6} + \frac{5}{6} + \frac{5}{6}\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(2\frac{1}{2}\)</p>
+    <p><span class="sol-label">Solution:</span> \(\frac{5}{6} + \frac{5}{6} + \frac{5}{6} = \frac{15}{6} = \frac{5}{2} = 2\frac{1}{2}\).</p>
+  </div>
+</div>
+
+<!-- Q22 -->
+<div class="card">
+  <div class="qnum">22</div>
+  <div class="question"><p>\(\frac{15}{2} \cdot \frac{10}{3}\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> 25</p>
+    <p><span class="sol-label">Solution:</span> \(\frac{15}{2} \cdot \frac{10}{3} = \frac{15 \times 10}{2 \times 3} = \frac{150}{6} = 25\). (Cancel first: \(\frac{15}{3} = 5\) and \(\frac{10}{2} = 5\), so \(5 \times 5 = 25\).)</p>
+  </div>
+</div>
+
+<!-- Q23 -->
+<div class="card">
+  <div class="qnum">23</div>
+  <div class="question"><p>\(\left(\frac{5}{6}\right)^2\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(\frac{25}{36}\)</p>
+    <p><span class="sol-label">Solution:</span> Square the numerator and the denominator: \(\left(\frac{5}{6}\right)^2 = \frac{5^2}{6^2} = \frac{25}{36}\).</p>
+  </div>
+</div>
+
+<!-- Q24 -->
+<div class="card">
+  <div class="qnum">24</div>
+  <div class="question"><p>\(\sqrt{30^2}\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> 30</p>
+    <p><span class="sol-label">Solution:</span> The square root undoes the square: \(\sqrt{30^2} = 30\).</p>
+  </div>
+</div>
+
+<!-- Q25 -->
+<div class="card">
+  <div class="qnum">25 <span class="tag">Justify</span></div>
+  <div class="question"><p>Give reasons for the steps used to simplify the following expression by using the commutative, associative, inverse, and identity properties of multiplication.</p>
+    <p>\[\frac{3}{1} \cdot \frac{2}{3} \cdot \frac{1}{3}\]</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(\frac{2}{3}\)</p>
+    <p><span class="sol-label">Solution:</span> Simplify with reasons for each step:</p>
+    <ol class="steps">
+      <li>\(\frac{3}{1} \cdot \frac{2}{3} \cdot \frac{1}{3} = \frac{3}{1} \cdot \frac{1}{3} \cdot \frac{2}{3}\) — <b>commutative property</b> (reorder the factors).</li>
+      <li>\(= \left(\frac{3}{1} \cdot \frac{1}{3}\right) \cdot \frac{2}{3}\) — <b>associative property</b> (regroup the factors).</li>
+      <li>\(= 1 \cdot \frac{2}{3}\) — <b>inverse property</b> (\(\frac{3}{1} \cdot \frac{1}{3} = \frac{3}{3} = 1\)).</li>
+      <li>\(= \frac{2}{3}\) — <b>identity property</b> (\(1 \times\) any number is that number).</li>
+    </ol>
+  </div>
+</div>
+
+<!-- Q26 -->
+<div class="card">
+  <div class="qnum">26</div>
+  <div class="question"><p>Write \(1\frac{1}{2}\) and \(1\frac{2}{3}\) as improper fractions. Then multiply the improper fractions, and write the product as a mixed number.</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(2\frac{1}{2}\)</p>
+    <p><span class="sol-label">Solution:</span> \(1\frac{1}{2} = \frac{3}{2}\) and \(1\frac{2}{3} = \frac{5}{3}\). Multiply: \(\frac{3}{2} \cdot \frac{5}{3} = \frac{15}{6} = \frac{5}{2} = 2\frac{1}{2}\).</p>
+  </div>
+</div>
+
+<!-- Q27 -->
+<div class="card">
+  <div class="qnum">27</div>
+  <div class="question"><p>A package that weighs 1 lb 5 oz weighs how many ounces?</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> 21 ounces</p>
+    <p><span class="sol-label">Solution:</span> 1 pound = 16 ounces, so \(16 + 5 = 21\) ounces.</p>
+  </div>
+</div>
+
+<!-- Q28 -->
+<div class="card">
+  <div class="qnum">28</div>
+  <div class="question"><p>Use a protractor to draw a 45° angle.</p></div>
+  <figure class="fig">
+  <svg width="320" height="200" viewBox="0 0 320 200" role="img" aria-label="Protractor showing a 45 degree angle">
+    <path d="M 30 160 A 100 100 0 0 1 230 160 Z" fill="#eef4ff" stroke="#111" stroke-width="2"/>
+    <g stroke="#111" stroke-width="1.5">
+      <line x1="130" y1="160" x2="130" y2="66"/><line x1="130" y1="160" x2="154" y2="68"/>
+      <line x1="130" y1="160" x2="177" y2="73"/><line x1="130" y1="160" x2="200" y2="90"/>
+      <line x1="130" y1="160" x2="214" y2="110"/><line x1="130" y1="160" x2="223" y2="133"/>
+      <line x1="130" y1="160" x2="224" y2="160"/>
+      <line x1="130" y1="160" x2="223" y2="187" opacity="0"/>
+    </g>
+    <g stroke="#111" stroke-width="1">
+      <line x1="130" y1="160" x2="142" y2="67"/><line x1="130" y1="160" x2="165" y2="70"/>
+      <line x1="130" y1="160" x2="189" y2="80"/><line x1="130" y1="160" x2="208" y2="99"/>
+      <line x1="130" y1="160" x2="220" y2="121"/><line x1="130" y1="160" x2="224" y2="146"/>
+    </g>
+    <line x1="130" y1="160" x2="235" y2="160" stroke="#dc2626" stroke-width="3"/>
+    <line x1="130" y1="160" x2="204" y2="86" stroke="#dc2626" stroke-width="3"/>
+    <path d="M 165 160 A 35 35 0 0 0 155 135" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+    <text x="178" y="148" font-family="Georgia,serif" font-size="15" fill="#dc2626" font-weight="bold">45°</text>
+    <text x="130" y="182" text-anchor="middle" font-family="Georgia,serif" font-size="13">0°</text>
+    <text x="222" y="150" font-family="Georgia,serif" font-size="12">90°</text>
+  </svg>
+  </figure>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> A 45° angle (as drawn above)</p>
+    <p><span class="sol-label">Solution:</span> Place the protractor's center on the vertex and its 0° mark along one ray. Mark a dot at 45°, remove the protractor, and draw the second ray from the vertex through the dot. The angle between the rays measures 45° — half of a right angle.</p>
+  </div>
+</div>
+
+<!-- Q29 -->
+<div class="card">
+  <div class="qnum">29 <span class="tag">Justify</span></div>
+  <div class="question"><p>Find the next number in this sequence and explain how you found your answer.</p>
+    <p>\[\ldots,\ 100,\ 10,\ 1,\ \frac{1}{10},\ \ldots\]</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(\frac{1}{100}\)</p>
+    <p><span class="sol-label">Solution:</span> Each term is \(\frac{1}{10}\) of the one before it: \(100 \div 10 = 10\), \(10 \div 10 = 1\), \(1 \div 10 = \frac{1}{10}\). Continuing the pattern, \(\frac{1}{10} \div 10 = \frac{1}{100}\).</p>
+  </div>
+</div>
+
+<!-- Q30 -->
+<div class="card">
+  <div class="qnum">30</div>
+  <div class="question"><p>Write an odd negative integer greater than \(-3\).</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(-1\)</p>
+    <p><span class="sol-label">Solution:</span> Integers greater than \(-3\) are \(-2, -1, 0, 1, \ldots\). Of these, the negative ones are \(-2\) and \(-1\); \(-1\) is odd (and \(-2\) is even). So the answer is \(-1\).</p>
+  </div>
+</div>
+
+<h2 class="section">Real-World Connection</h2>
+
+<!-- RWC -->
+<div class="card">
+  <div class="qnum">Real-World Connection</div>
+  <div class="question"><p>This weekend workers will cut the grass on the high school football field and repaint the white outline around the field.</p>
+    <p><b>a.</b> The field is 360 feet long and 160 feet wide. Find the perimeter and area of the field.</p>
+    <p><b>b.</b> One quart of paint is enough to paint a 200 ft stripe. How many quarts of paint should be purchased to paint a stripe around the entire field? Show your work.</p>
+    <p><b>c.</b> If it takes a large mower 25 seconds to mow 800 ft<sup>2</sup>, how long will it take to mow the whole field? Show your work. (Assume the paths are cut with no overlap.)</p></div>
+  <figure class="fig">
+  <svg width="420" height="220" viewBox="0 0 420 220" role="img" aria-label="Football field 360 feet by 160 feet">
+    <rect x="48" y="30" width="324" height="144" fill="#e8f5e9" stroke="#111" stroke-width="3"/>
+    <line x1="129" y1="30" x2="129" y2="174" stroke="#9db8dd" stroke-width="1.5"/>
+    <line x1="210" y1="30" x2="210" y2="174" stroke="#9db8dd" stroke-width="1.5"/>
+    <line x1="291" y1="30" x2="291" y2="174" stroke="#9db8dd" stroke-width="1.5"/>
+    <text x="210" y="20" text-anchor="middle" font-family="Georgia,serif" font-size="15">360 ft</text>
+    <text x="32" y="105" text-anchor="middle" font-family="Georgia,serif" font-size="15" transform="rotate(-90 32 105)">160 ft</text>
+  </svg>
+  </figure>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. \(P = 1040\) ft, \(A = 57{,}600\) ft² &nbsp; b. 6 quarts &nbsp; c. 30 minutes</p>
+    <p><span class="sol-label">Solution:</span><br>a. \(P = 2(360 + 160) = 2(520) = 1040\) ft. \(A = 360 \times 160 = 57{,}600\) ft².<br>b. \(\frac{1040}{200} = 5.2\) quarts needed. Since paint can't be bought in fractions of a quart here and 5 quarts would not be enough, purchase <b>6 quarts</b>.<br>c. \(\frac{57{,}600}{800} = 72\) mower passes; \(72 \times 25 = 1800\) seconds \(= \frac{1800}{60} = 30\) minutes.</p>
+  </div>
+</div>
+
+<h2 class="section">Motivating Mindset</h2>
+
+<!-- MM -->
+<div class="card">
+  <div class="qnum">Motivating Mindset</div>
+  <div class="question"><p>What is a math skill you would like to understand better?</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> Any honest answer — there is no single correct response.</p>
+    <p><span class="sol-label">Solution:</span> This question asks you to reflect. A good answer names a specific skill and says why, for example: "I want to understand dividing fractions better because I mix up when to flip the second fraction," or "I want to get better at word problems so I know which operation to use." Pick the skill that feels hardest to you right now.</p>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+<script>
+function toggleAns(btn) {
+  var ans = btn.nextElementSibling;
+  var open = ans.classList.toggle('show');
+  btn.classList.toggle('open', open);
+  btn.innerHTML = open ? 'Hide answer &amp; solution' : 'Show answer &amp; solution';
+  if (window.MathJax && window.MathJax.typesetPromise) {
+    window.MathJax.typesetPromise([ans]).catch(function(){});
+  }
+}
+</script>
+</body>
+</html>
