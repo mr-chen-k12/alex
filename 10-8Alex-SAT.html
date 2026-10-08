@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAT Reading Practice - 10-8 Alex</title>
+<style>
+  :root { --primary-color: #A51C30; --ink:#1c1c1e; --muted:#6b7280; --bg:#f4f6fa; }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--ink);
+         margin: 0; padding: 0; line-height: 1.6; }
+  .page { max-width: 860px; margin: 0 auto; padding: 18px 16px 60px; }
+
+  /* ---- Teacher audit panel (hidden unless ?check=true) ---- */
+  #teacher-audit-panel { display: none; }
+  #teacher-audit-panel.active { display: block; }
+  .audit-banner { background: #1a1a2e; color: #eee; border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+  .audit-container { max-width: 100%; }
+  .audit-title { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .audit-title h2 { margin: 0; font-size: 1.2rem; }
+  .btn-clear-audit { background: #e74c3c; color: #fff; border: none; border-radius: 8px;
+    padding: 8px 14px; cursor: pointer; font-family: inherit; }
+  .audit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px; margin: 14px 0; }
+  .audit-card { background: #16213e; border-radius: 10px; padding: 12px; text-align: center; }
+  .audit-card.flagged { border: 2px solid #e74c3c; }
+  .audit-card .num { font-size: 1.8rem; font-weight: bold; }
+  .audit-card .label { font-size: 0.85rem; color: #bdc3c7; }
+  .audit-log-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 8px; }
+  .audit-log-table th, .audit-log-table td { border: 1px solid #34495e; padding: 6px 8px; text-align: left; }
+  .audit-log-table th { background: #16213e; }
+
+  /* ---- Header ---- */
+  header { background: var(--primary-color); color: #fff; border-radius: 12px;
+    padding: 20px 22px; margin-bottom: 16px; transition: background 0.3s; }
+  .header-container { display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px; }
+  .header-title h1 { margin: 0; font-size: 1.5rem; }
+  .header-title p { margin: 4px 0 0; opacity: 0.9; font-size: 0.95rem; }
+  .badges-preview { display: flex; gap: 12px; }
+  .badge-item { text-align: center; font-size: 0.75rem; opacity: 0.55; filter: grayscale(80%); }
+  .badge-item img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover;
+    border: 3px solid rgba(255,255,255,.5); background: #fff; display: block; margin: 0 auto 4px; }
+  .badge-item.unlocked { opacity: 1; filter: none; }
+  .badge-item.unlocked img { border-color: gold; box-shadow: 0 0 12px gold; }
+
+  /* ---- Controls ---- */
+  .controls-bar { display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px; background: #fff; border-radius: 12px;
+    padding: 12px 18px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .selector-group label { font-weight: bold; margin-right: 8px; }
+  .selector-group select { font-size: 1rem; padding: 8px 12px; border-radius: 8px;
+    border: 2px solid var(--primary-color); font-family: inherit; cursor: pointer; }
+  .score-tracker { font-weight: bold; font-size: 1.1rem; color: var(--primary-color); }
+
+  /* ---- Question cards ---- */
+  .question-card { background: #fff; border-radius: 12px; padding: 20px 22px;
+    margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .question-number { font-weight: bold; color: var(--primary-color); margin-bottom: 8px; }
+  .passage { background: #f8fafc; border-left: 5px solid var(--primary-color);
+    padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 12px; }
+  .question-text { font-weight: bold; font-size: 1.08rem; margin: 10px 0; }
+  .options-group { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .option-btn { text-align: left; background: #f1f5f9; border: 2px solid #e2e8f0;
+    border-radius: 10px; padding: 10px 14px; font-size: 1rem; cursor: pointer;
+    font-family: inherit; color: var(--ink); line-height: 1.5; }
+  .option-btn:hover:not(:disabled) { border-color: var(--primary-color); background: #fff; }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct { border-color: #16a34a; background: #f0fdf4; }
+  .option-btn.incorrect { border-color: #dc2626; background: #fef2f2; }
+  .feedback-box { display: none; margin-top: 12px; padding: 12px 14px; border-radius: 10px; }
+  .feedback-box.show { display: block; }
+  .feedback-box.good { background: #f0fdf4; border: 2px solid #16a34a; }
+  .feedback-box.bad { background: #fef2f2; border: 2px solid #dc2626; }
+  .feedback-box .verdict { font-weight: bold; font-size: 1.05rem; }
+  .feedback-box .expl { margin-top: 6px; color: #334155; }
+
+  /* ---- Score summary ---- */
+  .score-summary-card { display: none; background: #fff; border-radius: 12px; padding: 26px;
+    text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .score-summary-card h2 { margin-top: 0; }
+  .score-display { font-size: 2.6rem; font-weight: bold; color: var(--primary-color); margin: 8px 0; }
+  .reward-badge { margin: 14px 0; }
+  .reward-badge img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
+    border: 4px solid gold; box-shadow: 0 0 18px gold; background: #fff; }
+  .reward-name { font-weight: bold; font-size: 1.2rem; margin-top: 6px; }
+  .btn-retry { background: var(--primary-color); color: #fff; border: none; border-radius: 999px;
+    padding: 12px 28px; font-size: 1.05rem; font-weight: bold; cursor: pointer;
+    font-family: inherit; margin-top: 10px; }
+  @media print {
+    .controls-bar, #teacher-audit-panel, .btn-retry { display: none !important; }
+    .option-btn { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Anti-Cheating Teacher Inspection Panel (Triggered by ?check=true) -->
+  <div id="teacher-audit-panel" class="audit-banner">
+    <div class="audit-container">
+      <div class="audit-title">
+        <h2>🕵️ Teacher Audit Dashboard <span style="font-size: 0.8rem; color:#bdc3c7;">(?check=true mode)</span></h2>
+        <button class="btn-clear-audit" onclick="clearAuditLog()">Reset Audit Data</button>
+      </div>
+      <div class="audit-grid">
+        <div class="audit-card" id="card-total-refreshes">
+          <div class="num" id="stat-total-refreshes">0</div>
+          <div class="label">Total Page Refreshes</div>
+        </div>
+        <div class="audit-card" id="card-mid-refreshes">
+          <div class="num" id="stat-mid-refreshes">0</div>
+          <div class="label">Mid-Attempt Refreshes</div>
+        </div>
+        <div class="audit-card">
+          <div class="num" id="stat-manual-resets">0</div>
+          <div class="label">Manual Reset Attempts</div>
+        </div>
+        <div class="audit-card" id="card-risk-status">
+          <div class="num" id="stat-risk-level" style="font-size: 1.2rem; margin-top: 8px;">Clear</div>
+          <div class="label">Cheating Risk Assessment</div>
+        </div>
+      </div>
+      <div style="font-weight: bold; margin-bottom: 6px; color: #f39c12;">Student Activity &amp; Completion History:</div>
+      <table class="audit-log-table">
+        <thead><tr><th>Timestamp</th><th>Event Type</th><th>Details / Set Progress</th></tr></thead>
+        <tbody id="audit-log-rows"><tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Header & Badges -->
+  <header>
+    <div class="header-container">
+      <div class="header-title">
+        <h1>Digital SAT Reading Practice</h1>
+        <p>30 Questions • Sets A, B &amp; C • Integrity-Tracked Assessment</p>
+      </div>
+      <div class="badges-preview">
+        <div class="badge-item" id="badge-harvard">
+          <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard" onerror="this.style.display='none'">
+          <span>Harvard</span>
+        </div>
+        <div class="badge-item" id="badge-bu">
+          <img src="https://mr-chen-k12.github.io/books/IMG_0121.png" alt="Boston University" onerror="this.style.display='none'">
+          <span>Boston Univ.</span>
+        </div>
+        <div class="badge-item" id="badge-yale">
+          <img src="https://mr-chen-k12.github.io/books/IMG_0122.png" alt="Yale" onerror="this.style.display='none'">
+          <span>Yale</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation & Score Bar -->
+  <div class="controls-bar">
+    <div class="selector-group">
+      <label for="set-select">Choose Question Set:</label>
+      <select id="set-select" onchange="switchSet(this.value)">
+        <option value="Set A">Set A (10 Questions)</option>
+        <option value="Set B">Set B (10 Questions)</option>
+        <option value="Set C">Set C (10 Questions)</option>
+      </select>
+    </div>
+    <div class="score-tracker" id="score-tracker">Score: 0 / 10</div>
+  </div>
+
+  <!-- Main Quiz Area -->
+  <main class="quiz-container">
+    <div id="questions-wrapper"></div>
+    <div id="score-summary" class="score-summary-card">
+      <h2>Set Complete!</h2>
+      <p>Your Final Score for this set:</p>
+      <div class="score-display" id="final-score-text">0 / 10</div>
+      <div id="reward-section"></div>
+      <p id="feedback-message" style="font-size: 1.1rem; font-weight: 500;"></p>
+      <button class="btn-retry" onclick="resetCurrentSet()">Try This Set Again</button>
+    </div>
+  </main>
+
+</div>
+
+<script>
+/* ============ Integrity audit (localStorage) ============ */
+const AUDIT_STORAGE_KEY = "sat_10_8_alex_audit_v1";
+const ACTIVE_PROGRESS_KEY = "sat_10_8_alex_active_v1";
+
+function getAuditData() {
+  const stored = localStorage.getItem(AUDIT_STORAGE_KEY);
+  return stored ? JSON.parse(stored) : {
+    totalRefreshes: 0, midQuizRefreshes: 0, manualResets: 0, events: []
+  };
+}
+function saveAuditData(data) { localStorage.setItem(AUDIT_STORAGE_KEY, JSON.stringify(data)); }
+
+function trackPageLoad(setName) {
+  let audit = getAuditData();
+  audit.totalRefreshes += 1;
+  const activeProgress = localStorage.getItem(ACTIVE_PROGRESS_KEY);
+  if (activeProgress) {
+    const prog = JSON.parse(activeProgress);
+    const answeredCount = Object.keys(prog.answers || {}).length;
+    if (answeredCount > 0 && answeredCount < 10) {
+      audit.midQuizRefreshes += 1;
+      audit.events.unshift({
+        timestamp: new Date().toLocaleString(),
+        type: "⚠️ SUSPICIOUS REFRESH",
+        detail: "Page refreshed mid-attempt during " + prog.setName + " at Q" + (answeredCount + 1) + " (" + answeredCount + "/10 answered)"
+      });
+    }
+  } else {
+    audit.events.unshift({
+      timestamp: new Date().toLocaleString(),
+      type: "PAGE_LOAD",
+      detail: "Opened or reloaded page on " + setName
+    });
+  }
+  saveAuditData(audit);
+  renderAuditDashboard();
+}
+function trackAnswerProgress(setName, answersObj) {
+  localStorage.setItem(ACTIVE_PROGRESS_KEY, JSON.stringify({
+    setName: setName, answers: answersObj, lastUpdated: new Date().toISOString()
+  }));
+}
+function trackSetCompletion(setName, score, total) {
+  let audit = getAuditData();
+  audit.events.unshift({
+    timestamp: new Date().toLocaleString(),
+    type: "SET_COMPLETED",
+    detail: "Completed " + setName + " — Final Score: " + score + "/" + total
+  });
+  saveAuditData(audit);
+  localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+  renderAuditDashboard();
+}
+function trackManualReset(setName) {
+  let audit = getAuditData();
+  audit.manualResets += 1;
+  audit.events.unshift({
+    timestamp: new Date().toLocaleString(),
+    type: "MANUAL_RESET",
+    detail: "Student clicked 'Try Again' to restart " + setName
+  });
+  saveAuditData(audit);
+  localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+  renderAuditDashboard();
+}
+function renderAuditDashboard() {
+  const audit = getAuditData();
+  const setText = (id, v) => { const e = document.getElementById(id); if (e) e.innerText = v; };
+  setText("stat-total-refreshes", audit.totalRefreshes);
+  setText("stat-mid-refreshes", audit.midQuizRefreshes);
+  setText("stat-manual-resets", audit.manualResets);
+  const riskCard = document.getElementById("card-risk-status");
+  const midCard = document.getElementById("card-mid-refreshes");
+  const riskText = document.getElementById("stat-risk-level");
+  if (riskText) {
+    if (audit.midQuizRefreshes > 0) {
+      riskText.innerText = "⚠️ High Risk (Skeptical)";
+      riskText.style.color = "#e74c3c";
+      if (riskCard) riskCard.classList.add("flagged");
+      if (midCard) midCard.classList.add("flagged");
+    } else if (audit.totalRefreshes > 6) {
+      riskText.innerText = "⚠️ Medium Risk";
+      riskText.style.color = "#f39c12";
+    } else {
+      riskText.innerText = "✅ Clear";
+      riskText.style.color = "#2ecc71";
+    }
+  }
+  const tbody = document.getElementById("audit-log-rows");
+  if (tbody) {
+    if (!audit.events.length) {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr>';
+    } else {
+      tbody.innerHTML = audit.events.slice(0, 80).map(e =>
+        "<tr><td>" + e.timestamp + "</td><td>" + e.type + "</td><td>" + e.detail + "</td></tr>"
+      ).join("");
+    }
+  }
+}
+function clearAuditLog() {
+  if (confirm("Are you sure you want to clear all local audit tracking logs?")) {
+    localStorage.removeItem(AUDIT_STORAGE_KEY);
+    localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+    renderAuditDashboard();
+  }
+}
+
+/* ============ University rewards ============ */
+const universityRewards = {
+  "Set A": { name: "Harvard University", img: "https://mr-chen-k12.github.io/math/IMG_0232.png",
+             color: "#A51C30", badgeId: "badge-harvard" },
+  "Set B": { name: "Boston University", img: "https://mr-chen-k12.github.io/books/IMG_0121.png",
+             color: "#CC0000", badgeId: "badge-bu" },
+  "Set C": { name: "Yale University", img: "https://mr-chen-k12.github.io/books/IMG_0122.png",
+             color: "#00356B", badgeId: "badge-yale" }
+};
+
+/* ============ Question Bank: 30 original SAT Reading questions ============ */
+const questionBank = {
+  "Set A": [
+    {
+      "id": 1,
+      "passage": "Great public speaking often feels spontaneous, but their power usually comes from deliberate structure. One classic device is the 'rule of three': grouping ideas in threes — 'government of the people, by the people, for the people' — because triads are rhythmically satisfying and easy to remember. Speakers who ________ this pattern give audiences a cadence to follow, turning a list of points into something closer to music.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) employ",
+        "B) forget",
+        "C) criticize",
+        "D) avoid"
+      ],
+      "answer": 0,
+      "explanation": "Correct! 'Employ' means to use — speakers who use the rule of three give audiences a memorable cadence. The other choices contradict the passage's praise of the device."
+    },
+    {
+      "id": 2,
+      "passage": "In the deep ocean, where sunlight cannot penetrate, many creatures produce their own light. The anglerfish dangles a glowing lure to attract prey, while the vampire squid ejects bioluminescent mucus to dazzle predators. Fireflies use precisely timed flashes to find mates. Though the purposes differ — hunting, defense, courtship — the underlying chemistry is strikingly similar across species.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) All glowing animals use light exclusively to attract mates.",
+        "B) The chemistry of bioluminescence differs completely in every species.",
+        "C) Bioluminescence is found only in deep-ocean creatures.",
+        "D) Different species use bioluminescence for different ends, though the chemistry behind it is much the same."
+      ],
+      "answer": 3,
+      "explanation": "Correct! The passage surveys varied uses (hunting, defense, courtship) and ends by noting the shared chemistry — exactly what choice A summarizes."
+    },
+    {
+      "id": 3,
+      "passage": "The Great Library of Alexandria reportedly held hundreds of thousands of scrolls, and its scholars produced landmark works — Euclid's geometry, Eratosthenes' measurement of Earth's circumference. When the library declined, much of this accumulated knowledge survived only in fragments quoted by later writers, and some was lost entirely.",
+      "question": "Which choice best states an inference supported by the text?",
+      "options": [
+        "A) The library's decline meant some ancient knowledge survived only in fragments or was lost.",
+        "B) All ancient knowledge was preserved perfectly in other libraries.",
+        "C) Eratosthenes measured the Earth using the library's telescopes.",
+        "D) The library contained no works of lasting importance."
+      ],
+      "answer": 0,
+      "explanation": "Correct! The text directly supports this: after the decline, knowledge survived 'only in fragments' or 'was lost entirely.' The other choices contradict or overreach the text."
+    },
+    {
+      "id": 4,
+      "passage": "Compound interest is often called the most powerful force in personal finance: unlike simple interest, which pays only on the original sum, compound interest pays interest on previously earned interest as well. Over decades, this ________ effect can turn modest regular savings into substantial wealth, which is why financial advisors urge young people to start investing early.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) accelerating",
+        "B) instant",
+        "C) irrelevant",
+        "D) shrinking"
+      ],
+      "answer": 0,
+      "explanation": "Correct! Compound interest grows faster over time — an 'accelerating' effect. The other words contradict the described growth."
+    },
+    {
+      "id": 5,
+      "passage": "Ocean tides are caused primarily by the Moon's gravity: the side of Earth facing the Moon experiences a stronger pull, drawing water into a bulge, while inertia creates a matching bulge on the opposite side. As Earth rotates beneath these bulges, most coastlines experience two high tides and two low tides each day.",
+      "question": "According to the text, what causes the tidal bulge on the side of Earth facing away from the Moon?",
+      "options": [
+        "A) The Sun's gravity.",
+        "B) Earth's rotation alone.",
+        "C) Underwater earthquakes.",
+        "D) Inertia."
+      ],
+      "answer": 3,
+      "explanation": "Correct! The text states this directly: 'inertia creates a matching bulge on the opposite side.'"
+    },
+    {
+      "id": 6,
+      "passage": "Children raised bilingual must constantly manage two language systems, selecting the right words while suppressing the wrong ones. Researchers have found that this lifelong mental juggling strengthens executive function — the brain's ability to focus, switch tasks, and ignore distractions — with benefits that persist into old age.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Executive function cannot be improved at any age.",
+        "B) Only adults benefit from learning a second language.",
+        "C) Bilingualism exercises executive function, yielding cognitive benefits that last into old age.",
+        "D) Bilingual children are permanently confused by their two languages."
+      ],
+      "answer": 2,
+      "explanation": "Correct! The passage's point is that managing two languages strengthens executive function lifelong — choice A captures both halves of the claim."
+    },
+    {
+      "id": 7,
+      "passage": "A third of the world's crops depend on pollinators, and honeybee colonies have been dying at alarming rates — a phenomenon called colony collapse disorder. Researchers blame a combination of pesticides, parasites, and habitat loss rather than any single cause, which makes the crisis harder to solve but also means many small interventions can help.",
+      "question": "Which choice is best supported by the text?",
+      "options": [
+        "A) The pollinator crisis cannot be addressed in any way.",
+        "B) Crops do not need pollinators in order to grow.",
+        "C) Pesticides are the sole cause of colony collapse disorder.",
+        "D) Since no single cause explains the die-off, varied small actions may each contribute to a solution."
+      ],
+      "answer": 3,
+      "explanation": "Correct! The final clause states this directly: multiple causes mean 'many small interventions can help.'"
+    },
+    {
+      "id": 8,
+      "passage": "In 1800, Alessandro Volta stacked discs of zinc and copper separated by brine-soaked cardboard and produced a steady electric current — the first true battery. The invention ________ a century of electrical discovery, giving experimenters a portable power source for the first time and paving the way for the telegraph, the telephone, and modern electronics.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) inaugurated",
+        "B) ignored",
+        "C) delayed",
+        "D) prohibited"
+      ],
+      "answer": 0,
+      "explanation": "Correct! 'Inaugurated' means began or launched — the battery launched a century of discovery. The other choices contradict the passage."
+    },
+    {
+      "id": 9,
+      "passage": "The cave paintings at Lascaux, created some 17,000 years ago, depict bulls, horses, and deer with remarkable vitality — shaded flanks, suggested motion, even the illusion of depth. Whatever their ritual purpose, they demolish the assumption that early humans lacked sophisticated symbolic thought.",
+      "question": "The author mentions the paintings' vitality primarily to…",
+      "options": [
+        "A) prove that the cave painters were professional artists.",
+        "B) argue that bulls were the only animals ever painted.",
+        "C) suggest the paintings were created purely as decoration.",
+        "D) show that early humans possessed sophisticated symbolic abilities."
+      ],
+      "answer": 3,
+      "explanation": "Correct! The vivid details support the final claim: the paintings 'demolish the assumption' that early humans lacked sophisticated symbolic thought."
+    },
+    {
+      "id": 10,
+      "passage": "In 1928, Alexander Fleming noticed that a mold contaminating his petri dishes killed surrounding bacteria. He identified the mold as Penicillium and its active substance as penicillin — but it took another decade, and the urgency of World War II, before Florey and Chain developed methods to mass-produce the drug, which went on to save hundreds of millions of lives.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) An accidental mold observation led, through later mass-production efforts, to a drug that saved millions.",
+        "B) Penicillin was first discovered during World War II by Florey.",
+        "C) Fleming mass-produced penicillin single-handedly in 1928.",
+        "D) All molds are dangerous to human health."
+      ],
+      "answer": 0,
+      "explanation": "Correct! The passage traces the full arc: accidental discovery, then a decade-later mass-production breakthrough that made the drug world-changing."
+    }
+  ],
+  "Set B": [
+    {
+      "id": 1,
+      "passage": "Roman aqueducts carried water across valleys on graceful stone arcades, but their true engineering marvel was invisible: the channels descended at a gradient of just a few inches per mile, a slope gentle enough to keep water flowing yet ________ enough to prevent stagnation. Surveyors maintained this precision over distances of fifty miles using only simple leveling instruments.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) steep",
+        "B) vertical",
+        "C) accidental",
+        "D) decorative"
+      ],
+      "answer": 0,
+      "explanation": "Correct! The slope must be 'steep enough to prevent stagnation' — the sentence sets up a balance between gentle and steep. The other words break that logic."
+    },
+    {
+      "id": 2,
+      "passage": "Tardigrades, microscopic 'water bears,' can survive the vacuum of space, radiation hundreds of times the lethal human dose, and decades without water by entering a desiccated state called a tun. When rehydrated, they resume normal activity within hours — as if no time had passed.",
+      "question": "What can most reasonably be inferred from the text?",
+      "options": [
+        "A) The tun state allows tardigrades to suspend biological activity until conditions improve.",
+        "B) Tardigrades are the largest animals on Earth.",
+        "C) Tardigrades can live indefinitely without ever needing water.",
+        "D) Radiation has no effect on any living organism."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Surviving decades dry and resuming 'as if no time had passed' implies the tun essentially pauses biology. The other choices overreach or contradict the text."
+    },
+    {
+      "id": 3,
+      "passage": "When the golden spike joined the Union Pacific and Central Pacific at Promontory, Utah, in 1869, a coast-to-coast journey that had taken months by wagon shrank to about a week. Freight costs plummeted, settlers poured west, and towns sprang up along the tracks — the railroad redrew the economic map of the continent.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Wagon travel remained faster than rail even after 1869.",
+        "B) The golden spike was made of solid gold worth millions of dollars.",
+        "C) The railroad had no effect on western settlement.",
+        "D) The railroad dramatically shortened travel times and reshaped the continent's economy and settlement."
+      ],
+      "answer": 3,
+      "explanation": "Correct! Every sentence supports this: faster journeys, cheaper freight, new settlers and towns — a transformed continent."
+    },
+    {
+      "id": 4,
+      "passage": "The Rosetta Stone bore the same decree in three scripts: hieroglyphic, Demotic, and ancient Greek. Because scholars could read the Greek, they could decode the unknown scripts by ________ them with the Greek text — a breakthrough that finally unlocked Egyptian hieroglyphs after centuries of mystery.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) contradicting",
+        "B) covering",
+        "C) comparing",
+        "D) replacing"
+      ],
+      "answer": 2,
+      "explanation": "Correct! Scholars decoded the unknown scripts by 'comparing' them with the readable Greek. The other verbs describe the opposite of decipherment."
+    },
+    {
+      "id": 5,
+      "passage": "Text 1: Critics argue homework burdens students without improving learning, citing studies that show little correlation between homework hours and achievement in elementary school.\n\nText 2: Defenders counter that well-designed homework builds habits of independent study, and that the cited studies measure quantity, not quality — a few purposeful problems, they argue, outperform hours of busywork.",
+      "question": "Based on the texts, how would the defenders in Text 2 most likely respond to the critics in Text 1?",
+      "options": [
+        "A) By claiming that elementary students learn nothing at school either.",
+        "B) By agreeing that all homework should be abolished immediately.",
+        "C) By denying that any studies of homework have ever been conducted.",
+        "D) By arguing that the quality of homework matters more than the quantity studied."
+      ],
+      "answer": 3,
+      "explanation": "Correct! Text 2's core rebuttal is the quantity-vs-quality distinction: purposeful problems beat busywork, so the critics' hour-counting studies miss the point."
+    },
+    {
+      "id": 6,
+      "passage": "When a frost destroys much of Florida's orange crop, the supply of oranges shrinks while demand stays constant, and prices rise. The higher prices, in turn, ________ growers in frost-free regions to plant more oranges, gradually restoring supply — a self-correcting mechanism at the heart of market economics.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) discourage",
+        "B) incentivize",
+        "C) bore",
+        "D) forbid"
+      ],
+      "answer": 1,
+      "explanation": "Correct! Higher prices give growers a reason — an incentive — to plant more. 'Discourage' and 'forbid' point the wrong way; 'bore' makes no sense."
+    },
+    {
+      "id": 7,
+      "passage": "In clinical trials, patients given inactive sugar pills often improve — sometimes dramatically. This placebo effect arises from expectation: the brain, anticipating relief, releases its own painkillers and dopamine. The effect is so reliable that new drugs must outperform placebos, not merely outperform nothing, to win approval.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Sugar pills contain powerful hidden medicines.",
+        "B) Clinical trials never use placebos for comparison.",
+        "C) Expectation has no measurable effect on the body.",
+        "D) The placebo effect produces genuine biological changes through expectation, setting the bar new drugs must clear."
+      ],
+      "answer": 3,
+      "explanation": "Correct! The passage explains the biology (brain releases painkillers/dopamine) and the consequence (drugs must beat placebos) — choice A captures both."
+    },
+    {
+      "id": 8,
+      "passage": "Marie Curie processed tons of pitchblende residue in a drafty shed to isolate a tenth of a gram of radium, work that earned her two Nobel Prizes in different sciences. She carried radioactive samples in her pockets, unaware of the danger; her notebooks remain too radioactive to handle safely today.",
+      "question": "Which choice best states an inference supported by the text?",
+      "options": [
+        "A) Pitchblende contains no radioactive elements at all.",
+        "B) Curie's unsafe handling of radioactive materials shows the risks were not yet understood.",
+        "C) Curie won her Nobel Prizes for discovering the notebook.",
+        "D) Radium is completely harmless to human health."
+      ],
+      "answer": 1,
+      "explanation": "Correct! Carrying radium in her pockets 'unaware of the danger' — plus notebooks still hazardous a century later — implies the risks weren't understood then."
+    },
+    {
+      "id": 9,
+      "passage": "Amber — fossilized tree resin — can preserve insects in exquisite detail for tens of millions of years. Because resin trapped the creatures quickly and sealed out air and water, even delicate wings and individual hairs survive, giving paleontologists snapshots of ancient ecosystems.",
+      "question": "According to the text, why does amber preserve insects so well?",
+      "options": [
+        "A) Amber generates heat that mummifies the insects.",
+        "B) The resin dissolves the insects' most fragile parts.",
+        "C) The resin trapped them quickly and sealed out air and water.",
+        "D) Insects preserved in amber are still alive."
+      ],
+      "answer": 2,
+      "explanation": "Correct! The text states this directly: quick trapping plus sealing out air and water preserves even delicate features."
+    },
+    {
+      "id": 10,
+      "passage": "When Newton passed sunlight through a prism, it fanned into a rainbow of colors; passing that spectrum through a second, inverted prism recombined it into white light. The experiment ________ the ancient belief that prisms colored the light, proving instead that white light is a mixture of colors.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) decorated",
+        "B) confirmed",
+        "C) ignored",
+        "D) overturned"
+      ],
+      "answer": 3,
+      "explanation": "Correct! The experiment disproved ('overturned') the old belief by showing white light is already a mixture of colors."
+    }
+  ],
+  "Set C": [
+    {
+      "id": 1,
+      "passage": "When wolves were reintroduced to Yellowstone in 1995, they thinned the elk herds that had overgrazed river valleys. With elk on the move, willows and aspens rebounded, beavers returned to build dams, and riverbanks stabilized — a trophic cascade ________ by a single predator's return.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) witnessed",
+        "B) triggered",
+        "C) photographed",
+        "D) prevented"
+      ],
+      "answer": 1,
+      "explanation": "Correct! The wolves' return set off ('triggered') the whole cascade of ecological changes. 'Prevented' is the opposite; C and D describe observers, not causes."
+    },
+    {
+      "id": 2,
+      "passage": "A comet's glowing tail does not trail behind it like smoke from a train; it always points away from the Sun, pushed outward by solar wind and radiation. As a result, a comet heading back out of the inner solar system travels tail-first — the tail leads, and the head follows.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Comet tails always trail behind the direction of motion.",
+        "B) Comets generate their own light the way stars do.",
+        "C) Solar wind forces comet tails to point away from the Sun, so outbound comets travel tail-first.",
+        "D) Solar wind has no effect on the shape of comets."
+      ],
+      "answer": 2,
+      "explanation": "Correct! The passage's surprising point is that tails point away from the Sun regardless of travel direction — so outbound comets go tail-first."
+    },
+    {
+      "id": 3,
+      "passage": "People tend to seek information that confirms what they already believe and dismiss what contradicts it — a pattern psychologists call confirmation bias. Two voters can watch the same debate and each come away convinced their candidate won, having noticed only the moments that supported their side.",
+      "question": "Which choice is best supported by the text?",
+      "options": [
+        "A) Confirmation bias affects only professional politicians.",
+        "B) Because people filter evidence through existing beliefs, the same event can reinforce opposite conclusions.",
+        "C) People objectively weigh all evidence equally.",
+        "D) Political debates always change voters' minds."
+      ],
+      "answer": 1,
+      "explanation": "Correct! The debate example illustrates exactly this: identical evidence, filtered through prior beliefs, reinforces opposite conclusions."
+    },
+    {
+      "id": 4,
+      "passage": "Text 1: Zoo advocates argue that modern zoos fund conservation, breed endangered species, and inspire public support for wildlife — functions no documentary can fully replace.\n\nText 2: Critics respond that most zoo animals are not endangered, that captive breeding rarely leads to successful reintroduction, and that conservation dollars would save more habitat if spent directly in the wild.",
+      "question": "Based on the texts, how would the author of Text 2 most likely respond to Text 1's conservation claim?",
+      "options": [
+        "A) By arguing zoo conservation funds would protect more wildlife if spent on habitat directly.",
+        "B) By claiming that nature documentaries harm wildlife.",
+        "C) By agreeing that every zoo animal is endangered.",
+        "D) By denying that any species is currently endangered."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Text 2's final point directly counters the conservation claim: the money would do more good spent on habitat in the wild."
+    },
+    {
+      "id": 5,
+      "passage": "The Mariana Trench plunges nearly seven miles below the Pacific surface — deep enough to swallow Mount Everest with a mile to spare. Despite crushing pressure, near-freezing water, and total darkness, the trench hosts amphipods, snailfish, and microbial mats, proving life's remarkable tenacity.",
+      "question": "According to the text, which of the following is true of the Mariana Trench?",
+      "options": [
+        "A) It contains no living organisms whatsoever.",
+        "B) It is deep enough to submerge Mount Everest and still hosts living organisms.",
+        "C) Its waters are warm and sunlit.",
+        "D) It is located in the Atlantic Ocean."
+      ],
+      "answer": 1,
+      "explanation": "Correct! Both halves are stated directly: Everest 'with a mile to spare,' and amphipods, snailfish, and microbial mats living there."
+    },
+    {
+      "id": 6,
+      "passage": "In the 1960s, agronomist Norman Borlaug bred dwarf wheat varieties that resisted disease and responded dramatically to fertilizer, tripling yields in Mexico, India, and Pakistan. Critics note the environmental costs of intensive farming, but demographers credit the Green Revolution with averting famines that might have killed hundreds of millions.",
+      "question": "The author mentions critics primarily to…",
+      "options": [
+        "A) suggest that large-scale famines are beneficial.",
+        "B) prove that chemical fertilizers are always harmless.",
+        "C) acknowledge drawbacks while affirming the achievement's historic importance.",
+        "D) argue that Borlaug's wheat was a complete failure."
+      ],
+      "answer": 2,
+      "explanation": "Correct! The critics get one clause; the sentence's weight falls on the demographers' verdict — lives saved on a historic scale."
+    },
+    {
+      "id": 7,
+      "passage": "In blind tests, expert violinists often cannot distinguish a Stradivarius from a fine modern instrument — yet the old Italian violins command millions at auction. Their value rests less on ________ acoustic superiority than on history, craftsmanship, and the romance of three centuries of music.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) imaginary",
+        "B) demonstrable",
+        "C) silent",
+        "D) worthless"
+      ],
+      "answer": 1,
+      "explanation": "Correct! Since blind tests show no audible difference, the violins lack 'demonstrable' (provable) acoustic superiority — their value comes from history and romance instead."
+    },
+    {
+      "id": 8,
+      "passage": "Before 1914, ships traveling from New York to San Francisco had to round Cape Horn — an 8,000-mile detour through treacherous waters. The Panama Canal, with its ingenious lock system lifting vessels 85 feet over the continental divide, cut the journey to about 5,000 miles and transformed global trade routes.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Locks serve no purpose in crossing the Panamanian isthmus.",
+        "B) By lifting ships over the isthmus with locks, the canal slashed voyage distances and transformed trade.",
+        "C) Cape Horn remains the fastest route between New York and San Francisco.",
+        "D) The canal made voyages between the American coasts longer."
+      ],
+      "answer": 1,
+      "explanation": "Correct! The passage contrasts the 8,000-mile Cape Horn ordeal with the 5,000-mile canal shortcut and its transformation of trade."
+    },
+    {
+      "id": 9,
+      "passage": "Ancient number systems — Roman numerals, Egyptian hieroglyphs — managed without a symbol for zero, which made complex calculation cumbersome: try multiplying CXVII by XLIV. Indian mathematicians' invention of zero as both a placeholder and a number in its own right made positional notation possible, and with it, modern arithmetic.",
+      "question": "Which choice best states an inference supported by the text?",
+      "options": [
+        "A) Roman numerals are superior to modern numbers for complex calculation.",
+        "B) Positional notation existed long before anyone conceived of zero.",
+        "C) Without zero as a placeholder and number, positional notation and modern arithmetic could not have developed.",
+        "D) The concept of zero was invented in ancient Egypt."
+      ],
+      "answer": 2,
+      "explanation": "Correct! The passage credits zero's invention with making positional notation — and therefore modern arithmetic — possible."
+    },
+    {
+      "id": 10,
+      "passage": "The greenhouse effect is often misunderstood as purely harmful, but without it Earth would be a frozen wasteland: atmospheric gases trap enough outgoing heat to keep the planet's average temperature around 59°F instead of 0°F. The current concern is not the effect itself but its ________ by excess carbon dioxide from burning fossil fuels.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) elimination",
+        "B) discovery",
+        "C) amplification",
+        "D) measurement"
+      ],
+      "answer": 2,
+      "explanation": "Correct! The concern is the effect being strengthened ('amplification') by excess CO2 — not its discovery or elimination."
+    }
+  ]
+};
+
+/* ============ Application state & logic ============ */
+let currentSetKey = "Set A";
+let userAnswers = {};
+
+function initApp() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("check") === "true") {
+    document.getElementById("teacher-audit-panel").classList.add("active");
+  }
+  trackPageLoad(currentSetKey);
+  loadSet(currentSetKey);
+}
+
+function switchSet(setName) {
+  currentSetKey = setName;
+  document.getElementById("set-select").value = setName;
+  loadSet(setName);
+}
+
+function loadSet(setName) {
+  userAnswers = {};
+  document.getElementById("score-summary").style.display = "none";
+  document.getElementById("reward-section").innerHTML = "";
+  const reward = universityRewards[setName];
+  document.documentElement.style.setProperty("--primary-color", reward.color);
+  updateScoreDisplay();
+  const container = document.getElementById("questions-wrapper");
+  container.innerHTML = "";
+  const questions = questionBank[setName];
+  questions.forEach((q, index) => {
+    const card = document.createElement("div");
+    card.className = "question-card";
+    card.id = "q-card-" + index;
+    const optsHtml = q.options.map((opt, oi) =>
+      '<button class="option-btn" onclick="selectAnswer(' + index + ',' + oi + ')">' + opt + "</button>"
+    ).join("");
+    card.innerHTML =
+      '<div class="question-number">Question ' + (index + 1) + " of 10</div>" +
+      '<div class="passage">' + q.passage.replace(/\n\n/g, "</p><p>") + "</div>" +
+      '<div class="question-text">' + q.question + "</div>" +
+      '<div class="options-group" id="options-' + index + '">' + optsHtml + "</div>" +
+      '<div class="feedback-box" id="feedback-' + index + '"></div>';
+    container.appendChild(card);
+  });
+}
+
+function selectAnswer(questionIdx, selectedOptIdx) {
+  if (userAnswers.hasOwnProperty(questionIdx)) return;
+  const qData = questionBank[currentSetKey][questionIdx];
+  const isCorrect = selectedOptIdx === qData.answer;
+  userAnswers[questionIdx] = isCorrect;
+  trackAnswerProgress(currentSetKey, userAnswers);
+  const optionsGroup = document.getElementById("options-" + questionIdx);
+  const buttons = optionsGroup.getElementsByClassName("option-btn");
+  Array.from(buttons).forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === qData.answer) btn.classList.add("correct");
+    else if (idx === selectedOptIdx && !isCorrect) btn.classList.add("incorrect");
+  });
+  const fbBox = document.getElementById("feedback-" + questionIdx);
+  fbBox.classList.add("show");
+  fbBox.classList.add(isCorrect ? "good" : "bad");
+  fbBox.innerHTML =
+    '<div class="verdict">' + (isCorrect ? "✅ Correct!" : "❌ Incorrect.") + "</div>" +
+    '<div class="expl">' + qData.explanation + "</div>";
+  updateScoreDisplay();
+  checkSetCompletion();
+}
+
+function updateScoreDisplay() {
+  const correctCount = Object.values(userAnswers).filter(Boolean).length;
+  document.getElementById("score-tracker").innerText = "Score: " + correctCount + " / 10";
+}
+
+function checkSetCompletion() {
+  if (Object.keys(userAnswers).length !== 10) return;
+  const score = Object.values(userAnswers).filter(Boolean).length;
+  const summaryBox = document.getElementById("score-summary");
+  const scoreText = document.getElementById("final-score-text");
+  const msgText = document.getElementById("feedback-message");
+  const rewardSection = document.getElementById("reward-section");
+  const currentReward = universityRewards[currentSetKey];
+  scoreText.innerText = score + " / 10";
+  trackSetCompletion(currentSetKey, score, 10);
+  if (score === 10) {
+    document.getElementById(currentReward.badgeId).classList.add("unlocked");
+    msgText.innerHTML = '<span style="color:' + currentReward.color + '; font-weight:bold;">Congratulations! Perfect Score!</span> You earned the ' + currentReward.name + " award! 🏆";
+    rewardSection.innerHTML =
+      '<div class="reward-badge"><img src="' + currentReward.img + '" alt="' + currentReward.name + '" onerror="this.style.display=\'none\'">' +
+      '<div class="reward-name" style="color:' + currentReward.color + ';">' + currentReward.name + "</div></div>";
+  } else if (score >= 7) {
+    msgText.innerHTML = "Great effort! You scored " + score + "/10. Review the explanations and try for a perfect score!";
+  } else {
+    msgText.innerHTML = "Keep practicing! You scored " + score + "/10. Read each explanation carefully and try the set again.";
+  }
+  summaryBox.style.display = "block";
+  summaryBox.scrollIntoView({ behavior: "smooth" });
+}
+
+function resetCurrentSet() {
+  trackManualReset(currentSetKey);
+  loadSet(currentSetKey);
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>
