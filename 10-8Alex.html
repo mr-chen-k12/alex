@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saxon Math Course 2 — Lesson 23 Solutions</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  chtml: { scale: 1.05 }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+<style>
+  :root { --ink:#1c1c1e; --accent:#0b5fff; --card:#ffffff; --bg:#f4f6fa; --muted:#6b7280; }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--ink);
+         margin: 0; padding: 18px; line-height: 1.55; }
+  .wrap { max-width: 780px; margin: 0 auto; }
+  header.page { text-align: center; margin-bottom: 18px; }
+  header.page h1 { font-size: 1.5rem; margin: 0.2em 0; }
+  header.page p { color: var(--muted); margin: 0.2em 0; font-size: 0.95rem; }
+  h2.section { font-size: 1.15rem; margin: 26px 0 12px; padding-bottom: 6px;
+               border-bottom: 2px solid var(--accent); color: var(--accent); }
+  .card { background: var(--card); border: 1px solid #dfe3ea; border-radius: 12px;
+          padding: 16px 18px; margin: 12px 0; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .qnum { font-weight: bold; font-size: 1.05rem; margin-bottom: 6px; }
+  .tag { display: inline-block; background: #dbeafe; color: #1d4ed8; font-size: 0.78rem;
+         font-weight: bold; border-radius: 6px; padding: 1px 8px; margin-left: 6px; vertical-align: middle; }
+  .question { margin: 6px 0 4px; }
+  .question p { margin: 0.4em 0; }
+  figure.fig { margin: 10px 0 4px; text-align: center; }
+  figure.fig svg { max-width: 100%; height: auto; }
+  .show-btn { display: inline-block; margin-top: 10px; background: var(--accent); color: #fff;
+              border: none; border-radius: 8px; padding: 8px 16px; font-size: 0.95rem;
+              cursor: pointer; font-family: inherit; }
+  .show-btn:hover { background: #0849c4; }
+  .show-btn.open { background: #374151; }
+  .answer { display: none; margin-top: 12px; padding: 12px 14px; background: #f0fdf4;
+            border: 1px solid #bbf7d0; border-radius: 8px; }
+  .answer.show { display: block; }
+  .answer .ans-label { font-weight: bold; color: #166534; }
+  .answer .sol-label { font-weight: bold; }
+  .answer p { margin: 0.45em 0; }
+  table.data { border-collapse: collapse; margin: 8px auto; }
+  table.data th, table.data td { border: 1px solid #111; padding: 4px 14px; text-align: center; }
+  table.data th { background: #dbeafe; }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .show-btn, .answer { display: none !important; }
+    .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+    header.page p.hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="page">
+  <h1>Saxon Math Course 2 — Lesson 23</h1>
+  <p>Solutions (hidden until you press the button)</p>
+  <p class="hint">Tap <b>Show answer &amp; solution</b> on any problem to reveal it. Printing shows questions only.</p>
+</header>
+
+<h2 class="section">Written Practice</h2>
+
+<!-- Q1 -->
+<div class="card">
+  <div class="qnum">1</div>
+  <div class="question"><p>Willie shot eighteen rolls of film for the school annual. If there were thirty-six exposures in each roll, how many exposures were there in all?</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> 648 exposures</p>
+    <p><span class="sol-label">Solution:</span> \(18 \times 36 = 648\). (Check: \(18 \times 36 = 18(30 + 6) = 540 + 108 = 648\).)</p>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="card">
+  <div class="qnum">2</div>
+  <div class="question"><p>Carpeting is usually sold by the square yard. The number of square feet of area a carpet will cover is a function of the number of square yards installed. Create a function table that shows the number of square feet in 1, 2, 3, 4, and 5 square yards.</p></div>
+  <figure class="fig">
+  <svg width="220" height="200" viewBox="0 0 220 200" role="img" aria-label="One square yard equals nine square feet">
+    <rect x="45" y="25" width="130" height="130" fill="#eef4ff" stroke="#111" stroke-width="2.5"/>
+    <text x="110" y="16" text-anchor="middle" font-family="Georgia,serif" font-size="15">1 yd</text>
+    <text x="110" y="188" text-anchor="middle" font-family="Georgia,serif" font-size="15">1 yd</text>
+    <text x="32" y="95" text-anchor="middle" font-family="Georgia,serif" font-size="15">1 yd</text>
+    <text x="188" y="95" text-anchor="middle" font-family="Georgia,serif" font-size="15">1 yd</text>
+    <text x="110" y="95" text-anchor="middle" font-family="Georgia,serif" font-size="16">1 yd² = 9 ft²</text>
+  </svg>
+  </figure>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span></p>
+    <table class="data">
+      <tr><th>Square yards</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+      <tr><th>Square feet</th><td>9</td><td>18</td><td>27</td><td>36</td><td>45</td></tr>
+    </table>
+    <p><span class="sol-label">Solution:</span> Since \(1\text{ yd}^2 = 9\text{ ft}^2\), multiply the number of square yards by 9: \(1 \times 9 = 9\), \(2 \times 9 = 18\), \(3 \times 9 = 27\), \(4 \times 9 = 36\), \(5 \times 9 = 45\).</p>
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="card">
+  <div class="qnum">3</div>
+  <div class="question">
+    <p><b>a.</b> Write the formula for the area of a rectangle.</p>
+    <p><b>b.</b> A professional basketball court is a rectangle that is 50 feet wide and 94 feet long. What is the area of the basketball court?</p>
+  </div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. \(A = l \times w\) &nbsp; b. 4700 ft²</p>
+    <p><span class="sol-label">Solution:</span> a. Area of a rectangle = length × width. b. \(A = 94 \times 50 = 4700\) square feet.</p>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="card">
+  <div class="qnum">4</div>
+  <div class="question"><p>The 16-pound turkey cost $14.24. What was the price per pound?</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> $0.89 per pound</p>
+    <p><span class="sol-label">Solution:</span> Divide the total cost by the number of pounds: \(\$14.24 \div 16 = \$0.89\). (Check: \(16 \times 0.89 = 14.24\) ✓)</p>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="card">
+  <div class="qnum">5 <span class="tag">Model</span></div>
+  <div class="question">
+    <p>Draw a diagram of the statement. Then answer the questions that follow.</p>
+    <p><i>Three eighths of the 56 restaurants in town were closed on Monday.</i></p>
+    <p><b>a.</b> How many of the restaurants in town were closed on Monday?</p>
+    <p><b>b.</b> How many of the restaurants in town were open on Monday?</p>
+  </div>
+  <figure class="fig">
+  <svg width="440" height="90" viewBox="0 0 440 90" role="img" aria-label="Bar model: 3 of 8 parts shaded, 56 restaurants">
+    <g stroke="#111" stroke-width="2">
+      <rect x="30" y="20" width="47.5" height="34" fill="#9db8dd"/><rect x="77.5" y="20" width="47.5" height="34" fill="#9db8dd"/><rect x="125" y="20" width="47.5" height="34" fill="#9db8dd"/>
+      <rect x="172.5" y="20" width="47.5" height="34" fill="#fff"/><rect x="220" y="20" width="47.5" height="34" fill="#fff"/><rect x="267.5" y="20" width="47.5" height="34" fill="#fff"/>
+      <rect x="315" y="20" width="47.5" height="34" fill="#fff"/><rect x="362.5" y="20" width="47.5" height="34" fill="#fff"/>
+    </g>
+    <text x="220" y="76" text-anchor="middle" font-family="Georgia,serif" font-size="14">56 restaurants — 3 of 8 parts closed</text>
+  </svg>
+  </figure>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. 21 closed &nbsp; b. 35 open</p>
+    <p><span class="sol-label">Solution:</span> a. \(\frac{3}{8} \times 56 = \frac{168}{8} = 21\). b. \(56 - 21 = 35\).</p>
+  </div>
+</div>
+
+<!-- Q6 -->
+<div class="card">
+  <div class="qnum">6 <span class="tag">Evaluate</span></div>
+  <div class="question">
+    <p>In the following statement, write the percent as a reduced fraction. Then draw a diagram of the statement and answer the questions.</p>
+    <p><i>Forty percent of the 30 students in the class were boys.</i></p>
+    <p><b>a.</b> How many boys were in the class?</p>
+    <p><b>b.</b> How many girls were in the class?</p>
+  </div>
+  <figure class="fig">
+  <svg width="440" height="90" viewBox="0 0 440 90" role="img" aria-label="Bar model: 40 percent shaded, 30 students">
+    <g stroke="#111" stroke-width="2">
+      <rect x="20" y="20" width="40" height="34" fill="#9db8dd"/><rect x="60" y="20" width="40" height="34" fill="#9db8dd"/><rect x="100" y="20" width="40" height="34" fill="#9db8dd"/><rect x="140" y="20" width="40" height="34" fill="#9db8dd"/>
+      <rect x="180" y="20" width="40" height="34" fill="#fff"/><rect x="220" y="20" width="40" height="34" fill="#fff"/><rect x="260" y="20" width="40" height="34" fill="#fff"/>
+      <rect x="300" y="20" width="40" height="34" fill="#fff"/><rect x="340" y="20" width="40" height="34" fill="#fff"/><rect x="380" y="20" width="40" height="34" fill="#fff"/>
+    </g>
+    <text x="220" y="76" text-anchor="middle" font-family="Georgia,serif" font-size="14">30 students — 40% (4 of 10 parts) are boys</text>
+  </svg>
+  </figure>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> 40% = \(\frac{2}{5}\); &nbsp; a. 12 boys &nbsp; b. 18 girls</p>
+    <p><span class="sol-label">Solution:</span> \(40\% = \frac{40}{100} = \frac{2}{5}\). a. \(\frac{2}{5} \times 30 = 12\) boys. b. \(30 - 12 = 18\) girls.</p>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="card">
+  <div class="qnum">7</div>
+  <div class="question"><p>After contact was made, the spheroid sailed four thousand, one hundred forty inches. How many yards did the spheroid sail after contact was made?</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> 115 yards</p>
+    <p><span class="sol-label">Solution:</span> There are 36 inches in a yard, so divide: \(4140 \div 36 = 115\). (A spheroid is a ball-shaped object.)</p>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="card">
+  <div class="qnum">8</div>
+  <div class="question">
+    <p><b>a.</b> How many \(\frac{1}{5}\)s are in 1?</p>
+    <p><b>b.</b> How many \(\frac{1}{5}\)s are in 3?</p>
+    <p><b>c. (Explain)</b> How can you use the answer to <b>a</b> to solve <b>b</b>?</p>
+  </div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. 5 &nbsp; b. 15 &nbsp; c. Multiply the answer to a by 3.</p>
+    <p><span class="sol-label">Solution:</span> a. \(1 \div \frac{1}{5} = 5\). b. \(3 \div \frac{1}{5} = 15\). c. Three wholes contain three times as many fifths as one whole, so multiply 5 by 3 to get 15.</p>
+  </div>
+</div>
+
+<!-- Q9 -->
+<div class="card">
+  <div class="qnum">9 <span class="tag">Explain</span></div>
+  <div class="question"><p>Describe how to find the reciprocal of a mixed number.</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> First write the mixed number as an improper fraction, then invert the fraction (swap the numerator and denominator).</p>
+    <p><span class="sol-label">Solution:</span> Example: the reciprocal of \(2\frac{1}{3}\) is found by writing \(2\frac{1}{3} = \frac{7}{3}\), then flipping it to get \(\frac{3}{7}\).</p>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="card">
+  <div class="qnum">10</div>
+  <div class="question"><p>Replace each circle with the proper comparison symbol:</p>
+    <p><b>a.</b> \(\frac{2}{3} \cdot \frac{3}{2} \bigcirc \frac{5}{5}\) &nbsp;&nbsp;&nbsp;&nbsp; <b>b.</b> \(\frac{12}{36} \bigcirc \frac{12}{24}\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. \(=\) &nbsp; b. \(&lt;\)</p>
+    <p><span class="sol-label">Solution:</span> a. \(\frac{2}{3} \cdot \frac{3}{2} = \frac{6}{6} = 1\) and \(\frac{5}{5} = 1\), so \(=\). b. \(\frac{12}{36} = \frac{1}{3}\) and \(\frac{12}{24} = \frac{1}{2}\); since \(\frac{1}{3} < \frac{1}{2}\), the symbol is \(&lt;\).</p>
+  </div>
+</div>
+
+<!-- Q11 -->
+<div class="card">
+  <div class="qnum">11</div>
+  <div class="question"><p>Write \(2\frac{1}{4}\) and \(3\frac{1}{3}\) as improper fractions. Then multiply the improper fractions, and write the product as a reduced mixed number.</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(7\frac{1}{2}\)</p>
+    <p><span class="sol-label">Solution:</span> \(2\frac{1}{4} = \frac{9}{4}\) and \(3\frac{1}{3} = \frac{10}{3}\). Then \(\frac{9}{4} \cdot \frac{10}{3} = \frac{90}{12} = \frac{15}{2} = 7\frac{1}{2}\).</p>
+  </div>
+</div>
+
+<!-- Q12 -->
+<div class="card">
+  <div class="qnum">12</div>
+  <div class="question"><p>Complete each equivalent fraction:</p>
+    <p><b>a.</b> \(\frac{3}{4} = \frac{?}{40}\) &nbsp;&nbsp; <b>b.</b> \(\frac{2}{5} = \frac{?}{40}\) &nbsp;&nbsp; <b>c.</b> \(\frac{?}{8} = \frac{15}{40}\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. 30 &nbsp; b. 16 &nbsp; c. 3</p>
+    <p><span class="sol-label">Solution:</span> a. \(40 \div 4 = 10\), so \(3 \times 10 = 30\). b. \(40 \div 5 = 8\), so \(2 \times 8 = 16\). c. \(40 \div 8 = 5\), so \(15 \div 5 = 3\).</p>
+  </div>
+</div>
+
+<!-- Q13 -->
+<div class="card">
+  <div class="qnum">13 <span class="tag">Generalize</span></div>
+  <div class="question">
+    <p>The prime factorization of 100 is \(2 \cdot 2 \cdot 5 \cdot 5\). We can write the prime factorization of 100 using exponents this way: \(2^2 \cdot 5^2\).</p>
+    <p><b>a.</b> Write the prime factorization of 400 using exponents.</p>
+    <p><b>b.</b> Write the prime factorization of \(\sqrt{400}\) using exponents.</p>
+  </div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. \(2^4 \cdot 5^2\) &nbsp; b. \(2^2 \cdot 5\)</p>
+    <p><span class="sol-label">Solution:</span> a. \(400 = 2 \cdot 2 \cdot 2 \cdot 2 \cdot 5 \cdot 5 = 2^4 \cdot 5^2\). b. \(\sqrt{400} = 20 = 2 \cdot 2 \cdot 5 = 2^2 \cdot 5\).</p>
+  </div>
+</div>
+
+<!-- Q14 -->
+<div class="card">
+  <div class="qnum">14</div>
+  <div class="question">
+    <p>Refer to this figure to answer <b>a–d</b>:</p>
+    <p><b>a.</b> What type of angle is \(\angle ADB\)?</p>
+    <p><b>b.</b> What type of angle is \(\angle BDC\)?</p>
+    <p><b>c.</b> What type of angle is \(\angle ADC\)?</p>
+    <p><b>d.</b> Which ray is perpendicular to \(\overrightarrow{DB}\)?</p>
+  </div>
+  <figure class="fig">
+  <svg width="300" height="190" viewBox="0 0 300 190" role="img" aria-label="Rays DA, DB, DC from point D with right angle mark between DB and DC">
+    <line x1="170" y1="150" x2="30" y2="150" stroke="#111" stroke-width="2.5"/>
+    <polygon points="30,150 46,144 46,156" fill="#111"/>
+    <line x1="170" y1="150" x2="88" y2="68" stroke="#111" stroke-width="2.5"/>
+    <polygon points="88,68 100,78 92,64" fill="#111"/>
+    <line x1="170" y1="150" x2="212" y2="48" stroke="#111" stroke-width="2.5"/>
+    <polygon points="212,48 200,58 206,44" fill="#111"/>
+    <polyline points="160,140 165,127 178,132" fill="none" stroke="#111" stroke-width="2"/>
+    <text x="60" y="172" font-family="Georgia,serif" font-size="16">A</text>
+    <text x="96" y="60" font-family="Georgia,serif" font-size="16">B</text>
+    <text x="222" y="60" font-family="Georgia,serif" font-size="16">C</text>
+    <text x="172" y="172" font-family="Georgia,serif" font-size="16">D</text>
+  </svg>
+  </figure>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. acute &nbsp; b. right &nbsp; c. obtuse &nbsp; d. \(\overrightarrow{DC}\)</p>
+    <p><span class="sol-label">Solution:</span> The square mark shows \(\angle BDC = 90°\), so it is a right angle, and \(\overrightarrow{DC} \perp \overrightarrow{DB}\). \(\angle ADB\) is less than 90° (acute). \(\angle ADC = \angle ADB + \angle BDC\), which is between 90° and 180° (obtuse).</p>
+  </div>
+</div>
+
+<!-- Q15 -->
+<div class="card">
+  <div class="qnum">15</div>
+  <div class="question"><p>Find fractions equivalent to \(\frac{3}{4}\) and \(\frac{2}{3}\) with denominators of 12. Then subtract the smaller fraction from the larger fraction.</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(\frac{1}{12}\)</p>
+    <p><span class="sol-label">Solution:</span> \(\frac{3}{4} = \frac{9}{12}\) and \(\frac{2}{3} = \frac{8}{12}\). Then \(\frac{9}{12} - \frac{8}{12} = \frac{1}{12}\).</p>
+  </div>
+</div>
+
+<!-- Q16 -->
+<div class="card">
+  <div class="qnum">16</div>
+  <div class="question"><p>Solve: \(\frac{105}{w} = 7\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(w = 15\)</p>
+    <p><span class="sol-label">Solution:</span> \(105 \div 7 = 15\), so \(w = 15\). Check: \(\frac{105}{15} = 7\) ✓</p>
+  </div>
+</div>
+
+<!-- Q17 -->
+<div class="card">
+  <div class="qnum">17</div>
+  <div class="question"><p>Solve: \(2x = 10^2\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(x = 50\)</p>
+    <p><span class="sol-label">Solution:</span> \(10^2 = 100\), so \(2x = 100\) and \(x = 100 \div 2 = 50\).</p>
+  </div>
+</div>
+
+<!-- Q18 -->
+<div class="card">
+  <div class="qnum">18</div>
+  <div class="question"><p>Solve: \(x + 1\frac{1}{4} = 6\frac{3}{4}\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(x = 5\frac{1}{2}\)</p>
+    <p><span class="sol-label">Solution:</span> \(x = 6\frac{3}{4} - 1\frac{1}{4} = 5\frac{2}{4} = 5\frac{1}{2}\).</p>
+  </div>
+</div>
+
+<!-- Q19 -->
+<div class="card">
+  <div class="qnum">19</div>
+  <div class="question"><p>Solve: \(m - 4\frac{1}{8} = 1\frac{5}{8}\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(m = 5\frac{3}{4}\)</p>
+    <p><span class="sol-label">Solution:</span> \(m = 1\frac{5}{8} + 4\frac{1}{8} = 5\frac{6}{8} = 5\frac{3}{4}\).</p>
+  </div>
+</div>
+
+<!-- Q20 -->
+<div class="card">
+  <div class="qnum">20 <span class="tag">Analyze</span></div>
+  <div class="question"><p>There were five yards of fabric on the bolt of cloth. Fairchild bought \(3\frac{1}{3}\) yards of the fabric. Then how many yards of fabric remained on the bolt?</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(1\frac{2}{3}\) yards</p>
+    <p><span class="sol-label">Solution:</span> \(5 - 3\frac{1}{3} = 4\frac{3}{3} - 3\frac{1}{3} = 1\frac{2}{3}\).</p>
+  </div>
+</div>
+
+<!-- Q21 -->
+<div class="card">
+  <div class="qnum">21</div>
+  <div class="question"><p>Simplify: \(83\frac{1}{3}\% - 66\frac{2}{3}\%\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(16\frac{2}{3}\%\)</p>
+    <p><span class="sol-label">Solution:</span> Subtract the whole numbers and the fractions separately: \(83 - 66 = 17\) and \(\frac{1}{3} - \frac{2}{3} = -\frac{1}{3}\), so \(17 - \frac{1}{3} = 16\frac{2}{3}\). Answer: \(16\frac{2}{3}\%\).</p>
+  </div>
+</div>
+
+<!-- Q22 -->
+<div class="card">
+  <div class="qnum">22</div>
+  <div class="question"><p>Simplify: \(\frac{7}{12} + \left(\frac{1}{4} \cdot \frac{1}{3}\right)\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(\frac{2}{3}\)</p>
+    <p><span class="sol-label">Solution:</span> First multiply inside the parentheses: \(\frac{1}{4} \cdot \frac{1}{3} = \frac{1}{12}\). Then \(\frac{7}{12} + \frac{1}{12} = \frac{8}{12} = \frac{2}{3}\).</p>
+  </div>
+</div>
+
+<!-- Q23 -->
+<div class="card">
+  <div class="qnum">23</div>
+  <div class="question"><p>Simplify: \(\frac{7}{8} - \left(\frac{3}{4} \cdot \frac{1}{2}\right)\)</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(\frac{1}{2}\)</p>
+    <p><span class="sol-label">Solution:</span> First multiply inside the parentheses: \(\frac{3}{4} \cdot \frac{1}{2} = \frac{3}{8}\). Then \(\frac{7}{8} - \frac{3}{8} = \frac{4}{8} = \frac{1}{2}\).</p>
+  </div>
+</div>
+
+<!-- Q24 -->
+<div class="card">
+  <div class="qnum">24</div>
+  <div class="question"><p>Draw \(\overline{AB}\) \(1\frac{3}{4}\) inches long. Then draw \(\overline{BC}\) 1 inch long perpendicular to \(\overline{AB}\). Complete the triangle by drawing \(\overline{AC}\). Use a ruler to find the approximate length of \(\overline{AC}\). Use that length to find the perimeter of \(\triangle ABC\).</p></div>
+  <figure class="fig">
+  <svg width="360" height="220" viewBox="0 0 360 220" role="img" aria-label="Right triangle with legs 1 and three quarter inches and 1 inch">
+    <polygon points="40,180 290,180 290,60" fill="#eef4ff" stroke="#111" stroke-width="2.5"/>
+    <polyline points="274,180 274,164 290,164" fill="none" stroke="#111" stroke-width="2"/>
+    <text x="165" y="204" text-anchor="middle" font-family="Georgia,serif" font-size="15">1¾ in.</text>
+    <text x="312" y="125" text-anchor="middle" font-family="Georgia,serif" font-size="15">1 in.</text>
+    <text x="150" y="110" text-anchor="middle" font-family="Georgia,serif" font-size="15">?</text>
+    <text x="34" y="200" font-family="Georgia,serif" font-size="16">A</text>
+    <text x="292" y="200" font-family="Georgia,serif" font-size="16">B</text>
+    <text x="292" y="50" font-family="Georgia,serif" font-size="16">C</text>
+  </svg>
+  </figure>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(AC \approx 2\) in.; perimeter \(\approx 4\frac{3}{4}\) in.</p>
+    <p><span class="sol-label">Solution:</span> Measuring the hypotenuse gives about 2 inches (Pythagorean check: \(\sqrt{1.75^2 + 1^2} \approx 2.02\)). Perimeter \(= 1\frac{3}{4} + 1 + 2 = 4\frac{3}{4}\) inches. (Measurements may vary slightly with your drawing.)</p>
+  </div>
+</div>
+
+<!-- Q25 -->
+<div class="card">
+  <div class="qnum">25</div>
+  <div class="question"><p>Use a protractor to find the measure of \(\angle A\) in problem 24. If necessary, extend the sides to measure the angle.</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> About 30°</p>
+    <p><span class="sol-label">Solution:</span> Place the protractor's center on vertex \(A\) and read the angle between \(\overline{AB}\) and \(\overline{AC}\). It measures approximately 30°. (Check: \(\tan A = \frac{1}{1.75}\), so \(A \approx 29.7°\).)</p>
+  </div>
+</div>
+
+<!-- Q26 -->
+<div class="card">
+  <div class="qnum">26 <span class="tag">Evaluate</span></div>
+  <div class="question"><p>Mary wants to apply a strip of wallpaper along the walls of the dining room just below the ceiling. If the room is a 14-by-12-ft rectangle, then the strip of wallpaper needs to be at least how long?</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> At least 52 feet</p>
+    <p><span class="sol-label">Solution:</span> The strip runs around all four walls, so find the perimeter: \(2(14 + 12) = 2(26) = 52\) feet.</p>
+  </div>
+</div>
+
+<!-- Q27 -->
+<div class="card">
+  <div class="qnum">27</div>
+  <div class="question"><p>Multiply \(\frac{3}{4}\) by the reciprocal of 3 and reduce the product.</p></div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> \(\frac{1}{4}\)</p>
+    <p><span class="sol-label">Solution:</span> The reciprocal of 3 is \(\frac{1}{3}\). Then \(\frac{3}{4} \cdot \frac{1}{3} = \frac{3}{12} = \frac{1}{4}\).</p>
+  </div>
+</div>
+
+<!-- Q28 -->
+<div class="card">
+  <div class="qnum">28 <span class="tag">Model</span></div>
+  <div class="question"><p>Draw an octagon. (A stop sign is a physical example of an octagon.)</p></div>
+  <figure class="fig">
+  <svg width="220" height="180" viewBox="0 0 220 180" role="img" aria-label="Regular octagon">
+    <polygon points="174.7,116.8 136.8,154.7 83.2,154.7 45.3,116.8 45.3,63.2 83.2,25.3 136.8,25.3 174.7,63.2"
+             fill="#eef4ff" stroke="#111" stroke-width="2.5"/>
+  </svg>
+  </figure>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> An eight-sided polygon (as drawn above)</p>
+    <p><span class="sol-label">Solution:</span> "Octagon" comes from <i>octa-</i> (eight): draw a closed figure with 8 straight sides and 8 angles, like a stop sign.</p>
+  </div>
+</div>
+
+<!-- Q29 -->
+<div class="card">
+  <div class="qnum">29</div>
+  <div class="question">
+    <p>A sequence of perfect cubes \((k = n^3)\) may be written as in <b>a</b> or as in <b>b</b>. Find the next two terms of both sequences.</p>
+    <p><b>a.</b> \(1^3, 2^3, 3^3, \ldots\)</p>
+    <p><b>b.</b> \(1, 8, 27, \ldots\)</p>
+  </div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. \(4^3, 5^3\) &nbsp; b. 64, 125</p>
+    <p><span class="sol-label">Solution:</span> Both sequences list the cubes of 1, 2, 3, …: the next two are \(4^3 = 64\) and \(5^3 = 125\).</p>
+  </div>
+</div>
+
+<!-- Q30 -->
+<div class="card">
+  <div class="qnum">30</div>
+  <div class="question">
+    <p>The figure shows a circle with the center at point \(M\).</p>
+    <p><b>a.</b> Which chord is a diameter?</p>
+    <p><b>b.</b> Which central angle appears to be obtuse?</p>
+    <p><b>c.</b> Name an inscribed angle that appears to be a right angle.</p>
+  </div>
+  <figure class="fig">
+  <svg width="260" height="220" viewBox="0 0 260 220" role="img" aria-label="Circle with center M, diameter AB, and point C on the circle">
+    <circle cx="130" cy="100" r="80" fill="none" stroke="#111" stroke-width="2.5"/>
+    <line x1="50" y1="100" x2="210" y2="100" stroke="#111" stroke-width="2.5"/>
+    <line x1="50" y1="100" x2="118" y2="178" stroke="#111" stroke-width="2.5"/>
+    <line x1="210" y1="100" x2="118" y2="178" stroke="#111" stroke-width="2.5"/>
+    <line x1="130" y1="100" x2="118" y2="178" stroke="#111" stroke-width="2.5"/>
+    <circle cx="130" cy="100" r="5" fill="#111"/>
+    <text x="40" y="95" text-anchor="end" font-family="Georgia,serif" font-size="16">A</text>
+    <text x="220" y="95" text-anchor="start" font-family="Georgia,serif" font-size="16">B</text>
+    <text x="136" y="88" font-family="Georgia,serif" font-size="16">M</text>
+    <text x="118" y="200" text-anchor="middle" font-family="Georgia,serif" font-size="16">C</text>
+  </svg>
+  </figure>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. \(\overline{AB}\) &nbsp; b. \(\angle AMC\) &nbsp; c. \(\angle ACB\)</p>
+    <p><span class="sol-label">Solution:</span> a. A diameter is a chord through the center — \(\overline{AB}\) passes through \(M\). b. \(\angle AMC\) (vertex at the center \(M\)) appears greater than 90°. c. \(\angle ACB\) is inscribed in a semicircle, so it appears to be a right angle (any angle inscribed in a semicircle is a right angle).</p>
+  </div>
+</div>
+
+<h2 class="section">Real-World Connection</h2>
+
+<!-- RWC -->
+<div class="card">
+  <div class="qnum">Real-World Connection</div>
+  <div class="question">
+    <p>Zachary surveyed the 30 students in his class to find out how they get home. He found that 60% of the students ride the bus.</p>
+    <p><b>a.</b> How many students ride the bus?</p>
+    <p><b>b.</b> Half the students who do not ride the bus walk home. How many students walk home?</p>
+    <p><b>c.</b> Based on his survey, what fraction of the students in the school might Zachary conclude walk to school?</p>
+  </div>
+  <button class="show-btn" onclick="toggleAns(this)">Show answer &amp; solution</button>
+  <div class="answer">
+    <p><span class="ans-label">Answer:</span> a. 18 students &nbsp; b. 6 students &nbsp; c. \(\frac{1}{5}\)</p>
+    <p><span class="sol-label">Solution:</span> a. \(60\% \times 30 = 0.6 \times 30 = 18\). b. \(30 - 18 = 12\) do not ride the bus; half of 12 is 6. c. \(\frac{6}{30} = \frac{1}{5}\) of the class walks, so Zachary might conclude about \(\frac{1}{5}\) of the school walks.</p>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+<script>
+function toggleAns(btn) {
+  var ans = btn.nextElementSibling;
+  var open = ans.classList.toggle('show');
+  btn.classList.toggle('open', open);
+  btn.innerHTML = open ? 'Hide answer &amp; solution' : 'Show answer &amp; solution';
+  if (window.MathJax && window.MathJax.typesetPromise) {
+    window.MathJax.typesetPromise([ans]).catch(function(){});
+  }
+}
+</script>
+</body>
+</html>
