@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saxon Math Course 2 &mdash; Lesson 31 Parallel Practice</title>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: #f1f5f9; color: #1e293b; margin: 0; padding: 20px; }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1 { text-align: center; font-size: 1.5em; margin: 0 0 4px; }
+  .sub { text-align: center; color: #64748b; margin-bottom: 22px; }
+  .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .qhead { display: flex; gap: 10px; align-items: baseline; margin-bottom: 8px; flex-wrap: wrap; }
+  .qnum { font-weight: bold; font-size: 1.15em; color: #1d4ed8; }
+  .qtag { font-size: .8em; color: #64748b; }
+  .tag2 { background: #dbeafe; color: #1d4ed8; font-size: .72em; font-weight: bold; padding: 2px 8px; border-radius: 20px; letter-spacing: .04em; }
+  .qbody { font-size: 1.02em; line-height: 1.65; }
+  .fig { margin: 14px 0 4px; text-align: center; }
+  .fig svg { max-width: 100%; height: auto; }
+  .ld { font-family: 'Courier New', Courier, monospace; font-weight: bold; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; line-height: 1.5; font-size: 1.02em; overflow-x: auto; }
+  .ld .q { color: #2980b9; }
+  .ld .s { color: #c0392b; }
+  .reveal { margin-top: 12px; background: #1d4ed8; color: #fff; border: none; border-radius: 8px; padding: 9px 22px; font-size: .95em; cursor: pointer; }
+  .reveal:hover { background: #1e40af; }
+  .ans { display: none; margin-top: 14px; border-top: 2px dashed #cbd5e1; padding-top: 12px; }
+  .ans.open { display: block; }
+  .anslabel { font-weight: bold; color: #166534; margin: 8px 0 4px; font-size: .85em; text-transform: uppercase; letter-spacing: .05em; }
+  .math { font-size: 1.12em; background: #f0fdf4; border-radius: 8px; padding: 10px 14px; line-height: 1.7; }
+  .sol { font-size: .98em; line-height: 1.7; color: #334155; }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .reveal, .ans { display: none !important; }
+    .card { box-shadow: none; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Saxon Math Course 2 &mdash; Lesson 31 Parallel Practice</h1>
+  <div class="sub">30 parallel variants + 5 challenge questions &middot; 10-24Alex-practice</div>
+  <div class="card" id="q1">
+    <div class="qhead"><span class="qnum">1.</span><span class="qtag">(28)</span></div>
+    <div class="qbody"><span class="tag2">EVALUATE</span> Two classes are raising money at the school raffle to buy new maps costing \($94.75\). One class has raised \($31.68\) and the other has raised \($28.35\). How much more money do they need to raise to buy the maps?</div>
+    <button class="reveal" onclick="toggle(1)">Show Answer</button>
+    <div class="ans" id="ans1"><div class="anslabel">Answer</div><div class="math">\(\$34.72\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Together they have raised \(\$31.68 + \$28.35 = \$60.03\). The maps cost \(\$94.75\), so they still need \(\$94.75 - \$60.03 = \$34.72\).</div></div>
+  </div>
+
+  <div class="card" id="q2">
+    <div class="qhead"><span class="qnum">2.</span><span class="qtag">(28)</span></div>
+    <div class="qbody">Maya read 4 books during her vacation. The first book had 412 pages, the second had 367 pages, the third had 298 pages, and the fourth had 435 pages. The 4 books she read had an average of how many pages per book?</div>
+    <button class="reveal" onclick="toggle(2)">Show Answer</button>
+    <div class="ans" id="ans2"><div class="anslabel">Answer</div><div class="math">\(378\text{ pages}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Total pages: \(412 + 367 + 298 + 435 = 1512\). Average: \(1512 \div 4 = 378\) pages per book.</div></div>
+  </div>
+
+  <div class="card" id="q3">
+    <div class="qhead"><span class="qnum">3.</span><span class="qtag">(13)</span></div>
+    <div class="qbody">A one-year subscription to the monthly magazine costs \($19.80\). At this price, what is the cost for each issue?</div>
+    <button class="reveal" onclick="toggle(3)">Show Answer</button>
+    <div class="ans" id="ans3"><div class="anslabel">Answer</div><div class="math">\(\$1.65\)</div>
+    <div class="anslabel">Solution</div><div class="sol">A monthly magazine has 12 issues per year, so \(\$19.80 \div 12 = \$1.65\) per issue.</div></div>
+  </div>
+
+  <div class="card" id="q4">
+    <div class="qhead"><span class="qnum">4.</span><span class="qtag">(12)</span></div>
+    <div class="qbody">The settlement at Plymouth began in 1620. This was how many years after Columbus reached the Americas in 1492?</div>
+    <button class="reveal" onclick="toggle(4)">Show Answer</button>
+    <div class="ans" id="ans4"><div class="anslabel">Answer</div><div class="math">\(128\text{ years}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">\(1620 - 1492 = 128\) years.</div></div>
+  </div>
+
+  <div class="card" id="q5">
+    <div class="qhead"><span class="qnum">5.</span><span class="qtag">(19)</span></div>
+    <div class="qbody"><span class="tag2">EXPLAIN</span> A square and a regular hexagon share a common side. The perimeter of the square is 36 in. Describe how to find the perimeter of the hexagon.<div class="fig"><svg viewBox="0 0 280 150" width="280" role="img" aria-label="Square and hexagon sharing a side"><rect x="30" y="60" width="62" height="62" fill="#dbeafe" stroke="#1e3a8a" stroke-width="2.5"/><polygon points="92.0,60.0 145.7,29.0 199.4,60.0 199.4,122.0 145.7,153.0 92.0,122.0" fill="#fef3c7" stroke="#1e3a8a" stroke-width="2.5"/></svg></div></div>
+    <button class="reveal" onclick="toggle(5)">Show Answer</button>
+    <div class="ans" id="ans5"><div class="anslabel">Answer</div><div class="math">\(54\text{ in.}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">First find the shared side: the square's perimeter is 36 in. and a square has 4 equal sides, so each side is \(36 \div 4 = 9\) in. The hexagon shares that side, and a regular hexagon has 6 equal sides, so its perimeter is \(6 \times 9 = 54\) in.</div></div>
+  </div>
+
+  <div class="card" id="q6">
+    <div class="qhead"><span class="qnum">6.</span><span class="qtag">(22)</span></div>
+    <div class="qbody">In the following statement, change the percent to a reduced fraction and answer the questions.<br>Liam bought a book of 25 stamps. He has used 60% of them.<br><b>a.</b> How many stamps has Liam used?<br><b>b.</b> How many stamps does he have left?</div>
+    <button class="reveal" onclick="toggle(6)">Show Answer</button>
+    <div class="ans" id="ans6"><div class="anslabel">Answer</div><div class="math">\(\text{a. }15\text{ stamps} \qquad \text{b. }10\text{ stamps}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">60% as a reduced fraction is \(\frac{60}{100} = \frac{3}{5}\). <b>a.</b> \(\frac{3}{5}\) of 25 is \(25 \div 5 \times 3 = 15\) stamps used. <b>b.</b> \(25 - 15 = 10\) stamps left.</div></div>
+  </div>
+
+  <div class="card" id="q7">
+    <div class="qhead"><span class="qnum">7.</span><span class="qtag">(29)</span></div>
+    <div class="qbody">Round 736,518<br><b>a.</b> to the nearest hundred thousand.<br><b>b.</b> to the nearest thousand.</div>
+    <button class="reveal" onclick="toggle(7)">Show Answer</button>
+    <div class="ans" id="ans7"><div class="anslabel">Answer</div><div class="math">\(\text{a. }700{,}000 \qquad \text{b. }737{,}000\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> The ten-thousands digit is 3, so 736,518 rounds down to 700,000. <b>b.</b> The hundreds digit is 5, so 736,518 rounds up to 737,000.</div></div>
+  </div>
+
+  <div class="card" id="q8">
+    <div class="qhead"><span class="qnum">8.</span><span class="qtag">(29)</span></div>
+    <div class="qbody"><span class="tag2">ESTIMATE</span> Mentally estimate the difference between 63,487 and 31,905.</div>
+    <button class="reveal" onclick="toggle(8)">Show Answer</button>
+    <div class="ans" id="ans8"><div class="anslabel">Answer</div><div class="math">\(\text{about }30{,}000\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Round each number to the nearest ten thousand: 63,487 ≈ 60,000 and 31,905 ≈ 30,000. Then \(60{,}000 - 30{,}000 = 30{,}000\).</div></div>
+  </div>
+
+  <div class="card" id="q9">
+    <div class="qhead"><span class="qnum">9.</span><span class="qtag">(31)</span></div>
+    <div class="qbody">Name the shaded part of this square<br><b>a.</b> as a fraction.<br><b>b.</b> as a decimal.<br><b>c.</b> as a percent.<div class="fig"><svg viewBox="0 0 280 280" width="260" role="img" aria-label="10 by 10 grid"><rect x="10" y="10" width="26" height="26" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.6"/><rect x="36" y="10" width="26" height="26" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.6"/><rect x="62" y="10" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="88" y="10" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="114" y="10" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="140" y="10" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="166" y="10" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="192" y="10" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="218" y="10" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="244" y="10" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="10" y="36" width="26" height="26" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.6"/><rect x="36" y="36" width="26" height="26" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.6"/><rect x="62" y="36" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="88" y="36" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="114" y="36" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="140" y="36" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="166" y="36" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="192" y="36" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="218" y="36" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="244" y="36" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="10" y="62" width="26" height="26" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.6"/><rect x="36" y="62" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="62" y="62" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="88" y="62" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="114" y="62" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="140" y="62" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="166" y="62" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="192" y="62" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="218" y="62" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="244" y="62" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="10" y="88" width="26" height="26" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.6"/><rect x="36" y="88" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="62" y="88" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="88" y="88" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="114" y="88" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="140" y="88" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="166" y="88" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="192" y="88" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="218" y="88" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="244" y="88" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="10" y="114" width="26" height="26" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.6"/><rect x="36" y="114" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="62" y="114" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="88" y="114" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="114" y="114" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="140" y="114" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="166" y="114" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="192" y="114" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="218" y="114" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="244" y="114" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="10" y="140" width="26" height="26" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.6"/><rect x="36" y="140" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="62" y="140" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="88" y="140" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="114" y="140" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="140" y="140" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="166" y="140" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="192" y="140" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="218" y="140" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="244" y="140" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="10" y="166" width="26" height="26" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.6"/><rect x="36" y="166" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="62" y="166" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="88" y="166" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="114" y="166" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="140" y="166" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="166" y="166" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="192" y="166" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="218" y="166" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="244" y="166" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="10" y="192" width="26" height="26" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.6"/><rect x="36" y="192" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="62" y="192" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="88" y="192" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="114" y="192" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="140" y="192" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="166" y="192" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="192" y="192" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="218" y="192" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="244" y="192" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="10" y="218" width="26" height="26" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.6"/><rect x="36" y="218" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="62" y="218" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="88" y="218" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="114" y="218" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="140" y="218" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="166" y="218" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="192" y="218" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="218" y="218" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="244" y="218" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="10" y="244" width="26" height="26" fill="#93c5fd" stroke="#1e3a8a" stroke-width="1.6"/><rect x="36" y="244" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="62" y="244" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="88" y="244" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="114" y="244" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="140" y="244" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="166" y="244" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="192" y="244" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="218" y="244" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/><rect x="244" y="244" width="26" height="26" fill="#ffffff" stroke="#1e3a8a" stroke-width="1.6"/></svg></div></div>
+    <button class="reveal" onclick="toggle(9)">Show Answer</button>
+    <div class="ans" id="ans9"><div class="anslabel">Answer</div><div class="math">\(\text{a. }\frac{12}{100} \qquad \text{b. }0.12 \qquad \text{c. }12\%\)</div>
+    <div class="anslabel">Solution</div><div class="sol">The square is divided into a 10-by-10 grid, so it has 100 equal parts. The whole first column (10 squares) plus 2 squares in the second column are shaded — 12 squares in all. So the shaded part is \(\frac{12}{100} = 0.12 = 12\%\).</div></div>
+  </div>
+
+  <div class="card" id="q10">
+    <div class="qhead"><span class="qnum">10.</span><span class="qtag">(31)</span></div>
+    <div class="qbody">In the number 7.43918, which digit is in the hundredths place?</div>
+    <button class="reveal" onclick="toggle(10)">Show Answer</button>
+    <div class="ans" id="ans10"><div class="anslabel">Answer</div><div class="math">\(3\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Reading from the decimal point: 4 is in the tenths place and 3 is in the hundredths place.</div></div>
+  </div>
+
+  <div class="card" id="q11">
+    <div class="qhead"><span class="qnum">11.</span><span class="qtag">(31)</span></div>
+    <div class="qbody">Replace each circle with the proper comparison symbol:<br><b>a.</b> \(\frac{7}{10} \bigcirc 0.7\) &emsp; <b>b.</b> \(\frac{7}{100} \bigcirc 0.7\)</div>
+    <button class="reveal" onclick="toggle(11)">Show Answer</button>
+    <div class="ans" id="ans11"><div class="anslabel">Answer</div><div class="math">\(\text{a. }= \qquad \text{b. }<\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> \(\frac{7}{10} = 0.7\), so the symbol is \(=\) (equal). <b>b.</b> \(\frac{7}{100} = 0.07\), and \(0.07 < 0.7\), so the symbol is \(<\) (less than).</div></div>
+  </div>
+
+  <div class="card" id="q12">
+    <div class="qhead"><span class="qnum">12.</span><span class="qtag">(Inv. 3)</span></div>
+    <div class="qbody"><span class="tag2">REPRESENT</span> The vertices of a square are located at (4, 4), (4, −4), (−4, −4), and (−4, 4).<br><b>a.</b> Sketch the axis. Then draw the square as described. Use your drawing to answer questions <b>b</b> and <b>c</b>.<br><b>b.</b> What is the perimeter of the square?<br><b>c.</b> What is the area of the square?<div class="fig"><svg viewBox="0 0 300 300" width="280" role="img" aria-label="Coordinate grid with square"><line x1="20" y1="20" x2="20" y2="280" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="20" x2="280" y2="20" stroke="#e2e8f0" stroke-width="1"/><line x1="46" y1="20" x2="46" y2="280" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="46" x2="280" y2="46" stroke="#e2e8f0" stroke-width="1"/><line x1="72" y1="20" x2="72" y2="280" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="72" x2="280" y2="72" stroke="#e2e8f0" stroke-width="1"/><line x1="98" y1="20" x2="98" y2="280" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="98" x2="280" y2="98" stroke="#e2e8f0" stroke-width="1"/><line x1="124" y1="20" x2="124" y2="280" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="124" x2="280" y2="124" stroke="#e2e8f0" stroke-width="1"/><line x1="150" y1="20" x2="150" y2="280" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="150" x2="280" y2="150" stroke="#e2e8f0" stroke-width="1"/><line x1="176" y1="20" x2="176" y2="280" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="176" x2="280" y2="176" stroke="#e2e8f0" stroke-width="1"/><line x1="202" y1="20" x2="202" y2="280" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="202" x2="280" y2="202" stroke="#e2e8f0" stroke-width="1"/><line x1="228" y1="20" x2="228" y2="280" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="228" x2="280" y2="228" stroke="#e2e8f0" stroke-width="1"/><line x1="254" y1="20" x2="254" y2="280" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="254" x2="280" y2="254" stroke="#e2e8f0" stroke-width="1"/><line x1="280" y1="20" x2="280" y2="280" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="280" x2="280" y2="280" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="150" x2="280" y2="150" stroke="#64748b" stroke-width="1.8"/><line x1="150" y1="20" x2="150" y2="280" stroke="#64748b" stroke-width="1.8"/><polygon points="46,46 254,46 254,254 46,254" fill="rgba(147,197,253,.4)" stroke="#1e3a8a" stroke-width="2.5"/><circle cx="46" cy="46" r="4" fill="#b91c1c"/><text x="53" y="39" font-size="13" font-weight="bold" fill="#b91c1c">(-4, 4)</text><circle cx="254" cy="46" r="4" fill="#b91c1c"/><text x="261" y="39" font-size="13" font-weight="bold" fill="#b91c1c">(4, 4)</text><circle cx="254" cy="254" r="4" fill="#b91c1c"/><text x="261" y="247" font-size="13" font-weight="bold" fill="#b91c1c">(4, -4)</text><circle cx="46" cy="254" r="4" fill="#b91c1c"/><text x="53" y="247" font-size="13" font-weight="bold" fill="#b91c1c">(-4, -4)</text></svg></div></div>
+    <button class="reveal" onclick="toggle(12)">Show Answer</button>
+    <div class="ans" id="ans12"><div class="anslabel">Answer</div><div class="math">\(\text{b. }32\text{ units} \qquad \text{c. }64\text{ square units}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Each side of the square runs from −4 to 4, so each side is \(4 - (-4) = 8\) units long. <b>b.</b> Perimeter: \(4 \times 8 = 32\) units. <b>c.</b> Area: \(8 \times 8 = 64\) square units.</div></div>
+  </div>
+
+  <div class="card" id="q13">
+    <div class="qhead"><span class="qnum">13.</span><span class="qtag">(15)</span></div>
+    <div class="qbody">Complete each equivalent fraction:<br><b>a.</b> \(\frac{3}{?} = \frac{18}{30}\) &emsp; <b>b.</b> \(\frac{5}{8} = \frac{?}{40}\) &emsp; <b>c.</b> \(\frac{?}{9} = \frac{6}{27}\)</div>
+    <button class="reveal" onclick="toggle(13)">Show Answer</button>
+    <div class="ans" id="ans13"><div class="anslabel">Answer</div><div class="math">\(\text{a. }5 \qquad \text{b. }25 \qquad \text{c. }2\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> \(\frac{18}{30}\) reduces by 6 to \(\frac{3}{5}\), so the missing denominator is 5. <b>b.</b> Multiplying numerator and denominator of \(\frac{5}{8}\) by 5 gives \(\frac{25}{40}\). <b>c.</b> \(\frac{6}{27} = \frac{2}{9}\), so the missing numerator is 2.</div></div>
+  </div>
+
+  <div class="card" id="q14">
+    <div class="qhead"><span class="qnum">14.</span><span class="qtag">(21)</span></div>
+    <div class="qbody"><b>a.</b> Write the prime factorization of 3025 using exponents.<br><b>b.</b> Find \(\sqrt{3025}\).</div>
+    <button class="reveal" onclick="toggle(14)">Show Answer</button>
+    <div class="ans" id="ans14"><div class="anslabel">Answer</div><div class="math">\(\text{a. }5^2 \cdot 11^2 \qquad \text{b. }55\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> \(3025 = 25 \times 121 = 5^2 \times 11^2\). <b>b.</b> \(\sqrt{3025} = \sqrt{5^2 \cdot 11^2} = 5 \times 11 = 55\).</div></div>
+  </div>
+
+  <div class="card" id="q15">
+    <div class="qhead"><span class="qnum">15.</span><span class="qtag">(18)</span></div>
+    <div class="qbody">Draw two parallel lines. Then draw two more parallel lines that are perpendicular to the first pair of lines. Label the points of intersection A, B, C, and D consecutively in a counterclockwise direction. Draw segment AC. Refer to the figure to answer <b>a</b> and <b>b</b>.<br><b>a.</b> What kind of quadrilateral is figure ABCD?<br><b>b.</b> Triangles ABC and CDA are congruent. Which angle in \(\triangle ABC\) corresponds to \(\angle DCA\) in \(\triangle CDA\)?<div class="fig"><svg viewBox="0 0 300 200" width="300" role="img" aria-label="Rectangle ABCD with diagonal AC"><line x1="20" y1="40" x2="280" y2="40" stroke="#1e3a8a" stroke-width="2.5"/><line x1="20" y1="140" x2="280" y2="140" stroke="#1e3a8a" stroke-width="2.5"/><line x1="60" y1="10" x2="60" y2="190" stroke="#1e3a8a" stroke-width="2.5"/><line x1="240" y1="10" x2="240" y2="190" stroke="#1e3a8a" stroke-width="2.5"/><line x1="60" y1="40" x2="240" y2="140" stroke="#b91c1c" stroke-width="2.5"/><circle cx="60" cy="40" r="4" fill="#1e3a8a"/><text x="44" y="32" font-size="15" font-weight="bold" fill="#1e3a8a">A</text><circle cx="60" cy="140" r="4" fill="#1e3a8a"/><text x="44" y="160" font-size="15" font-weight="bold" fill="#1e3a8a">B</text><circle cx="240" cy="140" r="4" fill="#1e3a8a"/><text x="248" y="160" font-size="15" font-weight="bold" fill="#1e3a8a">C</text><circle cx="240" cy="40" r="4" fill="#1e3a8a"/><text x="248" y="32" font-size="15" font-weight="bold" fill="#1e3a8a">D</text></svg></div></div>
+    <button class="reveal" onclick="toggle(15)">Show Answer</button>
+    <div class="ans" id="ans15"><div class="anslabel">Answer</div><div class="math">\(\text{a. rectangle} \qquad \text{b. }\angle BAC\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> The figure has four right angles and opposite sides parallel and equal, so it is a rectangle. <b>b.</b> In the correspondence ABC ↔ CDA, vertex C of \(\triangle CDA\) matches vertex A of \(\triangle ABC\), so \(\angle DCA\) corresponds to \(\angle BAC\).</div></div>
+  </div>
+
+  <div class="card" id="q16">
+    <div class="qhead"><span class="qnum">16.</span><span class="qtag">(14)</span></div>
+    <div class="qbody">Eighteen red marbles and 12 blue marbles are in a bag. If one marble is drawn from the bag, what is the probability the marble is not red?</div>
+    <button class="reveal" onclick="toggle(16)">Show Answer</button>
+    <div class="ans" id="ans16"><div class="anslabel">Answer</div><div class="math">\(\frac{2}{5}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">There are \(18 + 12 = 30\) marbles in all. The marbles that are not red are the 12 blue ones, so the probability is \(\frac{12}{30} = \frac{2}{5}\).</div></div>
+  </div>
+
+  <div class="card" id="q17">
+    <div class="qhead"><span class="qnum">17.</span><span class="qtag">(2, 9)</span></div>
+    <div class="qbody">Name the properties used to solve this equation.<br>\(\frac{2}{5}\left(\frac{5}{2}y\right) = \frac{2}{5} \cdot \frac{3}{7}\) &emsp; Given<br>\(\left(\frac{2}{5} \cdot \frac{5}{2}\right)y = \frac{2}{5} \cdot \frac{3}{7}\) &emsp; <b>a.</b> ______________<br>\(1y = \frac{2}{5} \cdot \frac{3}{7}\) &emsp; <b>b.</b> ______________<br>\(y = \frac{2}{5} \cdot \frac{3}{7}\) &emsp; <b>c.</b> ______________<br>\(y = \frac{6}{35}\)</div>
+    <button class="reveal" onclick="toggle(17)">Show Answer</button>
+    <div class="ans" id="ans17"><div class="anslabel">Answer</div><div class="math">\(\text{a. Associative Property of Multiplication} \quad \text{b. Inverse Property of Multiplication} \quad \text{c. Identity Property of Multiplication}\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> The factors were regrouped — \(\frac{2}{5}\) and \(\frac{5}{2}\) were grouped together — so this is the Associative Property of Multiplication. <b>b.</b> \(\frac{2}{5} \cdot \frac{5}{2} = 1\) because the factors are reciprocals, so this is the Inverse Property of Multiplication. <b>c.</b> \(1y = y\), so this is the Identity Property of Multiplication. (Then \(y = \frac{2}{5} \cdot \frac{3}{7} = \frac{6}{35}\).)</div></div>
+  </div>
+
+  <div class="card" id="q18">
+    <div class="qhead"><span class="qnum">18.</span><span class="qtag">(3)</span></div>
+    <div class="qbody">Solve: \(7n = 8 \cdot 14\)</div>
+    <button class="reveal" onclick="toggle(18)">Show Answer</button>
+    <div class="ans" id="ans18"><div class="anslabel">Answer</div><div class="math">\(n = 16\)</div>
+    <div class="anslabel">Solution</div><div class="sol">\(7n = 8 \cdot 14 = 112\), so \(n = 112 \div 7 = 16\).</div></div>
+  </div>
+
+  <div class="card" id="q19">
+    <div class="qhead"><span class="qnum">19.</span><span class="qtag">(3)</span></div>
+    <div class="qbody">Solve: \(90^\circ + 35^\circ + b = 180^\circ\)</div>
+    <button class="reveal" onclick="toggle(19)">Show Answer</button>
+    <div class="ans" id="ans19"><div class="anslabel">Answer</div><div class="math">\(b = 55^\circ\)</div>
+    <div class="anslabel">Solution</div><div class="sol">\(90^\circ + 35^\circ = 125^\circ\), so \(b = 180^\circ - 125^\circ = 55^\circ\).</div></div>
+  </div>
+
+  <div class="card" id="q20">
+    <div class="qhead"><span class="qnum">20.</span><span class="qtag">(30)</span></div>
+    <div class="qbody"><span class="tag2">GENERALIZE</span> Simplify: \(\frac{2}{3} + \frac{1}{4}\)</div>
+    <button class="reveal" onclick="toggle(20)">Show Answer</button>
+    <div class="ans" id="ans20"><div class="anslabel">Answer</div><div class="math">\(\frac{11}{12}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Common denominator 12: \(\frac{2}{3} + \frac{1}{4} = \frac{8}{12} + \frac{3}{12} = \frac{11}{12}\).</div></div>
+  </div>
+
+  <div class="card" id="q21">
+    <div class="qhead"><span class="qnum">21.</span><span class="qtag">(9, 24)</span></div>
+    <div class="qbody">Simplify: \(\frac{3}{4} - \left(\frac{2}{5} \cdot \frac{5}{6}\right)\)</div>
+    <button class="reveal" onclick="toggle(21)">Show Answer</button>
+    <div class="ans" id="ans21"><div class="anslabel">Answer</div><div class="math">\(\frac{5}{12}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Multiply first: \(\frac{2}{5} \cdot \frac{5}{6} = \frac{10}{30} = \frac{1}{3}\). Then \(\frac{3}{4} - \frac{1}{3} = \frac{9}{12} - \frac{4}{12} = \frac{5}{12}\).</div></div>
+  </div>
+
+  <div class="card" id="q22">
+    <div class="qhead"><span class="qnum">22.</span><span class="qtag">(30)</span></div>
+    <div class="qbody">Simplify: \(4\frac{2}{5} - \frac{1}{4}\)</div>
+    <button class="reveal" onclick="toggle(22)">Show Answer</button>
+    <div class="ans" id="ans22"><div class="anslabel">Answer</div><div class="math">\(4\frac{3}{20}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">\(\frac{1}{4} = \frac{5}{20}\) and \(4\frac{2}{5} = 4\frac{8}{20}\), so \(4\frac{8}{20} - \frac{5}{20} = 4\frac{3}{20}\).</div></div>
+  </div>
+
+  <div class="card" id="q23">
+    <div class="qhead"><span class="qnum">23.</span><span class="qtag">(26)</span></div>
+    <div class="qbody">Simplify: \(\frac{3}{4} \cdot 1\frac{1}{3} \cdot \frac{2}{5}\)</div>
+    <button class="reveal" onclick="toggle(23)">Show Answer</button>
+    <div class="ans" id="ans23"><div class="anslabel">Answer</div><div class="math">\(\frac{2}{5}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Convert \(1\frac{1}{3} = \frac{4}{3}\). Then \(\frac{3}{4} \cdot \frac{4}{3} = 1\), and \(1 \cdot \frac{2}{5} = \frac{2}{5}\).</div></div>
+  </div>
+
+  <div class="card" id="q24">
+    <div class="qhead"><span class="qnum">24.</span><span class="qtag">(26)</span></div>
+    <div class="qbody">Simplify: \(3\frac{1}{2} \div 2\frac{1}{3}\)</div>
+    <button class="reveal" onclick="toggle(24)">Show Answer</button>
+    <div class="ans" id="ans24"><div class="anslabel">Answer</div><div class="math">\(1\frac{1}{2}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Convert to improper fractions: \(3\frac{1}{2} = \frac{7}{2}\) and \(2\frac{1}{3} = \frac{7}{3}\). Multiply by the reciprocal: \(\frac{7}{2} \cdot \frac{3}{7} = \frac{21}{14} = \frac{3}{2} = 1\frac{1}{2}\).</div></div>
+  </div>
+
+  <div class="card" id="q25">
+    <div class="qhead"><span class="qnum">25.</span><span class="qtag">(26)</span></div>
+    <div class="qbody">Simplify: \(2\frac{1}{4} \div 3\)</div>
+    <button class="reveal" onclick="toggle(25)">Show Answer</button>
+    <div class="ans" id="ans25"><div class="anslabel">Answer</div><div class="math">\(\frac{3}{4}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">\(2\frac{1}{4} = \frac{9}{4}\), and \(\frac{9}{4} \div 3 = \frac{9}{4} \cdot \frac{1}{3} = \frac{9}{12} = \frac{3}{4}\).</div></div>
+  </div>
+
+  <div class="card" id="q26">
+    <div class="qhead"><span class="qnum">26.</span><span class="qtag">(30)</span></div>
+    <div class="qbody">Simplify: \(4\frac{2}{3} \div 1\frac{2}{5}\)</div>
+    <button class="reveal" onclick="toggle(26)">Show Answer</button>
+    <div class="ans" id="ans26"><div class="anslabel">Answer</div><div class="math">\(3\frac{1}{3}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Convert: \(4\frac{2}{3} = \frac{14}{3}\) and \(1\frac{2}{5} = \frac{7}{5}\). Multiply by the reciprocal: \(\frac{14}{3} \cdot \frac{5}{7} = \frac{70}{21} = \frac{10}{3} = 3\frac{1}{3}\).</div></div>
+  </div>
+
+  <div class="card" id="q27">
+    <div class="qhead"><span class="qnum">27.</span><span class="qtag">(23, 30)</span></div>
+    <div class="qbody">Simplify: \(6\frac{1}{3} - 2\frac{3}{4}\)</div>
+    <button class="reveal" onclick="toggle(27)">Show Answer</button>
+    <div class="ans" id="ans27"><div class="anslabel">Answer</div><div class="math">\(3\frac{7}{12}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Common denominator 12: \(6\frac{1}{3} = 6\frac{4}{12}\) and \(2\frac{3}{4} = 2\frac{9}{12}\). Then \(6\frac{4}{12} - 2\frac{9}{12} = 5\frac{16}{12} - 2\frac{9}{12} = 3\frac{7}{12}\).</div></div>
+  </div>
+
+  <div class="card" id="q28">
+    <div class="qhead"><span class="qnum">28.</span><span class="qtag">(1, 30)</span></div>
+    <div class="qbody">Evaluate this expression for \(a = 4\) and \(b = 5\): \(\frac{b}{a} + \frac{a}{b}\)</div>
+    <button class="reveal" onclick="toggle(28)">Show Answer</button>
+    <div class="ans" id="ans28"><div class="anslabel">Answer</div><div class="math">\(2\frac{1}{20}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Substituting: \(\frac{5}{4} + \frac{4}{5}\). Common denominator 20: \(\frac{25}{20} + \frac{16}{20} = \frac{41}{20} = 2\frac{1}{20}\).</div></div>
+  </div>
+
+  <div class="card" id="q29">
+    <div class="qhead"><span class="qnum">29.</span><span class="qtag">(4, 20)</span></div>
+    <div class="qbody">The rule of the following sequence is \(k = 5^n\). Use words to name the sixth term.<br>\(5, 25, 125, \ldots\)</div>
+    <button class="reveal" onclick="toggle(29)">Show Answer</button>
+    <div class="ans" id="ans29"><div class="anslabel">Answer</div><div class="math">\(\text{fifteen thousand, six hundred twenty-five}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">The terms are \(5^1 = 5\), \(5^2 = 25\), \(5^3 = 125\), so the sixth term is \(5^6 = 15{,}625\), which in words is fifteen thousand, six hundred twenty-five.</div></div>
+  </div>
+
+  <div class="card" id="q30">
+    <div class="qhead"><span class="qnum">30.</span><span class="qtag">(17)</span></div>
+    <div class="qbody"><b>a.</b> A three-quarter turn measures how many degrees?<br><b>b.</b> A sixth of a circle measures how many degrees?<br><b>c.</b> A twelfth of a circle measures how many degrees?<div class="fig"><svg viewBox="0 0 260 260" width="240" role="img" aria-label="Circle with turns"><circle cx="130" cy="130" r="95" fill="none" stroke="#1e3a8a" stroke-width="2.5"/><path d="M 225 130 A 95 95 0 1 0 130 225" fill="none" stroke="#b91c1c" stroke-width="2.5"/><polygon points="130,225 121,211 139,211" fill="#b91c1c"/><line x1="130" y1="130" x2="225" y2="130" stroke="#1e3a8a" stroke-width="2"/><line x1="130" y1="130" x2="177.5" y2="47.7" stroke="#1e3a8a" stroke-width="2"/><path d="M 170 130 A 40 40 0 0 0 150.0 95.4" fill="none" stroke="#b91c1c" stroke-width="2"/><line x1="130" y1="130" x2="212.3" y2="177.5" stroke="#1e3a8a" stroke-width="2"/><path d="M 170 130 A 40 40 0 0 1 164.6 150.0" fill="none" stroke="#b91c1c" stroke-width="2"/><text x="52" y="58" font-size="13" font-weight="bold" fill="#b91c1c">270°</text><text x="182" y="106" font-size="13">60°</text><text x="182" y="160" font-size="13">30°</text></svg></div></div>
+    <button class="reveal" onclick="toggle(30)">Show Answer</button>
+    <div class="ans" id="ans30"><div class="anslabel">Answer</div><div class="math">\(\text{a. }270^\circ \qquad \text{b. }60^\circ \qquad \text{c. }30^\circ\)</div>
+    <div class="anslabel">Solution</div><div class="sol">A full circle is \(360^\circ\). <b>a.</b> Three quarters: \(360^\circ \times \frac{3}{4} = 270^\circ\). <b>b.</b> Sixth: \(360^\circ \div 6 = 60^\circ\). <b>c.</b> Twelfth: \(360^\circ \div 12 = 30^\circ\).</div></div>
+  </div>
+
+  <div class="card" id="q31">
+    <div class="qhead"><span class="qnum">31.</span><span class="qtag">(tail)</span></div>
+    <div class="qbody">Divide: \(9.6 \div 4\)</div>
+    <button class="reveal" onclick="toggle(31)">Show Answer</button>
+    <div class="ans" id="ans31"><div class="anslabel">Answer</div><div class="math">\(2.4\)</div>
+    <div class="anslabel">Solution</div><div class="sol">The long division ends with a remainder of 0, so the decimal terminates:<br><pre class="ld"><span class="q">    2.4</span>
+    ---
+4 ) 9.6
+<span class="s">    8</span>
+    -
+     16
+<span class="s">     16</span>
+     --
+      0</pre></div></div>
+  </div>
+
+  <div class="card" id="q32">
+    <div class="qhead"><span class="qnum">32.</span><span class="qtag">(tail)</span></div>
+    <div class="qbody">Divide: \(15.75 \div 5\)</div>
+    <button class="reveal" onclick="toggle(32)">Show Answer</button>
+    <div class="ans" id="ans32"><div class="anslabel">Answer</div><div class="math">\(3.15\)</div>
+    <div class="anslabel">Solution</div><div class="sol">The long division ends with a remainder of 0, so the decimal terminates:<br><pre class="ld"><span class="q">     3.15</span>
+     ----
+5 ) 15.75
+<span class="s">    15</span>
+    --
+      07
+<span class="s">       5</span>
+      --
+       25
+<span class="s">       25</span>
+       --
+        0</pre></div></div>
+  </div>
+
+  <div class="card" id="q33">
+    <div class="qhead"><span class="qnum">33.</span><span class="qtag">(tail)</span></div>
+    <div class="qbody">Divide: \(8 \div 3\)</div>
+    <button class="reveal" onclick="toggle(33)">Show Answer</button>
+    <div class="ans" id="ans33"><div class="anslabel">Answer</div><div class="math">\(2.\overline{6}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">The remainder 2 keeps coming back, so the 6 in the quotient repeats forever:<br><pre class="ld"><span class="q">    2.666</span>
+    -----
+3 ) 8.000
+<span class="s">    6</span>
+    -
+     20
+<span class="s">     18</span>
+     --
+      20
+<span class="s">      18</span>
+      --
+       20
+<span class="s">       18</span>
+       --
+        ⋮</pre>So \(8 \div 3 = 2.666\ldots = 2.\overline{6}\).</div></div>
+  </div>
+
+  <div class="card" id="q34">
+    <div class="qhead"><span class="qnum">34.</span><span class="qtag">(tail)</span></div>
+    <div class="qbody">Sofia's dinner costs \($64.00\). She wants to leave a 15% tip.<br><b>a.</b> How much should she leave as a tip?<br><b>b.</b> What is her total bill including the tip?</div>
+    <button class="reveal" onclick="toggle(34)">Show Answer</button>
+    <div class="ans" id="ans34"><div class="anslabel">Answer</div><div class="math">\(\text{a. }\$9.60 \qquad \text{b. }\$73.60\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> 15% of \($64.00\) is \(0.15 \times 64 = \$9.60\). <b>b.</b> Total: \(\$64.00 + \$9.60 = \$73.60\).</div></div>
+  </div>
+
+  <div class="card" id="q35">
+    <div class="qhead"><span class="qnum">35.</span><span class="qtag">(tail)</span></div>
+    <div class="qbody">Simplify: \(2^3 - (-4) \times 0.25 + \frac{1}{2} - 0.5\)</div>
+    <button class="reveal" onclick="toggle(35)">Show Answer</button>
+    <div class="ans" id="ans35"><div class="anslabel">Answer</div><div class="math">\(9\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Exponents first: \(2^3 = 8\). Then multiplication: \((-4) \times 0.25 = -1\), so \(8 - (-1) = 9\). Finally \(9 + \frac{1}{2} - 0.5 = 9 + 0.5 - 0.5 = 9\).</div></div>
+  </div>
+
+</div>
+<script>
+function toggle(n){
+  var a = document.getElementById('ans'+n);
+  var b = document.querySelector('#q'+n+' .reveal');
+  var open = a.classList.toggle('open');
+  b.textContent = open ? 'Hide Answer' : 'Show Answer';
+  if (window.MathJax) MathJax.typesetPromise([a]);
+}
+</script>
+</body>
+</html>
