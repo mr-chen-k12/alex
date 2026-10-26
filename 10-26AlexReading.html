@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAT Reading Practice - 10-26 Alex</title>
+<style>
+  :root { --primary-color: #A51C30; --ink:#1c1c1e; --muted:#6b7280; --bg:#f4f6fa; }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--ink);
+         margin: 0; padding: 0; line-height: 1.6; }
+  .page { max-width: 860px; margin: 0 auto; padding: 18px 16px 60px; }
+
+  /* ---- Teacher audit panel (hidden unless ?check=true) ---- */
+  #teacher-audit-panel { display: none; }
+  #teacher-audit-panel.active { display: block; }
+  .audit-banner { background: #1a1a2e; color: #eee; border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+  .audit-container { max-width: 100%; }
+  .audit-title { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .audit-title h2 { margin: 0; font-size: 1.2rem; }
+  .btn-clear-audit { background: #e74c3c; color: #fff; border: none; border-radius: 8px;
+    padding: 8px 14px; cursor: pointer; font-family: inherit; }
+  .audit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px; margin: 14px 0; }
+  .audit-card { background: #16213e; border-radius: 10px; padding: 12px; text-align: center; }
+  .audit-card.flagged { border: 2px solid #e74c3c; }
+  .audit-card .num { font-size: 1.8rem; font-weight: bold; }
+  .audit-card .label { font-size: 0.85rem; color: #bdc3c7; }
+  .audit-log-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 8px; }
+  .audit-log-table th, .audit-log-table td { border: 1px solid #34495e; padding: 6px 8px; text-align: left; }
+  .audit-log-table th { background: #16213e; }
+
+  /* ---- Header ---- */
+  header { background: var(--primary-color); color: #fff; border-radius: 12px;
+    padding: 20px 22px; margin-bottom: 16px; transition: background 0.3s; }
+  .header-container { display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px; }
+  .header-title h1 { margin: 0; font-size: 1.5rem; }
+  .header-title p { margin: 4px 0 0; opacity: 0.9; font-size: 0.95rem; }
+  .badges-preview { display: flex; gap: 12px; }
+  .badge-item { text-align: center; font-size: 0.75rem; opacity: 0.55; filter: grayscale(80%); }
+  .badge-item img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover;
+    border: 3px solid rgba(255,255,255,.5); background: #fff; display: block; margin: 0 auto 4px; }
+  .badge-item.unlocked { opacity: 1; filter: none; }
+  .badge-item.unlocked img { border-color: gold; box-shadow: 0 0 12px gold; }
+
+  /* ---- Controls ---- */
+  .controls-bar { display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px; background: #fff; border-radius: 12px;
+    padding: 12px 18px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .selector-group label { font-weight: bold; margin-right: 8px; }
+  .selector-group select { font-size: 1rem; padding: 8px 12px; border-radius: 8px;
+    border: 2px solid var(--primary-color); font-family: inherit; cursor: pointer; }
+  .score-tracker { font-weight: bold; font-size: 1.1rem; color: var(--primary-color); }
+
+  /* ---- Question cards ---- */
+  .question-card { background: #fff; border-radius: 12px; padding: 20px 22px;
+    margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .question-number { font-weight: bold; color: var(--primary-color); margin-bottom: 8px; }
+  .passage { background: #f8fafc; border-left: 5px solid var(--primary-color);
+    padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 12px; }
+  .question-text { font-weight: bold; font-size: 1.08rem; margin: 10px 0; }
+  .options-group { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .option-btn { text-align: left; background: #f1f5f9; border: 2px solid #e2e8f0;
+    border-radius: 10px; padding: 10px 14px; font-size: 1rem; cursor: pointer;
+    font-family: inherit; color: var(--ink); line-height: 1.5; }
+  .option-btn:hover:not(:disabled) { border-color: var(--primary-color); background: #fff; }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct { border-color: #16a34a; background: #f0fdf4; }
+  .option-btn.incorrect { border-color: #dc2626; background: #fef2f2; }
+  .feedback-box { display: none; margin-top: 12px; padding: 12px 14px; border-radius: 10px; }
+  .feedback-box.show { display: block; }
+  .feedback-box.good { background: #f0fdf4; border: 2px solid #16a34a; }
+  .feedback-box.bad { background: #fef2f2; border: 2px solid #dc2626; }
+  .feedback-box .verdict { font-weight: bold; font-size: 1.05rem; }
+  .feedback-box .expl { margin-top: 6px; color: #334155; }
+
+  /* ---- Score summary ---- */
+  .score-summary-card { display: none; background: #fff; border-radius: 12px; padding: 26px;
+    text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .score-summary-card h2 { margin-top: 0; }
+  .score-display { font-size: 2.6rem; font-weight: bold; color: var(--primary-color); margin: 8px 0; }
+  .reward-badge { margin: 14px 0; }
+  .reward-badge img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
+    border: 4px solid gold; box-shadow: 0 0 18px gold; background: #fff; }
+  .reward-name { font-weight: bold; font-size: 1.2rem; margin-top: 6px; }
+  .btn-retry { background: var(--primary-color); color: #fff; border: none; border-radius: 999px;
+    padding: 12px 28px; font-size: 1.05rem; font-weight: bold; cursor: pointer;
+    font-family: inherit; margin-top: 10px; }
+  @media print {
+    .controls-bar, #teacher-audit-panel, .btn-retry { display: none !important; }
+    .option-btn { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Anti-Cheating Teacher Inspection Panel (Triggered by ?check=true) -->
+  <div id="teacher-audit-panel" class="audit-banner">
+    <div class="audit-container">
+      <div class="audit-title">
+        <h2>🕵️ Teacher Audit Dashboard <span style="font-size: 0.8rem; color:#bdc3c7;">(?check=true mode)</span></h2>
+        <button class="btn-clear-audit" onclick="clearAuditLog()">Reset Audit Data</button>
+      </div>
+      <div class="audit-grid">
+        <div class="audit-card" id="card-total-refreshes">
+          <div class="num" id="stat-total-refreshes">0</div>
+          <div class="label">Total Page Refreshes</div>
+        </div>
+        <div class="audit-card" id="card-mid-refreshes">
+          <div class="num" id="stat-mid-refreshes">0</div>
+          <div class="label">Mid-Attempt Refreshes</div>
+        </div>
+        <div class="audit-card">
+          <div class="num" id="stat-manual-resets">0</div>
+          <div class="label">Manual Reset Attempts</div>
+        </div>
+        <div class="audit-card" id="card-risk-status">
+          <div class="num" id="stat-risk-level" style="font-size: 1.2rem; margin-top: 8px;">Clear</div>
+          <div class="label">Cheating Risk Assessment</div>
+        </div>
+      </div>
+      <div style="font-weight: bold; margin-bottom: 6px; color: #f39c12;">Student Activity &amp; Completion History:</div>
+      <table class="audit-log-table">
+        <thead><tr><th>Timestamp</th><th>Event Type</th><th>Details / Set Progress</th></tr></thead>
+        <tbody id="audit-log-rows"><tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Header & Badges -->
+  <header>
+    <div class="header-container">
+      <div class="header-title">
+        <h1>Digital SAT Reading Practice</h1>
+        <p>30 Questions • Sets A, B &amp; C • Integrity-Tracked Assessment (10-26 Alex)</p>
+      </div>
+      <div class="badges-preview">
+        <div class="badge-item" id="badge-harvard">
+          <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard" onerror="this.style.display='none'">
+          <span>Harvard</span>
+        </div>
+        <div class="badge-item" id="badge-bu">
+          <img src="https://mr-chen-k12.github.io/books/IMG_0121.png" alt="Boston University" onerror="this.style.display='none'">
+          <span>Boston Univ.</span>
+        </div>
+        <div class="badge-item" id="badge-yale">
+          <img src="https://mr-chen-k12.github.io/books/IMG_0122.png" alt="Yale" onerror="this.style.display='none'">
+          <span>Yale</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation & Score Bar -->
+  <div class="controls-bar">
+    <div class="selector-group">
+      <label for="set-select">Choose Question Set:</label>
+      <select id="set-select" onchange="switchSet(this.value)">
+        <option value="Set A">Set A (10 Questions)</option>
+        <option value="Set B">Set B (10 Questions)</option>
+        <option value="Set C">Set C (10 Questions)</option>
+      </select>
+    </div>
+    <div class="score-tracker" id="score-tracker">Score: 0 / 10</div>
+  </div>
+
+  <!-- Main Quiz Area -->
+  <main class="quiz-container">
+    <div id="questions-wrapper"></div>
+    <div id="score-summary" class="score-summary-card">
+      <h2>Set Complete!</h2>
+      <p>Your Final Score for this set:</p>
+      <div class="score-display" id="final-score-text">0 / 10</div>
+      <div id="reward-section"></div>
+      <p id="feedback-message" style="font-size: 1.1rem; font-weight: 500;"></p>
+      <button class="btn-retry" onclick="resetCurrentSet()">Try This Set Again</button>
+    </div>
+  </main>
+
+</div>
+
+<script>
+/* ============ Integrity audit (localStorage) ============ */
+const AUDIT_STORAGE_KEY = "sat_10_26_alex_reading_audit_v1";
+const ACTIVE_PROGRESS_KEY = "sat_10_26_alex_reading_active_v1";
+
+function getAuditData() {
+  const stored = localStorage.getItem(AUDIT_STORAGE_KEY);
+  return stored ? JSON.parse(stored) : {
+    totalRefreshes: 0, midQuizRefreshes: 0, manualResets: 0, events: []
+  };
+}
+function saveAuditData(data) { localStorage.setItem(AUDIT_STORAGE_KEY, JSON.stringify(data)); }
+
+function trackPageLoad(setName) {
+  let audit = getAuditData();
+  audit.totalRefreshes += 1;
+  const activeProgress = localStorage.getItem(ACTIVE_PROGRESS_KEY);
+  if (activeProgress) {
+    const prog = JSON.parse(activeProgress);
+    const answeredCount = Object.keys(prog.answers || {}).length;
+    if (answeredCount > 0 && answeredCount < 10) {
+      audit.midQuizRefreshes += 1;
+      audit.events.unshift({
+        timestamp: new Date().toLocaleString(),
+        type: "⚠️ SUSPICIOUS REFRESH",
+        detail: "Page refreshed mid-attempt during " + prog.setName + " at Q" + (answeredCount + 1) + " (" + answeredCount + "/10 answered)"
+      });
+    }
+  } else {
+    audit.events.unshift({
+      timestamp: new Date().toLocaleString(),
+      type: "PAGE_LOAD",
+      detail: "Opened or reloaded page on " + setName
+    });
+  }
+  saveAuditData(audit);
+  renderAuditDashboard();
+}
+function trackAnswerProgress(setName, answersObj) {
+  localStorage.setItem(ACTIVE_PROGRESS_KEY, JSON.stringify({
+    setName: setName, answers: answersObj, lastUpdated: new Date().toISOString()
+  }));
+}
+function trackSetCompletion(setName, score, total) {
+  let audit = getAuditData();
+  audit.events.unshift({
+    timestamp: new Date().toLocaleString(),
+    type: "SET_COMPLETED",
+    detail: "Completed " + setName + " — Final Score: " + score + "/" + total
+  });
+  saveAuditData(audit);
+  localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+  renderAuditDashboard();
+}
+function trackManualReset(setName) {
+  let audit = getAuditData();
+  audit.manualResets += 1;
+  audit.events.unshift({
+    timestamp: new Date().toLocaleString(),
+    type: "MANUAL_RESET",
+    detail: "Student clicked 'Try Again' to restart " + setName
+  });
+  saveAuditData(audit);
+  localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+  renderAuditDashboard();
+}
+function renderAuditDashboard() {
+  const audit = getAuditData();
+  const setText = (id, v) => { const e = document.getElementById(id); if (e) e.innerText = v; };
+  setText("stat-total-refreshes", audit.totalRefreshes);
+  setText("stat-mid-refreshes", audit.midQuizRefreshes);
+  setText("stat-manual-resets", audit.manualResets);
+  const riskCard = document.getElementById("card-risk-status");
+  const midCard = document.getElementById("card-mid-refreshes");
+  const riskText = document.getElementById("stat-risk-level");
+  if (riskText) {
+    if (audit.midQuizRefreshes > 0) {
+      riskText.innerText = "⚠️ High Risk (Skeptical)";
+      riskText.style.color = "#e74c3c";
+      if (riskCard) riskCard.classList.add("flagged");
+      if (midCard) midCard.classList.add("flagged");
+    } else if (audit.totalRefreshes > 6) {
+      riskText.innerText = "⚠️ Medium Risk";
+      riskText.style.color = "#f39c12";
+    } else {
+      riskText.innerText = "✅ Clear";
+      riskText.style.color = "#2ecc71";
+    }
+  }
+  const tbody = document.getElementById("audit-log-rows");
+  if (tbody) {
+    if (!audit.events.length) {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr>';
+    } else {
+      tbody.innerHTML = audit.events.slice(0, 80).map(e =>
+        "<tr><td>" + e.timestamp + "</td><td>" + e.type + "</td><td>" + e.detail + "</td></tr>"
+      ).join("");
+    }
+  }
+}
+function clearAuditLog() {
+  if (confirm("Are you sure you want to clear all local audit tracking logs?")) {
+    localStorage.removeItem(AUDIT_STORAGE_KEY);
+    localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+    renderAuditDashboard();
+  }
+}
+
+/* ============ University rewards ============ */
+const universityRewards = {
+  "Set A": { name: "Harvard University", img: "https://mr-chen-k12.github.io/math/IMG_0232.png",
+             color: "#A51C30", badgeId: "badge-harvard" },
+  "Set B": { name: "Boston University", img: "https://mr-chen-k12.github.io/books/IMG_0121.png",
+             color: "#CC0000", badgeId: "badge-bu" },
+  "Set C": { name: "Yale University", img: "https://mr-chen-k12.github.io/books/IMG_0122.png",
+             color: "#00356B", badgeId: "badge-yale" }
+};
+
+/* ============ Question Bank: 30 100% Original Brand-New SAT Reading Questions ============ */
+const questionBank = {
+  "Set A": [
+    {
+      "id": 1,
+      "passage": "In 1914, Cleveland installed the first electric traffic signal: a single post with red and green lights that a police officer switched by hand. Before it, officers stood in intersections waving their arms, and collisions were common as automobiles crowded streets once ruled by horses and carriages. The signal gave every driver the same clear instruction at the same moment. Within a decade, traffic lights were spreading to cities across America, and engineers added the yellow light to warn drivers that the signal was about to change — a small invention that began to ________ the flow of vehicles through busy intersections, replacing the officer’s waving arms with a steady, shared set of rules.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) obstruct",
+        "B) accelerate",
+        "C) regulate",
+        "D) illuminate"
+      ],
+      "answer": 2,
+      "explanation": "Correct! ‘Regulate’ means to control something according to rules — exactly what traffic signals do, giving every driver the same clear instruction and a steady set of rules for intersections."
+    },
+    {
+      "id": 2,
+      "passage": "Along the foggy coast of the Atacama Desert, one of the driest places on Earth, villagers hang giant mesh nets on ridgelines. As fog rolls through, tiny droplets collect on the mesh, drip into gutters, and flow into storage tanks. A single large net can harvest hundreds of liters a day — enough drinking water for a small community that may go years without rain. The system needs no fuel, no pumps, and almost no maintenance.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Fog nets turn an unlikely water source into a lifeline for dry coastal villages",
+        "B) The Atacama Desert is the driest place on Earth and rarely receives rain",
+        "C) Mesh nets are cheaper to build than wells or pipelines in remote regions",
+        "D) Fog is a more reliable water source than rain in most desert climates"
+      ],
+      "answer": 0,
+      "explanation": "Correct! The passage centers on how fog nets harvest drinking water for desert villages — turning an unlikely source into a lifeline — not merely on the desert’s dryness or on cost comparisons."
+    },
+    {
+      "id": 3,
+      "passage": "Army ants on the march face streams, gaps, and steep drops. Instead of turning back, workers link their bodies together, forming living bridges and chains that the rest of the colony walks across. An individual ant in the bridge gives up its own progress, gripping its neighbors and holding still, sometimes for hours, until the colony has passed. When the last ant crosses, the bridge dissolves as its builders rejoin the march.",
+      "question": "The passage suggests that the living bridges are best understood as an example of",
+      "options": [
+        "A) ants competing with one another for the safest position in the colony",
+        "B) a colony abandoning its weakest members when the terrain turns difficult",
+        "C) predators using teamwork to trap prey crossing a narrow gap",
+        "D) individuals sacrificing their own movement so the colony can keep moving"
+      ],
+      "answer": 3,
+      "explanation": "Correct! The bridge ants give up their own progress and hold still for hours so the rest of the colony can cross — individuals sacrificing movement for the colony’s sake."
+    },
+    {
+      "id": 4,
+      "passage": "The Inca Empire ran without a written alphabet, yet it tracked taxes, census counts, and storehouse supplies across thousands of miles. Its solution was the quipu: cords of cotton or wool in which knots encoded numbers, while the color of each cord and the spacing of the knots recorded what was being counted. Trained officials called quipucamayocs could read these knotted records and relay their contents to imperial administrators.",
+      "question": "The author discusses the quipu mainly to",
+      "options": [
+        "A) argue that knotted cords were more accurate than written records",
+        "B) explain how the Inca recorded information without a written alphabet",
+        "C) show that the Inca Empire was smaller than historians once believed",
+        "D) compare Inca record-keeping with the writing systems of Egypt and China"
+      ],
+      "answer": 1,
+      "explanation": "Correct! The passage presents the quipu as the Inca answer to record-keeping without an alphabet — knots, colors, and spacing encoding the empire’s data."
+    },
+    {
+      "id": 5,
+      "passage": "In certain deserts, dunes sometimes produce a deep, booming hum as sand slides down their slopes — a sound loud enough to be heard miles away. Scientists who studied the phenomenon found that the noise arises only when the grains are nearly identical in size and very dry. As the avalanche moves, the grains rub and collide in near-perfect rhythm, and their synchronized vibrations build into the eerie tone that travelers once blamed on spirits.",
+      "question": "According to the passage, singing sand dunes make sound mainly because",
+      "options": [
+        "A) sand grains of similar size rub together in synchronized vibrations",
+        "B) desert winds whistle through tunnels carved inside the dunes",
+        "C) the sand contains hollow grains that act like tiny flutes",
+        "D) travelers chanting nearby set off echoes across the desert"
+      ],
+      "answer": 0,
+      "explanation": "Correct! The passage attributes the sound to nearly identical, very dry grains rubbing and colliding in near-perfect rhythm — synchronized vibrations, not wind tunnels or hollow grains."
+    },
+    {
+      "id": 6,
+      "passage": "Text 1: Every student should learn to code. Coding teaches logical thinking, and programming jobs are among the fastest-growing and best-paid careers. A school that skips coding leaves its students unprepared for the economy they will enter. Text 2: Coding is a useful skill, but it is not the only route to logical thinking — mathematics, music, and debate build the same habits. Schools with limited hours should not crowd out those subjects to chase a single industry’s hiring trends.",
+      "question": "Based on the texts, how would the author of Text 2 most likely respond to Text 1’s claim that schools must teach coding?",
+      "options": [
+        "A) By agreeing that coding is the only subject that teaches logical thinking",
+        "B) By arguing that programming jobs are shrinking rather than growing",
+        "C) By conceding that coding matters but denying that it deserves to displace other subjects",
+        "D) By insisting that schools should drop mathematics, music, and debate entirely"
+      ],
+      "answer": 2,
+      "explanation": "Correct! Text 2 calls coding useful but argues other subjects build the same logical habits, so it would concede coding’s value while denying it should crowd out mathematics, music, and debate."
+    },
+    {
+      "id": 7,
+      "passage": "The mantis shrimp sees the world in a way no human can imagine. Where people have three types of color receptors, the mantis shrimp has twelve, letting it ________ differences among colors that look identical to us, as well as ultraviolet light and polarized light that our eyes cannot detect at all. Scientists believe this extraordinary vision helps it spot prey and rivals against the shifting colors of the reef.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) ignore",
+        "B) reflect",
+        "C) perceive",
+        "D) produce"
+      ],
+      "answer": 2,
+      "explanation": "Correct! ‘Perceive’ means to detect or become aware of something through the senses — exactly what the mantis shrimp’s twelve receptors let it do with colors and light invisible to humans."
+    },
+    {
+      "id": 8,
+      "passage": "In 1826, French inventor Joseph Nicéphore Niépce aimed a camera obscura out of his workshop window and left its light-sensitive plate exposed for eight hours. The result was a blurry, ghostly image of rooftops and a courtyard — the oldest surviving photograph. It was too faint and slow to be practical, and Niépce himself died before the process improved. Yet his experiment proved something no one had shown before: light could be made to draw a lasting picture of the world.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Niépce’s achievement mattered less for its image quality than for proving a permanent photograph was possible",
+        "B) Early photographs were blurry because cameras in 1826 lacked proper lenses",
+        "C) Niépce’s workshop window offered the best view available for his experiment",
+        "D) The first photograph took eight hours because Niépce forgot about the exposure"
+      ],
+      "answer": 0,
+      "explanation": "Correct! The passage stresses that the blurry image mattered because it proved light could draw a lasting picture — the proof of possibility, not the quality, was the achievement."
+    },
+    {
+      "id": 9,
+      "passage": "On January 15, 1919, a storage tank in Boston’s North End burst, releasing more than two million gallons of molasses. The syrup surged through the streets as a wave reported to be 25 feet high and moving at 35 miles per hour, sweeping people, horses, and buildings along with it. Twenty-one people died and 150 were injured. The flood was so destructive not because molasses is poisonous but because of its sheer weight and speed: a slow-moving liquid became, in seconds, a wall of dense fluid no one could outrun.",
+      "question": "The passage suggests the molasses flood was so destructive mainly because",
+      "options": [
+        "A) the molasses was poisonous to anyone it touched",
+        "B) a huge volume of dense liquid moved faster than people could escape",
+        "C) the tank had been leaking poison for weeks before it burst",
+        "D) Boston’s streets were too narrow for rescue wagons to enter"
+      ],
+      "answer": 1,
+      "explanation": "Correct! The passage stresses the flood’s weight and speed — a 25-foot wave at 35 miles per hour that no one could outrun — not poison, prior leaks, or narrow streets."
+    },
+    {
+      "id": 10,
+      "passage": "A gecko can sprint up a glass window and hang from a ceiling by a single toe, yet it leaves no glue behind. The secret is on its feet: each toe is covered with millions of microscopic hairs, and each hair splits into hundreds of even tinier tips. These tips press so close to a surface that weak molecular attractions — the same forces that hold molecules together — add up across millions of contact points into a grip strong enough to hold the lizard’s weight.",
+      "question": "According to the passage, geckos cling to smooth surfaces mainly because",
+      "options": [
+        "A) their toes secrete a powerful adhesive glue",
+        "B) their feet create suction cups that grip the glass",
+        "C) their claws hook into microscopic cracks in the surface",
+        "D) millions of tiny hairs exploit weak molecular forces across countless contact points"
+      ],
+      "answer": 3,
+      "explanation": "Correct! The passage explains that millions of hair tips press close enough for weak molecular attractions to add up into a strong grip — no glue, suction cups, or claws involved."
+    }
+  ],
+  "Set B": [
+    {
+      "id": 1,
+      "passage": "The first spectacles, made in Italy around 1290, were little more than two magnifying lenses riveted together, held up to the eyes or perched on the nose. They were not worn all day; monks and scholars used them only while reading, to ________ the failing eyesight that came with age. Within a century, eyeglasses had spread across Europe, quietly extending the working lives of readers, scribes, and craftsmen.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) diagnose",
+        "B) compensate for",
+        "C) conceal",
+        "D) strain"
+      ],
+      "answer": 1,
+      "explanation": "Correct! ‘Compensate for’ means to make up for a weakness — exactly what spectacles did for failing eyesight, letting older readers keep working."
+    },
+    {
+      "id": 2,
+      "passage": "In the 1960s, a schoolboy named Erasto Mpemba noticed that his hot ice-cream mixture froze faster than his classmate’s cold mixture. His teacher dismissed the claim, but a visiting physicist took it seriously and tested it. Under some conditions, the hot water did freeze first. Decades later, scientists still argue about why: evaporation, dissolved gases, convection currents, and the shape of the container have all been proposed, and no single explanation has won general agreement.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Mpemba’s teacher was wrong to doubt a student’s observation",
+        "B) Hot water always freezes faster than cold water",
+        "C) A counterintuitive observation still lacks a single agreed explanation",
+        "D) Ice cream freezes differently from plain water in every case"
+      ],
+      "answer": 2,
+      "explanation": "Correct! The passage presents the Mpemba effect as a counterintuitive observation — hot water sometimes freezing first — that still lacks a single agreed explanation despite many proposals."
+    },
+    {
+      "id": 3,
+      "passage": "Homing pigeons can find their way back to a loft from hundreds of miles away, even over unfamiliar terrain. Experiments show that their navigation falters when researchers disrupt the magnetic field around them, and recent studies point to a light-sensitive protein in the birds’ eyes that may react to magnetic fields. The leading hypothesis is that pigeons literally see a pattern overlaid on their vision that shifts with direction, giving them a built-in compass.",
+      "question": "The passage most strongly suggests that pigeons navigate by",
+      "options": [
+        "A) sensing Earth’s magnetic field through a light-sensitive protein in their eyes",
+        "B) memorizing every landmark along their route before they leave the loft",
+        "C) following the scent of their loft carried on prevailing winds",
+        "D) listening for low-frequency sounds made by their home loft"
+      ],
+      "answer": 0,
+      "explanation": "Correct! The passage points to a light-sensitive protein in the pigeons’ eyes that reacts to magnetic fields, giving them a built-in compass — not memorized landmarks, scent, or sound."
+    },
+    {
+      "id": 4,
+      "passage": "For centuries, the pencil’s dark core was called “black lead,” and writers assumed it was a form of lead. In fact, the Borrowdale mines of England yielded graphite, a soft form of carbon that marks paper cleanly and erases easily. When the mine’s graphite was cut into sticks and cased in wood, the modern pencil was born — and the misnomer stuck, which is why people still say a pencil contains “lead” even though it never did.",
+      "question": "According to the passage, the pencil’s core was called “black lead” because",
+      "options": [
+        "A) graphite and lead are chemically identical substances",
+        "B) pencil makers added lead to make the graphite harder",
+        "C) the first pencils were manufactured in the town of Lead",
+        "D) graphite was mistaken for a form of lead"
+      ],
+      "answer": 3,
+      "explanation": "Correct! The passage says writers assumed the Borrowdale graphite was a form of lead — a mistake, since the core was carbon, not lead — and the misnomer stuck."
+    },
+    {
+      "id": 5,
+      "passage": "In 1893, Chicago inventor Whitcomb Judson patented a ‘clasp locker’ — a row of tiny metal teeth that a slider could lock together or pull apart. Judson designed it as a fastener for high boots, which then took ages to lace up. The device was clumsy at first, and it took another twenty years of refinement before zippers became reliable enough for clothing, luggage, and gear. Today the same principle closes everything from jackets to space suits.",
+      "question": "According to the passage, Judson’s clasp locker was originally designed to",
+      "options": [
+        "A) seal airtight containers for food storage",
+        "B) fasten high boots more quickly than laces",
+        "C) replace buttons on men’s dress shirts",
+        "D) close the heavy canvas of circus tents"
+      ],
+      "answer": 1,
+      "explanation": "Correct! Judson designed his clasp locker as a fastener for high boots, which took ages to lace up — not for food containers, shirts, or tents."
+    },
+    {
+      "id": 6,
+      "passage": "Text 1: Students should be allowed to use AI tools for homework. AI can explain a difficult concept in five different ways, quiz a student until the idea sticks, and give instant feedback at midnight when no teacher is available. Banning it only denies students the best tutor ever built. Text 2: A tutor that does the thinking for you is not a tutor. When students hand their reasoning to a machine, they may finish the assignment while learning nothing. AI should assist practice, not replace the struggle that makes knowledge stick.",
+      "question": "Based on the texts, how would the author of Text 2 most likely respond to Text 1’s claim that AI is the best tutor ever built?",
+      "options": [
+        "A) By agreeing that instant feedback at midnight is the most important feature of learning",
+        "B) By arguing that students should never use any technology for homework",
+        "C) By conceding that AI can assist practice but insisting that outsourcing thinking weakens learning",
+        "D) By claiming that teachers are unnecessary once AI tools are available"
+      ],
+      "answer": 2,
+      "explanation": "Correct! Text 2 allows AI a role in assisting practice but insists that handing reasoning to a machine weakens learning — conceding assistance while rejecting the idea that AI replaces thinking."
+    },
+    {
+      "id": 7,
+      "passage": "In July 1518, a woman in Strasbourg began dancing in the street and could not stop. Within a week, dozens of others had joined her, and within a month, hundreds were dancing day and night, some reportedly collapsing from exhaustion. Chroniclers blamed religious fervor, ergot poisoning from moldy rye, and mass hysteria; modern historians have added stress, superstition, and social contagion to the list. Five centuries later, no single cause has been proven, and the dancing plague remains one of history’s strangest unsolved episodes.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) A strange historical episode whose cause remains debated despite many theories",
+        "B) Proof that ergot poisoning from moldy rye causes uncontrollable dancing",
+        "C) Evidence that religious fervor was the only force behind the dancing",
+        "D) A demonstration that mass hysteria cannot affect large groups of people"
+      ],
+      "answer": 0,
+      "explanation": "Correct! The passage presents the dancing plague as a strange episode with many proposed causes — religious fervor, ergot poisoning, hysteria, stress — and no single proven cause."
+    },
+    {
+      "id": 8,
+      "passage": "The Bajau people of Southeast Asia have lived on the sea for generations, diving for fish and pearls without tanks or fins. Researchers found that Bajau divers have spleens about fifty percent larger than those of their land-dwelling neighbors. During a dive, the spleen contracts and releases extra oxygen-rich red blood cells, extending the time a diver can stay underwater. The trait appears to be inherited, suggesting that centuries of diving have shaped Bajau bodies themselves.",
+      "question": "The passage most strongly suggests that the Bajau’s diving ability is",
+      "options": [
+        "A) a skill any person could learn in a few weeks of practice",
+        "B) the result of breathing exercises taught to Bajau children",
+        "C) caused by the use of special diving equipment passed down in families",
+        "D) partly an inherited physical adaptation to generations of diving"
+      ],
+      "answer": 3,
+      "explanation": "Correct! The passage says the enlarged spleen appears inherited and that centuries of diving have shaped Bajau bodies — a physical adaptation, not mere practice, exercises, or equipment."
+    },
+    {
+      "id": 9,
+      "passage": "In 1861, British naval officer Robert FitzRoy began issuing the first daily weather forecasts, using telegraphed reports from stations around the country to map storms as they moved. He also created a system of storm warnings: when his charts showed a gale approaching, signal stations along the coast raised cones and drums to ________ the danger to sailors and fishermen before they set out to sea.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) encrypt",
+        "B) disseminate",
+        "C) withhold",
+        "D) illustrate"
+      ],
+      "answer": 1,
+      "explanation": "Correct! ‘Disseminate’ means to spread information widely — exactly what the coastal signals did, broadcasting the storm danger to sailors and fishermen."
+    },
+    {
+      "id": 10,
+      "passage": "In the summer of 1858, London baked in a heat wave, and the Thames — then an open sewer for the city’s waste — stank so badly that Parliament draped its curtains in lime-soaked cloth and briefly considered fleeing the city. The episode, known as the Great Stink, finally forced action: engineer Joseph Bazalgette designed a network of sewers that carried waste away from the river, and cholera deaths in the city plummeted. A crisis of smell became the push for modern sanitation.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Parliament fled London permanently because of the smell of the Thames",
+        "B) Cholera deaths in London were caused entirely by hot weather",
+        "C) A public-health crisis forced London to build a modern sewer system",
+        "D) Joseph Bazalgette invented the first sewer ever constructed"
+      ],
+      "answer": 2,
+      "explanation": "Correct! The passage shows how the Great Stink forced action — Bazalgette’s sewer network — and cholera deaths fell: a public-health crisis driving modern sanitation."
+    }
+  ],
+  "Set C": [
+    {
+      "id": 1,
+      "passage": "The theremin is the only instrument played without being touched. The musician moves her hands through the air near two metal antennas, and her gestures change the pitch and volume of an ________, wavering tone that seems to float out of nowhere. Invented in 1920 by Leon Theremin, the instrument found its way into science-fiction film scores, where its ghostly sound suggested alien worlds and unseen forces.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) percussive",
+        "B) amplified",
+        "C) rhythmic",
+        "D) ethereal"
+      ],
+      "answer": 3,
+      "explanation": "Correct! ‘Ethereal’ means delicate and otherworldly — matching the ghostly, floating tone the passage describes and its use for alien worlds in film scores."
+    },
+    {
+      "id": 2,
+      "passage": "Do fish sleep? They have no eyelids to close, and many keep swimming all night, which makes rest hard to spot. But researchers who watch reef fish have found long still periods in sheltered spots, with slower breathing and reduced reactions to gentle prods — the same signs of rest seen in other animals. Some species even rest half their brain at a time while the other half keeps them swimming. Fish do sleep, the evidence suggests; they simply do it without a bed, a blanket, or closed eyes.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Fish do rest, but their sleep looks so different from ours that it is easy to miss",
+        "B) Fish never truly sleep because they lack eyelids and keep swimming",
+        "C) All reef fish sleep with half their brain awake at all times",
+        "D) Researchers have proven that fish dream in the same way humans do"
+      ],
+      "answer": 0,
+      "explanation": "Correct! The passage concludes that fish do sleep, but without eyelids or beds their rest looks so different from ours that it is easy to miss."
+    },
+    {
+      "id": 3,
+      "passage": "In 1901, sponge divers off the Greek island of Antikythera hauled up a corroded lump of bronze gears. Only decades later did X-ray imaging reveal what it was: a device from around 100 BCE that predicted eclipses, tracked the Olympic games, and modeled the irregular motion of the Moon with gears and dials. Before its discovery, historians believed such precision machinery did not exist until the great clocks of the 1300s. The mechanism pushed the history of complex engineering back more than a thousand years.",
+      "question": "The discovery of the Antikythera mechanism most strongly suggests that",
+      "options": [
+        "A) sponge divers were more skilled than trained archaeologists",
+        "B) the Olympic games were invented to test new machinery",
+        "C) ancient Greek engineering was far more sophisticated than scholars once assumed",
+        "D) bronze gears were first invented in the 1300s"
+      ],
+      "answer": 2,
+      "explanation": "Correct! The mechanism showed precision machinery existed around 100 BCE, pushing complex engineering back a thousand years — ancient Greek engineering was far more sophisticated than scholars assumed."
+    },
+    {
+      "id": 4,
+      "passage": "In 1941, Swiss engineer George de Mestral returned from a hunting trip with burrs stuck to his clothes and his dog’s fur. Curious, he examined one under a microscope and found hundreds of tiny hooks that caught on loops of fabric and fur. It took him eight years to manufacture a synthetic version: one strip covered in stiff hooks, another in soft loops, pressing together to grip and pulling apart with a rip. He named the invention Velcro, from the French words for velvet and hook.",
+      "question": "According to the passage, Velcro was inspired by",
+      "options": [
+        "A) the scales of a pinecone that open and close with moisture",
+        "B) burrs whose tiny hooks caught on fabric and fur",
+        "C) the suction cups on an octopus’s arms",
+        "D) the interlocking teeth of a metal zipper"
+      ],
+      "answer": 1,
+      "explanation": "Correct! De Mestral examined burrs under a microscope and found tiny hooks catching on loops — the direct inspiration for Velcro’s hook-and-loop strips."
+    },
+    {
+      "id": 5,
+      "passage": "By the 1850s, London’s streets were choked with horse-drawn carriages, carts, and omnibuses, and the new railways dumping passengers at the city’s edge only made the crush worse. The city’s answer was not a faster horse but a radical one: bury the railway. In 1863, the Metropolitan Railway opened the world’s first underground line, running steam trains through brick tunnels beneath the crowded streets — and within a year it was carrying millions of passengers who had never moved through the city so quickly.",
+      "question": "The author discusses London’s crowded streets mainly to",
+      "options": [
+        "A) explain how congestion, not speed, drove the building of the first subway",
+        "B) argue that horse-drawn carriages were faster than early steam trains",
+        "C) show that railways caused more problems than they solved in every city",
+        "D) prove that underground tunnels were cheaper than widening streets"
+      ],
+      "answer": 0,
+      "explanation": "Correct! The crowded streets and the crush of carriages are presented as the problem the subway solved — congestion, not a need for speed, drove the first underground line."
+    },
+    {
+      "id": 6,
+      "passage": "Text 1: Cities should make public transit free. Fare collection costs money to run, slows down boarding, and keeps the poorest riders — the people who need buses most — off the system. Free transit would boost ridership, cut traffic, and pay for itself in cleaner air and less congestion. Text 2: Free rides sound generous until the bill arrives. Without fare revenue, transit agencies would depend entirely on taxpayers, and during every budget crisis the buses would be first on the chopping block. A better plan is lower fares for those who need them, with full funding protected for service.",
+      "question": "Based on the texts, how would the author of Text 2 most likely respond to Text 1’s proposal?",
+      "options": [
+        "A) By agreeing that fare collection is the main cause of traffic congestion",
+        "B) By arguing that buses should be eliminated in favor of private cars",
+        "C) By insisting that transit should never receive any taxpayer funding",
+        "D) By arguing that free fares would leave the system vulnerable to budget cuts"
+      ],
+      "answer": 3,
+      "explanation": "Correct! Text 2 warns that without fare revenue, agencies would depend entirely on taxpayers and buses would be first on the chopping block — free fares leaving the system vulnerable to budget cuts."
+    },
+    {
+      "id": 7,
+      "passage": "Goosebumps are a leftover from our furry ancestors. When a mammal is cold or threatened, tiny muscles at the base of each hair contract, raising the fur to trap warmth or make the animal look bigger. Humans kept the muscles but lost most of the fur, so the reflex now only dimples the skin. That is why a chill, a scare, or even a powerful piece of music can raise the hair on your arms for no practical benefit — a ________ reflex from an age when we were far hairier.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) voluntary",
+        "B) learned",
+        "C) vestigial",
+        "D) seasonal"
+      ],
+      "answer": 2,
+      "explanation": "Correct! ‘Vestigial’ describes a body feature left over from an earlier stage of evolution that no longer serves its original purpose — exactly the case for goosebumps in mostly hairless humans."
+    },
+    {
+      "id": 8,
+      "passage": "Before 1858, a message from London to New York traveled by ship and took at least ten days. Then, after several failed attempts and broken cables, engineers succeeded in laying a copper line across the Atlantic seafloor. The first messages took hours rather than weeks to arrive, and though the early cable soon failed, it proved the ocean could be wired. Within a decade, permanent cables tied the continents together, and world news became, for the first time, same-day news.",
+      "question": "The passage implies that the transatlantic cable mattered most because it",
+      "options": [
+        "A) ended all ship traffic between Europe and North America",
+        "B) let news cross the ocean in hours instead of weeks",
+        "C) was the first copper wire ever manufactured",
+        "D) made the first cable’s failure impossible to repeat"
+      ],
+      "answer": 1,
+      "explanation": "Correct! The passage stresses that messages went from taking at least ten days by ship to arriving in hours — news crossing the ocean in hours instead of weeks."
+    },
+    {
+      "id": 9,
+      "passage": "Before 1911, the Mona Lisa was a respected portrait, admired by art lovers but hardly the most famous painting in the world. Then, one morning, a workman hid inside a Louvre closet overnight, walked out with the painting under his smock, and vanished. For two years, newspapers around the world followed the hunt, printing the lady’s image again and again. When the painting was recovered, crowds flocked to see the portrait they now knew by heart — a theft had made her the most famous face on Earth.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) A theft made the painting famous, not the other way around",
+        "B) The Mona Lisa was already the world’s most famous painting before 1911",
+        "C) The thief stole the painting because he believed it was cursed",
+        "D) Newspapers refused to print the painting’s image during the hunt"
+      ],
+      "answer": 0,
+      "explanation": "Correct! The passage argues the theft itself created the fame — a respected but not world-famous portrait became the most famous face on Earth through the newspaper coverage of the hunt."
+    },
+    {
+      "id": 10,
+      "passage": "The Panama Canal, opened in 1914, lets ships cross Central America instead of sailing around the tip of South America. Its secret is a staircase of locks: a ship enters a chamber, gates close behind it, and water floods in to lift the vessel to the level of Gatun Lake, 85 feet above sea level. On the other side, chambers drain in steps to lower it back to the ocean. The canal saves ships about 8,000 miles per voyage, and its locks — not engines or pumps — do the lifting.",
+      "question": "According to the passage, ships are raised to Gatun Lake mainly by",
+      "options": [
+        "A) powerful engines mounted on the lock walls",
+        "B) cranes that hoist vessels out of the water",
+        "C) tides that flood the chambers twice a day",
+        "D) water flooding into chambers to lift the vessel in steps"
+      ],
+      "answer": 3,
+      "explanation": "Correct! The passage describes gates closing and water flooding in to lift the vessel to Gatun Lake’s level — water in chambers, not engines, cranes, or tides."
+    }
+  ]
+};
+
+/* ============ Application state & logic ============ */
+let currentSetKey = "Set A";
+let userAnswers = {};
+
+function initApp() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("check") === "true") {
+    document.getElementById("teacher-audit-panel").classList.add("active");
+  }
+  trackPageLoad(currentSetKey);
+  loadSet(currentSetKey);
+}
+
+function switchSet(setName) {
+  currentSetKey = setName;
+  document.getElementById("set-select").value = setName;
+  loadSet(setName);
+}
+
+function loadSet(setName) {
+  userAnswers = {};
+  document.getElementById("score-summary").style.display = "none";
+  document.getElementById("reward-section").innerHTML = "";
+  const reward = universityRewards[setName];
+  document.documentElement.style.setProperty("--primary-color", reward.color);
+  updateScoreDisplay();
+  const container = document.getElementById("questions-wrapper");
+  container.innerHTML = "";
+  const questions = questionBank[setName];
+  questions.forEach((q, index) => {
+    const card = document.createElement("div");
+    card.className = "question-card";
+    card.id = "q-card-" + index;
+    const optsHtml = q.options.map((opt, oi) =>
+      '<button class="option-btn" onclick="selectAnswer(' + index + ',' + oi + ')">' + opt + "</button>"
+    ).join("");
+    card.innerHTML =
+      '<div class="question-number">Question ' + (index + 1) + " of 10</div>" +
+      '<div class="passage">' + q.passage.replace(/\n\n/g, "</p><p>") + "</div>" +
+      '<div class="question-text">' + q.question + "</div>" +
+      '<div class="options-group" id="options-' + index + '">' + optsHtml + "</div>" +
+      '<div class="feedback-box" id="feedback-' + index + '"></div>';
+    container.appendChild(card);
+  });
+}
+
+function selectAnswer(questionIdx, selectedOptIdx) {
+  if (userAnswers.hasOwnProperty(questionIdx)) return;
+  const qData = questionBank[currentSetKey][questionIdx];
+  const isCorrect = selectedOptIdx === qData.answer;
+  userAnswers[questionIdx] = isCorrect;
+  trackAnswerProgress(currentSetKey, userAnswers);
+  const optionsGroup = document.getElementById("options-" + questionIdx);
+  const buttons = optionsGroup.getElementsByClassName("option-btn");
+  Array.from(buttons).forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === qData.answer) btn.classList.add("correct");
+    else if (idx === selectedOptIdx && !isCorrect) btn.classList.add("incorrect");
+  });
+  const fbBox = document.getElementById("feedback-" + questionIdx);
+  fbBox.classList.add("show");
+  fbBox.classList.add(isCorrect ? "good" : "bad");
+  fbBox.innerHTML =
+    '<div class="verdict">' + (isCorrect ? "✅ Correct!" : "❌ Incorrect.") + "</div>" +
+    '<div class="expl">' + qData.explanation + "</div>";
+  updateScoreDisplay();
+  checkSetCompletion();
+}
+
+function updateScoreDisplay() {
+  const correctCount = Object.values(userAnswers).filter(Boolean).length;
+  document.getElementById("score-tracker").innerText = "Score: " + correctCount + " / 10";
+}
+
+function checkSetCompletion() {
+  if (Object.keys(userAnswers).length !== 10) return;
+  const score = Object.values(userAnswers).filter(Boolean).length;
+  const summaryBox = document.getElementById("score-summary");
+  const scoreText = document.getElementById("final-score-text");
+  const msgText = document.getElementById("feedback-message");
+  const rewardSection = document.getElementById("reward-section");
+  const currentReward = universityRewards[currentSetKey];
+  scoreText.innerText = score + " / 10";
+  trackSetCompletion(currentSetKey, score, 10);
+  if (score === 10) {
+    document.getElementById(currentReward.badgeId).classList.add("unlocked");
+    msgText.innerHTML = '<span style="color:' + currentReward.color + '; font-weight:bold;">Congratulations! Perfect Score!</span> You earned the ' + currentReward.name + " award! 🏆";
+    rewardSection.innerHTML =
+      '<div class="reward-badge"><img src="' + currentReward.img + '" alt="' + currentReward.name + '" onerror="this.style.display=\'none\'">' +
+      '<div class="reward-name" style="color:' + currentReward.color + ';">' + currentReward.name + "</div></div>";
+  } else if (score >= 7) {
+    msgText.innerHTML = "Great effort! You scored " + score + "/10. Review the explanations and try for a perfect score!";
+  } else {
+    msgText.innerHTML = "Keep practicing! You scored " + score + "/10. Read each explanation carefully and try the set again.";
+  }
+  summaryBox.style.display = "block";
+  summaryBox.scrollIntoView({ behavior: "smooth" });
+}
+
+function resetCurrentSet() {
+  trackManualReset(currentSetKey);
+  loadSet(currentSetKey);
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>
