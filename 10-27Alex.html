@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saxon Math Course 2 &mdash; Lesson 33 Written Practice</title>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: #f1f5f9; color: #1e293b; margin: 0; padding: 20px; }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  h1 { text-align: center; font-size: 1.5em; margin: 0 0 4px; }
+  .sub { text-align: center; color: #64748b; margin-bottom: 22px; }
+  .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .qhead { display: flex; gap: 10px; align-items: baseline; margin-bottom: 8px; flex-wrap: wrap; }
+  .qnum { font-weight: bold; font-size: 1.15em; color: #1d4ed8; }
+  .qtag { font-size: .8em; color: #64748b; }
+  .tag2 { background: #dbeafe; color: #1d4ed8; font-size: .72em; font-weight: bold; padding: 2px 8px; border-radius: 20px; letter-spacing: .04em; }
+  .qbody { font-size: 1.02em; line-height: 1.65; }
+  .fig { margin: 14px 0 4px; text-align: center; }
+  .fig svg { max-width: 100%; height: auto; }
+  .fig table { margin: 0 auto; border-collapse: collapse; font-size: .95em; }
+  .fig th, .fig td { border: 1.5px solid #1e3a8a; padding: 6px 14px; text-align: center; }
+  .fig th { background: #dbeafe; }
+  .reveal { margin-top: 12px; background: #1d4ed8; color: #fff; border: none; border-radius: 8px; padding: 9px 22px; font-size: .95em; cursor: pointer; }
+  .reveal:hover { background: #1e40af; }
+  .ans { display: none; margin-top: 14px; border-top: 2px dashed #cbd5e1; padding-top: 12px; }
+  .ans.open { display: block; }
+  .anslabel { font-weight: bold; color: #166534; margin: 8px 0 4px; font-size: .85em; text-transform: uppercase; letter-spacing: .05em; }
+  .math { font-size: 1.12em; background: #f0fdf4; border-radius: 8px; padding: 10px 14px; line-height: 1.7; }
+  .sol { font-size: .98em; line-height: 1.7; color: #334155; }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .reveal, .ans { display: none !important; }
+    .card { box-shadow: none; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Saxon Math Course 2 &mdash; Lesson 33 Written Practice</h1>
+  <div class="sub">Problems 1&ndash;30 &middot; 10-27Miri</div>
+  <div class="card" id="q1">
+    <div class="qhead"><span class="qnum">1.</span><span class="qtag">(28)</span></div>
+    <div class="qbody"><span class="tag2">EXPLAIN</span> The young tree was 5 feet 8 inches high. How can we find the number of inches in 5 feet 8 inches?</div>
+    <button class="reveal" onclick="toggle(1)">Show Answer</button>
+    <div class="ans" id="ans1"><div class="anslabel">Answer</div><div class="math">\(68\text{ inches}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Multiply the feet by 12 (inches per foot) and add the remaining inches: \(5 \times 12 + 8 = 60 + 8 = 68\) inches.</div></div>
+  </div>
+
+  <div class="card" id="q2">
+    <div class="qhead"><span class="qnum">2.</span><span class="qtag">(28)</span></div>
+    <div class="qbody">During the first week of November the daily high temperatures in degrees Fahrenheit were 42°F, 43°F, 38°F, 47°F, 51°F, 52°F, and 49°F. What was the average daily high temperature during the first week of November?</div>
+    <button class="reveal" onclick="toggle(2)">Show Answer</button>
+    <div class="ans" id="ans2"><div class="anslabel">Answer</div><div class="math">\(46^\circ\text{F}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Add the seven highs: \(42 + 43 + 38 + 47 + 51 + 52 + 49 = 322\). Divide by 7 days: \(322 \div 7 = 46\), so the average was 46°F.</div></div>
+  </div>
+
+  <div class="card" id="q3">
+    <div class="qhead"><span class="qnum">3.</span><span class="qtag">(11)</span></div>
+    <div class="qbody">The population of Chandler, AZ increased from 89,862 in 1990 to 176,581 in 2000. How many people did the population increase by over this 10-year time span?</div>
+    <button class="reveal" onclick="toggle(3)">Show Answer</button>
+    <div class="ans" id="ans3"><div class="anslabel">Answer</div><div class="math">\(86{,}719\text{ people}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">\(176{,}581 - 89{,}862 = 86{,}719\) people.</div></div>
+  </div>
+
+  <div class="card" id="q4">
+    <div class="qhead"><span class="qnum">4.</span><span class="qtag">(16)</span></div>
+    <div class="qbody">To find the length in millimeters of a segment measured in centimeters, we multiply the number of centimeters by 10. Make a function table that shows the number of millimeters in 1, 3, and 5 centimeters. Then add one more pair of numbers of your choosing to the table.<div class="fig"><table><tr><th>Centimeters (cm)</th><td>1</td><td>3</td><td>5</td><td>2</td></tr><tr><th>Millimeters (mm)</th><td>10</td><td>30</td><td>50</td><td>20</td></tr></table><div style="font-size:.9em;color:#64748b;margin-top:6px;">Rule: millimeters = 10 &times; centimeters (the last pair, 2 cm &rarr; 20 mm, is our own choosing.)</div></div></div>
+    <button class="reveal" onclick="toggle(4)">Show Answer</button>
+    <div class="ans" id="ans4"><div class="anslabel">Answer</div><div class="math">\(\text{Rule: mm} = 10 \times \text{cm}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Multiply each centimeter value by 10: 1 cm → 10 mm, 3 cm → 30 mm, 5 cm → 50 mm. Our added pair is 2 cm → 20 mm (any correct pair works).</div></div>
+  </div>
+
+  <div class="card" id="q5">
+    <div class="qhead"><span class="qnum">5.</span><span class="qtag">(19)</span></div>
+    <div class="qbody"><b>a.</b> A regular hexagon and a regular octagon share a common side. If the perimeter of the hexagon is 24 cm, what is the perimeter of the octagon?<br><b>b.</b> <span class="tag2">JUSTIFY</span> How did you get your answer?<div class="fig"><svg viewBox="0 0 320 260" width="300" role="img" aria-label="Regular hexagon sharing a side with a regular octagon"><polygon points="140.0,100.0 179.6,139.6 165.1,193.7 111.0,208.2 71.4,168.6 85.9,114.5" fill="#dbeafe" stroke="#1e3a8a" stroke-width="2.5"/><polygon points="140.0,100.0 140.0,44.0 179.6,4.4 235.6,4.4 275.2,44.0 275.2,100.0 235.6,139.6 179.6,139.6" fill="#fef3c7" stroke="#1e3a8a" stroke-width="2.5"/></svg></div></div>
+    <button class="reveal" onclick="toggle(5)">Show Answer</button>
+    <div class="ans" id="ans5"><div class="anslabel">Answer</div><div class="math">\(\text{a. }32\text{ cm}\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> A regular hexagon has 6 equal sides, so the shared side is \(24 \div 6 = 4\) cm. A regular octagon has 8 equal sides, so its perimeter is \(8 \times 4 = 32\) cm.<br><b>b.</b> Because the figures share a side, the octagon's side must equal the hexagon's side (4 cm). Multiplying by the octagon's 8 sides gives 32 cm.</div></div>
+  </div>
+
+  <div class="card" id="q6">
+    <div class="qhead"><span class="qnum">6.</span><span class="qtag">(22)</span></div>
+    <div class="qbody">Diagram this statement. Then answer the questions that follow.<br>One-third of the 60 fish were goldfish.<br><b>a.</b> How many of the fish were goldfish?<br><b>b.</b> How many of the fish were not goldfish?<br><b>c.</b> What percent of the fish were goldfish?</div>
+    <button class="reveal" onclick="toggle(6)">Show Answer</button>
+    <div class="ans" id="ans6"><div class="anslabel">Answer</div><div class="math">\(\text{a. }20 \qquad \text{b. }40 \qquad \text{c. }33\frac{1}{3}\%\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> \(\frac{1}{3}\) of 60 is \(60 \div 3 = 20\) goldfish. <b>b.</b> \(60 - 20 = 40\) fish were not goldfish. <b>c.</b> One-third as a percent is \(33\frac{1}{3}\%\).</div></div>
+  </div>
+
+  <div class="card" id="q7">
+    <div class="qhead"><span class="qnum">7.</span><span class="qtag">(Inv. 3)</span></div>
+    <div class="qbody"><span class="tag2">GENERALIZE</span> Find the area of a square whose vertices have the coordinates (3, 6), (3, 1), (−2, 1), and (−2, 6).</div>
+    <button class="reveal" onclick="toggle(7)">Show Answer</button>
+    <div class="ans" id="ans7"><div class="anslabel">Answer</div><div class="math">\(25\text{ square units}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">The side length is the distance from x = 3 to x = −2 (5 units), and also from y = 1 to y = 6 (5 units) — confirming a square. Area: \(5 \times 5 = 25\) square units.</div></div>
+  </div>
+
+  <div class="card" id="q8">
+    <div class="qhead"><span class="qnum">8.</span><span class="qtag">(33)</span></div>
+    <div class="qbody"><b>a.</b> Round 15.73591 to the nearest hundredth.<br><b>b.</b> Estimate the product of 15.73591 and 3.14 by rounding each decimal number to the nearest whole number before multiplying.</div>
+    <button class="reveal" onclick="toggle(8)">Show Answer</button>
+    <div class="ans" id="ans8"><div class="anslabel">Answer</div><div class="math">\(\text{a. }15.74 \qquad \text{b. about }48\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> The thousandths digit is 5, so 15.73591 rounds up to 15.74. <b>b.</b> \(15.73591 \approx 16\) and \(3.14 \approx 3\), so \(16 \times 3 = 48\).</div></div>
+  </div>
+
+  <div class="card" id="q9">
+    <div class="qhead"><span class="qnum">9.</span><span class="qtag">(31)</span></div>
+    <div class="qbody">Use words to write each of these decimal numbers:<br><b>a.</b> 150.035<br><b>b.</b> 0.0015</div>
+    <button class="reveal" onclick="toggle(9)">Show Answer</button>
+    <div class="ans" id="ans9"><div class="anslabel">Answer</div><div class="math">\(\text{a. one hundred fifty and thirty-five thousandths} \qquad \text{b. fifteen ten-thousandths}\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> The whole-number part is 150 (one hundred fifty) and the decimal part is 035 thousandths (thirty-five thousandths). <b>b.</b> 0.0015 has 15 in the ten-thousandths place, so it is fifteen ten-thousandths.</div></div>
+  </div>
+
+  <div class="card" id="q10">
+    <div class="qhead"><span class="qnum">10.</span><span class="qtag">(31)</span></div>
+    <div class="qbody">Use digits to write each of these decimal numbers:<br><b>a.</b> one hundred twenty-five thousandths<br><b>b.</b> one hundred and twenty-five thousandths</div>
+    <button class="reveal" onclick="toggle(10)">Show Answer</button>
+    <div class="ans" id="ans10"><div class="anslabel">Answer</div><div class="math">\(\text{a. }0.125 \qquad \text{b. }100.125\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> One hundred twenty-five thousandths is \(\frac{125}{1000} = 0.125\). <b>b.</b> The word “and” marks the decimal point: one hundred (100) and twenty-five thousandths (0.125), so 100.125.</div></div>
+  </div>
+
+  <div class="card" id="q11">
+    <div class="qhead"><span class="qnum">11.</span><span class="qtag">(33)</span></div>
+    <div class="qbody">Replace each circle with the proper comparison symbol:<br><b>a.</b> 0.128 ○ 0.14 &emsp; <b>b.</b> 0.03 ○ 0.0015</div>
+    <button class="reveal" onclick="toggle(11)">Show Answer</button>
+    <div class="ans" id="ans11"><div class="anslabel">Answer</div><div class="math">\(\text{a. }0.128 < 0.14 \qquad \text{b. }0.03 > 0.0015\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> 0.128 = 0.128 and 0.14 = 0.140, and 128 < 140, so 0.128 < 0.14. <b>b.</b> 0.03 = 0.0300 and 0.0015 = 0.0015, and 300 > 15, so 0.03 > 0.0015.</div></div>
+  </div>
+
+  <div class="card" id="q12">
+    <div class="qhead"><span class="qnum">12.</span><span class="qtag">(32)</span></div>
+    <div class="qbody">Find the length of this segment<br><b>a.</b> in centimeters.<br><b>b.</b> in millimeters.<div class="fig"><svg viewBox="0 0 320 130" width="300" role="img" aria-label="Segment measured against a centimeter ruler"><line x1="40" y1="40" x2="240" y2="40" stroke="#b91c1c" stroke-width="3.5"/><line x1="40" y1="32" x2="40" y2="48" stroke="#b91c1c" stroke-width="3"/><line x1="240" y1="32" x2="240" y2="48" stroke="#b91c1c" stroke-width="3"/><rect x="40" y="60" width="250" height="40" fill="none" stroke="#1e3a8a" stroke-width="2.5"/><line x1="40" y1="60" x2="40" y2="74" stroke="#1e3a8a" stroke-width="2"/><text x="45" y="92" font-size="13" font-weight="bold">cm</text><line x1="90" y1="60" x2="90" y2="74" stroke="#1e3a8a" stroke-width="2"/><text x="90" y="92" font-size="13" font-weight="bold" text-anchor="middle">1</text><line x1="140" y1="60" x2="140" y2="74" stroke="#1e3a8a" stroke-width="2"/><text x="140" y="92" font-size="13" font-weight="bold" text-anchor="middle">2</text><line x1="190" y1="60" x2="190" y2="74" stroke="#1e3a8a" stroke-width="2"/><text x="190" y="92" font-size="13" font-weight="bold" text-anchor="middle">3</text><line x1="240" y1="60" x2="240" y2="74" stroke="#1e3a8a" stroke-width="2"/><text x="240" y="92" font-size="13" font-weight="bold" text-anchor="middle">4</text><line x1="290" y1="60" x2="290" y2="74" stroke="#1e3a8a" stroke-width="2"/><text x="290" y="92" font-size="13" font-weight="bold" text-anchor="middle">5</text></svg></div></div>
+    <button class="reveal" onclick="toggle(12)">Show Answer</button>
+    <div class="ans" id="ans12"><div class="anslabel">Answer</div><div class="math">\(\text{a. }4\text{ cm} \qquad \text{b. }40\text{ mm}\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> Measured against the ruler in the photo, the segment starts at the 0 mark and ends exactly at the 4 cm mark (verified by pixel measurement: the segment's right endpoint lines up with the 4 cm tick). <b>b.</b> \(4 \text{ cm} \times 10 = 40\) mm. (Print size may vary slightly — check with a ruler on your copy.)</div></div>
+  </div>
+
+  <div class="card" id="q13">
+    <div class="qhead"><span class="qnum">13.</span><span class="qtag">(17)</span></div>
+    <div class="qbody">Draw the straight angle AOC. Then use a protractor to draw ray OD so that angle COD measures 60°.<div class="fig"><svg viewBox="0 0 300 160" width="280" role="img" aria-label="Straight angle AOC with ray OD making 60 degrees with OC"><line x1="40" y1="110" x2="260" y2="110" stroke="#1e3a8a" stroke-width="2.5"/><line x1="150" y1="110" x2="205.0" y2="14.7" stroke="#b91c1c" stroke-width="2.5"/><path d="M 188 110 A 38 38 0 0 0 169.0 77.1" fill="none" stroke="#b91c1c" stroke-width="2"/><text x="194" y="98" font-size="14" font-weight="bold" fill="#b91c1c">60°</text><circle cx="150" cy="110" r="4" fill="#1e3a8a"/><text x="24" y="115" font-size="16" font-weight="bold">A</text><text x="266" y="115" font-size="16" font-weight="bold">C</text><text x="211.0" y="8.7" font-size="16" font-weight="bold">D</text><text x="146" y="134" font-size="16" font-weight="bold">O</text></svg></div></div>
+    <button class="reveal" onclick="toggle(13)">Show Answer</button>
+    <div class="ans" id="ans13"><div class="anslabel">Answer</div><div class="math">\(\angle COD = 60^\circ, \quad \angle AOD = 120^\circ\)</div>
+    <div class="anslabel">Solution</div><div class="sol">A straight angle measures 180°, so ray OD is drawn 60° above the OC side of the straight line. The remaining part is \(\angle AOD = 180^\circ - 60^\circ = 120^\circ\).</div></div>
+  </div>
+
+  <div class="card" id="q14">
+    <div class="qhead"><span class="qnum">14.</span><span class="qtag">(2)</span></div>
+    <div class="qbody"><span class="tag2">GENERALIZE</span> If we multiply one integer by another integer that is a whole number but not a counting number, what is the product?</div>
+    <button class="reveal" onclick="toggle(14)">Show Answer</button>
+    <div class="ans" id="ans14"><div class="anslabel">Answer</div><div class="math">\(0\)</div>
+    <div class="anslabel">Solution</div><div class="sol">The whole numbers are {0, 1, 2, 3, …} and the counting numbers are {1, 2, 3, …}, so the only whole number that is not a counting number is 0. Any integer times 0 is 0.</div></div>
+  </div>
+
+  <div class="card" id="q15">
+    <div class="qhead"><span class="qnum">15.</span><span class="qtag">(27)</span></div>
+    <div class="qbody"><span class="tag2">GENERALIZE</span> Use prime factorization to find the least common denominator for the fractions \(\frac{5}{27}\) and \(\frac{5}{36}\).</div>
+    <button class="reveal" onclick="toggle(15)">Show Answer</button>
+    <div class="ans" id="ans15"><div class="anslabel">Answer</div><div class="math">\(108\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Prime factorizations: \(27 = 3^3\) and \(36 = 2^2 \cdot 3^2\). The least common multiple takes the highest power of each prime: \(2^2 \cdot 3^3 = 4 \cdot 27 = 108\).</div></div>
+  </div>
+
+  <div class="card" id="q16">
+    <div class="qhead"><span class="qnum">16.</span><span class="qtag">(3)</span></div>
+    <div class="qbody">Solve: \(8m = 4 \cdot 18\)</div>
+    <button class="reveal" onclick="toggle(16)">Show Answer</button>
+    <div class="ans" id="ans16"><div class="anslabel">Answer</div><div class="math">\(m = 9\)</div>
+    <div class="anslabel">Solution</div><div class="sol">\(4 \cdot 18 = 72\), so \(8m = 72\) and \(m = 72 \div 8 = 9\).</div></div>
+  </div>
+
+  <div class="card" id="q17">
+    <div class="qhead"><span class="qnum">17.</span><span class="qtag">(3)</span></div>
+    <div class="qbody">Solve: \(135^\circ + a = 180^\circ\)</div>
+    <button class="reveal" onclick="toggle(17)">Show Answer</button>
+    <div class="ans" id="ans17"><div class="anslabel">Answer</div><div class="math">\(a = 45^\circ\)</div>
+    <div class="anslabel">Solution</div><div class="sol">\(a = 180^\circ - 135^\circ = 45^\circ\).</div></div>
+  </div>
+
+  <div class="card" id="q18">
+    <div class="qhead"><span class="qnum">18.</span><span class="qtag">(30)</span></div>
+    <div class="qbody">Simplify: \(\frac{3}{4} + \frac{5}{8} + \frac{1}{2}\)</div>
+    <button class="reveal" onclick="toggle(18)">Show Answer</button>
+    <div class="ans" id="ans18"><div class="anslabel">Answer</div><div class="math">\(1\frac{7}{8}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Common denominator 8: \(\frac{3}{4} + \frac{5}{8} + \frac{1}{2} = \frac{6}{8} + \frac{5}{8} + \frac{4}{8} = \frac{15}{8} = 1\frac{7}{8}\).</div></div>
+  </div>
+
+  <div class="card" id="q19">
+    <div class="qhead"><span class="qnum">19.</span><span class="qtag">(30)</span></div>
+    <div class="qbody">Simplify: \(\frac{3}{4} - \frac{1}{6}\)</div>
+    <button class="reveal" onclick="toggle(19)">Show Answer</button>
+    <div class="ans" id="ans19"><div class="anslabel">Answer</div><div class="math">\(\frac{7}{12}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Common denominator 12: \(\frac{3}{4} - \frac{1}{6} = \frac{9}{12} - \frac{2}{12} = \frac{7}{12}\).</div></div>
+  </div>
+
+  <div class="card" id="q20">
+    <div class="qhead"><span class="qnum">20.</span><span class="qtag">(30)</span></div>
+    <div class="qbody">Simplify: \(4\frac{1}{2} - \frac{3}{8}\)</div>
+    <button class="reveal" onclick="toggle(20)">Show Answer</button>
+    <div class="ans" id="ans20"><div class="anslabel">Answer</div><div class="math">\(4\frac{1}{8}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Common denominator 8: \(4\frac{1}{2} - \frac{3}{8} = \frac{36}{8} - \frac{3}{8} = \frac{33}{8} = 4\frac{1}{8}\).</div></div>
+  </div>
+
+  <div class="card" id="q21">
+    <div class="qhead"><span class="qnum">21.</span><span class="qtag">(26)</span></div>
+    <div class="qbody">Simplify: \(\frac{3}{8} \cdot 2\frac{2}{5} \cdot 3\frac{1}{3}\)</div>
+    <button class="reveal" onclick="toggle(21)">Show Answer</button>
+    <div class="ans" id="ans21"><div class="anslabel">Answer</div><div class="math">\(3\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Convert: \(2\frac{2}{5} = \frac{12}{5}\) and \(3\frac{1}{3} = \frac{10}{3}\). Then \(\frac{3}{8} \cdot \frac{12}{5} = \frac{36}{40} = \frac{9}{10}\), and \(\frac{9}{10} \cdot \frac{10}{3} = \frac{90}{30} = 3\).</div></div>
+  </div>
+
+  <div class="card" id="q22">
+    <div class="qhead"><span class="qnum">22.</span><span class="qtag">(26)</span></div>
+    <div class="qbody">Simplify: \(2\frac{7}{10} + 5\frac{2}{5}\)</div>
+    <button class="reveal" onclick="toggle(22)">Show Answer</button>
+    <div class="ans" id="ans22"><div class="anslabel">Answer</div><div class="math">\(8\frac{1}{10}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Common denominator 10: \(2\frac{7}{10} + 5\frac{4}{10} = 7\frac{11}{10} = 8\frac{1}{10}\).</div></div>
+  </div>
+
+  <div class="card" id="q23">
+    <div class="qhead"><span class="qnum">23.</span><span class="qtag">(26)</span></div>
+    <div class="qbody">Simplify: \(5 \div 4\frac{1}{6}\)</div>
+    <button class="reveal" onclick="toggle(23)">Show Answer</button>
+    <div class="ans" id="ans23"><div class="anslabel">Answer</div><div class="math">\(1\frac{1}{5}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">\(4\frac{1}{6} = \frac{25}{6}\), so \(5 \div \frac{25}{6} = 5 \cdot \frac{6}{25} = \frac{30}{25} = \frac{6}{5} = 1\frac{1}{5}\).</div></div>
+  </div>
+
+  <div class="card" id="q24">
+    <div class="qhead"><span class="qnum">24.</span><span class="qtag">(23, 30)</span></div>
+    <div class="qbody">Simplify: \(6\frac{1}{2} - 2\frac{5}{6}\)</div>
+    <button class="reveal" onclick="toggle(24)">Show Answer</button>
+    <div class="ans" id="ans24"><div class="anslabel">Answer</div><div class="math">\(3\frac{2}{3}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Common denominator 6: \(6\frac{3}{6} - 2\frac{5}{6} = 5\frac{9}{6} - 2\frac{5}{6} = 3\frac{4}{6} = 3\frac{2}{3}\).</div></div>
+  </div>
+
+  <div class="card" id="q25">
+    <div class="qhead"><span class="qnum">25.</span><span class="qtag">(25)</span></div>
+    <div class="qbody">Simplify: \(\frac{3}{4} + \left(\frac{1}{2} \div \frac{2}{3}\right)\)</div>
+    <button class="reveal" onclick="toggle(25)">Show Answer</button>
+    <div class="ans" id="ans25"><div class="anslabel">Answer</div><div class="math">\(1\frac{1}{2}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Parentheses first: \(\frac{1}{2} \div \frac{2}{3} = \frac{1}{2} \cdot \frac{3}{2} = \frac{3}{4}\). Then \(\frac{3}{4} + \frac{3}{4} = \frac{6}{4} = 1\frac{1}{2}\).</div></div>
+  </div>
+
+  <div class="card" id="q26">
+    <div class="qhead"><span class="qnum">26.</span><span class="qtag">(14)</span></div>
+    <div class="qbody"><span class="tag2">ANALYZE</span> If one card is drawn from a regular deck of cards, what is the probability the card will not be an ace?</div>
+    <button class="reveal" onclick="toggle(26)">Show Answer</button>
+    <div class="ans" id="ans26"><div class="anslabel">Answer</div><div class="math">\(\frac{12}{13}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">A regular deck has 52 cards and 4 aces, so 52 − 4 = 48 cards are not aces. The probability is \(\frac{48}{52} = \frac{12}{13}\).</div></div>
+  </div>
+
+  <div class="card" id="q27">
+    <div class="qhead"><span class="qnum">27.</span><span class="qtag">(2)</span></div>
+    <div class="qbody"><b>a.</b> Solve: \(54 = 54 + y\)<br><b>b.</b> What property is illustrated by the equation in a?</div>
+    <button class="reveal" onclick="toggle(27)">Show Answer</button>
+    <div class="ans" id="ans27"><div class="anslabel">Answer</div><div class="math">\(\text{a. }y = 0 \qquad \text{b. Identity Property of Addition}\)</div>
+    <div class="anslabel">Solution</div><div class="sol"><b>a.</b> \(y = 54 - 54 = 0\). <b>b.</b> Adding 0 leaves a number unchanged — the Identity Property of Addition (0 is the additive identity).</div></div>
+  </div>
+
+  <div class="card" id="q28">
+    <div class="qhead"><span class="qnum">28.</span><span class="qtag">(29)</span></div>
+    <div class="qbody"><span class="tag2">JUSTIFY</span> Consider the following division problem. Without dividing, decide whether the quotient will be greater than 1 or less than 1. How did you decide?<br>\(5 \div 4\frac{1}{6}\)</div>
+    <button class="reveal" onclick="toggle(28)">Show Answer</button>
+    <div class="ans" id="ans28"><div class="anslabel">Answer</div><div class="math">\(\text{Greater than }1\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Compare the divisor to the dividend: the divisor \(4\frac{1}{6}\) is less than the dividend 5. Dividing 5 by a number smaller than 5 gives a quotient greater than 1 (and indeed \(5 \div 4\frac{1}{6} = 1\frac{1}{5}\)).</div></div>
+  </div>
+
+  <div class="card" id="q29">
+    <div class="qhead"><span class="qnum">29.</span><span class="qtag">(29)</span></div>
+    <div class="qbody">When Paulo saw the following addition problem, he knew that the sum would be greater than 13 and less than 15. How did he know?<br>\(8\frac{7}{8} + 5\frac{2}{3}\)</div>
+    <button class="reveal" onclick="toggle(29)">Show Answer</button>
+    <div class="ans" id="ans29"><div class="anslabel">Answer</div><div class="math">\(\text{By bounding each addend between whole numbers}\)</div>
+    <div class="anslabel">Solution</div><div class="sol">Each addend sits between two whole numbers: \(8 < 8\frac{7}{8} < 9\) and \(5 < 5\frac{2}{3} < 6\). Adding the lower bounds gives more than 13, and adding the upper bounds gives less than 15, so \(13 < \text{sum} < 15\). (The exact sum is \(14\frac{13}{24}\), which checks out.)</div></div>
+  </div>
+
+  <div class="card" id="q30">
+    <div class="qhead"><span class="qnum">30.</span><span class="qtag">(17)</span></div>
+    <div class="qbody">Use a protractor to draw a triangle that has a 30° angle and a 60° angle.<div class="fig"><svg viewBox="0 0 280 190" width="260" role="img" aria-label="Triangle with 30 degree and 60 degree angles"><polygon points="60,150 233.2,150 60,50" fill="#dbeafe" stroke="#1e3a8a" stroke-width="2.5"/><path d="M 78 150 L 78 132 L 60 132" fill="none" stroke="#b91c1c" stroke-width="2"/><text x="86" y="144" font-size="14" font-weight="bold" fill="#b91c1c">90°</text><text x="199.2" y="138" font-size="15" font-weight="bold">30°</text><text x="72" y="72" font-size="15" font-weight="bold">60°</text></svg></div></div>
+    <button class="reveal" onclick="toggle(30)">Show Answer</button>
+    <div class="ans" id="ans30"><div class="anslabel">Answer</div><div class="math">\(\text{Angles: }30^\circ, 60^\circ, 90^\circ\)</div>
+    <div class="anslabel">Solution</div><div class="sol">The third angle is \(180^\circ - 30^\circ - 60^\circ = 90^\circ\), so the triangle is a right triangle — a 30°-60°-90° triangle, as drawn.</div></div>
+  </div>
+
+</div>
+<script>
+function toggle(n){
+  var a = document.getElementById('ans'+n);
+  var b = document.querySelector('#q'+n+' .reveal');
+  var open = a.classList.toggle('open');
+  b.textContent = open ? 'Hide Answer' : 'Show Answer';
+  if (window.MathJax) MathJax.typesetPromise([a]);
+}
+</script>
+</body>
+</html>
