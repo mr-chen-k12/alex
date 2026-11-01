@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAT Reading Practice - 11-1 Alex</title>
+<style>
+  :root { --primary-color: #A51C30; --ink:#1c1c1e; --muted:#6b7280; --bg:#f4f6fa; }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--ink);
+         margin: 0; padding: 0; line-height: 1.6; }
+  .page { max-width: 860px; margin: 0 auto; padding: 18px 16px 60px; }
+
+  /* ---- Teacher audit panel (hidden unless ?check=true) ---- */
+  #teacher-audit-panel { display: none; }
+  #teacher-audit-panel.active { display: block; }
+  .audit-banner { background: #1a1a2e; color: #eee; border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+  .audit-container { max-width: 100%; }
+  .audit-title { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .audit-title h2 { margin: 0; font-size: 1.2rem; }
+  .btn-clear-audit { background: #e74c3c; color: #fff; border: none; border-radius: 8px;
+    padding: 8px 14px; cursor: pointer; font-family: inherit; }
+  .audit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px; margin: 14px 0; }
+  .audit-card { background: #16213e; border-radius: 10px; padding: 12px; text-align: center; }
+  .audit-card.flagged { border: 2px solid #e74c3c; }
+  .audit-card .num { font-size: 1.8rem; font-weight: bold; }
+  .audit-card .label { font-size: 0.85rem; color: #bdc3c7; }
+  .audit-log-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 8px; }
+  .audit-log-table th, .audit-log-table td { border: 1px solid #34495e; padding: 6px 8px; text-align: left; }
+  .audit-log-table th { background: #16213e; }
+
+  /* ---- Header ---- */
+  header { background: var(--primary-color); color: #fff; border-radius: 12px;
+    padding: 20px 22px; margin-bottom: 16px; transition: background 0.3s; }
+  .header-container { display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px; }
+  .header-title h1 { margin: 0; font-size: 1.5rem; }
+  .header-title p { margin: 4px 0 0; opacity: 0.9; font-size: 0.95rem; }
+  .badges-preview { display: flex; gap: 12px; }
+  .badge-item { text-align: center; font-size: 0.75rem; opacity: 0.55; filter: grayscale(80%); }
+  .badge-item img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover;
+    border: 3px solid rgba(255,255,255,.5); background: #fff; display: block; margin: 0 auto 4px; }
+  .badge-item.unlocked { opacity: 1; filter: none; }
+  .badge-item.unlocked img { border-color: gold; box-shadow: 0 0 12px gold; }
+
+  /* ---- Controls ---- */
+  .controls-bar { display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px; background: #fff; border-radius: 12px;
+    padding: 12px 18px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .selector-group label { font-weight: bold; margin-right: 8px; }
+  .selector-group select { font-size: 1rem; padding: 8px 12px; border-radius: 8px;
+    border: 2px solid var(--primary-color); font-family: inherit; cursor: pointer; }
+  .score-tracker { font-weight: bold; font-size: 1.1rem; color: var(--primary-color); }
+
+  /* ---- Question cards ---- */
+  .question-card { background: #fff; border-radius: 12px; padding: 20px 22px;
+    margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .question-number { font-weight: bold; color: var(--primary-color); margin-bottom: 8px; }
+  .passage { background: #f8fafc; border-left: 5px solid var(--primary-color);
+    padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 12px; }
+  .question-text { font-weight: bold; font-size: 1.08rem; margin: 10px 0; }
+  .options-group { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .option-btn { text-align: left; background: #f1f5f9; border: 2px solid #e2e8f0;
+    border-radius: 10px; padding: 10px 14px; font-size: 1rem; cursor: pointer;
+    font-family: inherit; color: var(--ink); line-height: 1.5; }
+  .option-btn:hover:not(:disabled) { border-color: var(--primary-color); background: #fff; }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct { border-color: #16a34a; background: #f0fdf4; }
+  .option-btn.incorrect { border-color: #dc2626; background: #fef2f2; }
+  .feedback-box { display: none; margin-top: 12px; padding: 12px 14px; border-radius: 10px; }
+  .feedback-box.show { display: block; }
+  .feedback-box.good { background: #f0fdf4; border: 2px solid #16a34a; }
+  .feedback-box.bad { background: #fef2f2; border: 2px solid #dc2626; }
+  .feedback-box .verdict { font-weight: bold; font-size: 1.05rem; }
+  .feedback-box .expl { margin-top: 6px; color: #334155; }
+
+  /* ---- Score summary ---- */
+  .score-summary-card { display: none; background: #fff; border-radius: 12px; padding: 26px;
+    text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .score-summary-card h2 { margin-top: 0; }
+  .score-display { font-size: 2.6rem; font-weight: bold; color: var(--primary-color); margin: 8px 0; }
+  .reward-badge { margin: 14px 0; }
+  .reward-badge img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
+    border: 4px solid gold; box-shadow: 0 0 18px gold; background: #fff; }
+  .reward-name { font-weight: bold; font-size: 1.2rem; margin-top: 6px; }
+  .btn-retry { background: var(--primary-color); color: #fff; border: none; border-radius: 999px;
+    padding: 12px 28px; font-size: 1.05rem; font-weight: bold; cursor: pointer;
+    font-family: inherit; margin-top: 10px; }
+  @media print {
+    .controls-bar, #teacher-audit-panel, .btn-retry { display: none !important; }
+    .option-btn { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Anti-Cheating Teacher Inspection Panel (Triggered by ?check=true) -->
+  <div id="teacher-audit-panel" class="audit-banner">
+    <div class="audit-container">
+      <div class="audit-title">
+        <h2>🕵️ Teacher Audit Dashboard <span style="font-size: 0.8rem; color:#bdc3c7;">(?check=true mode)</span></h2>
+        <button class="btn-clear-audit" onclick="clearAuditLog()">Reset Audit Data</button>
+      </div>
+      <div class="audit-grid">
+        <div class="audit-card" id="card-total-refreshes">
+          <div class="num" id="stat-total-refreshes">0</div>
+          <div class="label">Total Page Refreshes</div>
+        </div>
+        <div class="audit-card" id="card-mid-refreshes">
+          <div class="num" id="stat-mid-refreshes">0</div>
+          <div class="label">Mid-Attempt Refreshes</div>
+        </div>
+        <div class="audit-card">
+          <div class="num" id="stat-manual-resets">0</div>
+          <div class="label">Manual Reset Attempts</div>
+        </div>
+        <div class="audit-card" id="card-risk-status">
+          <div class="num" id="stat-risk-level" style="font-size: 1.2rem; margin-top: 8px;">Clear</div>
+          <div class="label">Cheating Risk Assessment</div>
+        </div>
+      </div>
+      <div style="font-weight: bold; margin-bottom: 6px; color: #f39c12;">Student Activity &amp; Completion History:</div>
+      <table class="audit-log-table">
+        <thead><tr><th>Timestamp</th><th>Event Type</th><th>Details / Set Progress</th></tr></thead>
+        <tbody id="audit-log-rows"><tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Header & Badges -->
+  <header>
+    <div class="header-container">
+      <div class="header-title">
+        <h1>Digital SAT Reading Practice</h1>
+        <p>30 Questions • Sets A, B &amp; C • Integrity-Tracked Assessment (11-1 Alex)</p>
+      </div>
+      <div class="badges-preview">
+        <div class="badge-item" id="badge-harvard">
+          <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard" onerror="this.style.display='none'">
+          <span>Harvard</span>
+        </div>
+        <div class="badge-item" id="badge-bu">
+          <img src="https://mr-chen-k12.github.io/books/IMG_0121.png" alt="Boston University" onerror="this.style.display='none'">
+          <span>Boston Univ.</span>
+        </div>
+        <div class="badge-item" id="badge-yale">
+          <img src="https://mr-chen-k12.github.io/books/IMG_0122.png" alt="Yale" onerror="this.style.display='none'">
+          <span>Yale</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation & Score Bar -->
+  <div class="controls-bar">
+    <div class="selector-group">
+      <label for="set-select">Choose Question Set:</label>
+      <select id="set-select" onchange="switchSet(this.value)">
+        <option value="Set A">Set A (10 Questions)</option>
+        <option value="Set B">Set B (10 Questions)</option>
+        <option value="Set C">Set C (10 Questions)</option>
+      </select>
+    </div>
+    <div class="score-tracker" id="score-tracker">Score: 0 / 10</div>
+  </div>
+
+  <!-- Main Quiz Area -->
+  <main class="quiz-container">
+    <div id="questions-wrapper"></div>
+    <div id="score-summary" class="score-summary-card">
+      <h2>Set Complete!</h2>
+      <p>Your Final Score for this set:</p>
+      <div class="score-display" id="final-score-text">0 / 10</div>
+      <div id="reward-section"></div>
+      <p id="feedback-message" style="font-size: 1.1rem; font-weight: 500;"></p>
+      <button class="btn-retry" onclick="resetCurrentSet()">Try This Set Again</button>
+    </div>
+  </main>
+
+</div>
+
+<script>
+/* ============ Integrity audit (localStorage) ============ */
+const AUDIT_STORAGE_KEY = "sat_11_1_alex_reading_audit_v1";
+const ACTIVE_PROGRESS_KEY = "sat_11_1_alex_reading_active_v1";
+
+function getAuditData() {
+  const stored = localStorage.getItem(AUDIT_STORAGE_KEY);
+  return stored ? JSON.parse(stored) : {
+    totalRefreshes: 0, midQuizRefreshes: 0, manualResets: 0, events: []
+  };
+}
+function saveAuditData(data) { localStorage.setItem(AUDIT_STORAGE_KEY, JSON.stringify(data)); }
+
+function trackPageLoad(setName) {
+  let audit = getAuditData();
+  audit.totalRefreshes += 1;
+  const activeProgress = localStorage.getItem(ACTIVE_PROGRESS_KEY);
+  if (activeProgress) {
+    const prog = JSON.parse(activeProgress);
+    const answeredCount = Object.keys(prog.answers || {}).length;
+    if (answeredCount > 0 && answeredCount < 10) {
+      audit.midQuizRefreshes += 1;
+      audit.events.unshift({
+        timestamp: new Date().toLocaleString(),
+        type: "⚠️ SUSPICIOUS REFRESH",
+        detail: "Page refreshed mid-attempt during " + prog.setName + " at Q" + (answeredCount + 1) + " (" + answeredCount + "/10 answered)"
+      });
+    }
+  } else {
+    audit.events.unshift({
+      timestamp: new Date().toLocaleString(),
+      type: "PAGE_LOAD",
+      detail: "Opened or reloaded page on " + setName
+    });
+  }
+  saveAuditData(audit);
+  renderAuditDashboard();
+}
+function trackAnswerProgress(setName, answersObj) {
+  localStorage.setItem(ACTIVE_PROGRESS_KEY, JSON.stringify({
+    setName: setName, answers: answersObj, lastUpdated: new Date().toISOString()
+  }));
+}
+function trackSetCompletion(setName, score, total) {
+  let audit = getAuditData();
+  audit.events.unshift({
+    timestamp: new Date().toLocaleString(),
+    type: "SET_COMPLETED",
+    detail: "Completed " + setName + " — Final Score: " + score + "/" + total
+  });
+  saveAuditData(audit);
+  localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+  renderAuditDashboard();
+}
+function trackManualReset(setName) {
+  let audit = getAuditData();
+  audit.manualResets += 1;
+  audit.events.unshift({
+    timestamp: new Date().toLocaleString(),
+    type: "MANUAL_RESET",
+    detail: "Student clicked 'Try Again' to restart " + setName
+  });
+  saveAuditData(audit);
+  localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+  renderAuditDashboard();
+}
+function renderAuditDashboard() {
+  const audit = getAuditData();
+  const setText = (id, v) => { const e = document.getElementById(id); if (e) e.innerText = v; };
+  setText("stat-total-refreshes", audit.totalRefreshes);
+  setText("stat-mid-refreshes", audit.midQuizRefreshes);
+  setText("stat-manual-resets", audit.manualResets);
+  const riskCard = document.getElementById("card-risk-status");
+  const midCard = document.getElementById("card-mid-refreshes");
+  const riskText = document.getElementById("stat-risk-level");
+  if (riskText) {
+    if (audit.midQuizRefreshes > 0) {
+      riskText.innerText = "⚠️ High Risk (Skeptical)";
+      riskText.style.color = "#e74c3c";
+      if (riskCard) riskCard.classList.add("flagged");
+      if (midCard) midCard.classList.add("flagged");
+    } else if (audit.totalRefreshes > 6) {
+      riskText.innerText = "⚠️ Medium Risk";
+      riskText.style.color = "#f39c12";
+    } else {
+      riskText.innerText = "✅ Clear";
+      riskText.style.color = "#2ecc71";
+    }
+  }
+  const tbody = document.getElementById("audit-log-rows");
+  if (tbody) {
+    if (!audit.events.length) {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr>';
+    } else {
+      tbody.innerHTML = audit.events.slice(0, 80).map(e =>
+        "<tr><td>" + e.timestamp + "</td><td>" + e.type + "</td><td>" + e.detail + "</td></tr>"
+      ).join("");
+    }
+  }
+}
+function clearAuditLog() {
+  if (confirm("Are you sure you want to clear all local audit tracking logs?")) {
+    localStorage.removeItem(AUDIT_STORAGE_KEY);
+    localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+    renderAuditDashboard();
+  }
+}
+
+/* ============ University rewards ============ */
+const universityRewards = {
+  "Set A": { name: "Harvard University", img: "https://mr-chen-k12.github.io/math/IMG_0232.png",
+             color: "#A51C30", badgeId: "badge-harvard" },
+  "Set B": { name: "Boston University", img: "https://mr-chen-k12.github.io/books/IMG_0121.png",
+             color: "#CC0000", badgeId: "badge-bu" },
+  "Set C": { name: "Yale University", img: "https://mr-chen-k12.github.io/books/IMG_0122.png",
+             color: "#00356B", badgeId: "badge-yale" }
+};
+
+/* ============ Question Bank: 30 Fresh Brand-New SAT Reading Questions ============ */
+const questionBank = {
+  "Set A": [
+    {
+      "id": 1,
+      "passage": "When a honeybee returns to the hive after finding a rich source of nectar, she performs a 'waggle dance' on the comb, tracing a figure-eight pattern whose central run points in the direction of the flowers relative to the sun. The duration of the run ________ the distance to the food: the longer the waggle, the farther away the flowers are. Fellow workers that watch the dance can then fly directly to a food source they have never visited themselves.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) conceals",
+        "B) encodes",
+        "C) celebrates",
+        "D) shortens"
+      ],
+      "answer": 1,
+      "explanation": "Correct! 'Encodes' means represents information in a coded form — the duration of the dance's central run stands for how far away the flowers are."
+    },
+    {
+      "id": 2,
+      "passage": "Sections of China's Great Wall built during the Ming dynasty have survived earthquakes and centuries of weathering that crumbled other structures of the same era. Materials scientists who analyzed samples of the wall's mortar discovered why: the builders mixed slaked lime with sticky rice soup. The starch from the rice combined with the lime to form an unusually tight, water-resistant crystal structure. In laboratory tests, this composite mortar proved more durable than pure lime mortar and even some modern mixes.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) The Great Wall was the first structure in history built with mortar.",
+        "B) Modern engineers have abandoned the use of lime mortar entirely.",
+        "C) Sticky rice was added to the mortar so the wall could serve as a reservoir.",
+        "D) Sticky rice mortar explains the exceptional durability of Ming-era sections of the Great Wall."
+      ],
+      "answer": 3,
+      "explanation": "Correct! The text centers on how rice starch combined with lime to create an unusually strong crystal structure, accounting for the sections' survival."
+    },
+    {
+      "id": 3,
+      "passage": "In the deep ocean, where sunlight never reaches, most life depends on 'marine snow' — a slow, constant fall of dead plankton, waste pellets, and other organic debris from the sunlit waters above. The descent can take weeks, and bacteria colonize the particles as they sink, enriching them with protein. By the time the snow reaches the abyssal floor, it may be the only food available to the animals living there.",
+      "question": "Which choice best states an inference supported by the text?",
+      "options": [
+        "A) Deep-sea ecosystems are ultimately powered by biological activity in the ocean's sunlit surface layer.",
+        "B) Marine snow falls to the ocean floor faster in winter than in summer.",
+        "C) Bacteria prevent most marine snow from ever reaching the ocean floor.",
+        "D) Animals on the abyssal floor survive by photosynthesizing in the dark."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Because the deep ocean's food arrives as debris produced in the surface waters, deep-sea ecosystems ultimately depend on biological activity in the sunlit layer."
+    },
+    {
+      "id": 4,
+      "passage": "Many species of bacteria can coordinate their behavior by releasing chemical signal molecules into their surroundings. Each cell produces only a small amount of the signal, so its concentration rises in step with the size of the population. Only when the signal passes a threshold — indicating that enough neighbors are present — do the bacteria switch on group behaviors such as forming biofilms or producing toxins. In this way, single-celled organisms ________ their actions as if they were parts of one larger organism.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) abandon",
+        "B) conceal",
+        "C) coordinate",
+        "D) accelerate"
+      ],
+      "answer": 2,
+      "explanation": "Correct! 'Coordinate' means to organize parts so they work together — once the signal shows enough neighbors are present, the bacteria switch on group behaviors together."
+    },
+    {
+      "id": 5,
+      "passage": "Text 1: Defenders of traditional homework argue that practice outside class is essential for mastery: mathematics procedures and foreign-language vocabulary, they note, are retained far better when students retrieve them repeatedly over several days. Homework, supporters add, teaches time management and gives parents a window into what their children are learning.\n\nText 2: Critics respond that the research base for homework is surprisingly thin in the early grades, where several large reviews find little or no connection between homework and achievement. They also argue that homework widens inequality: students with quiet rooms, available parents, and internet access complete it easily, while classmates working evening jobs or caring for younger siblings fall behind through no fault of their own.",
+      "question": "Based on the texts, how would the author of Text 2 most likely respond to the claims made in Text 1?",
+      "options": [
+        "A) By agreeing that retrieval practice is the main reason homework should be assigned every night.",
+        "B) By questioning whether homework's benefits are proven for young students and whether its burdens fall equally on all students.",
+        "C) By claiming that parents should have no involvement in their children's schooling.",
+        "D) By arguing that mathematics and vocabulary require no practice to be learned."
+      ],
+      "answer": 1,
+      "explanation": "Correct! Text 2 challenges both the evidence for homework in the early grades and its unequal burdens — the two counters to Text 1's claims."
+    },
+    {
+      "id": 6,
+      "passage": "In 1747, aboard the warship HMS Salisbury, Scottish naval surgeon James Lind carried out one of the first controlled clinical trials. He took twelve sailors suffering from scurvy — the disease that killed more sailors of the era than storms or battles combined — and divided them into six pairs, giving each pair a different proposed remedy: cider, seawater, vinegar, a spice mixture, dilute acid, or two oranges and a lemon. Within six days, the pair given the citrus fruit had recovered enough to return to duty, while the sailors on the other remedies barely improved.",
+      "question": "According to the text, what did Lind observe about the sailors given oranges and a lemon?",
+      "options": [
+        "A) They were the only sailors whose scurvy returned later in the voyage.",
+        "B) They refused the fruit and recovered only after drinking cider.",
+        "C) Their symptoms worsened sharply before slowly improving.",
+        "D) They recovered within six days, far faster than the sailors given the other remedies."
+      ],
+      "answer": 3,
+      "explanation": "Correct! The text states that the citrus pair recovered enough to return to duty within six days, while the sailors given cider, seawater, vinegar, spices, or acid barely improved."
+    },
+    {
+      "id": 7,
+      "passage": "Common sense suggests that cold water should freeze faster than hot water, since it starts closer to the freezing point. Yet under certain conditions, hot water freezes first — a phenomenon called the Mpemba effect, after the Tanzanian schoolboy who noticed his hot ice-cream mix freezing quickly and pressed scientists to investigate. Researchers still debate the mechanism, which appears to involve evaporation, dissolved gases, and convection currents acting together, and the effect appears only in particular containers and temperature ranges.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) The Mpemba effect proves that cold water is unable to freeze.",
+        "B) Mpemba's teachers immediately recognized the importance of his observation.",
+        "C) Under some conditions hot water can freeze faster than cold water, though scientists have not settled on why.",
+        "D) Evaporation alone fully explains why hot water sometimes freezes first."
+      ],
+      "answer": 2,
+      "explanation": "Correct! The text describes a real but conditional effect — hot water sometimes freezing first — whose mechanism remains a matter of debate."
+    },
+    {
+      "id": 8,
+      "passage": "The superb lyrebird of Australia possesses one of the most sophisticated voices in the animal kingdom. Males sing for hours during the breeding season, and much of the performance consists of sounds copied from their surroundings: the calls of other bird species, the snap of a camera shutter, even the whine of a chainsaw. Ornithologists believe a male that can ________ the widest range of sounds demonstrates a learning ability that females appear to judge when choosing a mate.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) imitate",
+        "B) invent",
+        "C) fear",
+        "D) record"
+      ],
+      "answer": 0,
+      "explanation": "Correct! 'Imitate' means to copy — the lyrebird's song consists of sounds copied from its environment, and range shows learning ability."
+    },
+    {
+      "id": 9,
+      "passage": "When Charles Darwin visited the Galápagos Islands in 1835, he collected finches that differed noticeably in beak size from island to island, though he did not treat them as a case of evolution in action. A century and a half later, biologists Peter and Rosemary Grant measured the finch population of Daphne Major year by year. After a severe drought in 1977 killed most of the island's birds, the Grants documented that the survivors had measurably deeper beaks, suited to the large, tough seeds that remained — and that their offspring inherited those deeper beaks.",
+      "question": "The author mentions the 1977 drought primarily to…",
+      "options": [
+        "A) explain why Darwin failed to understand the finches he collected.",
+        "B) provide a documented instance of natural selection changing a population within a few years.",
+        "C) show that droughts are the main cause of finch extinctions.",
+        "D) demonstrate that beak size is unrelated to a finch's diet."
+      ],
+      "answer": 1,
+      "explanation": "Correct! The drought episode shows natural selection acting measurably — deeper beaks survived and were inherited — within a few years."
+    },
+    {
+      "id": 10,
+      "passage": "In the 1990s, the vulture populations of India crashed by more than 95 percent. The cause was diclofenac, a painkiller given to cattle; vultures that fed on treated carcasses died of kidney failure. With the scavengers gone, uneaten carcasses rotted in the open, and feral dog populations surged — and with them, rabies. Economists later estimated that the vulture decline cost India tens of billions of dollars in sanitation and health damages, an illustration of how the loss of an unglamorous species can cascade through an ecosystem and an economy.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Diclofenac should be banned in every country immediately.",
+        "B) Feral dogs turned out to be more efficient scavengers than vultures.",
+        "C) India's vulture population recovered fully once diclofenac was restricted.",
+        "D) The collapse of India's vultures shows how losing a single scavenger species can trigger wide ecological and economic harm."
+      ],
+      "answer": 3,
+      "explanation": "Correct! The text traces the cascade from the vultures' collapse to rotting carcasses, surging dog populations and rabies, and tens of billions in damages."
+    }
+  ],
+  "Set B": [
+    {
+      "id": 1,
+      "passage": "The slime mold Physarum polycephalum is a single-celled organism with no brain and no nervous system, yet in experiments it solves mazes. Placed in a labyrinth with food at two exits, the mold first spreads through every passage, then retracts from the dead ends, leaving a single tube along the shortest path between the food sources. When researchers in Japan scattered food at points corresponding to cities around Tokyo, the mold's network closely resembled the region's actual rail map — an ________ solution produced without any central planning.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) accidental",
+        "B) permanent",
+        "C) efficient",
+        "D) invisible"
+      ],
+      "answer": 2,
+      "explanation": "Correct! 'Efficient' means achieving a result with little waste — the mold converges on the shortest path and a rail-like network with no central planner."
+    },
+    {
+      "id": 2,
+      "passage": "Ravens can select a tool for a task they will face the next day and set it aside — a form of planning once thought limited to humans and great apes. In experiments, ravens chose a stone suitable for opening a puzzle box, ignoring attractive distractions, and carried it to the box some 17 hours later. They also saved tokens that researchers would later accept in trade for food, passing up an immediate small reward when experience had taught them the token would buy a larger one.",
+      "question": "What can most reasonably be inferred from the text?",
+      "options": [
+        "A) Ravens can plan for future needs rather than responding only to their immediate situation.",
+        "B) Ravens understand the monetary value of the tokens used in experiments.",
+        "C) Tool use in ravens is entirely instinctive and involves no learning.",
+        "D) Ravens have larger brains than the chimpanzees tested in similar studies."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Choosing and keeping a tool for a task 17 hours away, and saving tokens for later trades, show that ravens plan for future needs."
+    },
+    {
+      "id": 3,
+      "passage": "In 1847, Hungarian physician Ignaz Semmelweis noticed that women in the Vienna maternity clinic run by doctors died of childbed fever far more often than women in the clinic run by midwives. The doctors, unlike the midwives, came to the wards directly from performing autopsies. When Semmelweis required the doctors to wash their hands in a chlorinated lime solution, the death rate plunged from nearly one patient in five to about one in fifty. Yet his colleagues, offended by the implication that doctors themselves carried death, largely rejected his findings; hand disinfection became standard practice only decades later, after germ theory explained why it worked.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Midwives in 19th-century Vienna were better trained than doctors.",
+        "B) Semmelweis showed that handwashing drastically reduced deaths, but his discovery was rejected until germ theory supported it.",
+        "C) Chlorinated lime was the first effective treatment for childbed fever.",
+        "D) Semmelweis's colleagues accepted his findings once he published his statistics."
+      ],
+      "answer": 1,
+      "explanation": "Correct! The text emphasizes both the dramatic drop in deaths after handwashing and the profession's rejection of the result until germ theory explained it."
+    },
+    {
+      "id": 4,
+      "passage": "The corpse flower (Amorphophallus titanum) of Sumatra blooms only once every few years, and for a single day. To attract the beetles and flies that pollinate it, the flower heats itself to roughly human body temperature and ________ a powerful odor of rotting flesh, detectable by insects from half a mile away. Botanical gardens announce bloomings in advance, and crowds queue for hours to witness — and smell — the brief event.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) absorbs",
+        "B) conceals",
+        "C) imitates",
+        "D) emits"
+      ],
+      "answer": 3,
+      "explanation": "Correct! 'Emits' means gives off — the flower gives off a rotting-flesh odor that attracts its pollinating insects."
+    },
+    {
+      "id": 5,
+      "passage": "Text 1: Cities that have adopted congestion pricing — charging drivers to enter the busiest districts at peak hours — report striking results. In Stockholm and London, traffic within the charged zone fell by roughly a fifth, bus speeds rose, and the revenue financed improvements to public transportation. Supporters argue that the fee simply asks drivers to pay for the road space and delays they impose on everyone else.\n\nText 2: Critics counter that a flat entry fee falls hardest on low-income drivers — delivery workers, cleaners, and tradespeople who must drive into the center and cannot shift their hours — while wealthy drivers treat the charge as a minor convenience fee. Unless transit alternatives are genuinely good before the charge begins, they argue, pricing becomes a toll paid by the poor to finance smoother trips for the rich.",
+      "question": "Based on the texts, how would the author of Text 2 most likely respond to the results described in Text 1?",
+      "options": [
+        "A) By denying that traffic actually fell in Stockholm and London.",
+        "B) By proposing that public transportation systems be eliminated.",
+        "C) By arguing that the traffic benefits come at an unfair cost to low-income drivers who have no practical alternative to driving.",
+        "D) By agreeing that drivers should pay for the delays they cause others."
+      ],
+      "answer": 2,
+      "explanation": "Correct! Text 2 does not dispute the traffic results; it argues that the flat fee burdens low-income drivers who cannot avoid driving into the center."
+    },
+    {
+      "id": 6,
+      "passage": "In the early 1800s, Mary Anning, the daughter of a cabinetmaker in the coastal town of Lyme Regis, England, made her living finding and selling fossils exposed by landslides in the sea cliffs. In 1811, she and her brother excavated the first complete ichthyosaur skeleton recognized by science, and she later discovered the first plesiosaur. Although gentlemen geologists bought her specimens and published descriptions of them, Anning — a working-class woman — was rarely credited in their papers and was barred from joining the Geological Society of London.",
+      "question": "According to the text, what did Anning discover in 1811?",
+      "options": [
+        "A) The first complete ichthyosaur skeleton recognized by science.",
+        "B) The first plesiosaur skeleton found in England.",
+        "C) Proof that fossils were the remains of extinct animals.",
+        "D) A reliable method for dating fossils using rock layers."
+      ],
+      "answer": 0,
+      "explanation": "Correct! The text dates the ichthyosaur find to 1811; the plesiosaur discovery came later."
+    },
+    {
+      "id": 7,
+      "passage": "The Great Pacific Garbage Patch is often pictured as a floating island of trash, but the reality is less visible and harder to fix. Ocean currents called gyres gather debris from across the North Pacific into two broad zones holding elevated concentrations of tiny plastic fragments — most smaller than a fingernail, suspended through the upper water column like pepper in a soup. Because the plastic is so small and so dispersed, scooping it up would also capture the plankton and small animals living among it, which is why many scientists argue that stopping plastic from entering the ocean matters more than attempting to sieve the gyres.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) The garbage patch is a solid island of trash visible from space.",
+        "B) Ocean currents are rapidly dispersing the garbage patch on their own.",
+        "C) Most of the plastic in the gyres comes from fishing vessels.",
+        "D) The garbage patch consists mainly of dispersed microplastic, which makes cleanup at sea less practical than preventing plastic from entering the ocean."
+      ],
+      "answer": 3,
+      "explanation": "Correct! The text stresses the plastic's tiny, dispersed form, which is why prevention is presented as more practical than at-sea cleanup."
+    },
+    {
+      "id": 8,
+      "passage": "The pistol shrimp, barely two inches long, carries one of the most extreme weapons in the ocean. Its oversized claw snaps shut so quickly that it fires a jet of water that forms a collapsing bubble; the collapse produces a flash of light, a bang louder than a gunshot, and a shock wave powerful enough to ________ small fish and crabs nearby. Entire colonies of the shrimp snapping at once generate enough noise to interfere with naval sonar.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) feed",
+        "B) stun",
+        "C) hide",
+        "D) warm"
+      ],
+      "answer": 1,
+      "explanation": "Correct! 'Stun' means to knock senseless — the shock wave from the collapsing bubble incapacitates the shrimp's small prey."
+    },
+    {
+      "id": 9,
+      "passage": "The Great Library of Alexandria, founded in the third century BCE, aimed to collect every book in the world, and its scholars produced standard editions of Homer and the first systematic catalogues of Greek literature. The library's holdings, however, existed largely as unique scrolls stored in a single complex. As fires, wars, and neglect struck the complex over the following centuries, works that had never been copied elsewhere vanished with it; historians estimate that the great majority of ancient literature is lost to us.",
+      "question": "The author mentions that the library's holdings were stored in a single complex primarily to…",
+      "options": [
+        "A) criticize the library's founders for collecting too many books.",
+        "B) show that Alexandria's scholars disliked copying texts.",
+        "C) explain why so much ancient literature disappeared permanently when the library declined.",
+        "D) prove that fires were the sole cause of the library's destruction."
+      ],
+      "answer": 2,
+      "explanation": "Correct! Because the scrolls were unique and kept in one place, losses there meant the works vanished entirely — which is why so much ancient literature is lost."
+    },
+    {
+      "id": 10,
+      "passage": "Cuttlefish are masters of camouflage, shifting the color and pattern of their skin within a second to match rocks, sand, or coral. Yet experiments show that cuttlefish are colorblind: their eyes contain only one type of color photoreceptor. They achieve their matches despite this, apparently by reading brightness, contrast, and the polarization of light, and by sampling the scene with unusual W-shaped pupils that may let them estimate color indirectly.",
+      "question": "Which choice best states an inference supported by the text?",
+      "options": [
+        "A) Effective camouflage does not necessarily require the ability to see color.",
+        "B) Cuttlefish change color mainly to communicate with predators.",
+        "C) Colorblind animals cannot distinguish any visual patterns at all.",
+        "D) W-shaped pupils are unique to cuttlefish among all marine animals."
+      ],
+      "answer": 0,
+      "explanation": "Correct! A colorblind animal that matches its background within a second shows that seeing color is not required for effective camouflage."
+    }
+  ],
+  "Set C": [
+    {
+      "id": 1,
+      "passage": "Brine shrimp (Artemia) live in salt lakes too harsh for most predators, and their survival strategy begins before birth. When conditions deteriorate, females release cysts — embryos encased in hard shells — that can remain ________ for years, surviving complete drying, freezing, and even exposure to a vacuum. When the cysts land in salty water again, they hatch within a day. The cysts are so durable that they are sold worldwide as aquarium food that stays viable in a sealed can for years.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) dormant",
+        "B) active",
+        "C) fragile",
+        "D) toxic"
+      ],
+      "answer": 0,
+      "explanation": "Correct! 'Dormant' means inactive but capable of becoming active again — the cysts wait in a suspended state for years until water returns."
+    },
+    {
+      "id": 2,
+      "passage": "Throughout the twentieth century, average scores on IQ tests rose steadily in country after country — about three points per decade, a pattern named the Flynn effect after James Flynn, the researcher who documented it. The gains were largest on abstract reasoning problems and far too rapid to be explained by genetic change. Researchers attribute them instead to environmental shifts: longer schooling, better nutrition, smaller families, and daily life that increasingly demands exactly the kind of abstract, hypothetical thinking the tests measure. In some wealthy countries, the rise has recently stalled or even reversed, for reasons still being investigated.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) IQ tests have simply become easier over the past century.",
+        "B) James Flynn invented the modern IQ test.",
+        "C) IQ test scores rose dramatically over the twentieth century, most likely because of environmental rather than genetic changes.",
+        "D) Genetic changes are making each generation more intelligent."
+      ],
+      "answer": 2,
+      "explanation": "Correct! The text attributes the rapid worldwide gains to environmental shifts — schooling, nutrition, and more abstract daily life — because genes cannot change that quickly."
+    },
+    {
+      "id": 3,
+      "passage": "Self-recognition in a mirror — attempting to touch a mark on one's own body that can be seen only in the reflection — was long considered a capacity limited to humans, great apes, dolphins, and elephants. In 2008, researchers reported that European magpies also passed the test: when a colored sticker was placed on a magpie's throat where it could be seen only in a mirror, the birds tried to remove it with their feet, while control birds fitted with invisible stickers did not. Magpies belong to the crow family, whose lineage diverged from that of mammals more than 300 million years ago.",
+      "question": "Which choice best states an inference supported by the text?",
+      "options": [
+        "A) Magpies are more intelligent than dolphins and elephants.",
+        "B) All bird species can recognize themselves in mirrors.",
+        "C) The sticker experiment proved that magpies enjoy looking at mirrors.",
+        "D) The capacity for self-recognition has arisen in distantly related animal groups, not only in mammals."
+      ],
+      "answer": 3,
+      "explanation": "Correct! Magpies are birds whose lineage split from mammals over 300 million years ago, so their passing the test shows self-recognition arose in distantly related groups."
+    },
+    {
+      "id": 4,
+      "passage": "Iceland sits astride the Mid-Atlantic Ridge, where two tectonic plates are slowly pulling apart, and its volcanic geology gives it an energy resource few nations can match. Engineers drill wells into rock heated by magma to produce steam for turbines and hot water for heating; today, geothermal plants supply about a third of Iceland's electricity and heat nearly nine out of ten Icelandic homes. The country has learned to ________ its underground heat so effectively that geothermal water even warms its sidewalks in winter.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) exhaust",
+        "B) harness",
+        "C) import",
+        "D) ignore"
+      ],
+      "answer": 1,
+      "explanation": "Correct! 'Harness' means to control and make use of — Iceland puts its underground heat to work for electricity, home heating, and even sidewalks."
+    },
+    {
+      "id": 5,
+      "passage": "Text 1: Public-health researchers increasingly support releasing genetically modified mosquitoes to fight diseases such as dengue and malaria. In the leading approach, males are engineered so that their offspring die before reaching adulthood; because males do not bite, releasing them adds no direct risk to humans. Field trials in Brazil and Florida have reported local mosquito populations falling by more than 80 percent, with dengue cases dropping in the release zones.\n\nText 2: Ecologists urge caution. Suppressing one mosquito species across a wide region could ripple through food webs — some birds, fish, and bats feed heavily on mosquito larvae — and an engineered trait might behave unpredictably once it interacts with wild populations over many generations. They argue for smaller, reversible trials with long-term monitoring before any large-scale release is attempted.",
+      "question": "Based on the texts, how would the author of Text 2 most likely view a large-scale release of genetically modified mosquitoes?",
+      "options": [
+        "A) As premature until smaller trials with long-term monitoring establish the ecological consequences.",
+        "B) As completely safe, because male mosquitoes do not bite people.",
+        "C) As a failure, since field trials did not reduce mosquito populations.",
+        "D) As preferable to conducting any form of monitoring."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Text 2 calls for smaller, reversible trials and long-term monitoring first — so a large-scale release now would, in its author's view, be premature."
+    },
+    {
+      "id": 6,
+      "passage": "By the 1840s, astronomers knew that Uranus was straying from its predicted orbit, as if tugged by an unseen body. Working independently, John Couch Adams in England and Urbain Le Verrier in France used the size and direction of those deviations to calculate where the unknown planet should be. In September 1846, Berlin astronomer Johann Galle pointed his telescope at the position in Le Verrier's letter — and found Neptune within one degree of the predicted spot, the first planet located by mathematics before it was seen through a telescope.",
+      "question": "According to the text, what prompted the search for Neptune?",
+      "options": [
+        "A) A bright new object was seen crossing the night sky in 1846.",
+        "B) Telescopes had just improved enough to see beyond Uranus.",
+        "C) Unexplained deviations in the orbit of Uranus suggested an unseen planet's gravitational pull.",
+        "D) Le Verrier first located the planet by chance while observing Jupiter."
+      ],
+      "answer": 2,
+      "explanation": "Correct! The text states that Uranus's orbital deviations implied the pull of an unseen body, whose position Adams and Le Verrier then calculated."
+    },
+    {
+      "id": 7,
+      "passage": "In clinical trials, patients who receive a placebo — an inactive pill or procedure indistinguishable from the real treatment — often improve measurably, reporting less pain and fewer symptoms. The effect is not imaginary: placebos can trigger real changes in the brain, including the release of endorphins, the body's own painkillers. For this reason, regulators require new drugs to outperform placebos, not merely to produce improvement, since a substantial share of any treatment's apparent success may come from the patient's expectation of getting better.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Placebos work only because patients are deceived by their doctors.",
+        "B) Placebos can produce real physiological improvement, so new treatments must be tested against them to prove genuine effectiveness.",
+        "C) New drugs are usually less effective than placebos in trials.",
+        "D) Pain is impossible to measure accurately in clinical trials."
+      ],
+      "answer": 1,
+      "explanation": "Correct! The text explains that placebos cause real, measurable improvement — which is exactly why new drugs must outperform them in trials."
+    },
+    {
+      "id": 8,
+      "passage": "The archerfish hunts insects resting on vegetation above the water by shooting them down with a precisely aimed jet of water. The shot is harder than it looks: light bends, or refracts, as it passes from air into water, so the fish's view of an insect is displaced from the insect's true position. Archerfish learn to ________ for this distortion, aiming not where the insect appears to be but where it actually is — and experienced fish rarely miss.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) wait",
+        "B) dive",
+        "C) surface",
+        "D) compensate"
+      ],
+      "answer": 3,
+      "explanation": "Correct! 'Compensate' means to make up for something — the fish adjusts its aim to make up for the bending of light."
+    },
+    {
+      "id": 9,
+      "passage": "When Samuel Morse's telegraph line opened between Washington and Baltimore in 1844, news that had once traveled at the speed of a horse began moving at the speed of electricity. Within two decades, telegraph wires spanned continents, and a cable crossed the Atlantic. In 1848, six New York newspapers jointly founded the Associated Press, largely to share among themselves the considerable cost of gathering news by telegraph from the Mexican-American War.",
+      "question": "The author mentions the founding of the Associated Press primarily to…",
+      "options": [
+        "A) explain why Morse decided to invent the telegraph.",
+        "B) criticize newspapers for cooperating with their competitors.",
+        "C) illustrate how the telegraph's speed and expense reshaped the business of gathering news.",
+        "D) show that the telegraph was used mainly for military communication."
+      ],
+      "answer": 2,
+      "explanation": "Correct! Pooling money to afford telegraph dispatches shows newspapers reorganizing the business of news around the technology's speed and cost."
+    },
+    {
+      "id": 10,
+      "passage": "Black bears spend five to seven months each winter in hibernation, neither eating, drinking, urinating, nor defecating — yet they emerge in spring having lost mostly fat and remarkably little muscle or bone. Physiologists have found that bears recycle the nitrogen in their urea back into protein, effectively rebuilding muscle even while completely inactive. A human confined to bed for the same period, by contrast, would lose substantial muscle mass and bone density and would be unable to stand unassisted.",
+      "question": "Which choice best states an inference supported by the text?",
+      "options": [
+        "A) Bears do not truly hibernate, because they occasionally wake during winter.",
+        "B) Bears avoid the muscle loss expected from long inactivity by recycling nitrogen from their waste into protein.",
+        "C) Humans could hibernate successfully if they ate enough during the autumn.",
+        "D) Bone density increases steadily throughout a bear's hibernation."
+      ],
+      "answer": 1,
+      "explanation": "Correct! The text attributes the bears' preserved muscle to recycling urea nitrogen back into protein during months of inactivity."
+    }
+  ]
+};
+
+/* ============ Application state & logic ============ */
+let currentSetKey = "Set A";
+let userAnswers = {};
+
+function initApp() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("check") === "true") {
+    document.getElementById("teacher-audit-panel").classList.add("active");
+  }
+  trackPageLoad(currentSetKey);
+  loadSet(currentSetKey);
+}
+
+function switchSet(setName) {
+  currentSetKey = setName;
+  document.getElementById("set-select").value = setName;
+  loadSet(setName);
+}
+
+function loadSet(setName) {
+  userAnswers = {};
+  document.getElementById("score-summary").style.display = "none";
+  document.getElementById("reward-section").innerHTML = "";
+  const reward = universityRewards[setName];
+  document.documentElement.style.setProperty("--primary-color", reward.color);
+  updateScoreDisplay();
+  const container = document.getElementById("questions-wrapper");
+  container.innerHTML = "";
+  const questions = questionBank[setName];
+  questions.forEach((q, index) => {
+    const card = document.createElement("div");
+    card.className = "question-card";
+    card.id = "q-card-" + index;
+    const optsHtml = q.options.map((opt, oi) =>
+      '<button class="option-btn" onclick="selectAnswer(' + index + ',' + oi + ')">' + opt + "</button>"
+    ).join("");
+    card.innerHTML =
+      '<div class="question-number">Question ' + (index + 1) + " of 10</div>" +
+      '<div class="passage">' + q.passage.replace(/\n\n/g, "</p><p>") + "</div>" +
+      '<div class="question-text">' + q.question + "</div>" +
+      '<div class="options-group" id="options-' + index + '">' + optsHtml + "</div>" +
+      '<div class="feedback-box" id="feedback-' + index + '"></div>';
+    container.appendChild(card);
+  });
+}
+
+function selectAnswer(questionIdx, selectedOptIdx) {
+  if (userAnswers.hasOwnProperty(questionIdx)) return;
+  const qData = questionBank[currentSetKey][questionIdx];
+  const isCorrect = selectedOptIdx === qData.answer;
+  userAnswers[questionIdx] = isCorrect;
+  trackAnswerProgress(currentSetKey, userAnswers);
+  const optionsGroup = document.getElementById("options-" + questionIdx);
+  const buttons = optionsGroup.getElementsByClassName("option-btn");
+  Array.from(buttons).forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === qData.answer) btn.classList.add("correct");
+    else if (idx === selectedOptIdx && !isCorrect) btn.classList.add("incorrect");
+  });
+  const fbBox = document.getElementById("feedback-" + questionIdx);
+  fbBox.classList.add("show");
+  fbBox.classList.add(isCorrect ? "good" : "bad");
+  fbBox.innerHTML =
+    '<div class="verdict">' + (isCorrect ? "✅ Correct!" : "❌ Incorrect.") + "</div>" +
+    '<div class="expl">' + qData.explanation + "</div>";
+  updateScoreDisplay();
+  checkSetCompletion();
+}
+
+function updateScoreDisplay() {
+  const correctCount = Object.values(userAnswers).filter(Boolean).length;
+  document.getElementById("score-tracker").innerText = "Score: " + correctCount + " / 10";
+}
+
+function checkSetCompletion() {
+  if (Object.keys(userAnswers).length !== 10) return;
+  const score = Object.values(userAnswers).filter(Boolean).length;
+  const summaryBox = document.getElementById("score-summary");
+  const scoreText = document.getElementById("final-score-text");
+  const msgText = document.getElementById("feedback-message");
+  const rewardSection = document.getElementById("reward-section");
+  const currentReward = universityRewards[currentSetKey];
+  scoreText.innerText = score + " / 10";
+  trackSetCompletion(currentSetKey, score, 10);
+  if (score === 10) {
+    document.getElementById(currentReward.badgeId).classList.add("unlocked");
+    msgText.innerHTML = '<span style="color:' + currentReward.color + '; font-weight:bold;">Congratulations! Perfect Score!</span> You earned the ' + currentReward.name + " award! 🏆";
+    rewardSection.innerHTML =
+      '<div class="reward-badge"><img src="' + currentReward.img + '" alt="' + currentReward.name + '" onerror="this.style.display=\'none\'">' +
+      '<div class="reward-name" style="color:' + currentReward.color + ';">' + currentReward.name + "</div></div>";
+  } else if (score >= 7) {
+    msgText.innerHTML = "Great effort! You scored " + score + "/10. Review the explanations and try for a perfect score!";
+  } else {
+    msgText.innerHTML = "Keep practicing! You scored " + score + "/10. Read each explanation carefully and try the set again.";
+  }
+  summaryBox.style.display = "block";
+  summaryBox.scrollIntoView({ behavior: "smooth" });
+}
+
+function resetCurrentSet() {
+  trackManualReset(currentSetKey);
+  loadSet(currentSetKey);
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>
