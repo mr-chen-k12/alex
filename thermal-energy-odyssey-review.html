@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Thermal Energy &amp; The Odyssey — Review</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin:0; font-family: Georgia, 'Times New Roman', serif; background:#f4f6f9; color:#1c2733; }
+  header { background:#20486e; color:#fff; padding:14px 16px 12px; position:sticky; top:0; z-index:30; box-shadow:0 2px 8px rgba(0,0,0,.25); }
+  header h1 { margin:0 0 8px; font-size:1.25rem; }
+  .subj { display:flex; gap:8px; margin-bottom:10px; }
+  .subj button { flex:1; padding:9px 6px; font-size:1rem; border-radius:9px; border:2px solid #7fa6c9; background:#2c5a86; color:#dcebf7; cursor:pointer; font-family:inherit; }
+  .subj button.on { background:#ffb703; border-color:#ffb703; color:#20303f; font-weight:bold; }
+  .overall { font-size:.85rem; margin-bottom:4px; }
+  .bar { height:14px; background:#12314e; border-radius:7px; overflow:hidden; }
+  .bar > div { height:100%; width:0%; background:linear-gradient(90deg,#57b25e,#8fd14f); border-radius:7px; transition:width .4s; }
+  nav.tabs { display:flex; gap:6px; padding:10px 12px 0; flex-wrap:wrap; }
+  nav.tabs button { flex:1; min-width:130px; padding:10px 6px; font-size:.98rem; border-radius:10px 10px 0 0; border:2px solid #20486e; border-bottom:none; background:#dbe7f3; color:#20486e; cursor:pointer; font-family:inherit; }
+  nav.tabs button.on { background:#fff; font-weight:bold; }
+  main { background:#fff; margin:0 12px 16px; border:2px solid #20486e; border-radius:0 0 12px 12px; padding:16px; min-height:60vh; }
+  section.panel { display:none; }
+  section.panel.on { display:block; }
+  .secbar { height:16px; background:#e3eaf1; border-radius:8px; overflow:hidden; margin:6px 0 4px; }
+  .secbar > div { height:100%; width:0%; background:linear-gradient(90deg,#2c7fb8,#57b25e); transition:width .4s; }
+  .secmeta { display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; font-size:.9rem; color:#33506e; }
+  .cheer { font-size:.95rem; color:#2e7d32; min-height:1.2em; margin:2px 0 8px; }
+  .scorechip { background:#eef3f8; border:1.5px solid #b9cbdd; border-radius:14px; padding:2px 10px; }
+  h2 { margin:2px 0 6px; font-size:1.15rem; color:#20486e; }
+  h3 { color:#20486e; margin:16px 0 6px; }
+  .vocab dt { font-weight:bold; margin-top:9px; }
+  .vocab dd { margin:2px 0 0 14px; }
+  table.scales { border-collapse:collapse; margin:8px 0; width:100%; font-size:.95rem; }
+  table.scales th, table.scales td { border:1.5px solid #b9cbdd; padding:5px 8px; text-align:left; }
+  table.scales th { background:#dbe7f3; }
+  .gnote { background:#fff8e1; border:1.5px solid #e6cf7a; border-radius:9px; padding:9px 12px; }
+  /* flashcards */
+  .cardstage { perspective:1100px; margin:12px auto; max-width:520px; }
+  .fcard { position:relative; height:250px; transform-style:preserve-3d; transition:transform .45s; cursor:pointer; touch-action:pan-y; }
+  .fcard.flipped { transform:rotateY(180deg); }
+  .face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:14px; display:flex; align-items:center; justify-content:center; text-align:center; padding:20px; border:3px solid #20486e; }
+  .face.front { background:#eaf2fa; font-size:1.7rem; font-weight:bold; color:#20486e; }
+  .face.back { background:#fff8e1; transform:rotateY(180deg); font-size:1.12rem; line-height:1.45; }
+  .cardctl { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:10px 0; }
+  button.btn { padding:10px 16px; font-size:1rem; border-radius:9px; border:2px solid #20486e; background:#20486e; color:#fff; cursor:pointer; font-family:inherit; }
+  button.btn.alt { background:#fff; color:#20486e; }
+  button.btn.good { background:#2e7d32; border-color:#2e7d32; }
+  button.btn.bad { background:#b3402e; border-color:#b3402e; }
+  button.btn.smart { background:#7b2d8b; border-color:#7b2d8b; }
+  button.btn:disabled { opacity:.45; cursor:default; }
+  .cardcount { text-align:center; color:#33506e; font-size:.95rem; }
+  /* match */
+  .slots { display:grid; grid-template-columns:1fr; gap:9px; margin:12px 0; }
+  .slot { border:2px dashed #8aa5bd; border-radius:10px; padding:9px 11px; background:#f7fafc; }
+  .slot .def { font-size:.97rem; line-height:1.4; }
+  .slot .drop { margin-top:7px; min-height:38px; border-radius:8px; background:#eef3f8; display:flex; align-items:center; padding:3px; }
+  .slot.right { border-color:#2e7d32; background:#e8f5e9; }
+  .slot.wrong { border-color:#b3402e; background:#fdecea; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+  .chip { padding:9px 14px; border-radius:18px; background:#20486e; color:#fff; font-size:1rem; cursor:grab; border:2px solid #20486e; font-family:inherit; }
+  .chip.sel { background:#ffb703; color:#20303f; border-color:#e09f00; }
+  .chip.used { opacity:.28; pointer-events:none; }
+  .slot .chip { cursor:pointer; }
+  /* quiz */
+  .q { border:2px solid #d5e0ea; border-radius:11px; padding:12px 14px; margin:12px 0; }
+  .q .qp { font-size:1.05rem; line-height:1.45; margin-bottom:9px; }
+  .opts { display:grid; gap:7px; }
+  .opt { text-align:left; padding:10px 12px; font-size:1rem; border-radius:9px; border:2px solid #8aa5bd; background:#fff; cursor:pointer; font-family:inherit; }
+  .opt.right { background:#e8f5e9; border-color:#2e7d32; font-weight:bold; }
+  .opt.wrong { background:#fdecea; border-color:#b3402e; }
+  .opt:disabled { cursor:default; opacity:.92; }
+  .result { font-size:1.15rem; font-weight:bold; color:#20486e; background:#eef3f8; border:2px solid #20486e; border-radius:11px; padding:12px 14px; margin:12px 0; display:none; }
+  .result.show { display:block; }
+  #auditPanel { margin:0 12px 18px; background:#fff3f3; border:2px solid #b3402e; border-radius:11px; padding:12px 14px; font-size:.9rem; display:none; }
+  footer { text-align:center; color:#5a7186; font-size:.85rem; padding:0 12px 18px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🔥 Thermal Energy &amp; 📚 The Odyssey — Review</h1>
+  <div class="subj">
+    <button id="subjThermal" onclick="setSubject('thermal')">🌡️ Thermal Energy</button>
+    <button id="subjOdyssey" onclick="setSubject('odyssey')">📚 The Odyssey</button>
+  </div>
+  <div class="overall"><span id="overallTxt">Overall progress: 0%</span></div>
+  <div class="bar"><div id="overallBar"></div></div>
+</header>
+<nav class="tabs">
+  <button data-tab="guide" class="on" onclick="showTab('guide')">📖 Study Guide</button>
+  <button data-tab="cards" onclick="showTab('cards')">📇 Index Cards</button>
+  <button data-tab="match" onclick="showTab('match')">🧩 Drag &amp; Drop Match</button>
+  <button data-tab="quiz" onclick="showTab('quiz')">🔀 Mix &amp; Match</button>
+</nav>
+<main>
+  <section class="panel on" id="panel-guide">
+    <h2 id="guideTitle"></h2>
+    <div id="guideBody"></div>
+  </section>
+
+  <section class="panel" id="panel-cards">
+    <h2>📇 Index Cards</h2>
+    <div class="secmeta"><span id="cardsCount">Terms mastered: 0/0</span><span class="scorechip" id="cardsScore">Last: — · Best: —</span></div>
+    <div class="secbar"><div id="cardsBar"></div></div>
+    <div class="cheer" id="cardsCheer"></div>
+    <div class="cardctl">
+      <button class="btn smart" id="smartBtn" onclick="toggleSmart()">🧠 Smart Review (0)</button>
+      <button class="btn alt" onclick="startCards(false)">↺ All Cards</button>
+    </div>
+    <div class="cardstage"><div class="fcard" id="fcard">
+      <div class="face front" id="cardFront"></div>
+      <div class="face back" id="cardBack"></div>
+    </div></div>
+    <div class="cardcount" id="cardPos"></div>
+    <div class="cardctl">
+      <button class="btn alt" onclick="moveCard(-1)">← Prev</button>
+      <button class="btn bad" onclick="gradeCard(false)">✖ Missed it</button>
+      <button class="btn good" onclick="gradeCard(true)">✔ Got it</button>
+      <button class="btn alt" onclick="moveCard(1)">Next →</button>
+    </div>
+    <p style="text-align:center;color:#5a7186;font-size:.9rem;">Tap the card (or swipe up/down) to flip it. Swipe left for the next card, right for the previous card.</p>
+    <div class="result" id="cardsResult"></div>
+  </section>
+
+  <section class="panel" id="panel-match">
+    <h2>🧩 Drag &amp; Drop Match</h2>
+    <div class="secmeta"><span id="matchCount">Terms matched: 0/0</span><span class="scorechip" id="matchScore">Last round: — · Best round: —</span></div>
+    <div class="secbar"><div id="matchBar"></div></div>
+    <div class="cheer" id="matchCheer"></div>
+    <p>Drag each word onto its definition — or tap a word, then tap the definition box it belongs in. Fill all 8 boxes, then check your answers.</p>
+    <div class="chips" id="chipBank"></div>
+    <div class="slots" id="slotList"></div>
+    <div class="cardctl">
+      <button class="btn" id="matchCheck" onclick="checkMatch()">✔ Check My Matches</button>
+      <button class="btn alt" onclick="startMatch(true)">↺ Start Over</button>
+      <button class="btn alt" onclick="startMatch(false)">➡ New Round</button>
+    </div>
+    <div class="result" id="matchResult"></div>
+  </section>
+
+  <section class="panel" id="panel-quiz">
+    <h2>🔀 Mix &amp; Match</h2>
+    <div class="secmeta"><span id="quizCount">Answered: 0/0</span><span class="scorechip" id="quizScore">Last: — · Best: —</span></div>
+    <div class="secbar"><div id="quizBar"></div></div>
+    <div class="cheer" id="quizCheer"></div>
+    <p>Pick the right answer for each question. Words you miss here are added to your 🧠 Smart Review deck.</p>
+    <div id="quizList"></div>
+    <div class="cardctl"><button class="btn alt" onclick="startQuiz(true)">↺ Try Again</button></div>
+    <div class="result" id="quizResult"></div>
+  </section>
+</main>
+<div id="auditPanel"></div>
+<footer>Tests on Tuesday 11/17 · Progress and scores are saved on this device · Add ?check=true to the address for the teacher audit view</footer>
+
+<script>
+const DATA = {"thermal": {"name": "Thermal Energy", "icon": "\ud83c\udf21\ufe0f", "terms": [["Fossil Fuel", "A substance, such as coal or petroleum, formed over millions of years from fossilized organisms"], ["Ore", "A sediment or rock that contains valuable metals"], ["Alloy", "A mixture of a metal, such as iron, with other metals or nonmetals"], ["Glacier", "A slow-moving mass or river of ice formed by the accumulation and compaction of snow on mountains or near the poles"], ["Upwelling", "A process that carries cool, nutrient-rich water from the deep ocean to the surface"], ["Eddies", "Moving whirlpools of water that spin off the Gulf Stream and veer toward the coast"], ["Closed System", "A system that does not allow for the transfer of matter but does allow for the transfer of energy"], ["Biosphere II", "An airtight, three-acre structure designed to allow for the study of closed systems that mimic Earth's environment"], ["Hypothermia", "The condition of having a body temperature below normal"], ["Thermoregulation", "A body's ability to maintain a temperature within a certain range for survival"], ["Blubber", "A layer of dense fat that provides thermal insulation"], ["Conductor", "A material that draws heat in fast"], ["Insulator", "A material that holds heat in"], ["Dilate", "To open wider, usually in a circular shape or opening"], ["Constrict", "To close tighter \u2014 the opposite of dilate"], ["Buoyant", "Having a lower density than its surroundings, causing it to rise or float upward"], ["PPE", "Personal protection equipment"], ["Viscous", "A substance that is sticky and thick, such as hot lava or honey"], ["Fill Power", "A measurement of how much down resists compression and therefore how well it stays fluffed so it can provide the most insulation"], ["Positive Feedback Loop", "A phenomenon in nature in which the more something occurs, the stronger or more likely that thing's effect becomes"], ["Hypothesis", "An idea or claim that can be tested through an investigation or experiment"]], "facts": [{"q": "A closed system allows the transfer of which of these?", "options": ["Energy, but not matter", "Matter, but not energy", "Both matter and energy", "Neither matter nor energy"], "a": 0}, {"q": "Which of these is one of the three examples of a closed system from this unit?", "options": ["Biosphere II", "Glacier", "Eddies", "Upwelling"], "a": 0}, {"q": "Who founded the Fahrenheit scale?", "options": ["Daniel Fahrenheit", "Anders Celsius", "William Thompson, Lord Kelvin", "Samuel Morse"], "a": 0}, {"q": "On which scale does water boil at 212 degrees?", "options": ["Fahrenheit", "Celsius", "Kelvin", "None of them"], "a": 0}, {"q": "On which scale does water freeze at 273?", "options": ["Kelvin", "Fahrenheit", "Celsius", "All of them"], "a": 0}, {"q": "Who founded the Celsius scale?", "options": ["Anders Celsius", "Daniel Fahrenheit", "William Thompson, Lord Kelvin", "Isaac Newton"], "a": 0}, {"q": "The symbol K belongs to the scale founded by\u2026", "options": ["William Thompson, Lord Kelvin", "Daniel Fahrenheit", "Anders Celsius", "Daniel Kelvin"], "a": 0}, {"q": "Which surface has a HIGH albedo?", "options": ["Snow", "Soil", "Pavement", "Dark asphalt"], "a": 0}, {"q": "Albedo refers to the portion of sunlight that is\u2026", "options": ["Reflected from a surface", "Absorbed by a surface", "Stored inside a surface", "Blocked by clouds"], "a": 0}, {"q": "A wet suit is\u2026", "options": ["Tight fitting, made of synthetic rubber neoprene, and buoyant", "Loose fitting, with three layers", "Made of nylon, rubber, and nylon layers", "Filled with air pockets"], "a": 0}, {"q": "How is a dry suit different from a wet suit?", "options": ["It is loose fitting and made of three layers", "It is tight fitting and made of neoprene", "It is made of one material only", "It cannot be worn over clothing"], "a": 0}, {"q": "Scientific reasoning is different from personal experience because scientific reasoning\u2026", "options": ["Uses science-based facts that back up and support a claim", "Is based on relating to what someone is going through", "Does not need any facts", "Comes from stories people tell"], "a": 0}, {"q": "How do dogs thermoregulate?", "options": ["They pant \u2014 the rapid pants let a breeze cool the body", "They fluff their feathers", "They grow long, thick fur", "They open their mouths in the sun"], "a": 0}, {"q": "Why do birds fluff their feathers in colder climates?", "options": ["To increase insulation", "To decrease insulation", "To cool down", "To fly faster"], "a": 0}, {"q": "Saltwater crocodiles are cold-blooded, so to warm up they\u2026", "options": ["Use outside sources, like warming up in the sun", "Shiver to make their own heat", "Grow blubber", "Pant like dogs"], "a": 0}, {"q": "On which scale does water freeze at 32 degrees?", "options": ["Fahrenheit", "Celsius", "Kelvin", "None of them"], "a": 0}], "guide": "\n<h3>Closed Systems</h3>\n<ul>\n<li>A <b>closed system</b> does not allow the transfer of matter but does allow the transfer of energy.</li>\n<li>3 examples of a closed system from this unit: <b>Biosphere II</b>, the <b>Bathysphere</b>, and the <b>Fukushima Daiichi Plant</b>.</li>\n</ul>\n<h3>Temperature Scales</h3>\n<table class=\"scales\">\n<tr><th>Scale</th><th>Founded by</th><th>Symbol</th><th>Water freezes</th><th>Water boils</th></tr>\n<tr><td>Fahrenheit</td><td>Daniel Fahrenheit</td><td>\u00b0F</td><td>32 \u00b0F</td><td>212 \u00b0F</td></tr>\n<tr><td>Celsius</td><td>Anders Celsius</td><td>\u00b0C</td><td>0 \u00b0C</td><td>100 \u00b0C</td></tr>\n<tr><td>Kelvin</td><td>William Thompson, Lord Kelvin</td><td>K</td><td>273 K</td><td>373 K</td></tr>\n</table>\n<h3>Animal Thermoregulation</h3>\n<ul>\n<li><b>Thermoregulation</b> is a body's ability to maintain a temperature within a certain range for survival.</li>\n<li><b>Dogs</b> pant to regulate body temperature \u2014 the rapid pants allow a breeze to cool down the body.</li>\n<li><b>Birds</b> can migrate to avoid colder climates, or fluff their feathers to increase insulation in the cold; when warm, they compress their feathers to decrease the insulation effect.</li>\n<li><b>Musk oxen</b> have long, thick fur that provides insulation in the cold.</li>\n<li><b>Saltwater crocodiles</b> are cold-blooded \u2014 they need outside sources to warm up. A crocodile will open its mouth to let heat near the brain be released while the rest of the body warms up in the sun.</li>\n</ul>\n<h3>Wet Suits and Dry Suits</h3>\n<ul>\n<li><b>Similarities:</b> both suits help keep bodies dry during wet activities, and both let you wear clothing underneath as extra layers.</li>\n<li><b>Dry suits:</b> loose fitting; three layers \u2014 tough nylon, a synthetic rubber, and another layer of nylon to protect the rubber from the inside; air pockets can form when scuba diving.</li>\n<li><b>Wet suits:</b> tight fitting; made of one material \u2014 synthetic rubber neoprene; and buoyant.</li>\n</ul>\n<h3>Albedo Effect</h3>\n<ul>\n<li><b>Albedo</b> is the portion of sunlight reflected from a surface, as opposed to absorbed.</li>\n<li>White, lighter-colored, and reflective surfaces such as snow bounce a greater percentage of the sun's radiation back toward the atmosphere. Clouds, ice, and snow are highly reflective \u2014 they have a <b>high albedo</b>.</li>\n<li>Darker-colored surfaces, such as soil or pavement, reflect less sunlight \u2014 they have a <b>lower albedo</b>.</li>\n</ul>\n<h3>Scientific Reasoning vs. Personal Experience</h3>\n<ul>\n<li><b>Scientific reasoning</b> uses science-based facts that can back up and support a claim that has been made.</li>\n<li><b>Personal experience</b> is when someone can relate to what someone is going through but doesn't have the facts to back up and support the claim they are making.</li>\n</ul>\n"}, "odyssey": {"name": "The Odyssey", "icon": "\ud83d\udcda", "terms": [["Odyssey", "A long journey full of adventures"], ["Mustered", "Collected or assembled"], ["Unfurled", "To unroll or unfold something, usually a sail or flag"], ["Cloying", "Too sweet, pleasant, or emotional"], ["Diplomat", "A person who has skill in dealing with other people"], ["Indignantly", "Very angry due to something unfair or unjust"], ["Impenetrable", "Impossible to pass or see through"], ["Quandary", "A situation in which you are confused about what to do"], ["Exasperation", "A feeling of intense irritation or annoyance"], ["Oracle", "A person through whom a god was believed to speak"], ["Sirens", "Sea nymphs, part woman and part bird, who lure mariners to destruction"], ["Maelstrom", "A powerful whirlpool in the sea or a river"], ["Surly", "Bad-tempered and unfriendly"], ["Dispossessed", "Banished or ousted"], ["Interminable", "Endless, incapable of being terminated"], ["Brandished", "To shake or wave as a threat"], ["Quell", "Put an end to"], ["Ruse", "An action intended to deceive someone; a trick"], ["Peevishly", "In a cross or irritated way"], ["Besieging", "Forcing to surrender"]], "facts": [], "guide": "\n<p class=\"gnote\">Vocabulary test \u2014 Tuesday 11/17. Study the word list below, then practice with the Index Cards, Drag &amp; Drop Match, and Mix &amp; Match sections.</p>\n"}};
+const K = { cards:'teo_cards_v1', missed:'teo_missed_v1', match:'teo_match_v1', scores:'teo_scores_v1', audit:'teo_audit_v1', active:'teo_active_v1' };
+function load(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } }
+function save(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+let subject = 'thermal';
+let grades = load(K.cards, {thermal:{}, odyssey:{}});
+let quizMissed = load(K.missed, {thermal:[], odyssey:[]});
+let matched = load(K.match, {thermal:[], odyssey:[]});
+let scores = load(K.scores, {thermal:{cards:{},match:{},quiz:{}}, odyssey:{cards:{},match:{},quiz:{}}});
+let audit = load(K.audit, []);
+function logEvent(type, detail){ audit.push({t:new Date().toISOString(), type:type, detail:detail||''}); if (audit.length>300) audit = audit.slice(-300); save(K.audit, audit); }
+
+function terms(){ return DATA[subject].terms; }
+function cheer(pct){ if (pct>=100) return '🎉 Good job — all finished!'; if (pct>=75) return 'Almost there — keep going!'; if (pct>=50) return "Good job — you're past halfway!"; if (pct>0) return 'Good start — keep going!'; return "Let's get started!"; }
+function pctOf(a,b){ return b ? Math.round(100*a/b) : 0; }
+function scoreLine(sec){ const s = scores[subject][sec]; const f = v => (v===undefined||v===null) ? '—' : v+'%'; return {last:f(s.last), best:f(s.best)}; }
+function recordScore(sec, pct){ const s = scores[subject][sec]; s.last = pct; if (s.best===undefined || pct > s.best) s.best = pct; save(K.scores, scores); }
+
+/* ---------- tabs & subject ---------- */
+function showTab(name){
+  document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === name));
+  document.querySelectorAll('section.panel').forEach(p => p.classList.toggle('on', p.id === 'panel-' + name));
+}
+function setSubject(sub){
+  subject = sub;
+  document.getElementById('subjThermal').classList.toggle('on', sub === 'thermal');
+  document.getElementById('subjOdyssey').classList.toggle('on', sub === 'odyssey');
+  renderGuide(); startCards(false); startMatch(false); startQuiz(false); updateOverall();
+}
+function renderGuide(){
+  const d = DATA[subject];
+  document.getElementById('guideTitle').textContent = d.icon + ' ' + d.name + ' — Study Guide';
+  let h = '<dl class="vocab">';
+  d.terms.forEach(t => { h += '<dt>' + t[0] + '</dt><dd>' + t[1] + '</dd>'; });
+  h += '</dl>' + d.guide;
+  document.getElementById('guideBody').innerHTML = h;
+}
+function updateOverall(){
+  const t = terms().length;
+  const known = terms().filter(x => grades[subject][x[0]] === 'known').length;
+  const mp = pctOf(matched[subject].length, t);
+  const cp = pctOf(known, t);
+  const qb = scores[subject].quiz.best || 0;
+  const overall = Math.round((cp + mp + qb) / 3);
+  document.getElementById('overallBar').style.width = overall + '%';
+  document.getElementById('overallTxt').textContent = DATA[subject].icon + ' ' + DATA[subject].name + ' — overall progress: ' + overall + '%';
+}
+
+/* ---------- flashcards ---------- */
+let deck = [], deckIdx = 0, smartMode = false, flipped = false;
+function smartList(){
+  const set = new Set();
+  terms().forEach(t => { if (grades[subject][t[0]] === 'missed') set.add(t[0]); });
+  quizMissed[subject].forEach(x => set.add(x));
+  return terms().filter(t => set.has(t[0]));
+}
+function startCards(smart){
+  smartMode = smart;
+  deck = smart ? smartList() : terms().slice();
+  deckIdx = 0; flipped = false;
+  renderCard(); updateCardsMeta();
+}
+function toggleSmart(){ startCards(!(smartMode && deck.length) ? true : false); if (smartMode && !deck.length) { document.getElementById('cardsResult').className = 'result show'; document.getElementById('cardsResult').textContent = '🧠 Nothing in Smart Review right now — grade a card ✖ or miss a quiz word and it will show up here.'; } }
+function renderCard(){
+  const fc = document.getElementById('fcard');
+  fc.classList.toggle('flipped', flipped);
+  if (!deck.length){
+    document.getElementById('cardFront').textContent = smartMode ? '🧠 Smart Review is empty' : 'No cards';
+    document.getElementById('cardBack').textContent = '';
+    document.getElementById('cardPos').textContent = '';
+    return;
+  }
+  const t = deck[deckIdx];
+  document.getElementById('cardFront').textContent = t[0];
+  document.getElementById('cardBack').textContent = t[1];
+  document.getElementById('cardPos').textContent = 'Card ' + (deckIdx + 1) + ' of ' + deck.length + (smartMode ? ' · 🧠 Smart Review' : '');
+}
+function moveCard(d){ if (!deck.length) return; deckIdx = (deckIdx + d + deck.length) % deck.length; flipped = false; renderCard(); }
+function flipCard(){ if (!deck.length) return; flipped = !flipped; renderCard(); }
+function gradeCard(ok){
+  if (!deck.length) return;
+  const t = deck[deckIdx];
+  grades[subject][t[0]] = ok ? 'known' : 'missed'; save(K.cards, grades);
+  if (ok){ const i = quizMissed[subject].indexOf(t[0]); if (i >= 0){ quizMissed[subject].splice(i,1); save(K.missed, quizMissed); } }
+  updateCardsMeta(); updateOverall();
+  if (smartMode){ startCards(true); } else { moveCard(1); }
+}
+function updateCardsMeta(){
+  const t = terms(); const known = t.filter(x => grades[subject][x[0]] === 'known').length;
+  const pct = pctOf(known, t.length);
+  document.getElementById('cardsBar').style.width = pct + '%';
+  document.getElementById('cardsCount').textContent = 'Terms mastered: ' + known + '/' + t.length + ' (' + pct + '%)';
+  document.getElementById('cardsCheer').textContent = cheer(pct);
+  const sl = scoreLine('cards');
+  document.getElementById('cardsScore').textContent = 'Mastered: ' + sl.last + ' · Best: ' + sl.best;
+  document.getElementById('smartBtn').textContent = '🧠 Smart Review (' + smartList().length + ')';
+  if (known === t.length && t.length){ recordScore('cards', 100); document.getElementById('cardsResult').className = 'result show'; document.getElementById('cardsResult').textContent = '🎉 You marked every ' + DATA[subject].name + ' term as known — 100%!'; }
+}
+/* swipe / flip: one pointerup handler decides (waves-app pattern) */
+(function(){
+  const el = document.getElementById('fcard'); let sx = 0, sy = 0, down = false;
+  el.addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; down = true; });
+  el.addEventListener('pointerup', e => {
+    if (!down) return; down = false;
+    const dx = e.clientX - sx, dy = e.clientY - sy;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { moveCard(dx < 0 ? 1 : -1); }
+    else { flipCard(); }
+  });
+})();
+
+/* ---------- drag & drop match ---------- */
+const ROUND = 8;
+let mSlots = [], mPlaced = {}, mRound = 0, mChecked = false, selChip = null;
+function shuffled(arr, seed){ const a = arr.slice(); let s = seed; for (let i = a.length - 1; i > 0; i--){ s = (s * 1103515245 + 12345) % 2147483648; const j = s % (i + 1); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function startMatch(reset){
+  if (reset) logEvent('match_start_over', subject);
+  mRound++;
+  const t = terms();
+  const uncovered = t.filter(x => !matched[subject].includes(x[0]));
+  const covered = t.filter(x => matched[subject].includes(x[0]));
+  const pool = shuffled(uncovered.concat(covered), 7 + mRound * 31 + subject.length);
+  mSlots = pool.slice(0, Math.min(ROUND, t.length));
+  mPlaced = {}; mChecked = false; selChip = null;
+  renderMatch(); updateMatchMeta();
+}
+function renderMatch(){
+  const bank = document.getElementById('chipBank'); bank.innerHTML = '';
+  shuffled(mSlots, 13 + mRound * 7).forEach(t => {
+    const c = document.createElement('button'); c.className = 'chip'; c.textContent = t[0]; c.dataset.term = t[0]; c.draggable = true;
+    c.addEventListener('click', () => selectChip(c));
+    c.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', t[0]); selChip = c; });
+    bank.appendChild(c);
+  });
+  const list = document.getElementById('slotList'); list.innerHTML = '';
+  shuffled(mSlots, 29 + mRound * 11).forEach(t => {
+    const s = document.createElement('div'); s.className = 'slot'; s.dataset.term = t[0];
+    s.innerHTML = '<div class="def">' + t[1] + '</div><div class="drop"></div>';
+    const drop = s.querySelector('.drop');
+    drop.addEventListener('click', () => placeInto(s));
+    drop.addEventListener('dragover', e => e.preventDefault());
+    drop.addEventListener('drop', e => { e.preventDefault(); const term = e.dataTransfer.getData('text/plain'); if (term) placeTerm(s, term); });
+    list.appendChild(s);
+  });
+  document.getElementById('matchResult').className = 'result';
+  document.getElementById('matchCheck').disabled = false;
+}
+function chipEl(term){ return document.querySelector('#chipBank .chip[data-term="' + CSS.escape(term) + '"]'); }
+function selectChip(c){ if (c.classList.contains('used')) return; document.querySelectorAll('.chip.sel').forEach(x => x.classList.remove('sel')); selChip = c; c.classList.add('sel'); }
+function placeInto(slot){ if (selChip && !mChecked) placeTerm(slot, selChip.dataset.term); }
+function placeTerm(slot, term){
+  if (mChecked) return;
+  const prev = mPlaced[slot.dataset.term];
+  if (prev){ const pc = chipEl(prev); if (pc) pc.classList.remove('used'); }
+  Object.keys(mPlaced).forEach(k => { if (mPlaced[k] === term && k !== slot.dataset.term){ delete mPlaced[k]; const os = document.querySelector('.slot[data-term="' + CSS.escape(k) + '"] .drop'); if (os) os.innerHTML = ''; } });
+  mPlaced[slot.dataset.term] = term;
+  const drop = slot.querySelector('.drop'); drop.innerHTML = '';
+  const c = document.createElement('button'); c.className = 'chip'; c.textContent = term;
+  c.addEventListener('click', () => { if (mChecked) return; delete mPlaced[slot.dataset.term]; drop.innerHTML = ''; const bc = chipEl(term); if (bc) bc.classList.remove('used'); });
+  drop.appendChild(c);
+  const bc = chipEl(term); if (bc){ bc.classList.add('used'); bc.classList.remove('sel'); }
+  selChip = null;
+}
+function checkMatch(){
+  const filled = Object.keys(mPlaced).length;
+  if (filled < mSlots.length){ document.getElementById('matchResult').className = 'result show'; document.getElementById('matchResult').textContent = 'Fill every box first — ' + filled + ' of ' + mSlots.length + ' placed.'; return; }
+  mChecked = true;
+  let right = 0;
+  mSlots.forEach(t => {
+    const slot = document.querySelector('.slot[data-term="' + CSS.escape(t[0]) + '"]');
+    const ok = mPlaced[t[0]] === t[0];
+    slot.classList.add(ok ? 'right' : 'wrong');
+    if (ok){ right++; if (!matched[subject].includes(t[0])) matched[subject].push(t[0]); }
+  });
+  save(K.match, matched);
+  const pct = pctOf(right, mSlots.length);
+  recordScore('match', pct);
+  logEvent('match_finish', subject + ' ' + pct + '%');
+  document.getElementById('matchResult').className = 'result show';
+  document.getElementById('matchResult').textContent = 'You matched ' + right + ' of ' + mSlots.length + ' — ' + pct + '% this round.' + (pct === 100 ? ' 🎉 Perfect round!' : ' Wrong boxes are marked red — tap Start Over to try this round again, or New Round for fresh words.');
+  document.getElementById('matchCheck').disabled = true;
+  updateMatchMeta(); updateOverall();
+}
+function updateMatchMeta(){
+  const t = terms(); const pct = pctOf(matched[subject].length, t.length);
+  document.getElementById('matchBar').style.width = pct + '%';
+  document.getElementById('matchCount').textContent = 'Terms matched: ' + matched[subject].length + '/' + t.length + ' (' + pct + '%)';
+  document.getElementById('matchCheer').textContent = cheer(pct);
+  const sl = scoreLine('match');
+  document.getElementById('matchScore').textContent = 'Last round: ' + sl.last + ' · Best round: ' + sl.best;
+}
+
+/* ---------- mix & match quiz ---------- */
+let quiz = [], quizAns = {};
+function buildQuiz(){
+  const t = terms(); const qs = [];
+  t.forEach((term, i) => {
+    const others = [t[(i + 5) % t.length][0], t[(i + 9) % t.length][0], t[(i + 13) % t.length][0]].filter(x => x !== term[0]);
+    const opts = shuffled([term[0]].concat(others.slice(0, 3)), 101 + i * 17);
+    qs.push({ q: 'Which word means: “' + term[1] + '”', options: opts, a: opts.indexOf(term[0]), term: term[0] });
+  });
+  DATA[subject].facts.forEach((f, i) => {
+    const opts = shuffled(f.options.slice(), 307 + i * 19);
+    qs.push({ q: f.q, options: opts, a: opts.indexOf(f.options[f.a]), term: null });
+  });
+  return qs;
+}
+function startQuiz(reset){
+  if (reset) logEvent('quiz_reset', subject);
+  quiz = buildQuiz(); quizAns = {};
+  save(K.active, { quizStarted: false, subject: subject });
+  const list = document.getElementById('quizList'); list.innerHTML = '';
+  quiz.forEach((q, qi) => {
+    const div = document.createElement('div'); div.className = 'q';
+    let h = '<div class="qp"><b>' + (qi + 1) + '.</b> ' + q.q + '</div><div class="opts">';
+    div.innerHTML = h + '</div>';
+    const optsEl = div.querySelector('.opts');
+    q.options.forEach((o, oi) => {
+      const b = document.createElement('button'); b.className = 'opt'; b.textContent = o;
+      b.addEventListener('click', () => answerQuiz(qi, oi, b, optsEl));
+      optsEl.appendChild(b);
+    });
+    list.appendChild(div);
+  });
+  document.getElementById('quizResult').className = 'result';
+  updateQuizMeta();
+}
+function answerQuiz(qi, oi, btn, optsEl){
+  if (quizAns[qi] !== undefined) return;
+  const q = quiz[qi];
+  quizAns[qi] = oi;
+  save(K.active, { quizStarted: true, subject: subject });
+  Array.prototype.forEach.call(optsEl.children, (b, bi) => { b.disabled = true; if (bi === q.a) b.classList.add('right'); });
+  if (oi !== q.a){ btn.classList.add('wrong'); if (q.term && !quizMissed[subject].includes(q.term)){ quizMissed[subject].push(q.term); save(K.missed, quizMissed); } }
+  updateQuizMeta();
+  if (Object.keys(quizAns).length === quiz.length) finishQuiz();
+}
+function finishQuiz(){
+  let right = 0; quiz.forEach((q, i) => { if (quizAns[i] === q.a) right++; });
+  const pct = pctOf(right, quiz.length);
+  recordScore('quiz', pct);
+  logEvent('quiz_finish', subject + ' ' + pct + '%');
+  save(K.active, { quizStarted: false, subject: subject });
+  const el = document.getElementById('quizResult'); el.className = 'result show';
+  el.textContent = 'Score: ' + right + ' of ' + quiz.length + ' — ' + pct + '%' + (pct === 100 ? ' 🎉 Perfect!' : pct >= 80 ? ' — great work! Words you missed were added to 🧠 Smart Review.' : ' — keep practicing! Words you missed were added to 🧠 Smart Review.');
+  updateQuizMeta(); updateCardsMeta(); updateOverall();
+}
+function updateQuizMeta(){
+  const done = Object.keys(quizAns).length;
+  const pct = pctOf(done, quiz.length);
+  document.getElementById('quizBar').style.width = pct + '%';
+  document.getElementById('quizCount').textContent = 'Answered: ' + done + '/' + quiz.length + ' (' + pct + '%)';
+  document.getElementById('quizCheer').textContent = cheer(pct);
+  const sl = scoreLine('quiz');
+  document.getElementById('quizScore').textContent = 'Last: ' + sl.last + ' · Best: ' + sl.best;
+}
+
+/* ---------- audit (?check=true) ---------- */
+(function(){
+  const act = load(K.active, {});
+  if (act.quizStarted) logEvent('mid_quiz_refresh', act.subject || '');
+  logEvent('load', location.search.includes('check=true') ? 'teacher view' : '');
+  if (location.search.includes('check=true')){
+    const p = document.getElementById('auditPanel'); p.style.display = 'block';
+    const cnt = t => audit.filter(e => e.type === t).length;
+    let h = '<h3 style="margin-top:0">🔍 Teacher Audit</h3>';
+    h += '<p>Page loads: <b>' + cnt('load') + '</b> · Mid-quiz refreshes: <b>' + cnt('mid_quiz_refresh') + '</b> · Quiz resets: <b>' + cnt('quiz_reset') + '</b> · Match start-overs: <b>' + cnt('match_start_over') + '</b></p>';
+    h += '<p>Quiz finishes: ' + audit.filter(e => e.type === 'quiz_finish').map(e => e.detail).join(', ') + '<br>Match finishes: ' + audit.filter(e => e.type === 'match_finish').map(e => e.detail).join(', ') + '</p>';
+    h += '<p style="max-height:160px;overflow:auto;font-size:.8rem">' + audit.slice(-40).map(e => e.t.replace('T', ' ').slice(0, 19) + ' — ' + e.type + ' ' + e.detail).join('<br>') + '</p>';
+    h += '<button class="btn alt" onclick="localStorage.removeItem(\'teo_audit_v1\'); location.reload();">Clear audit data</button>';
+    p.innerHTML = h;
+  }
+})();
+
+setSubject('thermal');
+</script>
+</body>
+</html>
