@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAT Reading Practice - 11-17 Alex</title>
+<style>
+  :root { --primary-color: #A51C30; --ink:#1c1c1e; --muted:#6b7280; --bg:#f4f6fa; }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--ink);
+         margin: 0; padding: 0; line-height: 1.6; }
+  .page { max-width: 860px; margin: 0 auto; padding: 18px 16px 60px; }
+
+  /* ---- Teacher audit panel (hidden unless ?check=true) ---- */
+  #teacher-audit-panel { display: none; }
+  #teacher-audit-panel.active { display: block; }
+  .audit-banner { background: #1a1a2e; color: #eee; border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+  .audit-container { max-width: 100%; }
+  .audit-title { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .audit-title h2 { margin: 0; font-size: 1.2rem; }
+  .btn-clear-audit { background: #e74c3c; color: #fff; border: none; border-radius: 8px;
+    padding: 8px 14px; cursor: pointer; font-family: inherit; }
+  .audit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px; margin: 14px 0; }
+  .audit-card { background: #16213e; border-radius: 10px; padding: 12px; text-align: center; }
+  .audit-card.flagged { border: 2px solid #e74c3c; }
+  .audit-card .num { font-size: 1.8rem; font-weight: bold; }
+  .audit-card .label { font-size: 0.85rem; color: #bdc3c7; }
+  .audit-log-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 8px; }
+  .audit-log-table th, .audit-log-table td { border: 1px solid #34495e; padding: 6px 8px; text-align: left; }
+  .audit-log-table th { background: #16213e; }
+
+  /* ---- Header ---- */
+  header { background: var(--primary-color); color: #fff; border-radius: 12px;
+    padding: 20px 22px; margin-bottom: 16px; transition: background 0.3s; }
+  .header-container { display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px; }
+  .header-title h1 { margin: 0; font-size: 1.5rem; }
+  .header-title p { margin: 4px 0 0; opacity: 0.9; font-size: 0.95rem; }
+  .badges-preview { display: flex; gap: 12px; }
+  .badge-item { text-align: center; font-size: 0.75rem; opacity: 0.55; filter: grayscale(80%); }
+  .badge-item img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover;
+    border: 3px solid rgba(255,255,255,.5); background: #fff; display: block; margin: 0 auto 4px; }
+  .badge-item.unlocked { opacity: 1; filter: none; }
+  .badge-item.unlocked img { border-color: gold; box-shadow: 0 0 12px gold; }
+
+  /* ---- Controls ---- */
+  .controls-bar { display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px; background: #fff; border-radius: 12px;
+    padding: 12px 18px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .selector-group label { font-weight: bold; margin-right: 8px; }
+  .selector-group select { font-size: 1rem; padding: 8px 12px; border-radius: 8px;
+    border: 2px solid var(--primary-color); font-family: inherit; cursor: pointer; }
+  .score-tracker { font-weight: bold; font-size: 1.1rem; color: var(--primary-color); }
+
+  /* ---- Question cards ---- */
+  .question-card { background: #fff; border-radius: 12px; padding: 20px 22px;
+    margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .question-number { font-weight: bold; color: var(--primary-color); margin-bottom: 8px; }
+  .passage { background: #f8fafc; border-left: 5px solid var(--primary-color);
+    padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 12px; }
+  .question-text { font-weight: bold; font-size: 1.08rem; margin: 10px 0; }
+  .options-group { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .option-btn { text-align: left; background: #f1f5f9; border: 2px solid #e2e8f0;
+    border-radius: 10px; padding: 10px 14px; font-size: 1rem; cursor: pointer;
+    font-family: inherit; color: var(--ink); line-height: 1.5; }
+  .option-btn:hover:not(:disabled) { border-color: var(--primary-color); background: #fff; }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct { border-color: #16a34a; background: #f0fdf4; }
+  .option-btn.incorrect { border-color: #dc2626; background: #fef2f2; }
+  .feedback-box { display: none; margin-top: 12px; padding: 12px 14px; border-radius: 10px; }
+  .feedback-box.show { display: block; }
+  .feedback-box.good { background: #f0fdf4; border: 2px solid #16a34a; }
+  .feedback-box.bad { background: #fef2f2; border: 2px solid #dc2626; }
+  .feedback-box .verdict { font-weight: bold; font-size: 1.05rem; }
+  .feedback-box .expl { margin-top: 6px; color: #334155; }
+
+  /* ---- Score summary ---- */
+  .score-summary-card { display: none; background: #fff; border-radius: 12px; padding: 26px;
+    text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .score-summary-card h2 { margin-top: 0; }
+  .score-display { font-size: 2.6rem; font-weight: bold; color: var(--primary-color); margin: 8px 0; }
+  .reward-badge { margin: 14px 0; }
+  .reward-badge img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
+    border: 4px solid gold; box-shadow: 0 0 18px gold; background: #fff; }
+  .reward-name { font-weight: bold; font-size: 1.2rem; margin-top: 6px; }
+  .btn-retry { background: var(--primary-color); color: #fff; border: none; border-radius: 999px;
+    padding: 12px 28px; font-size: 1.05rem; font-weight: bold; cursor: pointer;
+    font-family: inherit; margin-top: 10px; }
+  @media print {
+    .controls-bar, #teacher-audit-panel, .btn-retry { display: none !important; }
+    .option-btn { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Anti-Cheating Teacher Inspection Panel (Triggered by ?check=true) -->
+  <div id="teacher-audit-panel" class="audit-banner">
+    <div class="audit-container">
+      <div class="audit-title">
+        <h2>🕵️ Teacher Audit Dashboard <span style="font-size: 0.8rem; color:#bdc3c7;">(?check=true mode)</span></h2>
+        <button class="btn-clear-audit" onclick="clearAuditLog()">Reset Audit Data</button>
+      </div>
+      <div class="audit-grid">
+        <div class="audit-card" id="card-total-refreshes">
+          <div class="num" id="stat-total-refreshes">0</div>
+          <div class="label">Total Page Refreshes</div>
+        </div>
+        <div class="audit-card" id="card-mid-refreshes">
+          <div class="num" id="stat-mid-refreshes">0</div>
+          <div class="label">Mid-Attempt Refreshes</div>
+        </div>
+        <div class="audit-card">
+          <div class="num" id="stat-manual-resets">0</div>
+          <div class="label">Manual Reset Attempts</div>
+        </div>
+        <div class="audit-card" id="card-risk-status">
+          <div class="num" id="stat-risk-level" style="font-size: 1.2rem; margin-top: 8px;">Clear</div>
+          <div class="label">Cheating Risk Assessment</div>
+        </div>
+      </div>
+      <div style="font-weight: bold; margin-bottom: 6px; color: #f39c12;">Student Activity & Completion History:</div>
+      <table class="audit-log-table">
+        <thead><tr><th>Timestamp</th><th>Event Type</th><th>Details / Set Progress</th></tr></thead>
+        <tbody id="audit-log-rows"><tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Header & Badges -->
+  <header>
+    <div class="header-container">
+      <div class="header-title">
+        <h1>Digital SAT Reading Practice</h1>
+        <p>30 Questions • Sets A, B & C • Integrity-Tracked Assessment (11-17 Alex)</p>
+      </div>
+      <div class="badges-preview">
+        <div class="badge-item" id="badge-harvard">
+          <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard" onerror="this.style.display='none'">
+          <span>Harvard</span>
+        </div>
+        <div class="badge-item" id="badge-bu">
+          <img src="https://mr-chen-k12.github.io/books/IMG_0121.png" alt="Boston University" onerror="this.style.display='none'">
+          <span>Boston Univ.</span>
+        </div>
+        <div class="badge-item" id="badge-yale">
+          <img src="https://mr-chen-k12.github.io/books/IMG_0122.png" alt="Yale" onerror="this.style.display='none'">
+          <span>Yale</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation & Score Bar -->
+  <div class="controls-bar">
+    <div class="selector-group">
+      <label for="set-select">Choose Question Set:</label>
+      <select id="set-select" onchange="switchSet(this.value)">
+        <option value="Set A">Set A (10 Questions)</option>
+        <option value="Set B">Set B (10 Questions)</option>
+        <option value="Set C">Set C (10 Questions)</option>
+      </select>
+    </div>
+    <div class="score-tracker" id="score-tracker">Score: 0 / 10</div>
+  </div>
+
+  <!-- Main Quiz Area -->
+  <main class="quiz-container">
+    <div id="questions-wrapper"></div>
+    <div id="score-summary" class="score-summary-card">
+      <h2>Set Complete!</h2>
+      <p>Your Final Score for this set:</p>
+      <div class="score-display" id="final-score-text">0 / 10</div>
+      <div id="reward-section"></div>
+      <p id="feedback-message" style="font-size: 1.1rem; font-weight: 500;"></p>
+      <button class="btn-retry" onclick="resetCurrentSet()">Try This Set Again</button>
+    </div>
+  </main>
+
+</div>
+
+<script>
+/* ============ Integrity audit (localStorage) ============ */
+const AUDIT_STORAGE_KEY = "sat_11_17_alex_audit_v1";
+const ACTIVE_PROGRESS_KEY = "sat_11_17_alex_active_v1";
+
+function getAuditData() {
+  const stored = localStorage.getItem(AUDIT_STORAGE_KEY);
+  return stored ? JSON.parse(stored) : {
+    totalRefreshes: 0, midQuizRefreshes: 0, manualResets: 0, events: []
+  };
+}
+function saveAuditData(data) { localStorage.setItem(AUDIT_STORAGE_KEY, JSON.stringify(data)); }
+
+function trackPageLoad(setName) {
+  let audit = getAuditData();
+  audit.totalRefreshes += 1;
+  const activeProgress = localStorage.getItem(ACTIVE_PROGRESS_KEY);
+  if (activeProgress) {
+    const prog = JSON.parse(activeProgress);
+    const answeredCount = Object.keys(prog.answers || {}).length;
+    if (answeredCount > 0 && answeredCount < 10) {
+      audit.midQuizRefreshes += 1;
+      audit.events.unshift({
+        timestamp: new Date().toLocaleString(),
+        type: "⚠️ SUSPICIOUS REFRESH",
+        detail: "Page refreshed mid-attempt during " + prog.setName + " at Q" + (answeredCount + 1) + " (" + answeredCount + "/10 answered)"
+      });
+    }
+  } else {
+    audit.events.unshift({
+      timestamp: new Date().toLocaleString(),
+      type: "PAGE_LOAD",
+      detail: "Opened or reloaded page on " + setName
+    });
+  }
+  saveAuditData(audit);
+  renderAuditDashboard();
+}
+function trackAnswerProgress(setName, answersObj) {
+  localStorage.setItem(ACTIVE_PROGRESS_KEY, JSON.stringify({
+    setName: setName, answers: answersObj, lastUpdated: new Date().toISOString()
+  }));
+}
+function trackSetCompletion(setName, score, total) {
+  let audit = getAuditData();
+  audit.events.unshift({
+    timestamp: new Date().toLocaleString(),
+    type: "SET_COMPLETED",
+    detail: "Completed " + setName + " — Final Score: " + score + "/" + total
+  });
+  saveAuditData(audit);
+  localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+  renderAuditDashboard();
+}
+function trackManualReset(setName) {
+  let audit = getAuditData();
+  audit.manualResets += 1;
+  audit.events.unshift({
+    timestamp: new Date().toLocaleString(),
+    type: "MANUAL_RESET",
+    detail: "Student clicked 'Try Again' to restart " + setName
+  });
+  saveAuditData(audit);
+  localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+  renderAuditDashboard();
+}
+function renderAuditDashboard() {
+  const audit = getAuditData();
+  const setText = (id, v) => { const e = document.getElementById(id); if (e) e.innerText = v; };
+  setText("stat-total-refreshes", audit.totalRefreshes);
+  setText("stat-mid-refreshes", audit.midQuizRefreshes);
+  setText("stat-manual-resets", audit.manualResets);
+  const riskCard = document.getElementById("card-risk-status");
+  const midCard = document.getElementById("card-mid-refreshes");
+  const riskText = document.getElementById("stat-risk-level");
+  if (riskText) {
+    if (audit.midQuizRefreshes > 0) {
+      riskText.innerText = "⚠️ High Risk (Skeptical)";
+      riskText.style.color = "#e74c3c";
+      if (riskCard) riskCard.classList.add("flagged");
+      if (midCard) midCard.classList.add("flagged");
+    } else if (audit.totalRefreshes > 6) {
+      riskText.innerText = "⚠️ Medium Risk";
+      riskText.style.color = "#f39c12";
+    } else {
+      riskText.innerText = "✅ Clear";
+      riskText.style.color = "#2ecc71";
+    }
+  }
+  const tbody = document.getElementById("audit-log-rows");
+  if (tbody) {
+    if (!audit.events.length) {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr>';
+    } else {
+      tbody.innerHTML = audit.events.slice(0, 80).map(e =>
+        "<tr><td>" + e.timestamp + "</td><td>" + e.type + "</td><td>" + e.detail + "</td></tr>"
+      ).join("");
+    }
+  }
+}
+function clearAuditLog() {
+  if (confirm("Are you sure you want to clear all local audit tracking logs?")) {
+    localStorage.removeItem(AUDIT_STORAGE_KEY);
+    localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+    renderAuditDashboard();
+  }
+}
+
+/* ============ University rewards ============ */
+const universityRewards = {
+  "Set A": { name: "Harvard University", img: "https://mr-chen-k12.github.io/math/IMG_0232.png",
+             color: "#A51C30", badgeId: "badge-harvard" },
+  "Set B": { name: "Boston University", img: "https://mr-chen-k12.github.io/books/IMG_0121.png",
+             color: "#CC0000", badgeId: "badge-bu" },
+  "Set C": { name: "Yale University", img: "https://mr-chen-k12.github.io/books/IMG_0122.png",
+             color: "#00356B", badgeId: "badge-yale" }
+};
+
+/* ============ Question Bank: 30 Fresh Brand-New SAT Reading Questions ============ */
+const questionBank = {
+ "Set A": [
+  {
+   "id": 1,
+   "passage": "After their ship, the Endurance, was crushed by Antarctic pack ice in 1915, Ernest Shackleton and his twenty-seven men camped on drifting floes for months before reaching a barren island. Shackleton then sailed a lifeboat 800 miles across the stormiest ocean on Earth to fetch help \u2014 and returned until every single man was rescued. Historians hold up the expedition as a study in ________ leadership: not one life was lost.",
+   "question": "Which choice completes the text with the most logical and precise word?",
+   "options": [
+    "A) reckless",
+    "B) undaunted",
+    "C) indifferent",
+    "D) hesitant"
+   ],
+   "answer": 1,
+   "explanation": "Correct! 'Undaunted' means not intimidated or discouraged by difficulty, fitting a leader who persisted through twenty months of disaster and rescued every man."
+  },
+  {
+   "id": 2,
+   "passage": "More than a kilometer beneath the ocean's surface, where sunlight never reaches, entire ecosystems flourish around hydrothermal vents \u2014 cracks in the seafloor that spew superheated, mineral-rich water. Giant tube worms, eyeless shrimp, and pale crabs cluster around the vents, sustained not by photosynthesis but by bacteria that harvest energy from the chemicals in the vent water. Life here runs on chemistry, not sunlight.",
+   "question": "Which choice best states the main idea of the text?",
+   "options": [
+    "A) Hydrothermal vents are the hottest places in the ocean",
+    "B) Deep-sea animals are slowly evolving eyes to see in the dark",
+    "C) Complete ecosystems can thrive in total darkness, powered by chemical energy from hydrothermal vents rather than sunlight",
+    "D) Photosynthesis occurs even in the deepest parts of the ocean"
+   ],
+   "answer": 2,
+   "explanation": "Correct! The passage centers on the idea that complete ecosystems can thrive in total darkness, powered by chemical energy from hydrothermal vents rather than sunlight."
+  },
+  {
+   "id": 3,
+   "passage": "On a hilltop in southeastern Turkey stands G\u00f6bekli Tepe, a complex of massive carved stone pillars arranged in circles, built around 9500 BCE. The date is what astonishes archaeologists: the builders were hunter-gatherers who had not yet domesticated crops or animals, invented pottery, or settled in permanent villages. Raising pillars weighing up to sixteen tons required feeding and coordinating hundreds of workers for years.",
+   "question": "Which choice best states an inference supported by the text?",
+   "options": [
+    "A) Monumental construction projects did not necessarily have to wait for the rise of farming societies",
+    "B) Hunter-gatherers were incapable of organized labor",
+    "C) G\u00f6bekli Tepe was built as a permanent farming village",
+    "D) Stone tools were invented in order to build G\u00f6bekli Tepe"
+   ],
+   "answer": 0,
+   "explanation": "Correct! Monumental building by pre-farming hunter-gatherers supports the inference that monumental construction projects did not necessarily have to wait for the rise of farming societies."
+  },
+  {
+   "id": 4,
+   "passage": "Over thousands of years, the river has gradually ________ the canyon walls, wearing the rock into smooth curves and exposing bands of red, orange, and rust-colored stone that record millions of years of geological history.",
+   "question": "Which choice completes the text with the most logical and precise word?",
+   "options": [
+    "A) flooded",
+    "B) painted",
+    "C) measured",
+    "D) eroded"
+   ],
+   "answer": 3,
+   "explanation": "Correct! 'Eroded' means worn away gradually by water or wind, which is exactly what the river did to the canyon walls over thousands of years."
+  },
+  {
+   "id": 5,
+   "passage": "Text 1: Cities across the country have launched ambitious tree-planting programs, pledging to add hundreds of thousands of trees to streets and parks. Supporters point to the shade, cleaner air, and lower summer temperatures that mature canopies provide, calling urban trees the cheapest climate infrastructure a city can buy.\n\nText 2: Urban forester Dana Whitaker cautions that planting is the easy part. In several cities she studied, more than half of newly planted street trees died within five years, most from simple neglect: no one was assigned to water them during their first dry summers. A planting pledge without a funded maintenance plan, she argues, is a photo opportunity, not a canopy.",
+   "question": "Based on the texts, how would Whitaker, the author of Text 2, most likely view the tree-planting programs described in Text 1?",
+   "options": [
+    "A) As wasteful programs that should be replaced with air-quality technology",
+    "B) As proven successes, since most planted trees survive to maturity",
+    "C) As worthwhile in principle but likely to fall short unless cities also fund years of care for the new trees",
+    "D) As less important than planting trees in rural forests"
+   ],
+   "answer": 2,
+   "explanation": "Correct! Whitaker's warning that trees die without funded maintenance means she would see the programs as worthwhile in principle but likely to fall short unless cities also fund years of care for the new trees."
+  },
+  {
+   "id": 6,
+   "passage": "Chameleons change color by manipulating specialized cells in their skin called chromatophores. Each chromatophore contains tiny crystals or pigments; when the chameleon contracts or relaxes the cells, the spacing between the crystals changes, altering which wavelengths of light are reflected. A relaxed chameleon may appear green, while an excited one, with its crystals spaced farther apart, flashes yellow or red.",
+   "question": "According to the text, how does a chameleon change its color?",
+   "options": [
+    "A) By moving pigments from its blood into its outer scales",
+    "B) By changing the spacing of crystals in its skin cells, which alters the light they reflect",
+    "C) By coating its skin with colored secretions from glands",
+    "D) By replacing its outer layer of skin with a new one"
+   ],
+   "answer": 1,
+   "explanation": "Correct! The text states that contracting or relaxing chromatophores changes crystal spacing, so a chameleon changes color by changing the spacing of crystals in its skin cells, which alters the light they reflect."
+  },
+  {
+   "id": 7,
+   "passage": "In 2007, astronomers launched Galaxy Zoo, a website inviting volunteers to classify images of galaxies by shape. Professional astronomers had faced an impossible backlog: nearly a million galaxy images from a sky survey, far more than any research team could sort. Within a year, the public had contributed tens of millions of classifications, and the resulting dataset powered dozens of published studies.",
+   "question": "Which choice best states the main idea of the text?",
+   "options": [
+    "A) Professional astronomers no longer study galaxies directly",
+    "B) Galaxy images are best classified by computer software alone",
+    "C) Most volunteers on Galaxy Zoo were trained astronomers",
+    "D) Citizen volunteers enabled astronomers to classify a volume of galaxy images that professionals could never have processed alone"
+   ],
+   "answer": 3,
+   "explanation": "Correct! The main idea is that citizen volunteers enabled astronomers to classify a volume of galaxy images that professionals could never have processed alone."
+  },
+  {
+   "id": 8,
+   "passage": "Despite a decade of failed prototypes, each collapsing under its own weight or seizing in the cold workshop, the inventor remained ________, sketching improvements late into the night and greeting each failure as information rather than defeat.",
+   "question": "Which choice completes the text with the most logical and precise word?",
+   "options": [
+    "A) tenacious",
+    "B) hesitant",
+    "C) indifferent",
+    "D) careless"
+   ],
+   "answer": 0,
+   "explanation": "Correct! 'Tenacious' means holding firmly to a course of action and not giving up, matching an inventor who persisted through a decade of failed prototypes."
+  },
+  {
+   "id": 9,
+   "passage": "The Parthenon in Athens is often described as the perfect temple, yet it contains almost no perfectly straight lines. Its columns bulge slightly in the middle \u2014 a refinement called entasis \u2014 the columns lean almost imperceptibly inward, and the platform itself curves gently upward at the center. The author observes that each of these 'imperfections' is calculated to the millimeter and consistent across the whole building.",
+   "question": "The author mentions the Parthenon's calculated deviations from straight lines primarily to\u2026",
+   "options": [
+    "A) suggest that Greek builders lacked the tools to cut stone straight",
+    "B) explain why the Parthenon has survived for 2,500 years",
+    "C) show that the builders deliberately introduced them to make the temple look right to the human eye",
+    "D) argue that later temples copied the Parthenon's mistakes"
+   ],
+   "answer": 2,
+   "explanation": "Correct! The millimeter-calculated, consistent deviations are mentioned to show that the builders deliberately introduced them to make the temple look right to the human eye."
+  },
+  {
+   "id": 10,
+   "passage": "In 1933, London Underground designer Harry Beck redrew the Tube map, discarding geographic accuracy: stations were spaced evenly, lines ran only horizontally, vertically, or at 45-degree angles, and the tangled center was enlarged. Passengers embraced the diagram instantly, and transit agencies worldwide copied Beck's approach. The map's distortions were not a flaw but the source of its usefulness.",
+   "question": "Which choice best states an inference supported by the text?",
+   "options": [
+    "A) Beck was unable to draw the Tube map to an accurate scale",
+    "B) Beck concluded that for a transit map, clear organization of routes matters more to riders than exact geographic distances",
+    "C) Passengers initially resisted Beck's redesigned map",
+    "D) Other transit agencies rejected Beck's approach to map design"
+   ],
+   "answer": 1,
+   "explanation": "Correct! Beck deliberately sacrificed geographic accuracy for clarity, and riders embraced it \u2014 so Beck concluded that for a transit map, clear organization of routes matters more to riders than exact geographic distances."
+  }
+ ],
+ "Set B": [
+  {
+   "id": 1,
+   "passage": "When Mount Tambora erupted in 1815, it ejected so much ash and sulfur into the upper atmosphere that sunlight dimmed across the entire planet. The following year became known as the 'Year Without a Summer': crops failed from New England to China, snow fell in July, and food riots erupted in Europe. The eruption's consequences were truly ________.",
+   "question": "Which choice completes the text with the most logical and precise word?",
+   "options": [
+    "A) localized",
+    "B) temporary",
+    "C) far-reaching",
+    "D) beneficial"
+   ],
+   "answer": 2,
+   "explanation": "Correct! 'Far-reaching' means having wide-ranging effects over a great distance, fitting an eruption whose climate consequences struck continents around the globe."
+  },
+  {
+   "id": 2,
+   "passage": "\u00d6tzi, the 5,300-year-old mummy found in the Alps, bears 61 tattoos, mostly groups of short parallel lines. Researchers note that many of the marks are located over joints \u2014 the lower back, knees, and ankles \u2014 where X-rays show signs of age-related wear and arthritis, and several coincide with traditional acupuncture points used to treat pain in those same areas.",
+   "question": "What can most reasonably be inferred from the text?",
+   "options": [
+    "A) \u00d6tzi's tattoos may have served a therapeutic purpose rather than a purely decorative one",
+    "B) \u00d6tzi's tattoos prove that acupuncture was invented in the Alps",
+    "C) All of \u00d6tzi's tattoos were placed randomly on his body",
+    "D) \u00d6tzi suffered from arthritis in every joint of his body"
+   ],
+   "answer": 0,
+   "explanation": "Correct! Because many tattoos sit over arthritic joints and match acupuncture points, it can reasonably be inferred that \u00d6tzi's tattoos may have served a therapeutic purpose rather than a purely decorative one."
+  },
+  {
+   "id": 3,
+   "passage": "Beneath a healthy forest, tree roots are interwoven with fungal threads called mycorrhizae, forming a network that links individual trees. Through this network, older trees pass sugars to shaded seedlings, drought-stressed trees receive water and nutrients from neighbors, and a tree under insect attack releases warning chemicals that prompt nearby trees to raise their chemical defenses. The forest behaves less like a crowd of competitors than like a connected community.",
+   "question": "Which choice best states the main idea of the text?",
+   "options": [
+    "A) Fungi compete with trees for the sugars in tree roots",
+    "B) Seedlings cannot survive without direct sunlight",
+    "C) Insect attacks are the greatest threat facing modern forests",
+    "D) Trees in a forest are linked by fungal networks through which they share resources and warning signals"
+   ],
+   "answer": 3,
+   "explanation": "Correct! The main idea is that trees in a forest are linked by fungal networks through which they share resources and warning signals."
+  },
+  {
+   "id": 4,
+   "passage": "The novelist constructed her book from three timelines braided together: a lighthouse keeper in 1890, his granddaughter restoring the lighthouse in 1960, and a cartographer mapping the same coastline today. Reviewers praised the novel's ________ construction, in which a detail planted in one era quietly detonates in another.",
+   "question": "Which choice completes the text with the most logical and precise word?",
+   "options": [
+    "A) predictable",
+    "B) intricate",
+    "C) brief",
+    "D) cheerful"
+   ],
+   "answer": 1,
+   "explanation": "Correct! 'Intricate' means very detailed and complicated, aptly describing a novel built from three interwoven timelines with details echoing across eras."
+  },
+  {
+   "id": 5,
+   "passage": "Text 1: Early high school start times are a practical necessity. Buses must complete elementary routes before high school runs, afternoon sports need daylight for practice, and many parents rely on older children being in school during work hours. Moving the first bell later, administrators argue, would unravel the logistics of an entire district.\n\nText 2: Sleep scientist Dr. Amara Chen responds that the logistics argument ignores biology. During puberty, the brain's release of melatonin shifts later, so teenagers are wired to fall asleep near 11 p.m. and wake near 8 a.m. Districts that delayed start times to 8:30 or later saw attendance rise, tardiness fall, and \u2014 in several studies \u2014 car crashes involving teen drivers drop sharply.",
+   "question": "Based on the texts, how would Chen, the author of Text 2, most likely view the defense of early start times in Text 1?",
+   "options": [
+    "A) As placing scheduling convenience ahead of what adolescent biology requires",
+    "B) As fully supported by research on teenage sleep",
+    "C) As too generous to students who stay up late",
+    "D) As an argument for starting elementary school earlier instead"
+   ],
+   "answer": 0,
+   "explanation": "Correct! Chen's evidence about shifted teenage sleep biology means she would view Text 1's defense as placing scheduling convenience ahead of what adolescent biology requires."
+  },
+  {
+   "id": 6,
+   "passage": "The pitcher plant lures insects with sweet nectar smeared along its rim. The rim, however, is treacherously slick \u2014 especially when wet \u2014 so visiting insects lose their footing and tumble into the plant's deep, pitcher-shaped leaf. Escape is nearly impossible: downward-pointing hairs line the walls, and the pool of digestive fluid at the bottom slowly dissolves the prey, releasing nutrients the plant absorbs.",
+   "question": "According to the text, how does the pitcher plant capture insects?",
+   "options": [
+    "A) Its leaves snap shut when an insect touches trigger hairs",
+    "B) It paralyzes insects with venom delivered through hollow spines",
+    "C) Insects lured by nectar slip on its slick rim and fall into a pool of digestive fluid",
+    "D) Insects become stuck to glue-like droplets on its leaves"
+   ],
+   "answer": 2,
+   "explanation": "Correct! The text describes nectar drawing insects onto the treacherous rim, so the pitcher plant captures them when insects lured by nectar slip on its slick rim and fall into a pool of digestive fluid."
+  },
+  {
+   "id": 7,
+   "passage": "In 1980, physicist Luis Alvarez and his geologist son Walter reported a striking find: a thin layer of clay, laid down exactly at the boundary between the Cretaceous and Paleogene periods, contained concentrations of the rare metal iridium many times higher than normal crust levels \u2014 at sites all around the world. Iridium is scarce in Earth's crust but common in asteroids. The layer sits precisely at the horizon where dinosaur fossils disappear from the record.",
+   "question": "Which choice best states the main idea of the text?",
+   "options": [
+    "A) Iridium is the most common metal in Earth's crust",
+    "B) A worldwide iridium-rich clay layer at the dinosaur extinction boundary supports the theory that an asteroid impact caused the extinction",
+    "C) Dinosaurs were already extinct before the clay layer formed",
+    "D) The Alvarez team discovered the first dinosaur fossils"
+   ],
+   "answer": 1,
+   "explanation": "Correct! The main idea is that a worldwide iridium-rich clay layer at the dinosaur extinction boundary supports the theory that an asteroid impact caused the extinction."
+  },
+  {
+   "id": 8,
+   "passage": "Determined to let both delegations claim victory at home, the ambassador drafted the communiqu\u00e9 in deliberately ________ language: each capital could read the same sentences as a promise or as a mere suggestion, exactly as its politics required.",
+   "question": "Which choice completes the text with the most logical and precise word?",
+   "options": [
+    "A) hostile",
+    "B) precise",
+    "C) irrelevant",
+    "D) ambiguous"
+   ],
+   "answer": 3,
+   "explanation": "Correct! 'Ambiguous' means open to more than one interpretation, which is exactly why the language let both capitals read the communiqu\u00e9 differently."
+  },
+  {
+   "id": 9,
+   "passage": "When the editors of the first Oxford English Dictionary set out in 1879 to record every word in the language, they faced a problem of scale: the evidence for how words were actually used lay scattered through centuries of books. The author notes that the editors issued a public appeal, and thousands of ordinary readers responded by mailing in quotation slips \u2014 eventually some six million of them \u2014 each documenting a word in a real sentence.",
+   "question": "The author mentions the six million quotation slips primarily to\u2026",
+   "options": [
+    "A) illustrate the scale of public contribution on which the dictionary was built",
+    "B) show that the dictionary's editors were poor planners",
+    "C) explain why the dictionary took so long to complete",
+    "D) argue that professional lexicographers were unnecessary"
+   ],
+   "answer": 0,
+   "explanation": "Correct! The six million slips are mentioned to illustrate the scale of public contribution on which the dictionary was built."
+  },
+  {
+   "id": 10,
+   "passage": "The Voynich manuscript, a 240-page book written in an unknown script and filled with drawings of unidentifiable plants, has resisted decipherment for over a century. Yet statistical analyses reveal that its text is far from random: certain 'words' recur with the same frequency patterns found in natural languages, characters appear only in particular positions within words, and the manuscript's word-length distribution matches that of real writing systems rather than gibberish or simple codes.",
+   "question": "Which choice best states an inference supported by the text?",
+   "options": [
+    "A) The manuscript was written as a deliberate hoax in the twentieth century",
+    "B) The plants drawn in the manuscript are all imaginary",
+    "C) The manuscript's text probably encodes meaningful content rather than being meaningless decoration",
+    "D) Statistical analysis has nearly completed the decipherment"
+   ],
+   "answer": 2,
+   "explanation": "Correct! Language-like frequency and structure patterns support the inference that the manuscript's text probably encodes meaningful content rather than being meaningless decoration."
+  }
+ ],
+ "Set C": [
+  {
+   "id": 1,
+   "passage": "Plastic foam packaging can persist in landfills for centuries, but a new alternative is grown rather than manufactured: fungal mycelium is fed agricultural waste in a mold, binding it into a lightweight cushioning material. Once discarded, the packaging is fully ________, breaking down in garden soil within a few weeks and leaving nothing behind.",
+   "question": "Which choice completes the text with the most logical and precise word?",
+   "options": [
+    "A) permanent",
+    "B) synthetic",
+    "C) flammable",
+    "D) biodegradable"
+   ],
+   "answer": 3,
+   "explanation": "Correct! 'Biodegradable' means capable of being broken down naturally by living organisms, which matches packaging that decomposes in soil within weeks."
+  },
+  {
+   "id": 2,
+   "passage": "Periodical cicadas spend most of their lives underground, emerging in vast broods only every 13 or 17 years. Biologists note that both intervals are prime numbers \u2014 divisible only by 1 and themselves. A predator whose own population peaks every 2, 4, or 6 years will rarely coincide with a cicada emergence, because cycles of different lengths seldom align; a brood on a 12-year cycle, by contrast, would sync up with many of them. The prime-numbered rhythm appears to be a survival strategy written in arithmetic.",
+   "question": "Which choice best states the main idea of the text?",
+   "options": [
+    "A) Cicadas emerge every year in different parts of the country",
+    "B) Cicadas' prime-numbered emergence cycles help protect them by rarely aligning with predators' population cycles",
+    "C) Prime numbers are the only intervals at which insects can emerge",
+    "D) Predators are the main reason cicadas live underground"
+   ],
+   "answer": 1,
+   "explanation": "Correct! The main idea is that cicadas' prime-numbered emergence cycles help protect them by rarely aligning with predators' population cycles."
+  },
+  {
+   "id": 3,
+   "passage": "The 8,000 terracotta warriors buried near the tomb of China's first emperor, Qin Shi Huang, are often assumed to be identical statues churned out by an assembly line. Close study tells a different story: while bodies were built from standardized parts, each face is distinct \u2014 ears differ in shape, mustaches are styled individually, and expressions vary from stern to weary. Scholars believe artisans finished each head by hand, possibly modeling features on actual soldiers in the imperial army.",
+   "question": "Which choice best states an inference supported by the text?",
+   "options": [
+    "A) The warriors were carved from a single block of terracotta",
+    "B) Qin Shi Huang personally sculpted the warriors' faces",
+    "C) Each warrior's face was individually finished, so no two figures are exactly alike",
+    "D) The warriors' bodies were also entirely unique in design"
+   ],
+   "answer": 2,
+   "explanation": "Correct! Distinct ears, mustaches, and expressions on every face support the inference that each warrior's face was individually finished, so no two figures are exactly alike."
+  },
+  {
+   "id": 4,
+   "passage": "In a single one-hour lecture, the historian managed a ________ survey of forty years of scholarship: every major debate was summarized, every school of thought named and weighed, and no significant study left unmentioned.",
+   "question": "Which choice completes the text with the most logical and precise word?",
+   "options": [
+    "A) comprehensive",
+    "B) tedious",
+    "C) brief",
+    "D) confusing"
+   ],
+   "answer": 0,
+   "explanation": "Correct! 'Comprehensive' means complete and including everything important, fitting a survey that covered every major debate and left no significant study unmentioned."
+  },
+  {
+   "id": 5,
+   "passage": "Text 1: Supporters of commercial space tourism argue that ticket sales from wealthy passengers will do for spaceflight what early airmail contracts did for aviation: bankroll the technology until it becomes routine and cheap. Every tourist flight, they say, refines reusable rockets and brings the cost of reaching orbit down for scientists and everyone else.\n\nText 2: Astrophysicist Lena Okafor counters that the analogy fails. A single suborbital tourist flight can emit as much carbon per passenger as a transatlantic flight, and the industry's promised learning curve depends on flight rates that would multiply that footprint enormously. The same billions, she argues, spent on robotic missions and Earth-observing satellites would return far more science per dollar \u2014 and per ton of carbon.",
+   "question": "Based on the texts, how would Okafor, the author of Text 2, most likely view the argument made in Text 1?",
+   "options": [
+    "A) As entirely correct that tourism will make spaceflight routine",
+    "B) As overlooking the environmental cost of scaling tourist flights to the level its own logic requires",
+    "C) As understating how much tourists are willing to pay",
+    "D) As an argument that applies only to government space programs"
+   ],
+   "answer": 1,
+   "explanation": "Correct! Okafor's objection is that the promised cost reductions require flight rates with a huge carbon footprint, so she would view Text 1's argument as overlooking the environmental cost of scaling tourist flights to the level its own logic requires."
+  },
+  {
+   "id": 6,
+   "passage": "The dung beetle's nightly journeys are guided by the sky itself. On moonless nights, researchers found, beetles roll their dung balls in straight lines by orienting to the Milky Way \u2014 the broad, glowing band of our galaxy stretched across the sky. When experimenters fitted beetles with tiny caps that blocked their view of the sky, the beetles wandered in circles; when a false Milky Way was projected in a planetarium, the beetles steered by it.",
+   "question": "According to the text, how do dung beetles navigate at night?",
+   "options": [
+    "A) By following the scent trails of other beetles",
+    "B) By sensing Earth's magnetic field through their antennae",
+    "C) By memorizing the positions of individual bright stars",
+    "D) By orienting themselves to the light of the Milky Way"
+   ],
+   "answer": 3,
+   "explanation": "Correct! The text reports that beetles steer by the galaxy's band and wander when it is hidden, so dung beetles navigate at night by orienting themselves to the light of the Milky Way."
+  },
+  {
+   "id": 7,
+   "passage": "When radio astronomers Arno Penzias and Robert Wilson detected a persistent hiss in their antenna in 1964, they suspected their equipment. The author recounts how the pair scrubbed the antenna clean of pigeon droppings and checked every circuit, yet the hiss remained \u2014 it was, in fact, the cosmic microwave background, the afterglow of the Big Bang, arriving from every direction in the sky.",
+   "question": "The author mentions the pigeon droppings primarily to\u2026",
+   "options": [
+    "A) suggest that the antenna was poorly maintained",
+    "B) explain why the discovery was delayed by many years",
+    "C) show how thoroughly the astronomers ruled out ordinary explanations before accepting an extraordinary one",
+    "D) argue that pigeons interfere with most radio telescopes"
+   ],
+   "answer": 2,
+   "explanation": "Correct! The pigeon-dropping episode is included to show how thoroughly the astronomers ruled out ordinary explanations before accepting an extraordinary one."
+  },
+  {
+   "id": 8,
+   "passage": "After eleven hours of talks, the negotiations reached a ________: the union would not accept less than a five-percent raise, the company would not offer more than two, and neither side would schedule another meeting.",
+   "question": "Which choice completes the text with the most logical and precise word?",
+   "options": [
+    "A) breakthrough",
+    "B) impasse",
+    "C) consensus",
+    "D) recess"
+   ],
+   "answer": 1,
+   "explanation": "Correct! An 'impasse' is a deadlock from which no progress seems possible, exactly the state of talks where neither side will move or meet again."
+  },
+  {
+   "id": 9,
+   "passage": "For most of the twentieth century, crystallographers held that atoms in a solid could arrange themselves only in patterns that repeat periodically, like tiles on a floor. When Dan Shechtman examined an aluminum-manganese alloy in 1982, however, his electron microscope revealed a pattern with fivefold symmetry \u2014 a geometry the textbooks declared impossible, since fivefold tiles cannot cover a floor without gaps. The 'quasicrystals' he had found did not repeat periodically at all, yet their atoms were arranged in a precise, ordered structure.",
+   "question": "Which choice best states the main idea of the text?",
+   "options": [
+    "A) Quasicrystals overturned the assumption that atomic order in solids must follow a repeating periodic pattern",
+    "B) Fivefold symmetry is the most common pattern in metal alloys",
+    "C) Shechtman's colleagues immediately accepted his discovery",
+    "D) Quasicrystals are useful mainly as floor tiles"
+   ],
+   "answer": 0,
+   "explanation": "Correct! The main idea is that quasicrystals overturned the assumption that atomic order in solids must follow a repeating periodic pattern."
+  },
+  {
+   "id": 10,
+   "passage": "Linguists reconstruct lost languages by comparing their descendants. English 'father,' Latin 'pater,' and Sanskrit 'pitar' resemble one another not by coincidence but because all three descend from a single word in Proto-Indo-European, the unrecorded ancestor of hundreds of languages spoken from Ireland to India. By charting systematic sound correspondences \u2014 where one language consistently has 'f,' its sister languages consistently have 'p' \u2014 scholars can rebuild vocabulary from a language no one has spoken for six thousand years.",
+   "question": "Which choice best states an inference supported by the text?",
+   "options": [
+    "A) Proto-Indo-European was written down in ancient Sanskrit texts",
+    "B) English is directly descended from Latin",
+    "C) Linguists have recovered the complete Proto-Indo-European language",
+    "D) Consistent patterns of sound differences between related languages provide evidence of their shared ancestry"
+   ],
+   "answer": 3,
+   "explanation": "Correct! Systematic correspondences like 'f' versus 'p' across sister languages are presented as the working evidence, supporting the inference that consistent patterns of sound differences between related languages provide evidence of their shared ancestry."
+  }
+ ]
+};
+
+/* ============ Application state & logic ============ */
+let currentSetKey = "Set A";
+let userAnswers = {};
+
+function initApp() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("check") === "true") {
+    document.getElementById("teacher-audit-panel").classList.add("active");
+  }
+  trackPageLoad(currentSetKey);
+  loadSet(currentSetKey);
+}
+
+function switchSet(setName) {
+  currentSetKey = setName;
+  document.getElementById("set-select").value = setName;
+  loadSet(setName);
+}
+
+function loadSet(setName) {
+  userAnswers = {};
+  document.getElementById("score-summary").style.display = "none";
+  document.getElementById("reward-section").innerHTML = "";
+  const reward = universityRewards[setName];
+  document.documentElement.style.setProperty("--primary-color", reward.color);
+  updateScoreDisplay();
+  const container = document.getElementById("questions-wrapper");
+  container.innerHTML = "";
+  const questions = questionBank[setName];
+  questions.forEach((q, index) => {
+    const card = document.createElement("div");
+    card.className = "question-card";
+    card.id = "q-card-" + index;
+    const optsHtml = q.options.map((opt, oi) =>
+      '<button class="option-btn" onclick="selectAnswer(' + index + ',' + oi + ')">' + opt + "</button>"
+    ).join("");
+    card.innerHTML =
+      '<div class="question-number">Question ' + (index + 1) + " of 10</div>" +
+      '<div class="passage">' + q.passage.replace(/\n\n/g, "</p><p>") + "</div>" +
+      '<div class="question-text">' + q.question + "</div>" +
+      '<div class="options-group" id="options-' + index + '">' + optsHtml + "</div>" +
+      '<div class="feedback-box" id="feedback-' + index + '"></div>';
+    container.appendChild(card);
+  });
+}
+
+function selectAnswer(questionIdx, selectedOptIdx) {
+  if (userAnswers.hasOwnProperty(questionIdx)) return;
+  const qData = questionBank[currentSetKey][questionIdx];
+  const isCorrect = selectedOptIdx === qData.answer;
+  userAnswers[questionIdx] = isCorrect;
+  trackAnswerProgress(currentSetKey, userAnswers);
+  const optionsGroup = document.getElementById("options-" + questionIdx);
+  const buttons = optionsGroup.getElementsByClassName("option-btn");
+  Array.from(buttons).forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === qData.answer) btn.classList.add("correct");
+    else if (idx === selectedOptIdx && !isCorrect) btn.classList.add("incorrect");
+  });
+  const fbBox = document.getElementById("feedback-" + questionIdx);
+  fbBox.classList.add("show");
+  fbBox.classList.add(isCorrect ? "good" : "bad");
+  fbBox.innerHTML =
+    '<div class="verdict">' + (isCorrect ? "✅ Correct!" : "❌ Incorrect.") + "</div>" +
+    '<div class="expl">' + qData.explanation + "</div>";
+  updateScoreDisplay();
+  checkSetCompletion();
+}
+
+function updateScoreDisplay() {
+  const correctCount = Object.values(userAnswers).filter(Boolean).length;
+  document.getElementById("score-tracker").innerText = "Score: " + correctCount + " / 10";
+}
+
+function checkSetCompletion() {
+  if (Object.keys(userAnswers).length !== 10) return;
+  const score = Object.values(userAnswers).filter(Boolean).length;
+  const summaryBox = document.getElementById("score-summary");
+  const scoreText = document.getElementById("final-score-text");
+  const msgText = document.getElementById("feedback-message");
+  const rewardSection = document.getElementById("reward-section");
+  const currentReward = universityRewards[currentSetKey];
+  scoreText.innerText = score + " / 10";
+  trackSetCompletion(currentSetKey, score, 10);
+  if (score === 10) {
+    document.getElementById(currentReward.badgeId).classList.add("unlocked");
+    msgText.innerHTML = '<span style="color:' + currentReward.color + '; font-weight:bold;">Congratulations! Perfect Score!</span> You earned the ' + currentReward.name + " award! 🏆";
+    rewardSection.innerHTML =
+      '<div class="reward-badge"><img src="' + currentReward.img + '" alt="' + currentReward.name + '" onerror="this.style.display=\'none\'">' +
+      '<div class="reward-name" style="color:' + currentReward.color + ';">' + currentReward.name + "</div></div>";
+  } else if (score >= 7) {
+    msgText.innerHTML = "Great effort! You scored " + score + "/10. Review the explanations and try for a perfect score!";
+  } else {
+    msgText.innerHTML = "Keep practicing! You scored " + score + "/10. Read each explanation carefully and try the set again.";
+  }
+  summaryBox.style.display = "block";
+  summaryBox.scrollIntoView({ behavior: "smooth" });
+}
+
+function resetCurrentSet() {
+  trackManualReset(currentSetKey);
+  loadSet(currentSetKey);
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>
