@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Lesson 43 — Saxon Math Course 2 — Solutions for Miri</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<style>
+  :root{
+    --bg:#f4f6f8; --card:#ffffff; --ink:#1a2332; --muted:#5a6a7f; --line:#d7dee8;
+    --accent:#0f6b8a; --accent-ink:#ffffff; --answer-bg:#eef7f2; --answer-line:#2e7d5b;
+    --fig-bg:#fbfcfe; --tag:#e3edf3;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#12181f; --card:#1c242e; --ink:#e8edf3; --muted:#9fb0c3; --line:#33404f;
+      --accent:#3aa6c9; --accent-ink:#0b1520; --answer-bg:#173128; --answer-line:#4caf82;
+      --fig-bg:#171f28; --tag:#263645;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif;line-height:1.55}
+  .wrap{max-width:860px;margin:0 auto;padding:20px 16px 56px}
+  header{padding:18px 2px 6px}
+  h1{font-size:1.65rem;line-height:1.25;margin:0 0 8px}
+  .sub{color:var(--muted);font-family:system-ui,-apple-system,Segoe UI,sans-serif;font-size:.95rem;margin:0 0 6px}
+  h2{font-size:1.3rem;margin:30px 0 6px;padding-bottom:6px;border-bottom:2px solid var(--accent)}
+  .group-note{color:var(--muted);font-family:system-ui,sans-serif;font-size:.92rem;margin:4px 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 4px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+  .qhead{display:flex;gap:10px;align-items:baseline}
+  .qnum{font-weight:700;font-size:1.08rem;white-space:nowrap}
+  .tag{font-family:system-ui,sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--tag);color:var(--accent);padding:2px 7px;border-radius:4px;white-space:nowrap}
+  .qbody{margin-top:4px}
+  .qbody p{margin:.45em 0}
+  .parts{margin:.3em 0 .3em 1.1em;padding:0}
+  .parts li{margin:.25em 0}
+  button{font-family:system-ui,-apple-system,Segoe UI,sans-serif;cursor:pointer;border-radius:8px;border:1px solid var(--accent);min-height:40px;padding:8px 16px;font-size:.95rem;font-weight:600}
+  .toggle{background:var(--accent);color:var(--accent-ink);margin-top:10px}
+  .controls button{background:var(--card);color:var(--accent)}
+  .controls button.primary{background:var(--accent);color:var(--accent-ink)}
+  .solution{display:none;margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+  .solution.open{display:block}
+  .solution h3{font-family:system-ui,sans-serif;font-size:.82rem;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+  .answer{background:var(--answer-bg);border:1px solid var(--answer-line);border-radius:8px;padding:10px 14px;margin-top:10px}
+  .answer p{margin:.3em 0}
+  figure{margin:12px 0;text-align:center;background:var(--fig-bg);border:1px solid var(--line);border-radius:8px;padding:10px}
+  figure svg{max-width:100%;height:auto}
+  figcaption{font-family:system-ui,sans-serif;font-size:.85rem;color:var(--muted);margin-top:6px}
+  svg text{font-family:system-ui,sans-serif;fill:var(--ink)}
+  svg .ln{stroke:var(--ink);fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+  svg .thin{stroke:var(--ink);fill:none;stroke-width:1.4}
+  svg .fillbox{fill:var(--tag);stroke:var(--ink);stroke-width:1.6}
+  table.stem{border-collapse:collapse;margin:10px auto;font-size:1.02rem}
+  table.stem th,table.stem td{padding:3px 10px;text-align:left}
+  table.stem td.stem,table.stem th.stem{border-right:2px solid var(--ink);text-align:right;font-weight:700}
+  .key{font-size:.92rem;color:var(--muted);text-align:center}
+  footer{color:var(--muted);font-family:system-ui,sans-serif;font-size:.88rem;margin-top:34px;text-align:center}
+  mjx-container{max-width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Lesson 43 — Saxon Math Course 2 — Solutions for Miri</h1>
+  <p class="sub">Pages 313–316 &middot; Lesson Practice a–l, then Written Practice 1–30, in order.</p>
+  <p class="sub">Work each problem on paper first. Then tap <strong>Show solution</strong> to check the step-by-step working and the final answer.</p>
+  <div class="controls">
+    <button type="button" class="primary" id="revealAll">Reveal all solutions</button>
+    <button type="button" id="hideAll">Hide all solutions</button>
+  </div>
+</header>
+
+<h2>Lesson Practice</h2>
+<p class="group-note">Converting percents, decimals, fractions, and mixed numbers (p. 313).</p>
+
+<!-- a -->
+<section class="card" id="lp-a">
+  <div class="qhead"><span class="qnum">a.</span></div>
+  <div class="qbody"><p>Change the decimal number to a reduced fraction or mixed number: \(0.24\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-lp-a">Show solution</button>
+  <div class="solution" id="sol-lp-a" role="region">
+    <h3>Solution</h3>
+    <p>\(0.24\) is read “twenty-four hundredths,” so write it over \(100\) and reduce:</p>
+    \[ 0.24 = \frac{24}{100} = \frac{24 \div 4}{100 \div 4} = \frac{6}{25} \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{\dfrac{6}{25}}\)</p></div>
+  </div>
+</section>
+
+<!-- b -->
+<section class="card" id="lp-b">
+  <div class="qhead"><span class="qnum">b.</span></div>
+  <div class="qbody"><p>Change the decimal number to a reduced fraction or mixed number: \(45.6\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-lp-b">Show solution</button>
+  <div class="solution" id="sol-lp-b" role="region">
+    <h3>Solution</h3>
+    <p>The digit \(6\) is in the tenths place:</p>
+    \[ 45.6 = 45\frac{6}{10} = 45\frac{3}{5} \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{45\dfrac{3}{5}}\)</p></div>
+  </div>
+</section>
+
+<!-- c -->
+<section class="card" id="lp-c">
+  <div class="qhead"><span class="qnum">c.</span></div>
+  <div class="qbody"><p>Change the decimal number to a reduced fraction or mixed number: \(2.375\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-lp-c">Show solution</button>
+  <div class="solution" id="sol-lp-c" role="region">
+    <h3>Solution</h3>
+    <p>\(0.375\) is three hundred seventy-five thousandths:</p>
+    \[ 2.375 = 2\frac{375}{1000} = 2\frac{375 \div 125}{1000 \div 125} = 2\frac{3}{8} \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{2\dfrac{3}{8}}\)</p></div>
+  </div>
+</section>
+
+<!-- d -->
+<section class="card" id="lp-d">
+  <div class="qhead"><span class="qnum">d.</span></div>
+  <div class="qbody"><p>Change the fraction to a decimal number: \(\dfrac{23}{4}\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-lp-d">Show solution</button>
+  <div class="solution" id="sol-lp-d" role="region">
+    <h3>Solution</h3>
+    <p>Divide the numerator by the denominator:</p>
+    \[ \frac{23}{4} = 23 \div 4 = 5.75 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{5.75}\)</p></div>
+  </div>
+</section>
+
+<!-- e -->
+<section class="card" id="lp-e">
+  <div class="qhead"><span class="qnum">e.</span></div>
+  <div class="qbody"><p>Change the mixed number to a decimal number: \(4\dfrac{3}{5}\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-lp-e">Show solution</button>
+  <div class="solution" id="sol-lp-e" role="region">
+    <h3>Solution</h3>
+    <p>Convert the fraction part, then add the whole number:</p>
+    \[ \frac{3}{5} = 3 \div 5 = 0.6 \qquad\Rightarrow\qquad 4\frac{3}{5} = 4.6 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{4.6}\)</p></div>
+  </div>
+</section>
+
+<!-- f -->
+<section class="card" id="lp-f">
+  <div class="qhead"><span class="qnum">f.</span></div>
+  <div class="qbody"><p>Change the fraction to a decimal number: \(\dfrac{5}{8}\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-lp-f">Show solution</button>
+  <div class="solution" id="sol-lp-f" role="region">
+    <h3>Solution</h3>
+    \[ \frac{5}{8} = 5 \div 8 = 0.625 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{0.625}\)</p></div>
+  </div>
+</section>
+
+<!-- g -->
+<section class="card" id="lp-g">
+  <div class="qhead"><span class="qnum">g.</span></div>
+  <div class="qbody"><p>Change the fraction to a decimal number: \(\dfrac{5}{6}\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-lp-g">Show solution</button>
+  <div class="solution" id="sol-lp-g" role="region">
+    <h3>Solution</h3>
+    <p>Dividing gives a repeating decimal — the \(3\) repeats forever:</p>
+    \[ \frac{5}{6} = 5 \div 6 = 0.8333\ldots = 0.8\overline{3} \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{0.8\overline{3}}\)</p></div>
+  </div>
+</section>
+
+<!-- h -->
+<section class="card" id="lp-h">
+  <div class="qhead"><span class="qnum">h.</span></div>
+  <div class="qbody"><p>Convert the percent to a decimal number: \(8\%\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-lp-h">Show solution</button>
+  <div class="solution" id="sol-lp-h" role="region">
+    <h3>Solution</h3>
+    <p>Percent means “per hundred.” Divide by \(100\) (move the decimal point two places left):</p>
+    \[ 8\% = \frac{8}{100} = 0.08 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{0.08}\)</p></div>
+  </div>
+</section>
+
+<!-- i -->
+<section class="card" id="lp-i">
+  <div class="qhead"><span class="qnum">i.</span></div>
+  <div class="qbody"><p>Convert the percent to a decimal number: \(12.5\%\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-lp-i">Show solution</button>
+  <div class="solution" id="sol-lp-i" role="region">
+    <h3>Solution</h3>
+    \[ 12.5\% = \frac{12.5}{100} = 0.125 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{0.125}\)</p></div>
+  </div>
+</section>
+
+<!-- j -->
+<section class="card" id="lp-j">
+  <div class="qhead"><span class="qnum">j.</span></div>
+  <div class="qbody"><p>Convert the percent to a decimal number: \(150\%\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-lp-j">Show solution</button>
+  <div class="solution" id="sol-lp-j" role="region">
+    <h3>Solution</h3>
+    \[ 150\% = \frac{150}{100} = 1.5 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{1.5}\)</p></div>
+  </div>
+</section>
+
+<!-- k -->
+<section class="card" id="lp-k">
+  <div class="qhead"><span class="qnum">k.</span></div>
+  <div class="qbody"><p>Convert the percent to a decimal number: \(6\dfrac{1}{2}\%\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-lp-k">Show solution</button>
+  <div class="solution" id="sol-lp-k" role="region">
+    <h3>Solution</h3>
+    <p>First write \(6\frac{1}{2}\%\) as \(6.5\%\), then divide by \(100\):</p>
+    \[ 6\frac{1}{2}\% = 6.5\% = \frac{6.5}{100} = 0.065 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{0.065}\)</p></div>
+  </div>
+</section>
+
+<!-- l -->
+<section class="card" id="lp-l">
+  <div class="qhead"><span class="qnum">l.</span><span class="tag">Connect</span></div>
+  <div class="qbody"><p>Two hundred percent \((200\%)\) is equivalent to what whole number? Describe the steps you took to find the answer.</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-lp-l">Show solution</button>
+  <div class="solution" id="sol-lp-l" role="region">
+    <h3>Solution</h3>
+    <p>Step 1: write the percent as a fraction over \(100\). Step 2: divide.</p>
+    \[ 200\% = \frac{200}{100} = 2 \]
+    <p>So \(200\%\) means two whole amounts — twice as much as \(100\%\).</p>
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{2}\)</p></div>
+  </div>
+</section>
+
+<h2>Written Practice</h2>
+<p class="group-note">Problems 1–30, in order (pp. 313–316).</p>
+
+<!-- 1 -->
+<section class="card" id="q1">
+  <div class="qhead"><span class="qnum">1.</span></div>
+  <div class="qbody"><p>The ratio of weekend days to weekdays is \(2\) to \(5\). What fraction of the week consists of weekend days?</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-1">Show solution</button>
+  <div class="solution" id="sol-1" role="region">
+    <h3>Solution</h3>
+    <p>A week has \(2 + 5 = 7\) days in all. The weekend days are \(2\) of those \(7\) days:</p>
+    \[ \frac{\text{weekend days}}{\text{all days}} = \frac{2}{7} \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{\dfrac{2}{7}}\) of the week</p></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="card" id="q2">
+  <div class="qhead"><span class="qnum">2.</span></div>
+  <div class="qbody"><p>Eric ran \(8\) laps in \(11\) minutes \(44\) seconds.</p>
+  <ol class="parts" type="a"><li>How many seconds did it take Eric to run \(8\) laps?</li><li>What is the average number of seconds it took Eric to run each lap?</li></ol></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-2">Show solution</button>
+  <div class="solution" id="sol-2" role="region">
+    <h3>Solution</h3>
+    <p><strong>a.</strong> Each minute is \(60\) seconds:</p>
+    \[ 11 \times 60 + 44 = 660 + 44 = 704 \text{ seconds} \]
+    <p><strong>b.</strong> Divide the total time by the \(8\) laps:</p>
+    \[ 704 \div 8 = 88 \text{ seconds per lap} \]
+    <div class="answer"><p><strong>Answers:</strong> a. \(\boxed{704\text{ seconds}}\) &nbsp; b. \(\boxed{88\text{ seconds per lap}}\)</p></div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="card" id="q3">
+  <div class="qhead"><span class="qnum">3.</span></div>
+  <div class="qbody"><p>Some gas was still in the tank. Mr. Wang added \(13.3\) gallons of gas, which filled the tank. If the tank held a total of \(21.0\) gallons of gas, how much gas was in the tank before Mr. Wang added the gas?</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-3">Show solution</button>
+  <div class="solution" id="sol-3" role="region">
+    <h3>Solution</h3>
+    <p>Subtract what was added from the full-tank amount:</p>
+    \[ 21.0 - 13.3 = 7.7 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{7.7\text{ gallons}}\)</p></div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="card" id="q4">
+  <div class="qhead"><span class="qnum">4.</span></div>
+  <div class="qbody"><p>From 1750 to 1850, the estimated population of the world increased from seven hundred twenty-five million to one billion, two hundred thousand. About how many more people were living in the world in 1850 than in 1750?</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-4">Show solution</button>
+  <div class="solution" id="sol-4" role="region">
+    <h3>Solution</h3>
+    <p>Write both populations as numbers:</p>
+    \[ \text{1750: } 725{,}000{,}000 \qquad \text{1850: } 1{,}000{,}200{,}000 \]
+    <p>Subtract to find the increase:</p>
+    \[ 1{,}000{,}200{,}000 - 725{,}000{,}000 = 275{,}200{,}000 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{\text{about }275\text{ million more people}}\) \((275{,}200{,}000)\)</p></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="card" id="q5">
+  <div class="qhead"><span class="qnum">5.</span></div>
+  <div class="qbody"><p>Diagram this statement. Then answer the questions that follow.</p>
+  <p><em>The Beagles played two thirds of their \(15\) games in dry weather and the rest in rain.</em></p>
+  <ol class="parts" type="a"><li>How many games did the team play in dry weather?</li><li>What was the ratio of dry-weather games to rainy games?</li></ol></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-5">Show solution</button>
+  <div class="solution" id="sol-5" role="region">
+    <h3>Solution</h3>
+    <p>Divide the bar for \(15\) games into \(3\) equal parts. Each part is \(15 \div 3 = 5\) games. Two parts are dry weather; one part is rain.</p>
+    <figure>
+      <svg viewBox="0 0 340 92" width="340" role="img" aria-label="Bar diagram: three equal parts of 5 games; two parts dry, one part rain">
+        <polyline class="ln" points="20,25 320,25 320,60 20,60 20,25"/>
+        <polyline class="thin" points="120,25 120,60"/>
+        <polyline class="thin" points="220,25 220,60"/>
+        <text x="70" y="48" text-anchor="middle" font-size="13">Dry · 5</text>
+        <text x="170" y="48" text-anchor="middle" font-size="13">Dry · 5</text>
+        <text x="270" y="48" text-anchor="middle" font-size="13">Rain · 5</text>
+        <text x="170" y="82" text-anchor="middle" font-size="12">15 games in all</text>
+      </svg>
+      <figcaption>Bar diagram for the Beagles’ 15 games</figcaption>
+    </figure>
+    <p><strong>a.</strong> Dry-weather games: \(2 \times 5 = 10\).</p>
+    <p><strong>b.</strong> Rainy games: \(15 - 10 = 5\). Ratio \(= 10 : 5\), which reduces to \(2 : 1\).</p>
+    <div class="answer"><p><strong>Answers:</strong> a. \(\boxed{10\text{ games}}\) &nbsp; b. \(\boxed{2\text{ to }1}\)</p></div>
+  </div>
+</section>
+
+<!-- stem-and-leaf intro -->
+<section class="card" id="stemleaf">
+  <div class="qhead"><span class="qnum">For 6–7</span></div>
+  <div class="qbody">
+    <p>The stem-and-leaf plot below shows the distribution of finish times in a 100-meter sprint. Refer to it to answer problems <strong>6</strong> and <strong>7</strong>.</p>
+    <table class="stem" aria-label="Stem-and-leaf plot of 100-meter sprint finish times in seconds">
+      <tr><th class="stem">Stem</th><th>Leaf</th></tr>
+      <tr><td class="stem">11</td><td>2</td></tr>
+      <tr><td class="stem">12</td><td>3 &nbsp; 4 &nbsp; 8</td></tr>
+      <tr><td class="stem">13</td><td>0 &nbsp; 3 &nbsp; 4 &nbsp; 5 &nbsp; 6</td></tr>
+      <tr><td class="stem">14</td><td>1 &nbsp; 4 &nbsp; 7 &nbsp; 8</td></tr>
+      <tr><td class="stem">15</td><td>2 &nbsp; 5</td></tr>
+    </table>
+    <p class="key">Key: \(12 \mid 3\) represents \(12.3\) seconds</p>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="card" id="q6">
+  <div class="qhead"><span class="qnum">6.</span><span class="tag">Analyze</span></div>
+  <div class="qbody"><p>For the 100-meter finish times, find the</p>
+  <ol class="parts" type="a"><li>median.</li><li>lower quartile.</li><li>upper quartile.</li></ol></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-6">Show solution</button>
+  <div class="solution" id="sol-6" role="region">
+    <h3>Solution</h3>
+    <p>First list all \(15\) times in order (seconds):</p>
+    \[ 11.2,\ 12.3,\ 12.4,\ 12.8,\ 13.0,\ 13.3,\ 13.4,\ 13.5,\ 13.6,\ 14.1,\ 14.4,\ 14.7,\ 14.8,\ 15.2,\ 15.5 \]
+    <p><strong>a.</strong> With \(15\) values, the median is the \(8\)th value: \(13.5\) s.</p>
+    <p><strong>b.</strong> The lower quartile is the median of the \(7\) values below the median — the \(4\)th value: \(12.8\) s.</p>
+    <p><strong>c.</strong> The upper quartile is the median of the \(7\) values above the median — the \(12\)th value: \(14.7\) s.</p>
+    <div class="answer"><p><strong>Answers:</strong> a. \(\boxed{13.5\text{ s}}\) &nbsp; b. \(\boxed{12.8\text{ s}}\) &nbsp; c. \(\boxed{14.7\text{ s}}\)</p></div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="card" id="q7">
+  <div class="qhead"><span class="qnum">7.</span><span class="tag">Represent</span></div>
+  <div class="qbody"><p>Make a box-and-whisker plot of the 100-meter finish times in the stem-and-leaf plot.</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-7">Show solution</button>
+  <div class="solution" id="sol-7" role="region">
+    <h3>Solution</h3>
+    <p>A box-and-whisker plot needs five values: minimum \(11.2\), lower quartile \(12.8\), median \(13.5\), upper quartile \(14.7\), and maximum \(15.5\) (from problem 6, plus the smallest and largest times).</p>
+    <figure>
+      <svg viewBox="0 0 300 110" width="300" role="img" aria-label="Box-and-whisker plot from 11.2 to 15.5 seconds">
+        <polyline class="thin" points="20,78 270,78"/>
+        <polyline class="thin" points="20,73 20,83"/><polyline class="thin" points="70,73 70,83"/>
+        <polyline class="thin" points="120,73 120,83"/><polyline class="thin" points="170,73 170,83"/>
+        <polyline class="thin" points="220,73 220,83"/><polyline class="thin" points="270,73 270,83"/>
+        <text x="20" y="98" text-anchor="middle" font-size="11">11</text>
+        <text x="70" y="98" text-anchor="middle" font-size="11">12</text>
+        <text x="120" y="98" text-anchor="middle" font-size="11">13</text>
+        <text x="170" y="98" text-anchor="middle" font-size="11">14</text>
+        <text x="220" y="98" text-anchor="middle" font-size="11">15</text>
+        <text x="270" y="98" text-anchor="middle" font-size="11">16</text>
+        <polyline class="thin" points="30,45 110,45"/>
+        <polyline class="thin" points="205,45 245,45"/>
+        <polyline class="ln" points="110,28 205,28 205,62 110,62 110,28"/>
+        <polyline class="ln" points="145,28 145,62"/>
+        <polyline class="thin" points="30,28 30,62"/>
+        <polyline class="thin" points="245,28 245,62"/>
+        <text x="30" y="18" text-anchor="middle" font-size="10">11.2</text>
+        <text x="110" y="18" text-anchor="middle" font-size="10">12.8</text>
+        <text x="145" y="18" text-anchor="middle" font-size="10">13.5</text>
+        <text x="205" y="18" text-anchor="middle" font-size="10">14.7</text>
+        <text x="245" y="18" text-anchor="middle" font-size="10">15.5</text>
+      </svg>
+      <figcaption>Box-and-whisker plot — finish times (seconds)</figcaption>
+    </figure>
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{\text{Min }11.2,\ Q_1\ 12.8,\ \text{Med }13.5,\ Q_3\ 14.7,\ \text{Max }15.5\text{ (seconds)}}\)</p></div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="card" id="q8">
+  <div class="qhead"><span class="qnum">8.</span></div>
+  <div class="qbody"><p>A square and a regular hexagon share a common side, as shown. The perimeter of the hexagon is \(120\) mm. What is the perimeter of the square?</p>
+  <figure>
+    <svg viewBox="0 0 200 185" width="200" role="img" aria-label="Regular hexagon with a square sharing its bottom side">
+      <polyline class="ln" points="60,12 140,12 180,52 140,92 60,92 20,52 60,12"/>
+      <polyline class="ln" points="60,92 140,92 140,172 60,172 60,92"/>
+    </svg>
+    <figcaption>A regular hexagon and a square sharing one side</figcaption>
+  </figure></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-8">Show solution</button>
+  <div class="solution" id="sol-8" role="region">
+    <h3>Solution</h3>
+    <p>A regular hexagon has \(6\) equal sides:</p>
+    \[ \text{side} = 120 \div 6 = 20 \text{ mm} \]
+    <p>The square shares that side, so each side of the square is also \(20\) mm:</p>
+    \[ \text{perimeter of square} = 4 \times 20 = 80 \text{ mm} \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{80\text{ mm}}\)</p></div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="card" id="q9">
+  <div class="qhead"><span class="qnum">9.</span></div>
+  <div class="qbody"><p>Write each of these numbers as a reduced fraction or mixed number:</p>
+  <ol class="parts" type="a"><li>\(0.375\)</li><li>\(5.55\)</li><li>\(250\%\)</li></ol></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-9">Show solution</button>
+  <div class="solution" id="sol-9" role="region">
+    <h3>Solution</h3>
+    <p><strong>a.</strong> \(0.375 = \dfrac{375}{1000} = \dfrac{3}{8}\) (divide top and bottom by \(125\)).</p>
+    <p><strong>b.</strong> \(5.55 = 5\dfrac{55}{100} = 5\dfrac{11}{20}\) (divide by \(5\)).</p>
+    <p><strong>c.</strong> \(250\% = \dfrac{250}{100} = \dfrac{5}{2} = 2\dfrac{1}{2}\).</p>
+    <div class="answer"><p><strong>Answers:</strong> a. \(\boxed{\dfrac{3}{8}}\) &nbsp; b. \(\boxed{5\dfrac{11}{20}}\) &nbsp; c. \(\boxed{2\dfrac{1}{2}}\)</p></div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="card" id="q10">
+  <div class="qhead"><span class="qnum">10.</span><span class="tag">Connect</span></div>
+  <div class="qbody"><p>Write each of these numbers as a decimal number:</p>
+  <ol class="parts" type="a"><li>\(2\dfrac{2}{5}\)</li><li>\(\dfrac{1}{8}\)</li><li>\(250\%\)</li></ol></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-10">Show solution</button>
+  <div class="solution" id="sol-10" role="region">
+    <h3>Solution</h3>
+    <p><strong>a.</strong> \(\dfrac{2}{5} = 0.4\), so \(2\dfrac{2}{5} = 2.4\).</p>
+    <p><strong>b.</strong> \(\dfrac{1}{8} = 1 \div 8 = 0.125\).</p>
+    <p><strong>c.</strong> \(250\% = \dfrac{250}{100} = 2.5\).</p>
+    <div class="answer"><p><strong>Answers:</strong> a. \(\boxed{2.4}\) &nbsp; b. \(\boxed{0.125}\) &nbsp; c. \(\boxed{2.5}\)</p></div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="card" id="q11">
+  <div class="qhead"><span class="qnum">11.</span></div>
+  <div class="qbody"><p>Round each number to the nearest thousandth:</p>
+  <ol class="parts" type="a"><li>\(0.\overline{45}\)</li><li>\(3.\overline{142857}\)</li></ol></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-11">Show solution</button>
+  <div class="solution" id="sol-11" role="region">
+    <h3>Solution</h3>
+    <p><strong>a.</strong> \(0.\overline{45} = 0.454545\ldots\) The digit after the thousandths place is \(5\), so round the \(4\) up:</p>
+    \[ 0.4545\ldots \approx 0.455 \]
+    <p><strong>b.</strong> \(3.\overline{142857} = 3.142857142857\ldots\) The digit after the thousandths place is \(8\), so round the \(2\) up:</p>
+    \[ 3.142857\ldots \approx 3.143 \]
+    <div class="answer"><p><strong>Answers:</strong> a. \(\boxed{0.455}\) &nbsp; b. \(\boxed{3.143}\)</p></div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="card" id="q12">
+  <div class="qhead"><span class="qnum">12.</span></div>
+  <div class="qbody"><p>Divide \(1.9\) by \(12\) and write the quotient</p>
+  <ol class="parts" type="a"><li>with a bar over the repetend.</li><li>rounded to three decimal places.</li></ol></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-12">Show solution</button>
+  <div class="solution" id="sol-12" role="region">
+    <h3>Solution</h3>
+    \[ 1.9 \div 12 = 0.158333\ldots \]
+    <p>Only the digit \(3\) repeats, so the bar goes over the \(3\) alone. For three decimal places, the next digit is \(3\), so the \(8\) stays.</p>
+    <div class="answer"><p><strong>Answers:</strong> a. \(\boxed{0.158\overline{3}}\) &nbsp; b. \(\boxed{0.158}\)</p></div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="card" id="q13">
+  <div class="qhead"><span class="qnum">13.</span></div>
+  <div class="qbody"><p>Four and five hundredths is how much greater than one hundred sixty-seven thousandths?</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-13">Show solution</button>
+  <div class="solution" id="sol-13" role="region">
+    <h3>Solution</h3>
+    <p>Write both numbers as decimals: four and five hundredths \(= 4.05\); one hundred sixty-seven thousandths \(= 0.167\). Subtract:</p>
+    \[ 4.05 - 0.167 = 4.050 - 0.167 = 3.883 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{3.883}\) greater</p></div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="card" id="q14">
+  <div class="qhead"><span class="qnum">14.</span></div>
+  <div class="qbody"><p>Draw \(\overline{AB}\) \(1\) inch long. Then draw \(\overline{AC}\) \(\dfrac{3}{4}\) inch long perpendicular to \(\overline{AB}\). Complete \(\triangle ABC\) by drawing \(\overline{BC}\). How long is \(\overline{BC}\)?</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-14">Show solution</button>
+  <div class="solution" id="sol-14" role="region">
+    <h3>Solution</h3>
+    <p>Draw \(AB\) horizontally and \(AC\) vertically from \(A\), so \(\angle A\) is a right angle. Then connect \(B\) to \(C\). Measuring \(\overline{BC}\) with a ruler gives \(1\frac{1}{4}\) inches.</p>
+    <figure>
+      <svg viewBox="0 0 210 165" width="210" role="img" aria-label="Right triangle ABC with AB 1 inch and AC three-quarter inch">
+        <polyline class="ln" points="35,135 155,135 35,45 35,135"/>
+        <polyline class="thin" points="47,135 47,123 35,123"/>
+        <text x="30" y="152" font-size="13">A</text>
+        <text x="158" y="152" font-size="13">B</text>
+        <text x="24" y="38" font-size="13">C</text>
+        <text x="95" y="152" text-anchor="middle" font-size="11">1 in.</text>
+        <text x="6" y="95" font-size="11">¾ in.</text>
+        <text x="112" y="82" font-size="11">1¼ in.</text>
+      </svg>
+      <figcaption>Triangle \(ABC\), drawn to scale</figcaption>
+    </figure>
+    <p>Check with the Pythagorean theorem:</p>
+    \[ BC = \sqrt{1^{2} + \left(\tfrac{3}{4}\right)^{2}} = \sqrt{1 + \tfrac{9}{16}} = \sqrt{\tfrac{25}{16}} = \frac{5}{4} = 1\frac{1}{4} \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{1\dfrac{1}{4}\text{ inches}}\)</p></div>
+  </div>
+</section>
+
+<!-- 15 -->
+<section class="card" id="q15">
+  <div class="qhead"><span class="qnum">15.</span></div>
+  <div class="qbody"><p>A normal deck of cards is composed of four suits (red heart, red diamond, black spade, and black club) of \(13\) cards each (\(2\) through \(10\), jack, queen, king, and ace) for a total of \(52\) cards.</p>
+  <p>If one card is drawn from a normal deck of cards, what is the probability that the card will be a red card? Express the probability as a reduced fraction and as a decimal number.</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-15">Show solution</button>
+  <div class="solution" id="sol-15" role="region">
+    <h3>Solution</h3>
+    <p>Hearts and diamonds are red: \(13 + 13 = 26\) red cards out of \(52\) cards in all.</p>
+    \[ P(\text{red}) = \frac{26}{52} = \frac{1}{2} = 0.5 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{\dfrac{1}{2}\ =\ 0.5}\)</p></div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="card" id="q16">
+  <div class="qhead"><span class="qnum">16.</span></div>
+  <div class="qbody"><ol class="parts" type="a">
+  <li>Make a factor tree showing the prime factorization of \(900\). (Start with the factors \(30\) and \(30\).)</li>
+  <li><strong>Represent</strong> — Write the prime factorization of \(900\) using exponents.</li>
+  <li>Write the prime factorization of \(\sqrt{900}\).</li></ol></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-16">Show solution</button>
+  <div class="solution" id="sol-16" role="region">
+    <h3>Solution</h3>
+    <p><strong>a.</strong> Keep factoring until every branch ends in a prime number (circled):</p>
+    <figure>
+      <svg viewBox="0 0 320 185" width="320" role="img" aria-label="Factor tree for 900">
+        <polyline class="thin" points="160,28 85,52"/><polyline class="thin" points="160,28 235,52"/>
+        <polyline class="thin" points="85,76 50,100"/><polyline class="thin" points="85,76 120,100"/>
+        <polyline class="thin" points="235,76 200,100"/><polyline class="thin" points="235,76 270,100"/>
+        <polyline class="thin" points="120,124 100,148"/><polyline class="thin" points="120,124 140,148"/>
+        <polyline class="thin" points="270,124 250,148"/><polyline class="thin" points="270,124 290,148"/>
+        <text x="160" y="24" text-anchor="middle" font-size="14" font-weight="700">900</text>
+        <text x="85" y="72" text-anchor="middle" font-size="13">30</text>
+        <text x="235" y="72" text-anchor="middle" font-size="13">30</text>
+        <circle cx="50" cy="112" r="11" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+        <text x="50" y="117" text-anchor="middle" font-size="13">3</text>
+        <text x="120" y="117" text-anchor="middle" font-size="13">10</text>
+        <circle cx="200" cy="112" r="11" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+        <text x="200" y="117" text-anchor="middle" font-size="13">3</text>
+        <text x="270" y="117" text-anchor="middle" font-size="13">10</text>
+        <circle cx="100" cy="160" r="11" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+        <text x="100" y="165" text-anchor="middle" font-size="13">2</text>
+        <circle cx="140" cy="160" r="11" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+        <text x="140" y="165" text-anchor="middle" font-size="13">5</text>
+        <circle cx="250" cy="160" r="11" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+        <text x="250" y="165" text-anchor="middle" font-size="13">2</text>
+        <circle cx="290" cy="160" r="11" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+        <text x="290" y="165" text-anchor="middle" font-size="13">5</text>
+      </svg>
+      <figcaption>Factor tree: \(900 = 30 \times 30\), each \(30 = 3 \times 10\), each \(10 = 2 \times 5\)</figcaption>
+    </figure>
+    <p><strong>b.</strong> Collecting the prime factors — two \(2\)s, two \(3\)s, and two \(5\)s:</p>
+    \[ 900 = 2^{2} \cdot 3^{2} \cdot 5^{2} \]
+    <p><strong>c.</strong> A square root takes one factor from each pair:</p>
+    \[ \sqrt{900} = 30 = 2 \cdot 3 \cdot 5 \]
+    <div class="answer"><p><strong>Answers:</strong> b. \(\boxed{900 = 2^{2}\cdot 3^{2}\cdot 5^{2}}\) &nbsp; c. \(\boxed{\sqrt{900} = 2\cdot 3\cdot 5\;(=30)}\)</p></div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="card" id="q17">
+  <div class="qhead"><span class="qnum">17.</span></div>
+  <div class="qbody"><p>The eyedropper held \(2\) milliliters of liquid. How many eyedroppers of liquid would it take to fill a \(1\)-liter container?</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-17">Show solution</button>
+  <div class="solution" id="sol-17" role="region">
+    <h3>Solution</h3>
+    <p>One liter is \(1000\) milliliters. Divide:</p>
+    \[ 1000 \div 2 = 500 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{500\text{ eyedroppers}}\)</p></div>
+  </div>
+</section>
+
+<!-- 18 -->
+<section class="card" id="q18">
+  <div class="qhead"><span class="qnum">18.</span><span class="tag">Connect</span></div>
+  <div class="qbody"><ol class="parts" type="a">
+  <li>Write \(8\%\) as a decimal number.</li>
+  <li>Find \(8\%\) of \(\$8.90\) by multiplying \(\$8.90\) by the answer to <strong>a</strong>. Round the answer to the nearest cent.</li></ol></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-18">Show solution</button>
+  <div class="solution" id="sol-18" role="region">
+    <h3>Solution</h3>
+    <p><strong>a.</strong> \(8\% = \dfrac{8}{100} = 0.08\).</p>
+    <p><strong>b.</strong> Multiply, then round to the nearest cent:</p>
+    \[ 0.08 \times \$8.90 = \$0.712 \approx \$0.71 \]
+    <div class="answer"><p><strong>Answers:</strong> a. \(\boxed{0.08}\) &nbsp; b. \(\boxed{\$0.71}\)</p></div>
+  </div>
+</section>
+
+<!-- 19 -->
+<section class="card" id="q19">
+  <div class="qhead"><span class="qnum">19.</span></div>
+  <div class="qbody"><p>Refer to the figure at right to answer <strong>a</strong> and <strong>b</strong>.</p>
+  <ol class="parts" type="a"><li>What is the perimeter of this triangle?</li><li>What is the area of this triangle?</li></ol>
+  <figure>
+    <svg viewBox="0 0 210 145" width="210" role="img" aria-label="Right triangle with legs 0.6 meters and 0.8 meters and hypotenuse 1 meter">
+      <polyline class="ln" points="45,18 45,112 178,112 45,18"/>
+      <polyline class="thin" points="57,112 57,100 45,100"/>
+      <text x="8" y="70" font-size="12">0.6 m</text>
+      <text x="100" y="130" font-size="12">0.8 m</text>
+      <text x="122" y="58" font-size="12">1 m</text>
+    </svg>
+    <figcaption>Right triangle</figcaption>
+  </figure></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-19">Show solution</button>
+  <div class="solution" id="sol-19" role="region">
+    <h3>Solution</h3>
+    <p><strong>a.</strong> Add the three side lengths:</p>
+    \[ P = 0.6 + 0.8 + 1.0 = 2.4 \text{ m} \]
+    <p><strong>b.</strong> The legs \(0.8\) m and \(0.6\) m are the base and height:</p>
+    \[ A = \tfrac{1}{2} \times 0.8 \times 0.6 = 0.24 \text{ m}^{2} \]
+    <div class="answer"><p><strong>Answers:</strong> a. \(\boxed{2.4\text{ m}}\) &nbsp; b. \(\boxed{0.24\text{ m}^{2}}\)</p></div>
+  </div>
+</section>
+
+<!-- 20 -->
+<section class="card" id="q20">
+  <div class="qhead"><span class="qnum">20.</span></div>
+  <div class="qbody"><p>Compare and explain the reason for your answer:</p>
+  \[ \frac{32}{2} \ \bigcirc\ \frac{320}{20} \]</div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-20">Show solution</button>
+  <div class="solution" id="sol-20" role="region">
+    <h3>Solution</h3>
+    <p>Evaluate each fraction:</p>
+    \[ \frac{32}{2} = 16 \qquad\text{and}\qquad \frac{320}{20} = 16 \]
+    <p>They are equal because \(\dfrac{320}{20}\) is \(\dfrac{32}{2}\) with the numerator and denominator both multiplied by \(10\) — and multiplying top and bottom by the same number does not change a fraction’s value. They are equivalent fractions.</p>
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{\dfrac{32}{2} = \dfrac{320}{20}}\)</p></div>
+  </div>
+</section>
+
+<!-- 21 -->
+<section class="card" id="q21">
+  <div class="qhead"><span class="qnum">21.</span><span class="tag">Analyze</span></div>
+  <div class="qbody"><p>Show two ways to evaluate \(a(b + c)\) if \(a = 2\), \(b = 3\), and \(c = 4\).</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-21">Show solution</button>
+  <div class="solution" id="sol-21" role="region">
+    <h3>Solution</h3>
+    <p><strong>Way 1 — parentheses first</strong> (order of operations):</p>
+    \[ a(b+c) = 2(3+4) = 2 \times 7 = 14 \]
+    <p><strong>Way 2 — distributive property</strong> (multiply first, then add):</p>
+    \[ a(b+c) = ab + ac = 2 \times 3 + 2 \times 4 = 6 + 8 = 14 \]
+    <p>Both ways give the same result, as they should.</p>
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{14}\) by both methods</p></div>
+  </div>
+</section>
+
+<!-- 22 -->
+<section class="card" id="q22">
+  <div class="qhead"><span class="qnum">22.</span></div>
+  <div class="qbody"><p>Solve: \(\dfrac{10}{18} = \dfrac{c}{4.5}\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-22">Show solution</button>
+  <div class="solution" id="sol-22" role="region">
+    <h3>Solution</h3>
+    <p>Cross-multiply, then divide:</p>
+    \[ 18c = 10 \times 4.5 = 45 \qquad\Rightarrow\qquad c = 45 \div 18 = 2.5 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{c = 2.5}\)</p></div>
+  </div>
+</section>
+
+<!-- 23 -->
+<section class="card" id="q23">
+  <div class="qhead"><span class="qnum">23.</span></div>
+  <div class="qbody"><p>Solve: \(1.9 = w + 0.42\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-23">Show solution</button>
+  <div class="solution" id="sol-23" role="region">
+    <h3>Solution</h3>
+    <p>Subtract \(0.42\) from both sides to isolate \(w\):</p>
+    \[ w = 1.9 - 0.42 = 1.48 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{w = 1.48}\)</p></div>
+  </div>
+</section>
+
+<!-- 24 -->
+<section class="card" id="q24">
+  <div class="qhead"><span class="qnum">24.</span></div>
+  <div class="qbody"><p>Simplify: \(6.5 \div 4\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-24">Show solution</button>
+  <div class="solution" id="sol-24" role="region">
+    <h3>Solution</h3>
+    \[ 6.5 \div 4 = 1.625 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{1.625}\)</p></div>
+  </div>
+</section>
+
+<!-- 25 -->
+<section class="card" id="q25">
+  <div class="qhead"><span class="qnum">25.</span></div>
+  <div class="qbody"><p>Simplify: \(3\dfrac{3}{10} - 1\dfrac{11}{15}\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-25">Show solution</button>
+  <div class="solution" id="sol-25" role="region">
+    <h3>Solution</h3>
+    <p>Use the common denominator \(30\). Since \(\frac{9}{30} &lt; \frac{22}{30}\), borrow \(1\) from the \(3\):</p>
+    \[ 3\frac{3}{10} - 1\frac{11}{15} = 3\frac{9}{30} - 1\frac{22}{30} = 2\frac{39}{30} - 1\frac{22}{30} = 1\frac{17}{30} \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{1\dfrac{17}{30}}\)</p></div>
+  </div>
+</section>
+
+<!-- 26 -->
+<section class="card" id="q26">
+  <div class="qhead"><span class="qnum">26.</span></div>
+  <div class="qbody"><p>Simplify: \(5\dfrac{1}{2} + 6\dfrac{3}{10} + \dfrac{4}{5}\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-26">Show solution</button>
+  <div class="solution" id="sol-26" role="region">
+    <h3>Solution</h3>
+    <p>Use the common denominator \(10\) and add whole numbers and fractions separately:</p>
+    \[ 5\frac{1}{2} + 6\frac{3}{10} + \frac{4}{5} = 5\frac{5}{10} + 6\frac{3}{10} + \frac{8}{10} = 11\frac{16}{10} = 12\frac{6}{10} = 12\frac{3}{5} \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{12\dfrac{3}{5}}\)</p></div>
+  </div>
+</section>
+
+<!-- 27 -->
+<section class="card" id="q27">
+  <div class="qhead"><span class="qnum">27.</span></div>
+  <div class="qbody"><p>Simplify: \(7\dfrac{1}{2} \cdot 3\dfrac{1}{3} \cdot \dfrac{4}{5} \div 5\)</p></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-27">Show solution</button>
+  <div class="solution" id="sol-27" role="region">
+    <h3>Solution</h3>
+    <p>Write the mixed numbers as improper fractions, change division to multiplication by the reciprocal, and cancel:</p>
+    \[ \frac{15}{2} \cdot \frac{10}{3} \cdot \frac{4}{5} \cdot \frac{1}{5} = \frac{15 \times 10 \times 4}{2 \times 3 \times 5 \times 5} = \frac{600}{150} = 4 \]
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{4}\)</p></div>
+  </div>
+</section>
+
+<!-- 28 -->
+<section class="card" id="q28">
+  <div class="qhead"><span class="qnum">28.</span></div>
+  <div class="qbody"><p>Find the next coordinate pair in this sequence:</p>
+  \[ (1, 2),\ (2, 4),\ (3, 6),\ (4, 8),\ \ldots \]</div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-28">Show solution</button>
+  <div class="solution" id="sol-28" role="region">
+    <h3>Solution</h3>
+    <p>In each pair, the second number is twice the first: \(y = 2x\). The next first number is \(5\), so the next second number is \(2 \times 5 = 10\). Plotting the pairs shows the pattern on a straight line:</p>
+    <figure>
+      <svg viewBox="0 0 240 190" width="240" role="img" aria-label="Coordinate graph of points (1,2), (2,4), (3,6), (4,8), (5,10)">
+        <polyline class="thin" points="35,165 225,165"/>
+        <polyline class="thin" points="35,165 35,15"/>
+        <polyline class="thin" points="225,165 217,161 217,169 225,165"/>
+        <polyline class="thin" points="35,15 31,23 39,23 35,15"/>
+        <polyline class="thin" points="65,135 95,105 125,75 155,45 185,15" stroke-dasharray="4 3"/>
+        <circle cx="65" cy="135" r="4" fill="var(--accent)"/><circle cx="95" cy="105" r="4" fill="var(--accent)"/>
+        <circle cx="125" cy="75" r="4" fill="var(--accent)"/><circle cx="155" cy="45" r="4" fill="var(--accent)"/>
+        <circle cx="185" cy="15" r="4.5" fill="none" stroke="var(--accent)" stroke-width="2"/>
+        <text x="60" y="128" font-size="10">(1,2)</text>
+        <text x="90" y="98" font-size="10">(2,4)</text>
+        <text x="120" y="68" font-size="10">(3,6)</text>
+        <text x="150" y="38" font-size="10">(4,8)</text>
+        <text x="180" y="10" font-size="10">(5,10)</text>
+        <text x="228" y="180" font-size="12">x</text>
+        <text x="18" y="14" font-size="12">y</text>
+      </svg>
+      <figcaption>The points lie on the line \(y = 2x\); the new point is circled</figcaption>
+    </figure>
+    <div class="answer"><p><strong>Answer:</strong> \(\boxed{(5,\ 10)}\)</p></div>
+  </div>
+</section>
+
+<!-- 29 -->
+<section class="card" id="q29">
+  <div class="qhead"><span class="qnum">29.</span><span class="tag">Conclude</span></div>
+  <div class="qbody"><p>Find the measures of \(\angle a\), \(\angle b\), and \(\angle c\) in the figure at right.</p>
+  <figure>
+    <svg viewBox="0 0 230 140" width="230" role="img" aria-label="Triangle with a 50 degree angle, top exterior angle 110 degrees, interior angles a and b, and exterior angle c">
+      <defs><marker id="arr29" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/></marker></defs>
+      <polyline class="ln" points="25,112 118,32 158,112 25,112"/>
+      <polyline class="ln" points="118,32 146,8" marker-end="url(#arr29)"/>
+      <polyline class="ln" points="158,112 205,112" marker-end="url(#arr29)"/>
+      <polyline class="thin" points="48,112 44,100 58,97"/>
+      <text x="60" y="108" font-size="12">50°</text>
+      <text x="128" y="55" font-size="13" font-style="italic">a</text>
+      <text x="152" y="38" font-size="12">110°</text>
+      <text x="140" y="108" font-size="13" font-style="italic">b</text>
+      <text x="172" y="100" font-size="13" font-style="italic">c</text>
+    </svg>
+    <figcaption>Triangle with two extended sides</figcaption>
+  </figure></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-29">Show solution</button>
+  <div class="solution" id="sol-29" role="region">
+    <h3>Solution</h3>
+    <p><strong>Angle \(a\):</strong> \(\angle a\) and the \(110^{\circ}\) angle form a straight line, so they are supplementary:</p>
+    \[ a = 180^{\circ} - 110^{\circ} = 70^{\circ} \]
+    <p><strong>Angle \(b\):</strong> The three interior angles of a triangle sum to \(180^{\circ}\):</p>
+    \[ b = 180^{\circ} - 50^{\circ} - 70^{\circ} = 60^{\circ} \]
+    <p><strong>Angle \(c\):</strong> \(\angle c\) is supplementary to \(\angle b\):</p>
+    \[ c = 180^{\circ} - 60^{\circ} = 120^{\circ} \]
+    <div class="answer"><p><strong>Answers:</strong> \(\boxed{a = 70^{\circ},\quad b = 60^{\circ},\quad c = 120^{\circ}}\)</p></div>
+  </div>
+</section>
+
+<!-- 30 -->
+<section class="card" id="q30">
+  <div class="qhead"><span class="qnum">30.</span></div>
+  <div class="qbody"><p>Refer to the figure at right to answer <strong>a–c</strong>:</p>
+  <ol class="parts" type="a">
+  <li>What is the measure of central angle \(AOB\)?</li>
+  <li>What appears to be the measure of inscribed angle \(ACB\)?</li>
+  <li>Chord \(AC\) is congruent to chord \(BC\). What appears to be the measure of inscribed angle \(ABC\)?</li></ol>
+  <figure>
+    <svg viewBox="0 0 200 175" width="200" role="img" aria-label="Circle with center O, diameter AB, and point C on the circle forming triangle ACB">
+      <circle cx="100" cy="82" r="58" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <polyline class="ln" points="42,82 158,82 100,140 42,82"/>
+      <circle cx="100" cy="82" r="3" fill="var(--ink)"/>
+      <text x="24" y="87" font-size="13">A</text>
+      <text x="164" y="87" font-size="13">B</text>
+      <text x="94" y="66" font-size="13">O</text>
+      <text x="94" y="160" font-size="13">C</text>
+    </svg>
+    <figcaption>Circle with center \(O\); \(\overline{AB}\) is a diameter</figcaption>
+  </figure></div>
+  <button type="button" class="toggle" aria-expanded="false" aria-controls="sol-30">Show solution</button>
+  <div class="solution" id="sol-30" role="region">
+    <h3>Solution</h3>
+    <p><strong>a.</strong> \(\overline{AB}\) passes through the center, so it is a straight line. Central angle \(AOB\) is a straight angle:</p>
+    \[ \angle AOB = 180^{\circ} \]
+    <p><strong>b.</strong> \(\angle ACB\) is inscribed in a semicircle. An inscribed angle is half the measure of its intercepted arc — half of \(180^{\circ}\):</p>
+    \[ \angle ACB = \tfrac{1}{2}(180^{\circ}) = 90^{\circ} \]
+    <p><strong>c.</strong> Equal chords \(AC\) and \(BC\) mean the base angles at \(A\) and \(B\) are equal. The angles of \(\triangle ABC\) sum to \(180^{\circ}\):</p>
+    \[ \angle ABC = \frac{180^{\circ} - 90^{\circ}}{2} = \frac{90^{\circ}}{2} = 45^{\circ} \]
+    <div class="answer"><p><strong>Answers:</strong> a. \(\boxed{180^{\circ}}\) &nbsp; b. \(\boxed{90^{\circ}}\) &nbsp; c. \(\boxed{45^{\circ}}\)</p></div>
+  </div>
+</section>
+
+<footer>Saxon Math Course 2 · Lesson 43 · Written Practice, pp. 313–316</footer>
+</div>
+
+<script>
+(function(){
+  function typeset(el){
+    if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetPromise([el]).catch(function(){}); }
+  }
+  function setSolution(btn, open){
+    var sol = document.getElementById(btn.getAttribute('aria-controls'));
+    if (!sol) return;
+    sol.classList.toggle('open', open);
+    // Keep display in sync with the hidden-by-default requirement
+    sol.style.display = open ? 'block' : 'none';
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.textContent = open ? 'Hide solution' : 'Show solution';
+    if (open) typeset(sol);
+  }
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('.toggle'));
+  buttons.forEach(function(btn){
+    var sol = document.getElementById(btn.getAttribute('aria-controls'));
+    if (sol) sol.style.display = 'none';
+    btn.addEventListener('click', function(){
+      setSolution(btn, btn.getAttribute('aria-expanded') !== 'true');
+    });
+  });
+  document.getElementById('revealAll').addEventListener('click', function(){
+    buttons.forEach(function(b){ setSolution(b, true); });
+  });
+  document.getElementById('hideAll').addEventListener('click', function(){
+    buttons.forEach(function(b){ setSolution(b, false); });
+  });
+})();
+</script>
+</body>
+</html>
