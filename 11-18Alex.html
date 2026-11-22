@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Lesson 45 — Saxon Math Course 2 — Solutions for Alex</title>
+    <style>
+      :root {
+        --bg: #f6f3ec;
+        --surface: #fffdf8;
+        --surface-2: #eef3f6;
+        --ink: #1e2732;
+        --ink-soft: #4a5568;
+        --line: #d8d2c4;
+        --accent: #1d5fa8;
+        --accent-ink: #ffffff;
+        --accent-soft: #dcebf8;
+        --answer-bg: #eaf4ec;
+        --answer-line: #2e7d46;
+        --chip-bg: #e3e9f2;
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #14171c;
+          --surface: #1d2129;
+          --surface-2: #232a35;
+          --ink: #ece9e2;
+          --ink-soft: #a9b2c0;
+          --line: #3a4150;
+          --accent: #6aa9e8;
+          --accent-ink: #0d1520;
+          --accent-soft: #26374d;
+          --answer-bg: #1d2f24;
+          --answer-line: #5cb87a;
+          --chip-bg: #2a3342;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+        font-size: 17px;
+        line-height: 1.55;
+      }
+      main { max-width: 780px; margin: 0 auto; padding: 28px 18px 64px; }
+      h1 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.75rem;
+        line-height: 1.25;
+        margin: 0 0 6px;
+      }
+      .subtitle { color: var(--ink-soft); margin: 0 0 20px; font-size: 1rem; }
+      h2 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.35rem;
+        margin: 38px 0 14px;
+        padding-bottom: 6px;
+        border-bottom: 3px solid var(--accent);
+      }
+      h3.group-label {
+        font-size: 1.05rem;
+        margin: 26px 0 10px;
+        color: var(--ink-soft);
+        font-style: italic;
+        font-weight: 600;
+      }
+      .controls {
+        display: flex; flex-wrap: wrap; gap: 10px;
+        margin: 18px 0 6px;
+      }
+      .controls button {
+        min-height: 40px; padding: 8px 18px;
+        font: inherit; font-size: 0.95rem; font-weight: 600;
+        border-radius: 8px; cursor: pointer;
+        border: 1.5px solid var(--accent);
+        background: var(--surface); color: var(--accent);
+      }
+      .controls button.primary { background: var(--accent); color: var(--accent-ink); }
+      .problem {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 18px 20px 16px;
+        margin: 0 0 16px;
+      }
+      .problem-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+      .pnum {
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 700; font-size: 1.12rem; color: var(--accent);
+        white-space: nowrap;
+      }
+      .chip {
+        font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+        text-transform: uppercase;
+        background: var(--chip-bg); color: var(--ink-soft);
+        padding: 2px 8px; border-radius: 4px; white-space: nowrap;
+      }
+      .problem p { margin: 6px 0; }
+      .subparts { margin: 4px 0 4px 2px; }
+      .subparts p { margin: 5px 0; }
+      figure.fig { margin: 12px 0 4px; text-align: center; }
+      figure.fig svg { max-width: 100%; height: auto; }
+      figcaption { color: var(--ink-soft); font-size: 0.88rem; margin-top: 4px; }
+      .toggle-btn {
+        min-height: 40px; padding: 8px 18px; margin-top: 12px;
+        font: inherit; font-size: 0.95rem; font-weight: 600;
+        border-radius: 8px; cursor: pointer;
+        border: 1.5px solid var(--accent);
+        background: var(--accent); color: var(--accent-ink);
+      }
+      .toggle-btn[aria-expanded="true"] { background: var(--surface); color: var(--accent); }
+      .solution {
+        display: none;
+        margin-top: 14px;
+        background: var(--surface-2);
+        border-radius: 6px;
+        padding: 14px 16px 10px;
+      }
+      .solution.open { display: block; }
+      .solution h4 { margin: 0 0 8px; font-size: 0.95rem; letter-spacing: 0.02em; }
+      .solution p { margin: 7px 0; }
+      .answer {
+        background: var(--answer-bg);
+        border: 1.5px solid var(--answer-line);
+        border-radius: 6px;
+        padding: 10px 14px;
+        margin: 12px 0 6px;
+        text-align: center;
+        overflow-x: auto;
+      }
+      table.tally {
+        border-collapse: collapse; margin: 12px auto; width: 100%; max-width: 520px;
+        background: var(--surface);
+      }
+      table.tally th, table.tally td {
+        border: 1px solid var(--line); padding: 9px 12px; text-align: left;
+      }
+      table.tally th { background: var(--accent-soft); text-align: center; }
+      .t5 {
+        display: inline-block; position: relative;
+        width: 22px; height: 15px; vertical-align: middle; margin-right: 9px;
+        background: repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 6px);
+        background-size: 20px 100%; background-repeat: no-repeat;
+      }
+      .t5::after {
+        content: ""; position: absolute; left: -3px; top: 6px;
+        width: 27px; height: 2px; background: currentColor;
+        transform: rotate(-20deg);
+      }
+      .tm {
+        display: inline-block; height: 15px; vertical-align: middle;
+        background: repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 6px);
+      }
+      .tnum { font-weight: 700; margin-left: 8px; }
+      .note {
+        border: 1.5px dashed var(--answer-line);
+        border-radius: 6px; padding: 10px 14px; margin: 10px 0;
+        background: var(--answer-bg);
+      }
+      svg text { fill: var(--ink); font-family: inherit; }
+      svg .outline { stroke: var(--ink); }
+      @media (max-width: 520px) {
+        body { font-size: 16px; }
+        .problem { padding: 15px 15px 13px; }
+        h1 { font-size: 1.5rem; }
+      }
+    </style>
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['\\(', '\\)']],
+          displayMath: [['\\[', '\\]']]
+        },
+        options: { enableMenu: false }
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+  </head>
+  <body>
+    <main>
+      <h1>Lesson 45 — Saxon Math Course 2 — Solutions for Alex</h1>
+      <p class="subtitle">Dividing by a decimal number. Work each problem first, then click <strong>Show solution</strong> to check your answer and see the steps.</p>
+
+      <div class="controls">
+        <button type="button" class="primary" id="reveal-all">Reveal all solutions</button>
+        <button type="button" id="hide-all">Hide all solutions</button>
+      </div>
+
+      <h2>Lesson Practice</h2>
+      <h3 class="group-label">Divide:</h3>
+
+      <section class="problem" id="lp-a">
+        <div class="problem-head"><span class="pnum">a.</span></div>
+        <p>\(5.16 \div 0.6\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-lp-a">Show solution</button>
+        <div class="solution" id="sol-lp-a">
+          <h4>Solution</h4>
+          <p>Shift both decimal points one place to the right so the divisor becomes a whole number. This changes the problem to \(51.6 \div 6\):</p>
+          \[5.16 \div 0.6 = 51.6 \div 6 = 8.6\]
+          <div class="answer">\[\boxed{8.6}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="lp-b">
+        <div class="problem-head"><span class="pnum">b.</span></div>
+        <p>\(0.144 \div 0.09\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-lp-b">Show solution</button>
+        <div class="solution" id="sol-lp-b">
+          <h4>Solution</h4>
+          <p>Shift both decimal points two places to the right so the divisor becomes a whole number. This changes the problem to \(14.4 \div 9\):</p>
+          \[0.144 \div 0.09 = 14.4 \div 9 = 1.6\]
+          <div class="answer">\[\boxed{1.6}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="lp-c">
+        <div class="problem-head"><span class="pnum">c.</span></div>
+        <p>\(23.8 \div 0.07\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-lp-c">Show solution</button>
+        <div class="solution" id="sol-lp-c">
+          <h4>Solution</h4>
+          <p>Shift both decimal points two places to the right (add a zero to \(23.8\)). This changes the problem to \(2380 \div 7\):</p>
+          \[23.8 \div 0.07 = 2380 \div 7 = 340\]
+          <div class="answer">\[\boxed{340}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="lp-d">
+        <div class="problem-head"><span class="pnum">d.</span></div>
+        <p>\(24 \div 0.08\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-lp-d">Show solution</button>
+        <div class="solution" id="sol-lp-d">
+          <h4>Solution</h4>
+          <p>Shift both decimal points two places to the right (add two zeros to \(24\)). This changes the problem to \(2400 \div 8\):</p>
+          \[24 \div 0.08 = 2400 \div 8 = 300\]
+          <div class="answer">\[\boxed{300}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="lp-e">
+        <div class="problem-head"><span class="pnum">e.</span></div>
+        <p>How many \(\$0.75\) pens can be purchased with \(\$12.00\)?</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-lp-e">Show solution</button>
+        <div class="solution" id="sol-lp-e">
+          <h4>Solution</h4>
+          <p>Divide the money by the price of one pen. Shift both decimal points two places to the right:</p>
+          \[12.00 \div 0.75 = 1200 \div 75 = 16\]
+          <div class="answer">\[\boxed{16 \text{ pens}}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="lp-f">
+        <div class="problem-head"><span class="pnum">f.</span><span class="chip">Explain</span></div>
+        <p>Why are these division problems equivalent?</p>
+        \[\frac{2.25}{0.5} = \frac{2.5}{5}\]
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-lp-f">Show solution</button>
+        <div class="solution" id="sol-lp-f">
+          <h4>Solution</h4>
+          <div class="note">
+            <p><strong>Heads up — the problem as printed in the book is not true.</strong> Check both sides:</p>
+            \[2.25 \div 0.5 = 4.5 \qquad \text{but} \qquad 2.5 \div 5 = 0.5\]
+            <p>Since \(4.5 \neq 0.5\), the printed equation \(\dfrac{2.25}{0.5} = \dfrac{2.5}{5}\) is a misprint. The intended equivalent division is \(\dfrac{22.5}{5}\), as explained below.</p>
+          </div>
+          <p>Dividing by a decimal works because we may multiply the numerator and the denominator of a division fraction by the <em>same</em> number without changing its value. Multiplying both parts of \(\dfrac{2.25}{0.5}\) by \(10\) — that is, shifting both decimal points one place to the right — gives:</p>
+          \[\frac{2.25}{0.5} = \frac{2.25 \times 10}{0.5 \times 10} = \frac{22.5}{5}\]
+          <p>And indeed \(22.5 \div 5 = 4.5\), the same as \(2.25 \div 0.5\).</p>
+          <div class="answer">\[\boxed{\frac{2.25}{0.5} = \frac{22.5}{5} = 4.5 \text{, because both parts were multiplied by } 10}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="lp-g">
+        <div class="problem-head"><span class="pnum">g.</span><span class="chip">Generalize</span></div>
+        <p>Solve this proportion: \(\dfrac{x}{4} = \dfrac{3}{0.8}\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-lp-g">Show solution</button>
+        <div class="solution" id="sol-lp-g">
+          <h4>Solution</h4>
+          <p>Cross-multiply:</p>
+          \[0.8x = 4 \cdot 3 = 12\]
+          \[x = \frac{12}{0.8} = 15\]
+          <p>Check: \(\dfrac{15}{4} = 3.75\) and \(\dfrac{3}{0.8} = 3.75\). ✓</p>
+          <div class="answer">\[\boxed{x = 15}\]</div>
+        </div>
+      </section>
+
+      <h2>Written Practice</h2>
+
+      <section class="problem" id="wp-1">
+        <div class="problem-head"><span class="pnum">1.</span></div>
+        <p>Raisins and nuts were mixed in a bowl. If nuts made up five eighths of the mixture, what was the ratio of raisins to nuts?</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-1">Show solution</button>
+        <div class="solution" id="sol-wp-1">
+          <h4>Solution</h4>
+          <p>The whole mixture is \(1\). If nuts are \(\dfrac{5}{8}\) of it, then raisins are the rest:</p>
+          \[1 - \frac{5}{8} = \frac{3}{8}\]
+          <p>So the ratio of raisins to nuts is:</p>
+          \[\frac{3}{8} : \frac{5}{8} = 3 : 5\]
+          <div class="answer">\[\boxed{3 : 5}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-2">
+        <div class="problem-head"><span class="pnum">2.</span></div>
+        <p>The taxi ride cost \(\$1\) plus \(80\text{¢}\) more for each quarter mile traveled. What was the total cost for a 2-mile trip?</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-2">Show solution</button>
+        <div class="solution" id="sol-wp-2">
+          <h4>Solution</h4>
+          <p>A 2-mile trip contains \(2 \div \tfrac{1}{4} = 8\) quarter miles. The distance charge is:</p>
+          \[8 \times \$0.80 = \$6.40\]
+          <p>Add the starting charge of \(\$1\):</p>
+          \[\$1 + \$6.40 = \$7.40\]
+          <div class="answer">\[\boxed{\$7.40}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-3">
+        <div class="problem-head"><span class="pnum">3.</span></div>
+        <p>Fifty-four and five hundredths is how much greater than fifty and forty thousandths? Use words to write the answer.</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-3">Show solution</button>
+        <div class="solution" id="sol-wp-3">
+          <h4>Solution</h4>
+          <p>Write both numbers as decimals and subtract:</p>
+          \[54.05 - 50.040 = 4.010\]
+          <p>The number \(4.010\) is read “four and ten thousandths,” which is the same value as four and one hundredth.</p>
+          <div class="answer">\[\boxed{\text{four and one hundredth}}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-4">
+        <div class="problem-head"><span class="pnum">4.</span></div>
+        <p>Refer to the election tally sheet below to answer <strong>a</strong> and <strong>b</strong>.</p>
+        <table class="tally" aria-label="Election vote totals tally sheet">
+          <thead><tr><th colspan="2">Vote Totals</th></tr></thead>
+          <tbody>
+            <tr><td>Judy</td><td><span class="t5"></span><span class="t5"></span><span class="t5"></span><span class="tm" style="width:2px"></span><span class="tnum">16</span></td></tr>
+            <tr><td>Carlos</td><td><span class="t5"></span><span class="t5"></span><span class="tm" style="width:20px"></span><span class="tnum">14</span></td></tr>
+            <tr><td>Yolanda</td><td><span class="t5"></span><span class="t5"></span><span class="t5"></span><span class="t5"></span><span class="tm" style="width:8px"></span><span class="tnum">22</span></td></tr>
+            <tr><td>Khanh</td><td><span class="t5"></span><span class="t5"></span><span class="t5"></span><span class="tm" style="width:14px"></span><span class="tnum">18</span></td></tr>
+          </tbody>
+        </table>
+        <div class="subparts">
+          <p><strong>a.</strong> The winner of the election received how many more votes than the runner-up?</p>
+          <p><strong>b.</strong> What fraction of the votes did Carlos receive?</p>
+        </div>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-4">Show solution</button>
+        <div class="solution" id="sol-wp-4">
+          <h4>Solution</h4>
+          <p>Count the tally marks (each diagonal group is 5): Judy has \(16\), Carlos has \(14\), Yolanda has \(22\), and Khanh has \(18\). The total number of votes is:</p>
+          \[16 + 14 + 22 + 18 = 70\]
+          <p><strong>a.</strong> The winner is Yolanda with \(22\) votes; the runner-up is Khanh with \(18\) votes.</p>
+          \[22 - 18 = 4\]
+          <p><strong>b.</strong> Carlos received \(14\) of the \(70\) votes:</p>
+          \[\frac{14}{70} = \frac{1}{5}\]
+          <div class="answer">\[\boxed{\text{a. } 4 \text{ more votes} \qquad \text{b. } \frac{1}{5}}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-5">
+        <div class="problem-head"><span class="pnum">5.</span></div>
+        <p>Read this statement. Then answer the questions that follow.</p>
+        <p><em>Four sevenths of those who rode the Giant Gyro at the fair were euphoric. All the rest were vertiginous.</em></p>
+        <div class="subparts">
+          <p><strong>a.</strong> What fraction of the riders were vertiginous?</p>
+          <p><strong>b.</strong> What was the ratio of euphoric to vertiginous riders?</p>
+        </div>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-5">Show solution</button>
+        <div class="solution" id="sol-wp-5">
+          <h4>Solution</h4>
+          <p>Divide a bar into \(7\) equal parts. Four parts are euphoric, so the remaining \(3\) parts are vertiginous:</p>
+          <figure class="fig">
+            <svg width="420" height="86" viewBox="0 0 420 86" role="img" aria-label="Bar divided into 7 equal parts: 4 shaded parts labeled euphoric and 3 unshaded parts labeled vertiginous">
+              <rect x="10" y="14" width="57.14" height="34" fill="var(--accent-soft)" stroke="none" />
+              <rect x="67.14" y="14" width="57.14" height="34" fill="var(--accent-soft)" stroke="none" />
+              <rect x="124.29" y="14" width="57.14" height="34" fill="var(--accent-soft)" stroke="none" />
+              <rect x="181.43" y="14" width="57.14" height="34" fill="var(--accent-soft)" stroke="none" />
+              <polyline class="outline" points="10,14 410,14 410,48 10,48 10,14" fill="none" stroke-width="2" />
+              <polyline class="outline" points="67.14,14 67.14,48 124.29,48 124.29,14 181.43,14 181.43,48 238.57,48 238.57,14 295.71,14 295.71,48 352.86,48 352.86,14" fill="none" stroke-width="1.5" />
+              <text x="124" y="70" text-anchor="middle" font-size="14">euphoric: 4/7</text>
+              <text x="324" y="70" text-anchor="middle" font-size="14">vertiginous: 3/7</text>
+            </svg>
+          </figure>
+          <p><strong>a.</strong> The vertiginous fraction is the rest of the whole:</p>
+          \[1 - \frac{4}{7} = \frac{3}{7}\]
+          <p><strong>b.</strong> Euphoric riders to vertiginous riders:</p>
+          \[\frac{4}{7} : \frac{3}{7} = 4 : 3\]
+          <div class="answer">\[\boxed{\text{a. } \frac{3}{7} \qquad \text{b. } 4 : 3}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-6">
+        <div class="problem-head"><span class="pnum">6.</span><span class="chip">Analyze</span></div>
+        <p>Name the properties used to simplify the expression \(4\left(\dfrac{1}{4} + 0.3\right)\).</p>
+        \[4\left(\frac{1}{4} + 0.3\right) \qquad \text{Given}\]
+        \[4\left(\frac{1}{4}\right) + 4(0.3) \qquad \textbf{a. } \rule{4.5cm}{0.4pt}\]
+        \[1 + 4(0.3) \qquad \textbf{b. } \rule{4.5cm}{0.4pt}\]
+        \[1 + 1.2 \qquad 4(0.3) = 1.2\]
+        \[2.2 \qquad 1 + 1.2 = 2.2\]
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-6">Show solution</button>
+        <div class="solution" id="sol-wp-6">
+          <h4>Solution</h4>
+          <p><strong>a.</strong> The step \(4\left(\tfrac{1}{4} + 0.3\right) = 4\left(\tfrac{1}{4}\right) + 4(0.3)\) multiplies the \(4\) by <em>each</em> term inside the parentheses. That is the <strong>Distributive Property</strong> (of multiplication over addition).</p>
+          <p><strong>b.</strong> The step \(4\left(\tfrac{1}{4}\right) + 4(0.3) = 1 + 4(0.3)\) uses \(4 \times \tfrac{1}{4} = 1\): a number times its reciprocal equals \(1\). That is the <strong>Inverse Property of Multiplication</strong>.</p>
+          <p>Finishing the arithmetic, \(1 + 1.2 = 2.2\).</p>
+          <div class="answer">\[\boxed{\text{a. Distributive Property} \qquad \text{b. Inverse Property of Multiplication}}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-7">
+        <div class="problem-head"><span class="pnum">7.</span></div>
+        <p>Find the product of \(5^2\) and \(10^2\).</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-7">Show solution</button>
+        <div class="solution" id="sol-wp-7">
+          <h4>Solution</h4>
+          <p>Evaluate each power first, then multiply:</p>
+          \[5^2 \times 10^2 = 25 \times 100 = 2500\]
+          <div class="answer">\[\boxed{2500}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-8">
+        <div class="problem-head"><span class="pnum">8.</span></div>
+        <p>The perimeter of this rectangle is \(56\) cm:</p>
+        <figure class="fig">
+          <svg width="300" height="150" viewBox="0 0 300 150" role="img" aria-label="Rectangle with width labeled 10 centimeters; perimeter is 56 centimeters">
+            <polyline class="outline" points="50,25 250,25 250,115 50,115 50,25" fill="none" stroke-width="2" />
+            <text x="262" y="75" font-size="16">10 cm</text>
+          </svg>
+        </figure>
+        <div class="subparts">
+          <p><strong>a.</strong> What is the length of the rectangle?</p>
+          <p><strong>b.</strong> What is the area of the rectangle?</p>
+        </div>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-8">Show solution</button>
+        <div class="solution" id="sol-wp-8">
+          <h4>Solution</h4>
+          <p><strong>a.</strong> The perimeter is twice the length plus twice the width (\(10\) cm):</p>
+          \[2(\text{length} + 10) = 56\]
+          \[\text{length} + 10 = 28 \quad \Longrightarrow \quad \text{length} = 18 \text{ cm}\]
+          <p><strong>b.</strong> Area is length times width:</p>
+          \[A = 18 \text{ cm} \times 10 \text{ cm} = 180 \text{ cm}^2\]
+          <div class="answer">\[\boxed{\text{a. } 18 \text{ cm} \qquad \text{b. } 180 \text{ cm}^2}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-9">
+        <div class="problem-head"><span class="pnum">9.</span></div>
+        <div class="subparts">
+          <p><strong>a.</strong> Write \(62.5\) as a mixed number.</p>
+          <p><strong>b.</strong> Write \(\dfrac{9}{100}\) as a decimal number.</p>
+          <p><strong>c.</strong> Write \(7.5\%\) as a decimal number.</p>
+        </div>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-9">Show solution</button>
+        <div class="solution" id="sol-wp-9">
+          <h4>Solution</h4>
+          <p><strong>a.</strong> The decimal part \(0.5\) is \(\dfrac{5}{10} = \dfrac{1}{2}\), so \(62.5 = 62\tfrac{1}{2}\).</p>
+          <p><strong>b.</strong> Nine hundredths is written \(0.09\).</p>
+          <p><strong>c.</strong> To change a percent to a decimal, divide by \(100\) (move the decimal point two places left): \(7.5\% = 0.075\).</p>
+          <div class="answer">\[\boxed{\text{a. } 62\frac{1}{2} \qquad \text{b. } 0.09 \qquad \text{c. } 0.075}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-10">
+        <div class="problem-head"><span class="pnum">10.</span><span class="chip">Generalize</span></div>
+        <p>Round each number to five decimal places:</p>
+        <div class="subparts">
+          <p><strong>a.</strong> \(23.\overline{54}\)</p>
+          <p><strong>b.</strong> \(0.91\overline{6}\)</p>
+        </div>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-10">Show solution</button>
+        <div class="solution" id="sol-wp-10">
+          <h4>Solution</h4>
+          <p><strong>a.</strong> The bar means \(54\) repeats forever: \(23.\overline{54} = 23.545454\ldots\) The first five decimal places are \(54545\), and the next digit is \(4\), so we round down (keep the digit):</p>
+          \[23.\overline{54} \approx 23.54545\]
+          <p><strong>b.</strong> Here only the \(6\) repeats: \(0.91\overline{6} = 0.916666\ldots\) The first five decimal places are \(91666\), and the next digit is \(6\), so we round the last place up:</p>
+          \[0.91\overline{6} \approx 0.91667\]
+          <div class="answer">\[\boxed{\text{a. } 23.54545 \qquad \text{b. } 0.91667}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-11">
+        <div class="problem-head"><span class="pnum">11.</span></div>
+        <p>A 2-liter bottle of water has a mass of 2 kilograms. How many grams is that?</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-11">Show solution</button>
+        <div class="solution" id="sol-wp-11">
+          <h4>Solution</h4>
+          <p>One kilogram is \(1000\) grams, so multiply by \(1000\):</p>
+          \[2 \text{ kg} \times 1000 \frac{\text{g}}{\text{kg}} = 2000 \text{ g}\]
+          <div class="answer">\[\boxed{2000 \text{ grams}}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-12">
+        <div class="problem-head"><span class="pnum">12.</span></div>
+        <p>Find \(6.5\%\) of \(\$5.00\) by multiplying \(\$5.00\) by \(0.065\). Round the answer to the nearest cent.</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-12">Show solution</button>
+        <div class="solution" id="sol-wp-12">
+          <h4>Solution</h4>
+          <p>Multiply, then round to the nearest cent (hundredth of a dollar):</p>
+          \[\$5.00 \times 0.065 = \$0.325 \approx \$0.33\]
+          <div class="answer">\[\boxed{\$0.33}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-13">
+        <div class="problem-head"><span class="pnum">13.</span><span class="chip">Generalize</span></div>
+        <p>Divide \(5.1\) by \(9\) and write the quotient</p>
+        <div class="subparts">
+          <p><strong>a.</strong> rounded to the nearest thousandth.</p>
+          <p><strong>b.</strong> with a bar over the repetend.</p>
+        </div>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-13">Show solution</button>
+        <div class="solution" id="sol-wp-13">
+          <h4>Solution</h4>
+          <p>Dividing, the digit \(6\) repeats forever:</p>
+          \[5.1 \div 9 = 0.5666\ldots\]
+          <p><strong>a.</strong> The fourth decimal digit is \(6\), so round the third place up: \(0.567\).</p>
+          <p><strong>b.</strong> Put a bar over the repeating digit: \(0.5\overline{6}\).</p>
+          <div class="answer">\[\boxed{\text{a. } 0.567 \qquad \text{b. } 0.5\overline{6}}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-14">
+        <div class="problem-head"><span class="pnum">14.</span><span class="chip">Analyze</span></div>
+        <p>Letter cards \(A\) through \(Z\) are placed in a bag. If a card is chosen at random, what is the probability that it will be the card with the letter \(Z\)? Write the answer as a reduced fraction and as a decimal number rounded to the nearest hundredth.</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-14">Show solution</button>
+        <div class="solution" id="sol-wp-14">
+          <h4>Solution</h4>
+          <p>There are \(26\) letter cards, and only one of them is \(Z\). So the probability is \(1\) out of \(26\):</p>
+          \[P(Z) = \frac{1}{26}\]
+          <p>As a decimal, \(1 \div 26 \approx 0.03846\ldots\), which rounds to \(0.04\).</p>
+          <div class="answer">\[\boxed{\frac{1}{26} \approx 0.04}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-15">
+        <div class="problem-head"><span class="pnum">15.</span></div>
+        <p>Draw \(\overline{XY}\) \(2\) cm long. Then draw \(\overline{YZ}\) \(1.5\) cm long perpendicular to \(\overline{XY}\). Complete \(\triangle XYZ\) by drawing \(\overline{XZ}\). How long is \(\overline{XZ}\)?</p>
+        <figure class="fig">
+          <svg width="280" height="170" viewBox="0 0 280 170" role="img" aria-label="Right triangle XYZ with the right angle at Y">
+            <polyline class="outline" points="35,140 215,140 215,40 35,140" fill="none" stroke-width="2" />
+            <polyline class="outline" points="197,140 197,122 215,122" fill="none" stroke-width="1.5" />
+            <text x="28" y="160" font-size="16">X</text>
+            <text x="212" y="160" font-size="16">Y</text>
+            <text x="212" y="32" font-size="16">Z</text>
+          </svg>
+          <figcaption>Triangle \(XYZ\) with the right angle at \(Y\).</figcaption>
+        </figure>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-15">Show solution</button>
+        <div class="solution" id="sol-wp-15">
+          <h4>Solution</h4>
+          <p>Because \(\overline{YZ}\) is perpendicular to \(\overline{XY}\), the triangle is a right triangle with the right angle at \(Y\). So \(\overline{XZ}\) is the hypotenuse. By the Pythagorean theorem:</p>
+          \[XZ^2 = XY^2 + YZ^2 = 2^2 + 1.5^2 = 4 + 2.25 = 6.25\]
+          \[XZ = \sqrt{6.25} = 2.5 \text{ cm}\]
+          <figure class="fig">
+            <svg width="300" height="190" viewBox="0 0 300 190" role="img" aria-label="Right triangle XYZ labeled: XY is 2 centimeters, YZ is 1.5 centimeters, XZ is 2.5 centimeters">
+              <polyline class="outline" points="45,150 225,150 225,45 45,150" fill="none" stroke-width="2" />
+              <polyline class="outline" points="207,150 207,132 225,132" fill="none" stroke-width="1.5" />
+              <text x="36" y="172" font-size="16">X</text>
+              <text x="222" y="172" font-size="16">Y</text>
+              <text x="222" y="36" font-size="16">Z</text>
+              <text x="112" y="172" font-size="15">2 cm</text>
+              <text x="234" y="102" font-size="15">1.5 cm</text>
+              <text x="92" y="88" font-size="15">2.5 cm</text>
+            </svg>
+          </figure>
+          <div class="answer">\[\boxed{XZ = 2.5 \text{ cm}}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-16">
+        <div class="problem-head"><span class="pnum">16.</span></div>
+        <p>Find the <strong>a</strong> perimeter and <strong>b</strong> area of the triangle drawn in problem 15.</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-16">Show solution</button>
+        <div class="solution" id="sol-wp-16">
+          <h4>Solution</h4>
+          <p>The three sides of the triangle from problem 15 are \(2\) cm, \(1.5\) cm, and \(2.5\) cm.</p>
+          <figure class="fig">
+            <svg width="300" height="190" viewBox="0 0 300 190" role="img" aria-label="Right triangle XYZ labeled: XY is 2 centimeters, YZ is 1.5 centimeters, XZ is 2.5 centimeters">
+              <polyline class="outline" points="45,150 225,150 225,45 45,150" fill="none" stroke-width="2" />
+              <polyline class="outline" points="207,150 207,132 225,132" fill="none" stroke-width="1.5" />
+              <text x="36" y="172" font-size="16">X</text>
+              <text x="222" y="172" font-size="16">Y</text>
+              <text x="222" y="36" font-size="16">Z</text>
+              <text x="112" y="172" font-size="15">2 cm</text>
+              <text x="234" y="102" font-size="15">1.5 cm</text>
+              <text x="92" y="88" font-size="15">2.5 cm</text>
+            </svg>
+          </figure>
+          <p><strong>a.</strong> The perimeter is the sum of the side lengths:</p>
+          \[P = 2 + 1.5 + 2.5 = 6 \text{ cm}\]
+          <p><strong>b.</strong> For a right triangle, use the two perpendicular sides as the base and height:</p>
+          \[A = \frac{1}{2} \times 2 \text{ cm} \times 1.5 \text{ cm} = 1.5 \text{ cm}^2\]
+          <div class="answer">\[\boxed{\text{a. } 6 \text{ cm} \qquad \text{b. } 1.5 \text{ cm}^2}\]</div>
+        </div>
+      </section>
+
+      <h3 class="group-label">Solve:</h3>
+
+      <section class="problem" id="wp-17">
+        <div class="problem-head"><span class="pnum">17.</span></div>
+        <p>\(\dfrac{3}{w} = \dfrac{25}{100}\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-17">Show solution</button>
+        <div class="solution" id="sol-wp-17">
+          <h4>Solution</h4>
+          <p>Cross-multiply:</p>
+          \[25w = 3 \times 100 = 300\]
+          \[w = \frac{300}{25} = 12\]
+          <div class="answer">\[\boxed{w = 12}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-18">
+        <div class="problem-head"><span class="pnum">18.</span></div>
+        <p>\(\dfrac{1.2}{4.4} = \dfrac{3}{a}\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-18">Show solution</button>
+        <div class="solution" id="sol-wp-18">
+          <h4>Solution</h4>
+          <p>First simplify the left side: multiply numerator and denominator by \(10\) and reduce:</p>
+          \[\frac{1.2}{4.4} = \frac{12}{44} = \frac{3}{11}\]
+          <p>So \(\dfrac{3}{a} = \dfrac{3}{11}\). Equal fractions with equal numerators have equal denominators. (Or cross-multiply: \(1.2a = 4.4 \times 3 = 13.2\), so \(a = 13.2 \div 1.2 = 11\).)</p>
+          <div class="answer">\[\boxed{a = 11}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-19">
+        <div class="problem-head"><span class="pnum">19.</span></div>
+        <p>\(m + 0.23 = 1.2\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-19">Show solution</button>
+        <div class="solution" id="sol-wp-19">
+          <h4>Solution</h4>
+          <p>Subtract \(0.23\) from both sides:</p>
+          \[m = 1.2 - 0.23 = 0.97\]
+          <div class="answer">\[\boxed{m = 0.97}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-20">
+        <div class="problem-head"><span class="pnum">20.</span></div>
+        <p>\(r - 1.97 = 0.65\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-20">Show solution</button>
+        <div class="solution" id="sol-wp-20">
+          <h4>Solution</h4>
+          <p>Add \(1.97\) to both sides:</p>
+          \[r = 0.65 + 1.97 = 2.62\]
+          <div class="answer">\[\boxed{r = 2.62}\]</div>
+        </div>
+      </section>
+
+      <h3 class="group-label">Simplify:</h3>
+
+      <section class="problem" id="wp-21">
+        <div class="problem-head"><span class="pnum">21.</span></div>
+        <p>\((0.15)(0.15)\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-21">Show solution</button>
+        <div class="solution" id="sol-wp-21">
+          <h4>Solution</h4>
+          <p>Multiply \(15 \times 15 = 225\). Each factor has two decimal places, so the product has four decimal places:</p>
+          \[(0.15)(0.15) = 0.0225\]
+          <div class="answer">\[\boxed{0.0225}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-22">
+        <div class="problem-head"><span class="pnum">22.</span></div>
+        <p>\(1.2 \times 2.5 \times 4\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-22">Show solution</button>
+        <div class="solution" id="sol-wp-22">
+          <h4>Solution</h4>
+          <p>Multiply the last two factors first, since their product is a whole number:</p>
+          \[1.2 \times 2.5 \times 4 = 1.2 \times (2.5 \times 4) = 1.2 \times 10 = 12\]
+          <div class="answer">\[\boxed{12}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-23">
+        <div class="problem-head"><span class="pnum">23.</span></div>
+        <p>\(14.14 \div 5\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-23">Show solution</button>
+        <div class="solution" id="sol-wp-23">
+          <h4>Solution</h4>
+          <p>Divide, keeping the decimal point in the quotient directly above the decimal point in the dividend:</p>
+          \[14.14 \div 5 = 2.828\]
+          <div class="answer">\[\boxed{2.828}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-24">
+        <div class="problem-head"><span class="pnum">24.</span></div>
+        <p>\(0.096 \div 0.12\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-24">Show solution</button>
+        <div class="solution" id="sol-wp-24">
+          <h4>Solution</h4>
+          <p>Shift both decimal points two places to the right so the divisor becomes a whole number. This changes the problem to \(9.6 \div 12\):</p>
+          \[0.096 \div 0.12 = 9.6 \div 12 = 0.8\]
+          <div class="answer">\[\boxed{0.8}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-25">
+        <div class="problem-head"><span class="pnum">25.</span></div>
+        <p>\(\dfrac{5}{8} + \dfrac{5}{6} + \dfrac{5}{12}\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-25">Show solution</button>
+        <div class="solution" id="sol-wp-25">
+          <h4>Solution</h4>
+          <p>The least common denominator of \(8\), \(6\), and \(12\) is \(24\). Rename each fraction:</p>
+          \[\frac{5}{8} + \frac{5}{6} + \frac{5}{12} = \frac{15}{24} + \frac{20}{24} + \frac{10}{24} = \frac{45}{24}\]
+          <p>Reduce and write as a mixed number:</p>
+          \[\frac{45}{24} = \frac{15}{8} = 1\frac{7}{8}\]
+          <div class="answer">\[\boxed{1\frac{7}{8}}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-26">
+        <div class="problem-head"><span class="pnum">26.</span></div>
+        <p>\(4\dfrac{1}{2} - \left(2\dfrac{1}{3} - 1\dfrac{1}{4}\right)\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-26">Show solution</button>
+        <div class="solution" id="sol-wp-26">
+          <h4>Solution</h4>
+          <p>Work inside the parentheses first, using the common denominator \(12\):</p>
+          \[2\frac{1}{3} - 1\frac{1}{4} = 2\frac{4}{12} - 1\frac{3}{12} = 1\frac{1}{12}\]
+          <p>Now subtract from \(4\tfrac{1}{2} = 4\tfrac{6}{12}\):</p>
+          \[4\frac{1}{2} - 1\frac{1}{12} = 4\frac{6}{12} - 1\frac{1}{12} = 3\frac{5}{12}\]
+          <div class="answer">\[\boxed{3\frac{5}{12}}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-27">
+        <div class="problem-head"><span class="pnum">27.</span></div>
+        <p>\(\dfrac{7}{15} \cdot 10 \cdot 2\dfrac{1}{7}\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-27">Show solution</button>
+        <div class="solution" id="sol-wp-27">
+          <h4>Solution</h4>
+          <p>Write the mixed number as an improper fraction, \(2\tfrac{1}{7} = \tfrac{15}{7}\), then cancel common factors before multiplying — the \(7\)s cancel and the \(15\)s cancel:</p>
+          \[\frac{7}{15} \cdot 10 \cdot 2\frac{1}{7} = \frac{\cancel{7}}{\cancel{15}} \times 10 \times \frac{\cancel{15}}{\cancel{7}} = 10\]
+          <div class="answer">\[\boxed{10}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-28">
+        <div class="problem-head"><span class="pnum">28.</span></div>
+        <p>\(6\dfrac{3}{5} \div 1\dfrac{1}{10}\)</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-28">Show solution</button>
+        <div class="solution" id="sol-wp-28">
+          <h4>Solution</h4>
+          <p>Write both mixed numbers as improper fractions, then multiply by the reciprocal of the divisor:</p>
+          \[6\frac{3}{5} \div 1\frac{1}{10} = \frac{33}{5} \div \frac{11}{10} = \frac{33}{5} \times \frac{10}{11} = \frac{33 \times 10}{5 \times 11} = \frac{330}{55} = 6\]
+          <div class="answer">\[\boxed{6}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-29">
+        <div class="problem-head"><span class="pnum">29.</span><span class="chip">Connect</span></div>
+        <p>How many \(\$0.21\) pencils can be purchased with \(\$7.00\)?</p>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-29">Show solution</button>
+        <div class="solution" id="sol-wp-29">
+          <h4>Solution</h4>
+          <p>Divide the money by the price of one pencil:</p>
+          \[7.00 \div 0.21 = 33.33\ldots\]
+          <p>The quotient is not a whole number, and we can only buy whole pencils. Check: \(33\) pencils cost \(33 \times \$0.21 = \$6.93\), which is within the \(\$7.00\). A \(34\)th pencil would bring the total to \(\$7.14\), which is more than \(\$7.00\). So we round <em>down</em> to \(33\).</p>
+          <div class="answer">\[\boxed{33 \text{ pencils}}\]</div>
+        </div>
+      </section>
+
+      <section class="problem" id="wp-30">
+        <div class="problem-head"><span class="pnum">30.</span><span class="chip">Conclude</span></div>
+        <p>Amanda cut out a triangle and labeled the corners \(a\), \(b\), and \(c\) as shown. Then she tore off the three corners and fit the pieces together to form the semicircular shape shown at right.</p>
+        <figure class="fig">
+          <svg width="460" height="250" viewBox="0 0 460 250" role="img" aria-label="Triangle with corners labeled a, b, and c, and below it the semicircular shape formed by fitting the three torn corners together">
+            <polyline class="outline" points="60,130 190,30 300,130 60,130" fill="none" stroke-width="2" />
+            <polyline class="outline" points="82,130 92,112 104,130" fill="none" stroke-width="1.5" />
+            <polyline class="outline" points="172,52 190,66 206,50" fill="none" stroke-width="1.5" />
+            <polyline class="outline" points="262,130 274,110 288,130" fill="none" stroke-width="1.5" />
+            <text x="88" y="122" font-size="15" font-style="italic">a</text>
+            <text x="184" y="48" font-size="15" font-style="italic">b</text>
+            <text x="272" y="122" font-size="15" font-style="italic">c</text>
+            <polyline class="outline" points="130,235 136.7,192.5 155,168.4 180,160 205,168.4 223.3,192.5 230,235 130,235" fill="none" stroke-width="2" />
+            <text x="172" y="228" font-size="14" font-style="italic">c</text>
+            <text x="176" y="192" font-size="14" font-style="italic">b</text>
+            <text x="196" y="228" font-size="14" font-style="italic">a</text>
+          </svg>
+          <figcaption>Left/top: the triangle with corners \(a\), \(b\), \(c\). Below: the three corners fitted together into a semicircle.</figcaption>
+        </figure>
+        <div class="subparts">
+          <p><strong>a.</strong> Try the activity described in this problem, and tape or glue the fitted corners to your paper.</p>
+          <p><strong>b.</strong> <span class="chip">Infer</span> Describe the characteristic of triangles demonstrated by this activity.</p>
+        </div>
+        <button type="button" class="toggle-btn" aria-expanded="false" aria-controls="sol-wp-30">Show solution</button>
+        <div class="solution" id="sol-wp-30">
+          <h4>Solution</h4>
+          <p><strong>a.</strong> Do the activity like this:</p>
+          <p>1. Cut out a paper triangle and label its three corners \(a\), \(b\), and \(c\).<br />
+          2. Tear (or cut) off the three corners.<br />
+          3. Fit the three corner pieces together, vertex to vertex, along a straight edge so their angles meet at one point with no gaps or overlaps.<br />
+          4. Tape or glue the fitted corners to your paper. They form a semicircular shape:</p>
+          <figure class="fig">
+            <svg width="300" height="130" viewBox="0 0 300 130" role="img" aria-label="The three torn corners c, b, and a fitted together to form a semicircle">
+              <polyline class="outline" points="60,105 69.3,61.7 95,32.7 120,25 145,32.7 170.7,61.7 180,105 60,105" fill="none" stroke-width="2" />
+              <polyline class="outline" points="120,105 95,32.7" fill="none" stroke-width="1.5" />
+              <polyline class="outline" points="120,105 145,32.7" fill="none" stroke-width="1.5" />
+              <text x="84" y="97" font-size="14" font-style="italic">c</text>
+              <text x="114" y="66" font-size="14" font-style="italic">b</text>
+              <text x="140" y="97" font-size="14" font-style="italic">a</text>
+            </svg>
+          </figure>
+          <p><strong>b.</strong> The three fitted corners exactly fill a semicircle. A semicircle is half of a circle — it is a <em>straight angle</em>, which measures \(180^{\circ}\). So the three interior angles of the triangle, placed side by side, add up to \(180^{\circ}\):</p>
+          \[a + b + c = 180^{\circ}\]
+          <div class="answer">\[\boxed{\text{The three interior angles of a triangle add up to } 180^{\circ}}\]</div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      function setSolution(btn, open) {
+        var sol = document.getElementById(btn.getAttribute('aria-controls'));
+        if (!sol) return;
+        sol.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.textContent = open ? 'Hide solution' : 'Show solution';
+        if (open && window.MathJax && MathJax.typesetPromise) {
+          MathJax.typesetPromise([sol]);
+        }
+      }
+      var buttons = Array.prototype.slice.call(document.querySelectorAll('.toggle-btn'));
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          setSolution(btn, btn.getAttribute('aria-expanded') !== 'true');
+        });
+      });
+      document.getElementById('reveal-all').addEventListener('click', function () {
+        buttons.forEach(function (btn) { setSolution(btn, true); });
+        if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetPromise(); }
+      });
+      document.getElementById('hide-all').addEventListener('click', function () {
+        buttons.forEach(function (btn) { setSolution(btn, false); });
+      });
+    </script>
+  </body>
+</html>
