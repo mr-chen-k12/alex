@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Lesson 47 — Saxon Math Course 2 — Solutions for Alex</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<style>
+:root{
+  --bg:#f4f6f8; --card:#ffffff; --ink:#1a2332; --muted:#5b6b82; --line:#d7dee8;
+  --accent:#1d5fa8; --accent-ink:#ffffff; --sol-bg:#eef5ee; --sol-line:#9dbfa0;
+  --fig-stroke:#1a2332; --fig-fill:#bcd7f0; --tag-bg:#dce9f7; --tag-ink:#1d4e7a;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#12161c; --card:#1c232e; --ink:#e8edf3; --muted:#9fb0c3; --line:#334052;
+    --accent:#4f9be0; --accent-ink:#0b1520; --sol-bg:#1e2e22; --sol-line:#4a6b50;
+    --fig-stroke:#e8edf3; --fig-fill:#2f5a86; --tag-bg:#27405c; --tag-ink:#bcd7f0;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55}
+.wrap{max-width:820px;margin:0 auto;padding:20px 16px 64px}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.65rem;line-height:1.25;margin:8px 0 6px}
+.sub{color:var(--muted);margin:0 0 16px;font-size:.98rem}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 8px;position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:5}
+.controls button,.toggle{min-height:44px;padding:10px 18px;border-radius:8px;border:1px solid var(--accent);font-size:.95rem;font-weight:600;cursor:pointer}
+.controls button{background:var(--card);color:var(--accent)}
+.toggle{background:var(--accent);color:var(--accent-ink);margin-top:12px}
+h2{font-family:Georgia,"Times New Roman",serif;font-size:1.3rem;margin:30px 0 6px;padding-bottom:6px;border-bottom:3px solid var(--accent)}
+.note{color:var(--muted);font-size:.92rem;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:0 0 14px}
+.qhead{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.num{font-weight:800;font-size:1.08rem}
+.tag{background:var(--tag-bg);color:var(--tag-ink);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px}
+.qbody{margin-top:4px}
+.qbody p{margin:6px 0}
+.solution{display:none;margin-top:14px;background:var(--sol-bg);border:1px solid var(--sol-line);border-radius:8px;padding:12px 16px}
+.solution p{margin:6px 0}
+.ans{font-weight:700}
+figure{margin:12px 0;text-align:center}
+figure svg{max-width:100%;height:auto}
+figcaption{color:var(--muted);font-size:.85rem;margin-top:4px}
+table{border-collapse:collapse;margin:10px auto}
+th,td{border:1px solid var(--line);padding:6px 14px;text-align:center}
+th{background:var(--tag-bg)}
+ol.sub{margin:6px 0;padding-left:22px}
+ol.sub li{margin:4px 0}
+footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:32px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Lesson 47 — Saxon Math Course 2</h1>
+<p class="sub">Solutions for Alex &middot; Lesson Practice a–l, then Written Practice 1–30, in order. Work each problem first, then tap <strong>Show solution</strong> to check your answer.</p>
+<div class="controls">
+<button type="button" id="revealAll">Reveal all solutions</button>
+<button type="button" id="hideAll">Hide all solutions</button>
+</div>
+
+<h2>Lesson Practice</h2>
+<p class="note">Powers of 10 and exponents.</p>
+
+<article class="card"><div class="qhead"><span class="num">a.</span><span class="tag">Represent</span></div>
+<div class="qbody"><p>Write \(456\) in expanded notation using powers of \(10\).</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-a">Show solution</button>
+<div class="solution" id="sol-a"><p>Each digit's value depends on its place. The \(4\) is in the hundreds place, the \(5\) in the tens place, and the \(6\) in the ones place:</p>
+\[456 = 4 \times 100 + 5 \times 10 + 6 \times 1\]
+<p>Write each place value as a power of \(10\):</p>
+<p class="ans">\[\boxed{456 = 4 \times 10^{2} + 5 \times 10^{1} + 6 \times 10^{0}}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">b.</span></div>
+<div class="qbody"><p>Simplify: \(24.25 \times 10^{3}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-b">Show solution</button>
+<div class="solution" id="sol-b"><p>Multiplying by \(10^{3}\) moves the decimal point \(3\) places to the right:</p>
+\[24.25 \;\longrightarrow\; 24{,}250\]
+<p class="ans">\[\boxed{24{,}250}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">c.</span></div>
+<div class="qbody"><p>Simplify: \(25 \times 10^{6}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-c">Show solution</button>
+<div class="solution" id="sol-c"><p>Multiplying by \(10^{6}\) moves the decimal point \(6\) places to the right, adding zeros:</p>
+\[25 \;\longrightarrow\; 25{,}000{,}000\]
+<p class="ans">\[\boxed{25{,}000{,}000}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">d.</span></div>
+<div class="qbody"><p>Simplify: \(12.5 \div 10^{3}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-d">Show solution</button>
+<div class="solution" id="sol-d"><p>Dividing by \(10^{3}\) moves the decimal point \(3\) places to the left:</p>
+\[12.5 \;\longrightarrow\; 0.0125\]
+<p class="ans">\[\boxed{0.0125}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">e.</span></div>
+<div class="qbody"><p>Simplify: \(4.8 \div 10^{4}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-e">Show solution</button>
+<div class="solution" id="sol-e"><p>Dividing by \(10^{4}\) moves the decimal point \(4\) places to the left:</p>
+\[4.8 \;\longrightarrow\; 0.00048\]
+<p class="ans">\[\boxed{0.00048}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">f.</span><span class="tag">Generalize</span></div>
+<div class="qbody"><p>Find the missing exponent: \(10^{3} \cdot 10^{4} = 10^{\square}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-f">Show solution</button>
+<div class="solution" id="sol-f"><p>When multiplying powers with the same base, add the exponents:</p>
+\[10^{3} \cdot 10^{4} = 10^{3+4} = 10^{7}\]
+<p class="ans">\[\boxed{7}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">g.</span><span class="tag">Generalize</span></div>
+<div class="qbody"><p>Find the missing exponent: \(10^{8} \div 10^{2} = 10^{\square}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-g">Show solution</button>
+<div class="solution" id="sol-g"><p>When dividing powers with the same base, subtract the exponents:</p>
+\[10^{8} \div 10^{2} = 10^{8-2} = 10^{6}\]
+<p class="ans">\[\boxed{6}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">h.</span><span class="tag">Generalize</span></div>
+<div class="qbody"><p>Find the missing exponent: \((10^{4})^{2} = 10^{\square}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-h">Show solution</button>
+<div class="solution" id="sol-h"><p>When a power is raised to a power, multiply the exponents:</p>
+\[(10^{4})^{2} = 10^{4 \cdot 2} = 10^{8}\]
+<p class="ans">\[\boxed{8}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">i.</span><span class="tag">Generalize</span></div>
+<div class="qbody"><p>Find the missing exponent: \(n^{3} \cdot n^{4} = n^{\square}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-i">Show solution</button>
+<div class="solution" id="sol-i"><p>The same rule works for any base. Add the exponents:</p>
+\[n^{3} \cdot n^{4} = n^{3+4} = n^{7}\]
+<p class="ans">\[\boxed{7}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">j.</span></div>
+<div class="qbody"><p>Write in standard form: \(2\frac{1}{2}\) million</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-j">Show solution</button>
+<div class="solution" id="sol-j"><p>One million is \(1{,}000{,}000\). Two and a half million is:</p>
+\[2.5 \times 1{,}000{,}000 = 2{,}500{,}000\]
+<p class="ans">\[\boxed{2{,}500{,}000}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">k.</span></div>
+<div class="qbody"><p>Write in standard form: \(15\) billion</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-k">Show solution</button>
+<div class="solution" id="sol-k"><p>One billion is \(1{,}000{,}000{,}000\). So:</p>
+\[15 \times 1{,}000{,}000{,}000 = 15{,}000{,}000{,}000\]
+<p class="ans">\[\boxed{15{,}000{,}000{,}000}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">l.</span></div>
+<div class="qbody"><p>Write in standard form: \(1.6\) trillion</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-l">Show solution</button>
+<div class="solution" id="sol-l"><p>One trillion is \(1{,}000{,}000{,}000{,}000\). So:</p>
+\[1.6 \times 1{,}000{,}000{,}000{,}000 = 1{,}600{,}000{,}000{,}000\]
+<p class="ans">\[\boxed{1{,}600{,}000{,}000{,}000}\]</p></div></article>
+
+<h2>Written Practice</h2>
+<p class="note">Problems 1–3 refer to the bar graph below.</p>
+
+<article class="card"><div class="qhead"><span class="num">1.</span></div>
+<div class="qbody"><p>Refer to the graph to answer <strong>a</strong> and <strong>b</strong>. Answer true or false:</p>
+<figure><svg viewBox="0 0 420 300" role="img" aria-label="Bar graph: How Students Come to School">
+<text x="210" y="18" text-anchor="middle" font-size="15" font-weight="bold" fill="var(--ink)">How Students Come to School</text>
+<line x1="70" y1="30" x2="70" y2="250" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<line x1="70" y1="250" x2="400" y2="250" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<line x1="70" y1="222.5" x2="400" y2="222.5" stroke="var(--line)"/><line x1="70" y1="195" x2="400" y2="195" stroke="var(--line)"/><line x1="70" y1="167.5" x2="400" y2="167.5" stroke="var(--line)"/><line x1="70" y1="140" x2="400" y2="140" stroke="var(--line)"/><line x1="70" y1="112.5" x2="400" y2="112.5" stroke="var(--line)"/><line x1="70" y1="85" x2="400" y2="85" stroke="var(--line)"/><line x1="70" y1="57.5" x2="400" y2="57.5" stroke="var(--line)"/><line x1="70" y1="30" x2="400" y2="30" stroke="var(--line)"/>
+<text x="62" y="254" text-anchor="end" font-size="12" fill="var(--ink)">0</text><text x="62" y="226.5" text-anchor="end" font-size="12" fill="var(--ink)">2</text><text x="62" y="199" text-anchor="end" font-size="12" fill="var(--ink)">4</text><text x="62" y="171.5" text-anchor="end" font-size="12" fill="var(--ink)">6</text><text x="62" y="144" text-anchor="end" font-size="12" fill="var(--ink)">8</text><text x="62" y="116.5" text-anchor="end" font-size="12" fill="var(--ink)">10</text><text x="62" y="89" text-anchor="end" font-size="12" fill="var(--ink)">12</text><text x="62" y="61.5" text-anchor="end" font-size="12" fill="var(--ink)">14</text><text x="62" y="34" text-anchor="end" font-size="12" fill="var(--ink)">16</text>
+<text x="22" y="140" text-anchor="middle" font-size="12" fill="var(--ink)" transform="rotate(-90 22 140)">Number of Students</text>
+<polyline points="88,250 88,112.5 143,112.5 143,250" fill="var(--fig-fill)" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<polyline points="168,250 168,167.5 223,167.5 223,250" fill="var(--fig-fill)" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<polyline points="248,250 248,181.25 303,181.25 303,250" fill="var(--fig-fill)" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<polyline points="328,250 328,85 383,85 383,250" fill="var(--fig-fill)" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<text x="115" y="268" text-anchor="middle" font-size="12" fill="var(--ink)">Walk</text>
+<text x="195" y="268" text-anchor="middle" font-size="12" fill="var(--ink)">Ride</text><text x="195" y="283" text-anchor="middle" font-size="12" fill="var(--ink)">a Bike</text>
+<text x="275" y="268" text-anchor="middle" font-size="12" fill="var(--ink)">Ride in</text><text x="275" y="283" text-anchor="middle" font-size="12" fill="var(--ink)">a Car</text>
+<text x="355" y="268" text-anchor="middle" font-size="12" fill="var(--ink)">Ride in</text><text x="355" y="283" text-anchor="middle" font-size="12" fill="var(--ink)">a Bus</text>
+</svg><figcaption>How Students Come to School</figcaption></figure>
+<ol class="sub"><li><strong>a.</strong> Twice as many students walk to school as ride to school in a car.</li>
+<li><strong>b.</strong> The majority of the students ride to school in either a bus or car.</li></ol></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-1">Show solution</button>
+<div class="solution" id="sol-1"><p>First read the bar heights: Walk \(= 10\) students, Ride a Bike \(= 6\), Ride in a Car \(= 5\), Ride in a Bus \(= 12\). Total: \(10 + 6 + 5 + 12 = 33\) students.</p>
+<p><strong>a.</strong> Twice the number who ride in a car is \(2 \times 5 = 10\), and \(10\) students walk. The statement matches.</p>
+<p><strong>b.</strong> Bus or car: \(12 + 5 = 17\) students. Half of \(33\) is \(16.5\), and \(17 > 16.5\), so bus and car riders are more than half — a majority.</p>
+<p class="ans">\[\boxed{\text{a. True} \qquad \text{b. True}}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">2.</span></div>
+<div class="qbody"><p>Refer to the graph in problem 1. What is the ratio of those who walk to school to those who ride in a bus?</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-2">Show solution</button>
+<div class="solution" id="sol-2"><p>From the graph, \(10\) students walk and \(12\) ride in a bus:</p>
+\[\frac{10}{12} = \frac{5}{6}\]
+<p class="ans">\[\boxed{5:6}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">3.</span></div>
+<div class="qbody"><p>Refer to the graph in problem 1. What fraction of the students ride in a bus?</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-3">Show solution</button>
+<div class="solution" id="sol-3"><p>\(12\) of the \(33\) students ride in a bus:</p>
+\[\frac{12}{33} = \frac{4}{11}\]
+<p class="ans">\[\boxed{\frac{4}{11}}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">4.</span><span class="tag">Explain</span></div>
+<div class="qbody"><p>What is the mean (average) of these numbers? Describe how you found your answer and how you can check your work.</p>
+\[1.2,\quad 1.4,\quad 1.5,\quad 1.7,\quad 2\]</div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-4">Show solution</button>
+<div class="solution" id="sol-4"><p>To find the mean, add all the numbers, then divide by how many numbers there are. First add:</p>
+\[1.2 + 1.4 + 1.5 + 1.7 + 2 = 7.8\]
+<p>There are \(5\) numbers, so divide:</p>
+\[7.8 \div 5 = 1.56\]
+<p><strong>Check:</strong> multiply the mean by the number of values: \(1.56 \times 5 = 7.8\), which is the original sum, so the work checks.</p>
+<p class="ans">\[\boxed{1.56}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">5.</span><span class="tag">Connect</span></div>
+<div class="qbody"><p>The newspaper reported that \(134.8\) million viewers watched the Super Bowl. Write the number of viewers in standard form.</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-5">Show solution</button>
+<div class="solution" id="sol-5"><p>Multiply by one million:</p>
+\[134.8 \times 1{,}000{,}000 = 134{,}800{,}000\]
+<p class="ans">\[\boxed{134{,}800{,}000}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">6.</span></div>
+<div class="qbody"><p>Read this statement. Then answer the questions that follow.</p>
+<p><em>One eighth of the \(40\) paintings were abstract.</em></p>
+<ol class="sub"><li><strong>a.</strong> How many of the paintings were abstract?</li>
+<li><strong>b.</strong> How many of the paintings were not abstract?</li></ol></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-6">Show solution</button>
+<div class="solution" id="sol-6"><p><strong>a.</strong> Take one eighth of \(40\):</p>
+\[\frac{1}{8} \times 40 = 5\]
+<p><strong>b.</strong> Subtract from the total:</p>
+\[40 - 5 = 35\]
+<p class="ans">\[\boxed{\text{a. } 5 \text{ paintings} \qquad \text{b. } 35 \text{ paintings}}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">7.</span></div>
+<div class="qbody"><p>A gallon of water (\(128\) ounces) is poured into \(12\)-ounce glasses.</p>
+<ol class="sub"><li><strong>a.</strong> How many glasses can be filled to the top?</li>
+<li><strong>b.</strong> How many glasses are needed to hold all of the water?</li></ol></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-7">Show solution</button>
+<div class="solution" id="sol-7"><p>Divide the total ounces by the size of each glass:</p>
+\[128 \div 12 = 10 \text{ R } 8\]
+<p><strong>a.</strong> The quotient \(10\) is the number of glasses filled completely; \(8\) ounces are left over.</p>
+<p><strong>b.</strong> The leftover \(8\) ounces still need a glass, so one more glass is needed: \(10 + 1 = 11\).</p>
+<p class="ans">\[\boxed{\text{a. } 10 \text{ glasses} \qquad \text{b. } 11 \text{ glasses}}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">8.</span></div>
+<div class="qbody"><p>A cubit is an ancient unit of measure equal to the distance from the elbow to the fingertips.</p>
+<ol class="sub"><li><strong>a.</strong> Estimate the number of inches from your elbow to your fingertips.</li>
+<li><strong>b.</strong> Measure the distance from your elbow to your fingertips to the nearest inch.</li></ol></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-8">Show solution</button>
+<div class="solution" id="sol-8"><p><strong>a.</strong> A cubit is roughly a foot and a half, so a good estimate is about \(18\) inches. Your own estimate may be a little more or less — that is fine.</p>
+<p><strong>b.</strong> There is no single printed answer for this part, because it depends on your own arm. To measure: hold a ruler (or tape measure) so one end is at the point of your elbow and read the mark at the tip of your middle finger, rounding to the nearest inch. Record the number you measure.</p>
+<p class="ans">\[\boxed{\text{a. About } 18 \text{ in. (estimate)} \qquad \text{b. Your own measurement}}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">9.</span></div>
+<div class="qbody"><ol class="sub"><li><strong>a.</strong> Write \(0.375\) as a fraction.</li>
+<li><strong>b.</strong> Write \(62\frac{1}{2}\%\) as a decimal.</li></ol></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-9">Show solution</button>
+<div class="solution" id="sol-9"><p><strong>a.</strong> \(0.375\) is \(375\) thousandths. Reduce by dividing the top and bottom by \(125\):</p>
+\[\frac{375}{1000} = \frac{3}{8}\]
+<p><strong>b.</strong> A percent means "per hundred," so divide by \(100\): \(62.5 \div 100 = 0.625\).</p>
+<p class="ans">\[\boxed{\text{a. } \frac{3}{8} \qquad \text{b. } 0.625}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">10.</span><span class="tag">Represent</span></div>
+<div class="qbody"><p>The park ranger can hike at a pace of \(1\) mile per \(20\) minutes.</p>
+<ol class="sub"><li><strong>a.</strong> Make a function table that shows the miles hiked (output) in \(10, 20, 30, 40, 50,\) and \(60\) minutes.</li>
+<li><strong>b.</strong> How far can the park ranger hike at that pace in two hours?</li></ol></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-10">Show solution</button>
+<div class="solution" id="sol-10"><p><strong>a.</strong> Every \(20\) minutes adds \(1\) mile, so every \(10\) minutes adds \(\frac{1}{2}\) mile:</p>
+<table><tr><th>Minutes (input)</th><td>10</td><td>20</td><td>30</td><td>40</td><td>50</td><td>60</td></tr>
+<tr><th>Miles (output)</th><td>\(\frac{1}{2}\)</td><td>\(1\)</td><td>\(1\frac{1}{2}\)</td><td>\(2\)</td><td>\(2\frac{1}{2}\)</td><td>\(3\)</td></tr></table>
+<p><strong>b.</strong> Two hours is \(120\) minutes. Divide by \(20\) minutes per mile:</p>
+\[120 \div 20 = 6\]
+<p class="ans">\[\boxed{\text{b. } 6 \text{ miles}}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">11.</span></div>
+<div class="qbody"><p>Round \(53{,}714.\overline{54}\) to the nearest</p>
+<ol class="sub"><li><strong>a.</strong> thousandth.</li><li><strong>b.</strong> thousand.</li></ol></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-11">Show solution</button>
+<div class="solution" id="sol-11"><p>The bar means the digits repeat: \(53{,}714.\overline{54} = 53{,}714.545454\ldots\)</p>
+<p><strong>a.</strong> The thousandths place is the third decimal place. The next digit is \(4\), so the thousandths digit stays:</p>
+\[53{,}714.545\]
+<p><strong>b.</strong> Look at the hundreds digit of \(53{,}714\), which is \(7\). Since \(7 \ge 5\), round the thousands digit up:</p>
+\[54{,}000\]
+<p class="ans">\[\boxed{\text{a. } 53{,}714.545 \qquad \text{b. } 54{,}000}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">12.</span></div>
+<div class="qbody"><p>Find each missing exponent:</p>
+<ol class="sub"><li><strong>a.</strong> \(10^{5} \cdot 10^{2} = 10^{\square}\)</li>
+<li><strong>b.</strong> \(10^{8} \div 10^{4} = 10^{\square}\)</li></ol></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-12">Show solution</button>
+<div class="solution" id="sol-12"><p><strong>a.</strong> Multiply: add the exponents. \(5 + 2 = 7\), so \(10^{5} \cdot 10^{2} = 10^{7}\).</p>
+<p><strong>b.</strong> Divide: subtract the exponents. \(8 - 4 = 4\), so \(10^{8} \div 10^{4} = 10^{4}\).</p>
+<p class="ans">\[\boxed{\text{a. } 7 \qquad \text{b. } 4}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">13.</span></div>
+<div class="qbody"><p>The point marked by the arrow represents what decimal number?</p>
+<figure><svg viewBox="0 0 420 95" role="img" aria-label="Number line from 3.0 to 3.1 with a point marked">
+<line x1="25" y1="55" x2="395" y2="55" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<polyline points="25,55 35,50 35,60 25,55" fill="var(--fig-stroke)"/>
+<polyline points="395,55 385,50 385,60 395,55" fill="var(--fig-stroke)"/>
+<line x1="70" y1="48" x2="70" y2="62" stroke="var(--fig-stroke)" stroke-width="2"/>
+<line x1="98" y1="51" x2="98" y2="59" stroke="var(--fig-stroke)"/><line x1="126" y1="51" x2="126" y2="59" stroke="var(--fig-stroke)"/><line x1="154" y1="51" x2="154" y2="59" stroke="var(--fig-stroke)"/><line x1="182" y1="51" x2="182" y2="59" stroke="var(--fig-stroke)"/><line x1="210" y1="51" x2="210" y2="59" stroke="var(--fig-stroke)"/><line x1="238" y1="51" x2="238" y2="59" stroke="var(--fig-stroke)"/><line x1="266" y1="51" x2="266" y2="59" stroke="var(--fig-stroke)"/><line x1="294" y1="51" x2="294" y2="59" stroke="var(--fig-stroke)"/><line x1="322" y1="51" x2="322" y2="59" stroke="var(--fig-stroke)"/>
+<line x1="350" y1="48" x2="350" y2="62" stroke="var(--fig-stroke)" stroke-width="2"/>
+<circle cx="154" cy="55" r="5" fill="var(--accent)"/>
+<line x1="154" y1="8" x2="154" y2="38" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<polyline points="154,42 148,32 160,32 154,42" fill="var(--fig-stroke)"/>
+<text x="70" y="82" text-anchor="middle" font-size="13" fill="var(--ink)">3.0</text>
+<text x="350" y="82" text-anchor="middle" font-size="13" fill="var(--ink)">3.1</text>
+</svg></figure></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-13">Show solution</button>
+<div class="solution" id="sol-13"><p>Between \(3.0\) and \(3.1\) there are \(10\) equal spaces, so each tick mark is \(0.01\). The dot is on the third tick after \(3.0\):</p>
+\[3.0 + 3 \times 0.01 = 3.03\]
+<figure><svg viewBox="0 0 420 95" role="img" aria-label="Number line with the point labeled 3.03">
+<line x1="25" y1="55" x2="395" y2="55" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<line x1="70" y1="48" x2="70" y2="62" stroke="var(--fig-stroke)" stroke-width="2"/>
+<line x1="98" y1="51" x2="98" y2="59" stroke="var(--fig-stroke)"/><line x1="126" y1="51" x2="126" y2="59" stroke="var(--fig-stroke)"/><line x1="154" y1="51" x2="154" y2="59" stroke="var(--fig-stroke)"/><line x1="182" y1="51" x2="182" y2="59" stroke="var(--fig-stroke)"/><line x1="210" y1="51" x2="210" y2="59" stroke="var(--fig-stroke)"/><line x1="238" y1="51" x2="238" y2="59" stroke="var(--fig-stroke)"/><line x1="266" y1="51" x2="266" y2="59" stroke="var(--fig-stroke)"/><line x1="294" y1="51" x2="294" y2="59" stroke="var(--fig-stroke)"/><line x1="322" y1="51" x2="322" y2="59" stroke="var(--fig-stroke)"/>
+<line x1="350" y1="48" x2="350" y2="62" stroke="var(--fig-stroke)" stroke-width="2"/>
+<circle cx="154" cy="55" r="5" fill="var(--accent)"/>
+<text x="154" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="var(--ink)">3.03</text>
+<text x="70" y="82" text-anchor="middle" font-size="13" fill="var(--ink)">3.0</text>
+<text x="350" y="82" text-anchor="middle" font-size="13" fill="var(--ink)">3.1</text>
+</svg></figure>
+<p class="ans">\[\boxed{3.03}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">14.</span><span class="tag">Analyze</span></div>
+<div class="qbody"><p>In figure \(ABCDEF\) all angles are right angles and \(AF = AB = BC\). Segment \(BC\) is twice the length of \(CD\). If \(\overline{CD}\) is \(3\) cm, what is the perimeter of the figure?</p>
+<figure><svg viewBox="0 0 250 165" role="img" aria-label="L-shaped figure ABCDEF">
+<polyline points="30,25 115,25 115,90 215,90 215,130 30,130 30,25" fill="var(--fig-fill)" fill-opacity="0.35" stroke="var(--fig-stroke)" stroke-width="2"/>
+<text x="22" y="18" font-size="14" font-style="italic" fill="var(--ink)">F</text>
+<text x="118" y="18" font-size="14" font-style="italic" fill="var(--ink)">A</text>
+<text x="118" y="106" font-size="14" font-style="italic" fill="var(--ink)">B</text>
+<text x="220" y="106" font-size="14" font-style="italic" fill="var(--ink)">C</text>
+<text x="220" y="146" font-size="14" font-style="italic" fill="var(--ink)">D</text>
+<text x="22" y="146" font-size="14" font-style="italic" fill="var(--ink)">E</text>
+</svg></figure></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-14">Show solution</button>
+<div class="solution" id="sol-14"><p>Start with \(CD = 3\) cm. Since \(BC\) is twice \(CD\):</p>
+\[BC = 2 \times 3 = 6 \text{ cm}\]
+<p>And \(AF = AB = BC\), so \(AF = AB = 6\) cm. Because all angles are right angles, the two unlabeled sides match combinations of the labeled ones:</p>
+\[DE = AF + BC = 6 + 6 = 12 \text{ cm}, \qquad EF = AB + CD = 6 + 3 = 9 \text{ cm}\]
+<figure><svg viewBox="0 0 250 165" role="img" aria-label="L-shaped figure ABCDEF with side lengths labeled">
+<polyline points="30,25 115,25 115,90 215,90 215,130 30,130 30,25" fill="var(--fig-fill)" fill-opacity="0.35" stroke="var(--fig-stroke)" stroke-width="2"/>
+<text x="22" y="18" font-size="14" font-style="italic" fill="var(--ink)">F</text>
+<text x="118" y="18" font-size="14" font-style="italic" fill="var(--ink)">A</text>
+<text x="118" y="106" font-size="14" font-style="italic" fill="var(--ink)">B</text>
+<text x="220" y="106" font-size="14" font-style="italic" fill="var(--ink)">C</text>
+<text x="220" y="146" font-size="14" font-style="italic" fill="var(--ink)">D</text>
+<text x="22" y="146" font-size="14" font-style="italic" fill="var(--ink)">E</text>
+<text x="72" y="16" text-anchor="middle" font-size="12" fill="var(--ink)">6 cm</text>
+<text x="100" y="60" text-anchor="middle" font-size="12" fill="var(--ink)">6</text>
+<text x="165" y="82" text-anchor="middle" font-size="12" fill="var(--ink)">6 cm</text>
+<text x="222" y="118" font-size="12" fill="var(--ink)">3</text>
+<text x="122" y="148" text-anchor="middle" font-size="12" fill="var(--ink)">12 cm</text>
+<text x="4" y="80" font-size="12" fill="var(--ink)">9</text>
+</svg></figure>
+<p>Add all six sides:</p>
+\[6 + 6 + 6 + 3 + 12 + 9 = 42\]
+<p class="ans">\[\boxed{42 \text{ cm}}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">15.</span><span class="tag">Represent</span></div>
+<div class="qbody"><p>Use a compass to draw a circle with a radius of \(1\) inch. Then inscribe a regular hexagon in the circle.</p>
+<ol class="sub"><li><strong>a.</strong> What is the diameter of the circle?</li>
+<li><strong>b.</strong> What is the perimeter of the regular hexagon?</li></ol></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-15">Show solution</button>
+<div class="solution" id="sol-15"><p><strong>a.</strong> The diameter is twice the radius:</p>
+\[2 \times 1 \text{ in.} = 2 \text{ in.}\]
+<p><strong>b.</strong> In a regular hexagon inscribed in a circle, each side equals the radius, \(1\) inch. With \(6\) sides:</p>
+\[6 \times 1 \text{ in.} = 6 \text{ in.}\]
+<figure><svg viewBox="0 0 220 220" role="img" aria-label="Circle with an inscribed regular hexagon">
+<circle cx="110" cy="110" r="90" fill="none" stroke="var(--fig-stroke)" stroke-width="2"/>
+<polyline points="200,110 155,188 65,188 20,110 65,32 155,32 200,110" fill="var(--fig-fill)" fill-opacity="0.35" stroke="var(--fig-stroke)" stroke-width="2"/>
+<line x1="110" y1="110" x2="200" y2="110" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 4"/>
+<circle cx="110" cy="110" r="3.5" fill="var(--fig-stroke)"/>
+<text x="148" y="100" font-size="13" fill="var(--ink)">radius = 1 in.</text>
+</svg><figcaption>Circle with inscribed regular hexagon; each hexagon side equals the radius.</figcaption></figure>
+<p class="ans">\[\boxed{\text{a. } 2 \text{ in.} \qquad \text{b. } 6 \text{ in.}}\]</p></div></article>
+
+<p class="note"><strong>Solve:</strong></p>
+
+<article class="card"><div class="qhead"><span class="num">16.</span></div>
+<div class="qbody"><p>\(\dfrac{6}{10} = \dfrac{w}{100}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-16">Show solution</button>
+<div class="solution" id="sol-16"><p>Cross-multiply:</p>
+\[10w = 6 \times 100 = 600\]
+\[w = 600 \div 10 = 60\]
+<p class="ans">\[\boxed{w = 60}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">17.</span></div>
+<div class="qbody"><p>\(\dfrac{3.6}{x} = \dfrac{16}{24}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-17">Show solution</button>
+<div class="solution" id="sol-17"><p>Cross-multiply:</p>
+\[16x = 3.6 \times 24 = 86.4\]
+\[x = 86.4 \div 16 = 5.4\]
+<p class="ans">\[\boxed{x = 5.4}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">18.</span></div>
+<div class="qbody"><p>\(\dfrac{a}{1.5} = 1.5\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-18">Show solution</button>
+<div class="solution" id="sol-18"><p>Multiply both sides by \(1.5\):</p>
+\[a = 1.5 \times 1.5 = 2.25\]
+<p class="ans">\[\boxed{a = 2.25}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">19.</span></div>
+<div class="qbody"><p>\(9.8 = x + 8.9\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-19">Show solution</button>
+<div class="solution" id="sol-19"><p>Subtract \(8.9\) from both sides:</p>
+\[x = 9.8 - 8.9 = 0.9\]
+<p class="ans">\[\boxed{x = 0.9}\]</p></div></article>
+
+<p class="note"><strong>Estimate each answer to the nearest whole number. Then perform the calculation.</strong></p>
+
+<article class="card"><div class="qhead"><span class="num">20.</span></div>
+<div class="qbody"><p>\(4\frac{1}{5} + 5\frac{1}{3} + \frac{1}{2}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-20">Show solution</button>
+<div class="solution" id="sol-20"><p><strong>Estimate:</strong> \(4\frac{1}{5} \approx 4\), \(5\frac{1}{3} \approx 5\), and \(\frac{1}{2}\) rounds up to \(1\), so the sum is about \(4 + 5 + 1 = 10\).</p>
+<p><strong>Exact:</strong> use the common denominator \(30\):</p>
+\[4\frac{6}{30} + 5\frac{10}{30} + \frac{15}{30} = 9\frac{31}{30} = 10\frac{1}{30}\]
+<p class="ans">\[\boxed{\text{Estimate: } 10 \qquad \text{Exact: } 10\frac{1}{30}}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">21.</span></div>
+<div class="qbody"><p>\(6\frac{1}{8} - \left(5 - 1\frac{2}{3}\right)\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-21">Show solution</button>
+<div class="solution" id="sol-21"><p><strong>Estimate:</strong> \(6\frac{1}{8} \approx 6\) and \(5 - 1\frac{2}{3} \approx 3\), so the answer is about \(6 - 3 = 3\).</p>
+<p><strong>Exact:</strong> first work inside the parentheses:</p>
+\[5 - 1\frac{2}{3} = 3\frac{1}{3}\]
+\[6\frac{1}{8} - 3\frac{1}{3} = 6\frac{3}{24} - 3\frac{8}{24} = 2\frac{19}{24}\]
+<p class="ans">\[\boxed{\text{Estimate: } 3 \qquad \text{Exact: } 2\frac{19}{24}}\]</p></div></article>
+
+<p class="note"><strong>Simplify:</strong></p>
+
+<article class="card"><div class="qhead"><span class="num">22.</span><span class="tag">Explain</span></div>
+<div class="qbody"><p>\(\sqrt{16 \cdot 25}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-22">Show solution</button>
+<div class="solution" id="sol-22"><p>Multiply inside the radical first, then take the square root:</p>
+\[\sqrt{16 \cdot 25} = \sqrt{400} = 20\]
+<p>Or take each square root separately: \(\sqrt{16} \cdot \sqrt{25} = 4 \cdot 5 = 20\).</p>
+<p class="ans">\[\boxed{20}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">23.</span></div>
+<div class="qbody"><p>\(3.6 \times 10^{3}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-23">Show solution</button>
+<div class="solution" id="sol-23"><p>Move the decimal point \(3\) places to the right:</p>
+\[3.6 \;\longrightarrow\; 3{,}600\]
+<p class="ans">\[\boxed{3{,}600}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">24.</span></div>
+<div class="qbody"><p>\(8\frac{1}{3} \times 3\frac{3}{5} \times \frac{1}{3}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-24">Show solution</button>
+<div class="solution" id="sol-24"><p>Change the mixed numbers to improper fractions, then multiply and reduce:</p>
+\[\frac{25}{3} \times \frac{18}{5} \times \frac{1}{3} = \frac{25 \times 18 \times 1}{3 \times 5 \times 3} = \frac{450}{45} = 10\]
+<p class="ans">\[\boxed{10}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">25.</span></div>
+<div class="qbody"><p>\(3\frac{1}{8} \times 6\frac{1}{4}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-25">Show solution</button>
+<div class="solution" id="sol-25"><p>Change both mixed numbers to improper fractions and multiply:</p>
+\[\frac{25}{8} \times \frac{25}{4} = \frac{625}{32} = 19\frac{17}{32}\]
+<p class="ans">\[\boxed{19\frac{17}{32}}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">26.</span></div>
+<div class="qbody"><p>\(26.7 + 3.45 + 0.036 + 12 + 8.7\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-26">Show solution</button>
+<div class="solution" id="sol-26"><p>Line up the decimal points and add, using zeros as placeholders:</p>
+\[\begin{align} 26.700 \\ 3.450 \\ 0.036 \\ 12.000 \\ +\ 8.700 \\ \hline 50.886 \end{align}\]
+<p class="ans">\[\boxed{50.886}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">27.</span></div>
+<div class="qbody"><p>The figures below illustrate one triangle rotated into three different positions. Dimensions are in inches.</p>
+<figure><svg viewBox="0 0 660 175" role="img" aria-label="One triangle shown in three positions with different bases and heights">
+<polyline points="20,130 110,25 200,130 20,130" fill="var(--fig-fill)" fill-opacity="0.3" stroke="var(--fig-stroke)" stroke-width="2"/>
+<polyline points="110,25 110,130" fill="none" stroke="var(--fig-stroke)" stroke-width="1.5" stroke-dasharray="5 4"/>
+<polyline points="110,118 122,118 122,130" fill="none" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<text x="88" y="80" font-size="14" fill="var(--ink)">11 1/5</text>
+<text x="110" y="152" text-anchor="middle" font-size="14" fill="var(--ink)">15</text>
+<polyline points="255,130 330,25 405,130 255,130" fill="var(--fig-fill)" fill-opacity="0.3" stroke="var(--fig-stroke)" stroke-width="2"/>
+<polyline points="330,25 330,130" fill="none" stroke="var(--fig-stroke)" stroke-width="1.5" stroke-dasharray="5 4"/>
+<polyline points="330,118 342,118 342,130" fill="none" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<text x="338" y="80" font-size="14" fill="var(--ink)">12 12/13</text>
+<text x="330" y="152" text-anchor="middle" font-size="14" fill="var(--ink)">13</text>
+<polyline points="465,130 552,25 640,130 465,130" fill="var(--fig-fill)" fill-opacity="0.3" stroke="var(--fig-stroke)" stroke-width="2"/>
+<polyline points="552,25 552,130" fill="none" stroke="var(--fig-stroke)" stroke-width="1.5" stroke-dasharray="5 4"/>
+<polyline points="552,118 564,118 564,130" fill="none" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<text x="560" y="80" font-size="14" fill="var(--ink)">12</text>
+<text x="552" y="152" text-anchor="middle" font-size="14" fill="var(--ink)">14</text>
+</svg></figure>
+<ol class="sub"><li><strong>a.</strong> What is the perimeter of the triangle?</li>
+<li><strong>b.</strong> What is the area of the triangle?</li></ol></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-27">Show solution</button>
+<div class="solution" id="sol-27"><p>It is the <em>same</em> triangle in all three positions. Each position rests on a different side, so the three bases — \(15\) in., \(13\) in., and \(14\) in. — are the three side lengths of the one triangle.</p>
+<p><strong>a.</strong> Perimeter is the sum of the three sides:</p>
+\[15 + 13 + 14 = 42 \text{ in.}\]
+<p><strong>b.</strong> Use any base with its matching height, \(A = \frac{1}{2}bh\):</p>
+\[\tfrac{1}{2} \times 15 \times 11\tfrac{1}{5} = \tfrac{1}{2} \times 15 \times \tfrac{56}{5} = 84 \text{ in.}^{2}\]
+<p>Check with the other pairs: \(\frac{1}{2} \times 13 \times 12\frac{12}{13} = 84\) and \(\frac{1}{2} \times 14 \times 12 = 84\). All three agree.</p>
+<p class="ans">\[\boxed{\text{a. } 42 \text{ in.} \qquad \text{b. } 84 \text{ in.}^{2}}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">28.</span><span class="tag">Connect</span></div>
+<div class="qbody"><p>Simplify and compare: \(125 \div 10^{2} \;\bigcirc\; 0.125 \times 10^{2}\)</p></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-28">Show solution</button>
+<div class="solution" id="sol-28"><p>Simplify each side. Dividing by \(10^{2}\) moves the decimal point \(2\) places left; multiplying by \(10^{2}\) moves it \(2\) places right:</p>
+\[125 \div 10^{2} = 1.25, \qquad 0.125 \times 10^{2} = 12.5\]
+<p>Since \(1.25 < 12.5\):</p>
+<p class="ans">\[\boxed{125 \div 10^{2} < 0.125 \times 10^{2}}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">29.</span></div>
+<div class="qbody"><p>Arrange these numbers in order from least to greatest:</p>
+\[\frac{2}{3},\quad \frac{1}{2},\quad \frac{7}{12},\quad \frac{5}{6}\]</div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-29">Show solution</button>
+<div class="solution" id="sol-29"><p>Write each fraction as a decimal:</p>
+\[\frac{1}{2} = 0.5, \qquad \frac{7}{12} = 0.58\overline{3}, \qquad \frac{2}{3} = 0.\overline{6}, \qquad \frac{5}{6} = 0.8\overline{3}\]
+<p>Now the order from least to greatest is clear:</p>
+<p class="ans">\[\boxed{\frac{1}{2},\ \frac{7}{12},\ \frac{2}{3},\ \frac{5}{6}}\]</p></div></article>
+
+<article class="card"><div class="qhead"><span class="num">30.</span></div>
+<div class="qbody"><p>In this figure find the measure of</p>
+<figure><svg viewBox="0 0 330 200" role="img" aria-label="Triangle with a 130 degree exterior angle at the top and a 65 degree angle at the lower left">
+<polyline points="55,165 150,35 215,165 55,165" fill="var(--fig-fill)" fill-opacity="0.3" stroke="var(--fig-stroke)" stroke-width="2"/>
+<polyline points="215,165 285,165" fill="none" stroke="var(--fig-stroke)" stroke-width="2"/>
+<polyline points="150,35 178,2" fill="none" stroke="var(--fig-stroke)" stroke-width="2"/>
+<polyline points="178,2 170,14 186,10 178,2" fill="var(--fig-stroke)"/>
+<polyline points="285,165 273,160 273,170 285,165" fill="var(--fig-stroke)"/>
+<path d="M 163 48 A 26 26 0 0 1 172 22" fill="none" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<text x="182" y="42" font-size="14" fill="var(--ink)">130°</text>
+<path d="M 138 62 A 30 30 0 0 0 158 60" fill="none" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<text x="143" y="82" font-size="14" font-style="italic" fill="var(--ink)">a</text>
+<path d="M 82 165 A 27 27 0 0 0 68 143" fill="none" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<text x="86" y="158" font-size="14" fill="var(--ink)">65°</text>
+<path d="M 190 165 A 25 25 0 0 0 202 145" fill="none" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<text x="180" y="158" font-size="14" font-style="italic" fill="var(--ink)">b</text>
+<path d="M 240 165 A 25 25 0 0 0 228 145" fill="none" stroke="var(--fig-stroke)" stroke-width="1.5"/>
+<text x="246" y="158" font-size="14" font-style="italic" fill="var(--ink)">c</text>
+</svg></figure>
+<ol class="sub"><li><strong>a.</strong> \(\angle a\).</li>
+<li><strong>b.</strong> \(\angle b\).</li>
+<li><strong>c.</strong> <span class="tag">Explain</span> Describe how to find the measure of \(\angle c\).</li>
+<li><strong>d.</strong> Name a supplementary angle pair in the figure.</li></ol></div>
+<button type="button" class="toggle" aria-expanded="false" aria-controls="sol-30">Show solution</button>
+<div class="solution" id="sol-30"><p><strong>a.</strong> \(\angle a\) sits on a straight line with the \(130^{\circ}\) angle, so they are supplementary:</p>
+\[\angle a = 180^{\circ} - 130^{\circ} = 50^{\circ}\]
+<p><strong>b.</strong> The three interior angles of a triangle add to \(180^{\circ}\):</p>
+\[\angle b = 180^{\circ} - 65^{\circ} - 50^{\circ} = 65^{\circ}\]
+<p><strong>c.</strong> \(\angle c\) is an exterior angle at the bottom-right vertex. It forms a linear pair with \(\angle b\) on the straight base line, so it is supplementary to \(\angle b\):</p>
+\[\angle c = 180^{\circ} - \angle b = 180^{\circ} - 65^{\circ} = 115^{\circ}\]
+<p>(Equivalently, by the exterior angle theorem, \(\angle c\) equals the sum of the two remote interior angles: \(65^{\circ} + 50^{\circ} = 115^{\circ}\).)</p>
+<p><strong>d.</strong> \(\angle a\) and the \(130^{\circ}\) angle form a linear pair, so they are supplementary. (Another pair: \(\angle b\) and \(\angle c\).)</p>
+<p class="ans">\[\boxed{\angle a = 50^{\circ} \qquad \angle b = 65^{\circ} \qquad \angle c = 115^{\circ}}\]</p></div></article>
+
+<footer>Saxon Math Course 2 · Lesson 47 · Pages 339–341</footer>
+</div>
+<script>
+(function(){
+  function typeset(el){
+    if (window.MathJax && MathJax.typesetPromise) { MathJax.typesetPromise([el]).catch(function(){}); }
+  }
+  function setOpen(btn, open){
+    var sol = document.getElementById(btn.getAttribute('aria-controls'));
+    if (!sol) return;
+    sol.style.display = open ? 'block' : 'none';
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.textContent = open ? 'Hide solution' : 'Show solution';
+    if (open) typeset(sol);
+  }
+  var buttons = document.querySelectorAll('.toggle');
+  buttons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      setOpen(btn, btn.getAttribute('aria-expanded') !== 'true');
+    });
+  });
+  document.getElementById('revealAll').addEventListener('click', function(){
+    buttons.forEach(function(btn){ setOpen(btn, true); });
+  });
+  document.getElementById('hideAll').addEventListener('click', function(){
+    buttons.forEach(function(btn){ setOpen(btn, false); });
+  });
+})();
+</script>
+</body>
+</html>
