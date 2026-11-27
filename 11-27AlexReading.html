@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAT Reading Practice - 11-27 Alex</title>
+<style>
+  :root { --primary-color: #A51C30; --ink:#1c1c1e; --muted:#6b7280; --bg:#f4f6fa; }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--ink);
+         margin: 0; padding: 0; line-height: 1.6; }
+  .page { max-width: 860px; margin: 0 auto; padding: 18px 16px 60px; }
+
+  /* ---- Teacher audit panel (hidden unless ?check=true) ---- */
+  #teacher-audit-panel { display: none; }
+  #teacher-audit-panel.active { display: block; }
+  .audit-banner { background: #1a1a2e; color: #eee; border-radius: 12px; padding: 18px; margin-bottom: 18px; }
+  .audit-container { max-width: 100%; }
+  .audit-title { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .audit-title h2 { margin: 0; font-size: 1.2rem; }
+  .btn-clear-audit { background: #e74c3c; color: #fff; border: none; border-radius: 8px;
+    padding: 8px 14px; cursor: pointer; font-family: inherit; }
+  .audit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px; margin: 14px 0; }
+  .audit-card { background: #16213e; border-radius: 10px; padding: 12px; text-align: center; }
+  .audit-card.flagged { border: 2px solid #e74c3c; }
+  .audit-card .num { font-size: 1.8rem; font-weight: bold; }
+  .audit-card .label { font-size: 0.85rem; color: #bdc3c7; }
+  .audit-log-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 8px; }
+  .audit-log-table th, .audit-log-table td { border: 1px solid #34495e; padding: 6px 8px; text-align: left; }
+  .audit-log-table th { background: #16213e; }
+
+  /* ---- Header ---- */
+  header { background: var(--primary-color); color: #fff; border-radius: 12px;
+    padding: 20px 22px; margin-bottom: 16px; transition: background 0.3s; }
+  .header-container { display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px; }
+  .header-title h1 { margin: 0; font-size: 1.5rem; }
+  .header-title p { margin: 4px 0 0; opacity: 0.9; font-size: 0.95rem; }
+  .badges-preview { display: flex; gap: 12px; }
+  .badge-item { text-align: center; font-size: 0.75rem; opacity: 0.55; filter: grayscale(80%); }
+  .badge-item img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover;
+    border: 3px solid rgba(255,255,255,.5); background: #fff; display: block; margin: 0 auto 4px; }
+  .badge-item.unlocked { opacity: 1; filter: none; }
+  .badge-item.unlocked img { border-color: gold; box-shadow: 0 0 12px gold; }
+
+  /* ---- Controls ---- */
+  .controls-bar { display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 10px; background: #fff; border-radius: 12px;
+    padding: 12px 18px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .selector-group label { font-weight: bold; margin-right: 8px; }
+  .selector-group select { font-size: 1rem; padding: 8px 12px; border-radius: 8px;
+    border: 2px solid var(--primary-color); font-family: inherit; cursor: pointer; }
+  .score-tracker { font-weight: bold; font-size: 1.1rem; color: var(--primary-color); }
+
+  /* ---- Question cards ---- */
+  .question-card { background: #fff; border-radius: 12px; padding: 20px 22px;
+    margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .question-number { font-weight: bold; color: var(--primary-color); margin-bottom: 8px; }
+  .passage { background: #f8fafc; border-left: 5px solid var(--primary-color);
+    padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 12px; }
+  .question-text { font-weight: bold; font-size: 1.08rem; margin: 10px 0; }
+  .options-group { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .option-btn { text-align: left; background: #f1f5f9; border: 2px solid #e2e8f0;
+    border-radius: 10px; padding: 10px 14px; font-size: 1rem; cursor: pointer;
+    font-family: inherit; color: var(--ink); line-height: 1.5; }
+  .option-btn:hover:not(:disabled) { border-color: var(--primary-color); background: #fff; }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct { border-color: #16a34a; background: #f0fdf4; }
+  .option-btn.incorrect { border-color: #dc2626; background: #fef2f2; }
+  .feedback-box { display: none; margin-top: 12px; padding: 12px 14px; border-radius: 10px; }
+  .feedback-box.show { display: block; }
+  .feedback-box.good { background: #f0fdf4; border: 2px solid #16a34a; }
+  .feedback-box.bad { background: #fef2f2; border: 2px solid #dc2626; }
+  .feedback-box .verdict { font-weight: bold; font-size: 1.05rem; }
+  .feedback-box .expl { margin-top: 6px; color: #334155; }
+
+  /* ---- Score summary ---- */
+  .score-summary-card { display: none; background: #fff; border-radius: 12px; padding: 26px;
+    text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .score-summary-card h2 { margin-top: 0; }
+  .score-display { font-size: 2.6rem; font-weight: bold; color: var(--primary-color); margin: 8px 0; }
+  .reward-badge { margin: 14px 0; }
+  .reward-badge img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
+    border: 4px solid gold; box-shadow: 0 0 18px gold; background: #fff; }
+  .reward-name { font-weight: bold; font-size: 1.2rem; margin-top: 6px; }
+  .btn-retry { background: var(--primary-color); color: #fff; border: none; border-radius: 999px;
+    padding: 12px 28px; font-size: 1.05rem; font-weight: bold; cursor: pointer;
+    font-family: inherit; margin-top: 10px; }
+  @media print {
+    .controls-bar, #teacher-audit-panel, .btn-retry { display: none !important; }
+    .option-btn { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Anti-Cheating Teacher Inspection Panel (Triggered by ?check=true) -->
+  <div id="teacher-audit-panel" class="audit-banner">
+    <div class="audit-container">
+      <div class="audit-title">
+        <h2>🕵️ Teacher Audit Dashboard <span style="font-size: 0.8rem; color:#bdc3c7;">(?check=true mode)</span></h2>
+        <button class="btn-clear-audit" onclick="clearAuditLog()">Reset Audit Data</button>
+      </div>
+      <div class="audit-grid">
+        <div class="audit-card" id="card-total-refreshes">
+          <div class="num" id="stat-total-refreshes">0</div>
+          <div class="label">Total Page Refreshes</div>
+        </div>
+        <div class="audit-card" id="card-mid-refreshes">
+          <div class="num" id="stat-mid-refreshes">0</div>
+          <div class="label">Mid-Attempt Refreshes</div>
+        </div>
+        <div class="audit-card">
+          <div class="num" id="stat-manual-resets">0</div>
+          <div class="label">Manual Reset Attempts</div>
+        </div>
+        <div class="audit-card" id="card-risk-status">
+          <div class="num" id="stat-risk-level" style="font-size: 1.2rem; margin-top: 8px;">Clear</div>
+          <div class="label">Cheating Risk Assessment</div>
+        </div>
+      </div>
+      <div style="font-weight: bold; margin-bottom: 6px; color: #f39c12;">Student Activity &amp; Completion History:</div>
+      <table class="audit-log-table">
+        <thead><tr><th>Timestamp</th><th>Event Type</th><th>Details / Set Progress</th></tr></thead>
+        <tbody id="audit-log-rows"><tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Header & Badges -->
+  <header>
+    <div class="header-container">
+      <div class="header-title">
+        <h1>Digital SAT Reading Practice</h1>
+        <p>30 Questions • Sets A, B &amp; C • Integrity-Tracked Assessment (11-27 Alex)</p>
+      </div>
+      <div class="badges-preview">
+        <div class="badge-item" id="badge-harvard">
+          <img src="https://mr-chen-k12.github.io/math/IMG_0232.png" alt="Harvard" onerror="this.style.display='none'">
+          <span>Harvard</span>
+        </div>
+        <div class="badge-item" id="badge-bu">
+          <img src="https://mr-chen-k12.github.io/books/IMG_0121.png" alt="Boston University" onerror="this.style.display='none'">
+          <span>Boston Univ.</span>
+        </div>
+        <div class="badge-item" id="badge-yale">
+          <img src="https://mr-chen-k12.github.io/books/IMG_0122.png" alt="Yale" onerror="this.style.display='none'">
+          <span>Yale</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation & Score Bar -->
+  <div class="controls-bar">
+    <div class="selector-group">
+      <label for="set-select">Choose Question Set:</label>
+      <select id="set-select" onchange="switchSet(this.value)">
+        <option value="Set A">Set A (10 Questions)</option>
+        <option value="Set B">Set B (10 Questions)</option>
+        <option value="Set C">Set C (10 Questions)</option>
+      </select>
+    </div>
+    <div class="score-tracker" id="score-tracker">Score: 0 / 10</div>
+  </div>
+
+  <!-- Main Quiz Area -->
+  <main class="quiz-container">
+    <div id="questions-wrapper"></div>
+    <div id="score-summary" class="score-summary-card">
+      <h2>Set Complete!</h2>
+      <p>Your Final Score for this set:</p>
+      <div class="score-display" id="final-score-text">0 / 10</div>
+      <div id="reward-section"></div>
+      <p id="feedback-message" style="font-size: 1.1rem; font-weight: 500;"></p>
+      <button class="btn-retry" onclick="resetCurrentSet()">Try This Set Again</button>
+    </div>
+  </main>
+
+</div>
+
+<script>
+/* ============ Integrity audit (localStorage) ============ */
+const AUDIT_STORAGE_KEY = "sat_11_27_alex_audit_v1";
+const ACTIVE_PROGRESS_KEY = "sat_11_27_alex_active_v1";
+
+function getAuditData() {
+  const stored = localStorage.getItem(AUDIT_STORAGE_KEY);
+  return stored ? JSON.parse(stored) : {
+    totalRefreshes: 0, midQuizRefreshes: 0, manualResets: 0, events: []
+  };
+}
+function saveAuditData(data) { localStorage.setItem(AUDIT_STORAGE_KEY, JSON.stringify(data)); }
+
+function trackPageLoad(setName) {
+  let audit = getAuditData();
+  audit.totalRefreshes += 1;
+  const activeProgress = localStorage.getItem(ACTIVE_PROGRESS_KEY);
+  if (activeProgress) {
+    const prog = JSON.parse(activeProgress);
+    const answeredCount = Object.keys(prog.answers || {}).length;
+    if (answeredCount > 0 && answeredCount < 10) {
+      audit.midQuizRefreshes += 1;
+      audit.events.unshift({
+        timestamp: new Date().toLocaleString(),
+        type: "⚠️ SUSPICIOUS REFRESH",
+        detail: "Page refreshed mid-attempt during " + prog.setName + " at Q" + (answeredCount + 1) + " (" + answeredCount + "/10 answered)"
+      });
+    }
+  } else {
+    audit.events.unshift({
+      timestamp: new Date().toLocaleString(),
+      type: "PAGE_LOAD",
+      detail: "Opened or reloaded page on " + setName
+    });
+  }
+  saveAuditData(audit);
+  renderAuditDashboard();
+}
+function trackAnswerProgress(setName, answersObj) {
+  localStorage.setItem(ACTIVE_PROGRESS_KEY, JSON.stringify({
+    setName: setName, answers: answersObj, lastUpdated: new Date().toISOString()
+  }));
+}
+function trackSetCompletion(setName, score, total) {
+  let audit = getAuditData();
+  audit.events.unshift({
+    timestamp: new Date().toLocaleString(),
+    type: "SET_COMPLETED",
+    detail: "Completed " + setName + " — Final Score: " + score + "/" + total
+  });
+  saveAuditData(audit);
+  localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+  renderAuditDashboard();
+}
+function trackManualReset(setName) {
+  let audit = getAuditData();
+  audit.manualResets += 1;
+  audit.events.unshift({
+    timestamp: new Date().toLocaleString(),
+    type: "MANUAL_RESET",
+    detail: "Student clicked 'Try Again' to restart " + setName
+  });
+  saveAuditData(audit);
+  localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+  renderAuditDashboard();
+}
+function renderAuditDashboard() {
+  const audit = getAuditData();
+  const setText = (id, v) => { const e = document.getElementById(id); if (e) e.innerText = v; };
+  setText("stat-total-refreshes", audit.totalRefreshes);
+  setText("stat-mid-refreshes", audit.midQuizRefreshes);
+  setText("stat-manual-resets", audit.manualResets);
+  const riskCard = document.getElementById("card-risk-status");
+  const midCard = document.getElementById("card-mid-refreshes");
+  const riskText = document.getElementById("stat-risk-level");
+  if (riskText) {
+    if (audit.midQuizRefreshes > 0) {
+      riskText.innerText = "⚠️ High Risk (Skeptical)";
+      riskText.style.color = "#e74c3c";
+      if (riskCard) riskCard.classList.add("flagged");
+      if (midCard) midCard.classList.add("flagged");
+    } else if (audit.totalRefreshes > 6) {
+      riskText.innerText = "⚠️ Medium Risk";
+      riskText.style.color = "#f39c12";
+    } else {
+      riskText.innerText = "✅ Clear";
+      riskText.style.color = "#2ecc71";
+    }
+  }
+  const tbody = document.getElementById("audit-log-rows");
+  if (tbody) {
+    if (!audit.events.length) {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No activity logged yet.</td></tr>';
+    } else {
+      tbody.innerHTML = audit.events.slice(0, 80).map(e =>
+        "<tr><td>" + e.timestamp + "</td><td>" + e.type + "</td><td>" + e.detail + "</td></tr>"
+      ).join("");
+    }
+  }
+}
+function clearAuditLog() {
+  if (confirm("Are you sure you want to clear all local audit tracking logs?")) {
+    localStorage.removeItem(AUDIT_STORAGE_KEY);
+    localStorage.removeItem(ACTIVE_PROGRESS_KEY);
+    renderAuditDashboard();
+  }
+}
+
+/* ============ University rewards ============ */
+const universityRewards = {
+  "Set A": { name: "Harvard University", img: "https://mr-chen-k12.github.io/math/IMG_0232.png",
+             color: "#A51C30", badgeId: "badge-harvard" },
+  "Set B": { name: "Boston University", img: "https://mr-chen-k12.github.io/books/IMG_0121.png",
+             color: "#CC0000", badgeId: "badge-bu" },
+  "Set C": { name: "Yale University", img: "https://mr-chen-k12.github.io/books/IMG_0122.png",
+             color: "#00356B", badgeId: "badge-yale" }
+};
+
+/* ============ Question Bank: 30 Fresh Brand-New SAT Reading Questions ============ */
+const questionBank = {
+  "Set A": [
+    {
+      "id": 1,
+      "passage": "Urban ecologists studying peregrine falcons nesting on Manhattan skyscrapers observed that the birds hunt pigeons almost exclusively at dawn and dusk, using tall glass towers as high-altitude vantage points that mimic natural cliff ledges. Because dense city lights illuminate nocturnal flight corridors, urban falcons have become remarkably ________ hunters compared to their rural counterparts.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) hesitant",
+        "B) proficient",
+        "C) sluggish",
+        "D) obsolete"
+      ],
+      "answer": 1,
+      "explanation": "Correct! 'Proficient' means skilled or competent, fitting how skyscraper perches and city lighting enhance urban peregrine falcons' hunting success."
+    },
+    {
+      "id": 2,
+      "passage": "For centuries, historians assumed that medieval European parchment manuscripts were cleaned and reused solely due to acute shortages of animal hides. However, multispectral imaging of palimpsests—manuscripts scraped clean and overwritten—revealed that scribes frequently erased earlier texts not out of material scarcity, but because changing theological curricula rendered older commentaries intellectually outdated.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Medieval scribes lacked the tools required to manufacture new parchment sheets.",
+        "B) Shifting academic priorities, rather than parchment shortages alone, often motivated scribes to overwrite older texts.",
+        "C) Multispectral imaging destroys fragile ink layers on medieval palimpsests.",
+        "D) Animal hides became significantly cheaper in Europe during the late Middle Ages."
+      ],
+      "answer": 1,
+      "explanation": "Correct! The passage explains how multispectral imaging overturned the scarcity hypothesis by showing that curriculum changes drove the erasure of older texts."
+    },
+    {
+      "id": 3,
+      "passage": "Deep-sea hydrothermal vent tubeworms (*Riftia pachyptila*) lack a mouth, stomach, or digestive tract entirely. Instead, their internal trophosome organ houses billions of chemosynthetic bacteria that oxidize hydrogen sulfide dissolved in superheated vent water to synthesize organic sugars for the worm.",
+      "question": "Which choice best states an inference supported by the text?",
+      "options": [
+        "A) *Riftia pachyptila* depends entirely on symbiotic bacteria for nutritional energy rather than ingesting solid food.",
+        "B) Hydrothermal vent tubeworms migrate to sunlit surface waters to photosynthesize sugars.",
+        "C) Hydrogen sulfide is toxic to the chemosynthetic bacteria living inside the trophosome.",
+        "D) Juvenile tubeworms possess fully functional stomachs that disappear only in old age."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Lacking any digestive tract while relying on internal chemosynthetic bacteria to manufacture sugars supports the inference that the worm obtains all nutrition from its symbionts."
+    },
+    {
+      "id": 4,
+      "passage": "During the 1930s, Mexican muralist Diego Rivera painted sprawling frescoes across public buildings in Mexico City and Detroit, depicting industrial laborers, indigenous heritage, and scientific progress. Rather than restricting fine art to private galleries for wealthy collectors, Rivera sought to ________ civic consciousness through accessible public monuments.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) suppress",
+        "B) cultivate",
+        "C) trivialize",
+        "D) conceal"
+      ],
+      "answer": 1,
+      "explanation": "Correct! 'Cultivate' means to foster or develop, matching Rivera's goal of nurturing public awareness through monumental civic murals."
+    },
+    {
+      "id": 5,
+      "passage": "Text 1: Biochar—a carbon-rich charcoal produced by heating agricultural crop waste in low-oxygen kilns—can be plowed into depleted farmland to retain soil moisture, bind heavy metals, and lock atmospheric carbon underground for centuries.\n\nText 2: Agronomists caution that producing biochar at commercial scale requires transporting bulky crop residues to pyrolysis plants, generating significant diesel emissions. Furthermore, if energy crops are grown specifically for biochar feedstock rather than using genuine waste biomass, land competition could drive up food prices.",
+      "question": "Based on the texts, how would the author of Text 2 most likely view the biochar strategy described in Text 1?",
+      "options": [
+        "A) As a soil amendment incapable of retaining moisture or sequestering carbon.",
+        "B) As a promising soil-enrichment method whose net climate and economic benefits depend heavily on feedstock sourcing and logistics.",
+        "C) As an immediate replacement for all synthetic fertilizers in global grain farming.",
+        "D) As a chemical process that releases heavy metals into groundwater aquifers."
+      ],
+      "answer": 1,
+      "explanation": "Correct! Text 2 does not dispute biochar's soil benefits from Text 1, but emphasizes that transport emissions and feedstock land-use choices determine its overall sustainability."
+    },
+    {
+      "id": 6,
+      "passage": "Arctic ground squirrels (*Urocitellus parryii*) survive eight-month winter hibernations by dropping their core body temperature to −2.9°C—below the freezing point of pure water. Researchers discovered that the squirrels purge ice-nucleating particles from their bloodstream prior to torpor, allowing bodily fluids to remain in a liquid 'supercooled' state without forming tissue-damaging ice crystals.",
+      "question": "According to the text, how do Arctic ground squirrels avoid freezing solid at subzero body temperatures?",
+      "options": [
+        "A) By generating continuous muscle tremors that keep internal organs above 10°C.",
+        "B) By eliminating ice-nucleating particles from their blood so fluids stay supercooled without crystallizing.",
+        "C) By storing high concentrations of dietary salt inside their cell membranes.",
+        "D) By waking every twelve hours to drink warm geothermal spring water."
+      ],
+      "answer": 1,
+      "explanation": "Correct! The text states directly that purging ice-nucleating particles lets their blood remain supercooled in liquid form below 0°C."
+    },
+    {
+      "id": 7,
+      "passage": "When astronomers analyzed light curves from the eclipsing binary star system Algol, they noticed a puzzling anomaly: the less massive subgiant star appeared far more evolved than its heavier main-sequence companion, contradicting standard stellar evolution models where massive stars age faster. Astrophysicists resolved this 'Algol paradox' by showing that the originally heavier star had expanded and transferred most of its outer hydrogen envelope onto its partner.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Standard stellar evolution models incorrectly predict that low-mass stars burn fuel faster than massive stars.",
+        "B) Mass transfer between close binary stars explains why Algol's lighter star appears older than its heavier companion.",
+        "C) Eclipsing binary stars lose all their hydrogen envelopes before entering the main sequence.",
+        "D) Light curves cannot accurately measure the relative masses of orbiting stars."
+      ],
+      "answer": 1,
+      "explanation": "Correct! The passage explains how mass transfer between two orbiting stars solved the apparent contradiction in Algol's stellar ages."
+    },
+    {
+      "id": 8,
+      "passage": "In nineteenth-century chamber music, composer Clara Schumann broke away from the showy, virtuosic salon pieces popular at the time, favoring tightly structured compositions that prioritized thematic cohesion and emotional depth over ________ technical display.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) ostentatious",
+        "B) understated",
+        "C) methodical",
+        "D) tentative"
+      ],
+      "answer": 0,
+      "explanation": "Correct! 'Ostentatious' means showy or designed to impress, matching the flashy salon virtuosity Clara Schumann chose to avoid."
+    },
+    {
+      "id": 9,
+      "passage": "In 1974, chemists Mario Molina and F. Sherwood Rowland calculated that chlorofluorocarbons (CFCs) used in aerosol sprays and refrigerators remain inert in the lower atmosphere until drifting into the stratosphere, where ultraviolet radiation splits them apart to release chlorine atoms capable of destroying tens of thousands of ozone molecules each.",
+      "question": "The author mentions the chemical stability of CFCs in the lower atmosphere primarily to…",
+      "options": [
+        "A) explain how ground-level industrial chemicals reach the upper stratosphere intact before breaking down.",
+        "B) argue that ultraviolet radiation cannot penetrate Earth's upper atmosphere.",
+        "C) prove that chlorine atoms are harmless to stratospheric ozone layers.",
+        "D) demonstrate that refrigerators emit more heat than aerosol propellants."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Noting that CFCs stay inert near Earth's surface explains why they survive the long upward drift into the stratosphere where UV rays break them apart."
+    },
+    {
+      "id": 10,
+      "passage": "Linguists comparing endangered Indigenous languages in the Pacific Northwest found that communities with active master-apprentice immersion programs—where fluent elders pair one-on-one with younger adults for hundreds of hours of daily conversation without English—produced far more conversational speakers than schools relying solely on weekly vocabulary worksheets.",
+      "question": "Which choice best states an inference supported by the text?",
+      "options": [
+        "A) Sustained immersive oral interaction is more effective for language revitalization than isolated written drills.",
+        "B) Weekly vocabulary worksheets are sufficient to achieve full fluency in endangered languages.",
+        "C) Fluent elders in the Pacific Northwest prefer teaching grammar rules in English.",
+        "D) Language revitalization succeeds only when classroom instruction excludes adult learners."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Comparing the higher conversational fluency achieved via one-on-one immersion against weekly worksheets supports the inference that sustained spoken immersion is more effective."
+    }
+  ],
+  "Set B": [
+    {
+      "id": 1,
+      "passage": "Geophysicists monitoring Yellowstone's hydrothermal basins deployed fiber-optic seismic cables capable of detecting minuscule ground vibrations caused by underground boiling water. Because subtle shifts in tremor frequency often precede geyser eruptions by several minutes, high-resolution seismic sensing provides ________ warnings of impending hydrothermal surges.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) belated",
+        "B) timely",
+        "C) erratic",
+        "D) redundant"
+      ],
+      "answer": 1,
+      "explanation": "Correct! 'Timely' means occurring at a favorable or useful moment, fitting warnings delivered several minutes before an eruption occurs."
+    },
+    {
+      "id": 2,
+      "passage": "Excavations at the ancient Maya city of Tikal in Guatemala revealed that engineers lined large urban reservoirs with volcanic zeolite minerals imported from quarries over thirty kilometers away. Laboratory tests confirmed that zeolite crystals filter out heavy metals, microbes, and cyanobacteria toxins from tropical rainwater.",
+      "question": "What can most reasonably be inferred from the text?",
+      "options": [
+        "A) Ancient Maya engineers constructed sophisticated water-purification systems to maintain clean urban drinking supplies.",
+        "B) Volcanic zeolite deposits were abundant directly beneath Tikal's central plaza.",
+        "C) Cyanobacteria toxins posed no threat to stored reservoir water in tropical climates.",
+        "D) Tikal's reservoirs were used exclusively for irrigating distant maize fields rather than drinking water."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Importing specialized filtration minerals over 30 km to line city reservoirs supports the inference that Maya engineers built advanced water-purification infrastructure."
+    },
+    {
+      "id": 3,
+      "passage": "Unlike most plants that rely on wind or insects for pollination, the underwater seagrass *Thalassia testudinum* produces sticky mucilage-coated pollen grains that drift through ocean currents. Marine biologists discovered that tiny marine crustaceans and polychaete worms feed on the nutritious pollen mucilage and inadvertently carry pollen from male to female flowers, demonstrating true underwater animal pollination.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Ocean currents prevent *Thalassia testudinum* pollen from reaching female flowers.",
+        "B) Marine invertebrates actively pollinate underwater seagrasses while foraging on pollen mucilage.",
+        "C) Terrestrial insects dive beneath ocean waves to pollinate coastal seagrass beds.",
+        "D) Seagrass mucilage is toxic to marine crustaceans and polychaete worms."
+      ],
+      "answer": 1,
+      "explanation": "Correct! The passage highlights the discovery that tiny marine invertebrates transfer pollen between seagrass flowers while feeding on sticky pollen mucilage."
+    },
+    {
+      "id": 4,
+      "passage": "Throughout the 18th century, English clockmaker John Harrison spent four decades refining marine chronometers capable of keeping accurate time despite violent ocean swells and drastic humidity swings. His H4 sea watch lost only five seconds during a transatlantic voyage to Jamaica, providing sailors with an ________ method for calculating longitude at sea.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) infallible",
+        "B) ambiguous",
+        "C) obsolete",
+        "D) arbitrary"
+      ],
+      "answer": 0,
+      "explanation": "Correct! 'Infallible' means unfailing or remarkably dependable, matching a navigational timepiece accurate to within five seconds across an ocean crossing."
+    },
+    {
+      "id": 5,
+      "passage": "Text 1: Floating offshore wind turbines tethered to the seabed by tension cables can be deployed in deep ocean waters where winds blow stronger and more consistently than near shallow coastlines, unlocking vast clean electricity generation.\n\nText 2: Maritime shipping authorities and commercial fisheries warn that sprawling floating turbine arrays and subsea power cables restrict vessel navigation lanes and reduce productive trawling grounds. Stakeholders argue that regulators must map marine traffic corridors carefully before permitting deep-water wind farms.",
+      "question": "Based on the texts, how would the author of Text 2 most likely respond to the floating wind farms described in Text 1?",
+      "options": [
+        "A) By claiming that deep-ocean winds are weaker and less consistent than coastal breezes.",
+        "B) By emphasizing that deep-water wind deployments require coordinated spatial planning to avoid disrupting shipping and fishing.",
+        "C) By arguing that floating turbines cannot be anchored in deep seabed environments.",
+        "D) By stating that subsea power cables increase fish populations in trawling zones."
+      ],
+      "answer": 1,
+      "explanation": "Correct! Text 2 does not dispute the wind energy potential in Text 1, but stresses the need to coordinate shipping lanes and fishing grounds through careful planning."
+    },
+    {
+      "id": 6,
+      "passage": "Cuttlefish possess W-shaped pupils that enable them to balance uneven vertical light fields underwater—dimming bright overhead sunlight while amplifying faint reflections from the seafloor below. Although cuttlefish eyes contain only a single type of photoreceptor and are technically colorblind, their off-axis pupils create chromatic blur that helps them infer color contrasts.",
+      "question": "According to the text, how do W-shaped pupils benefit cuttlefish vision underwater?",
+      "options": [
+        "A) They equalize bright overhead light with dimmer seafloor light and help detect color contrasts.",
+        "B) They allow cuttlefish to see ultraviolet light emitted by deep-sea predators.",
+        "C) They eliminate all chromatic blur to produce sharp monochrome images.",
+        "D) They add three additional types of color-sensing cone cells to the retina."
+      ],
+      "answer": 0,
+      "explanation": "Correct! The text states directly that W-shaped pupils balance vertical light gradients and use chromatic blur to infer color contrasts despite having one photoreceptor type."
+    },
+    {
+      "id": 7,
+      "passage": "Cognitive psychologists testing memory retention found that students who closed their eyes and recalled key concepts from memory immediately after reading a chapter remembered 50% more information a week later than students who reread the chapter three times. This 'testing effect' demonstrates that active retrieval strengthens neural memory traces far more effectively than passive review.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Rereading textbook chapters multiple times produces superior long-term memory retention.",
+        "B) Actively recalling information from memory builds stronger long-term retention than passive rereading.",
+        "C) Closing one's eyes during study sessions impairs neural memory consolidation.",
+        "D) Memory retention declines identically regardless of which study strategy students use."
+      ],
+      "answer": 1,
+      "explanation": "Correct! The passage summarizes experimental evidence for the testing effect: active memory retrieval outperforms passive rereading for long-term retention."
+    },
+    {
+      "id": 8,
+      "passage": "To prevent invasive Burmese pythons from spreading further north through Florida's Everglades, wildlife biologists implanted radio transmitters in 'scout' male pythons. During breeding season, these tagged males lead researchers directly to concealed female pythons, enabling teams to ________ breeding clusters before eggs are laid.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) eradicate",
+        "B) nourish",
+        "C) camouflage",
+        "D) disperse"
+      ],
+      "answer": 0,
+      "explanation": "Correct! 'Eradicate' means to remove or destroy completely, fitting wildlife management efforts to eliminate invasive breeding clusters."
+    },
+    {
+      "id": 9,
+      "passage": "In 1952, chemist Rosalind Franklin captured 'Photo 51,' an X-ray diffraction image of hydrated DNA fibers showing a distinct cross-shaped pattern of dark spots. That X-shaped diffraction signature provided decisive mathematical proof that DNA molecules coil into a regular double-helix structure with phosphate backbones on the outside.",
+      "question": "The author mentions the 'cross-shaped pattern of dark spots' primarily to…",
+      "options": [
+        "A) identify the specific visual evidence in Franklin's X-ray image that demonstrated DNA's helical geometry.",
+        "B) argue that X-ray diffraction cannot distinguish hydrated fibers from dry crystals.",
+        "C) prove that DNA phosphate backbones are located inside the center of the molecule.",
+        "D) demonstrate that Photo 51 was damaged by overexposure to X-ray beams."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Highlighting the X-shaped diffraction pattern explains the exact visual signature that mathematically confirmed DNA's double-helix structure."
+    },
+    {
+      "id": 10,
+      "passage": "Paleoclimatologists drilling sediment cores from the seafloor off West Africa discovered alternating layers of wind-blown Saharan mineral dust and organic river mud spanning the past 240,000 years. Dust-rich layers corresponded to periods when Earth's axial tilt reduced summer monsoon rainfall, transforming the Sahara from a lush lake-dotted savanna into an arid desert.",
+      "question": "Which choice best states an inference supported by the text?",
+      "options": [
+        "A) Marine sediment layers preserve long-term records of cyclical climate shifts between wet and arid conditions in North Africa.",
+        "B) The Sahara Desert has remained continuously hyper-arid without rainfall for over 240,000 years.",
+        "C) River mud accumulates on the Atlantic seafloor only during periods of severe drought.",
+        "D) Earth's axial tilt has no measurable influence on tropical monsoon precipitation."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Alternating dust and river-mud layers tied to monsoon cycles support the inference that ocean floor cores record cyclical wet-dry climate transitions in the Sahara."
+    }
+  ],
+  "Set C": [
+    {
+      "id": 1,
+      "passage": "Biomedical engineers developing biodegradable surgical sutures spun silk fibroin proteins into ultra-fine threads that dissolve harmlessly inside the body once tissue healing is complete. Because natural silk triggers minimal immune inflammation, these sutures offer a ________ alternative to permanent synthetic nylon stitches.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) biocompatible",
+        "B) hazardous",
+        "C) rigid",
+        "D) corrosive"
+      ],
+      "answer": 0,
+      "explanation": "Correct! 'Biocompatible' means not harmful or toxic to living tissue, matching sutures that provoke minimal inflammation and dissolve safely."
+    },
+    {
+      "id": 2,
+      "passage": "Prairie dogs (*Cynomys gunnisoni*) live in dense underground colonies and emit distinct acoustic alarm calls when predators approach. Bioacoustic spectrograms revealed that prairie dogs encode specific physical descriptors into their chirps—differentiating between hawks, coyotes, and humans, and even varying call frequencies to indicate a human intruder's height and shirt color.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Prairie dogs use identical alarm chirps regardless of which predator approaches their colony.",
+        "B) Prairie dog alarm calls convey detailed descriptive information about specific predators.",
+        "C) Hawks and coyotes imitate prairie dog vocalizations to lure rodents out of burrows.",
+        "D) Bioacoustic spectrograms show that prairie dogs are unable to distinguish humans from coyotes."
+      ],
+      "answer": 1,
+      "explanation": "Correct! The text explains how prairie dog alarm chirps encode specific details about predator species and physical traits."
+    },
+    {
+      "id": 3,
+      "passage": "During the Song Dynasty in eleventh-century China, inventor Bi Sheng carved individual Chinese characters onto small clay blocks, baked them hard, and arranged them inside an iron frame coated with pine resin and wax to print books. After printing hundreds of copies, heating the frame melted the wax so the clay characters could be detached and reassembled for entirely different texts.",
+      "question": "Which choice best states an inference supported by the text?",
+      "options": [
+        "A) Bi Sheng's movable-type system improved printing efficiency by allowing individual character blocks to be reused across multiple books.",
+        "B) Clay printing blocks melted alongside the pine resin whenever the iron frame was heated.",
+        "C) Song Dynasty printers carved entire book pages onto single non-reusable wooden planks.",
+        "D) Movable clay type could only print one copy of a manuscript before breaking."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Detaching and reassembling baked clay blocks for new texts supports the inference that reusable movable type increased printing efficiency."
+    },
+    {
+      "id": 4,
+      "passage": "In her investigative journalism exposing corrupt municipal monopolies in the early twentieth century, Ida Tarbell combed through thousands of pages of court transcripts, shipping ledgers, and corporate charters. Her ________ documentation left corporate executives unable to refute her factual findings.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) meticulous",
+        "B) hasty",
+        "C) speculative",
+        "D) superficial"
+      ],
+      "answer": 0,
+      "explanation": "Correct! 'Meticulous' means showing great attention to detail and thoroughness, explaining why executives could not dispute her evidence."
+    },
+    {
+      "id": 5,
+      "passage": "Text 1: Urban 'sponge city' designs replace impermeable asphalt with permeable pavements, bioswales, and rooftop gardens that absorb heavy monsoon rainfall, recharging groundwater aquifers and preventing flash floods.\n\nText 2: Hydrologists note that while green infrastructure effectively captures moderate rainstorms, saturated soil bioswales reach maximum capacity quickly during extreme, multi-day hurricanes. Engineers warn that cities must pair green sponge features with upgraded underground storm tunnels rather than treating green infrastructure as a standalone flood defense.",
+      "question": "Based on the texts, how would the author of Text 2 most likely view the 'sponge city' features described in Text 1?",
+      "options": [
+        "A) As ineffective during both light rainstorms and severe hurricanes.",
+        "B) As useful stormwater absorbers for moderate rainfall that must still be backed up by traditional drainage tunnels during extreme storms.",
+        "C) As structural modifications that worsen urban groundwater depletion.",
+        "D) As complete replacements for all underground sewer and storm-drain networks."
+      ],
+      "answer": 1,
+      "explanation": "Correct! Text 2 agrees that sponge-city features absorb moderate rain (Text 1), but stresses they saturate quickly in extreme storms and need underground tunnel backups."
+    },
+    {
+      "id": 6,
+      "passage": "In coastal kelp forests, sea otters (*Enhydra lutris*) prey heavily on purple sea urchins. When fur hunting eliminated sea otters from regions of the Pacific coast in the 19th century, unchecked urchin populations devoured kelp holdfasts, turning lush underwater forests into barren rocky seafloors—a classic example of a trophic cascade.",
+      "question": "According to the text, what caused coastal kelp forests to collapse after sea otters were hunted out?",
+      "options": [
+        "A) Unchecked sea urchin populations overgrazed kelp holdfasts in the absence of otter predation.",
+        "B) Fur hunters harvested underwater kelp beds directly for commercial fertilizer.",
+        "C) Rising ocean temperatures prevented purple sea urchins from reproducing.",
+        "D) Sea otters damaged kelp holdfasts while searching for rocky shelter."
+      ],
+      "answer": 0,
+      "explanation": "Correct! The text states directly that removing sea otters allowed sea urchin populations to explode and devour kelp holdfasts."
+    },
+    {
+      "id": 7,
+      "passage": "Astronomers measuring the expansion rate of the universe face the 'Hubble tension': measurements of the cosmic microwave background from the early universe yield an expansion rate of 67.4 km/s/Mpc, whereas observations of nearby Cepheid variable stars and supernovae yield 73.0 km/s/Mpc. Because both measurement teams have minimized instrument errors, cosmologists suspect this persistent discrepancy points to undiscovered physics beyond the standard cosmological model.",
+      "question": "Which choice best states the main idea of the text?",
+      "options": [
+        "A) Instrument calibration errors fully explain the differing measurements of cosmic expansion.",
+        "B) A persistent mismatch between early- and late-universe expansion measurements suggests potential gaps in current cosmological theory.",
+        "C) Cepheid variable stars indicate that the universe stopped expanding billions of years ago.",
+        "D) Cosmic microwave background radiation cannot be detected by modern space telescopes."
+      ],
+      "answer": 1,
+      "explanation": "Correct! The passage outlines the Hubble tension—two precise yet conflicting expansion rates—and explains why cosmologists believe it signals new physics."
+    },
+    {
+      "id": 8,
+      "passage": "Because deep-space probes traveling beyond Saturn receive too little sunlight to power solar panels, NASA equips missions like Voyager and Curiosity with radioisotope thermoelectric generators. These compact power units convert heat from decaying plutonium-238 into steady electricity, enabling spacecraft to ________ scientific instruments for decades in dark outer space.",
+      "question": "Which choice completes the text with the most logical and precise word?",
+      "options": [
+        "A) sustain",
+        "B) abandon",
+        "C) dismantle",
+        "D) obscure"
+      ],
+      "answer": 0,
+      "explanation": "Correct! 'Sustain' means to keep going or maintain continuously, matching steady electrical power operating instruments for decades."
+    },
+    {
+      "id": 9,
+      "passage": "During the 1960s, psychologist Walter Mischel conducted the Stanford marshmallow experiment, offering young children a choice between eating one treat immediately or waiting fifteen minutes to receive two treats. Later follow-up studies revealed that children's willingness to wait depended heavily on whether they trusted the researcher to keep promises, showing that social reliability shapes self-control behavior.",
+      "question": "The author mentions follow-up studies on researcher trustworthiness primarily to…",
+      "options": [
+        "A) demonstrate that delayed gratification reflects environmental trust rather than innate willpower alone.",
+        "B) prove that young children prefer eating one marshmallow immediately over receiving two.",
+        "C) argue that the original Stanford experiment lasted longer than fifteen minutes.",
+        "D) show that self-control behavior cannot be studied in laboratory settings."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Mentioning how trust in the researcher changed waiting times shows that delayed gratification is strongly influenced by environmental reliability."
+    },
+    {
+      "id": 10,
+      "passage": "Microbiologists studying soil samples from abandoned silver mines discovered strains of *Cupriavidus metallidurans* bacteria that thrive in heavy-metal-rich soils toxic to other organisms. Inside their cells, specialized enzymes convert dissolved toxic gold and copper ions into inert, nanoscale solid gold nuggets, detoxifying their immediate surroundings.",
+      "question": "Which choice best states an inference supported by the text?",
+      "options": [
+        "A) Certain extremophile microbes survive toxic heavy-metal environments by biochemically precipitating dissolved metals into harmless solid forms.",
+        "B) *Cupriavidus metallidurans* bacteria require pure solid gold nuggets as their primary food source.",
+        "C) Abandoned silver mines contain no dissolved copper or gold ions in their surrounding soil.",
+        "D) Heavy-metal toxicity accelerates cell division in all soil-dwelling bacteria."
+      ],
+      "answer": 0,
+      "explanation": "Correct! Explaining how *C. metallidurans* enzymatically turns toxic metal ions into inert solid nanoparticles supports the inference that microbes detoxify heavy metals via biomineralization."
+    }
+  ]
+};
+
+/* ============ Application state & logic ============ */
+let currentSetKey = "Set A";
+let userAnswers = {};
+
+function initApp() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("check") === "true") {
+    document.getElementById("teacher-audit-panel").classList.add("active");
+  }
+  trackPageLoad(currentSetKey);
+  loadSet(currentSetKey);
+}
+
+function switchSet(setName) {
+  currentSetKey = setName;
+  document.getElementById("set-select").value = setName;
+  loadSet(setName);
+}
+
+function loadSet(setName) {
+  userAnswers = {};
+  document.getElementById("score-summary").style.display = "none";
+  document.getElementById("reward-section").innerHTML = "";
+  const reward = universityRewards[setName];
+  document.documentElement.style.setProperty("--primary-color", reward.color);
+  updateScoreDisplay();
+  const container = document.getElementById("questions-wrapper");
+  container.innerHTML = "";
+  const questions = questionBank[setName];
+  questions.forEach((q, index) => {
+    const card = document.createElement("div");
+    card.className = "question-card";
+    card.id = "q-card-" + index;
+    const optsHtml = q.options.map((opt, oi) =>
+      '<button class="option-btn" onclick="selectAnswer(' + index + ',' + oi + ')">' + opt + "</button>"
+    ).join("");
+    card.innerHTML =
+      '<div class="question-number">Question ' + (index + 1) + " of 10</div>" +
+      '<div class="passage">' + q.passage.replace(/\n\n/g, "</p><p>") + "</div>" +
+      '<div class="question-text">' + q.question + "</div>" +
+      '<div class="options-group" id="options-' + index + '">' + optsHtml + "</div>" +
+      '<div class="feedback-box" id="feedback-' + index + '"></div>';
+    container.appendChild(card);
+  });
+}
+
+function selectAnswer(questionIdx, selectedOptIdx) {
+  if (userAnswers.hasOwnProperty(questionIdx)) return;
+  const qData = questionBank[currentSetKey][questionIdx];
+  const isCorrect = selectedOptIdx === qData.answer;
+  userAnswers[questionIdx] = isCorrect;
+  trackAnswerProgress(currentSetKey, userAnswers);
+  const optionsGroup = document.getElementById("options-" + questionIdx);
+  const buttons = optionsGroup.getElementsByClassName("option-btn");
+  Array.from(buttons).forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === qData.answer) btn.classList.add("correct");
+    else if (idx === selectedOptIdx && !isCorrect) btn.classList.add("incorrect");
+  });
+  const fbBox = document.getElementById("feedback-" + questionIdx);
+  fbBox.classList.add("show");
+  fbBox.classList.add(isCorrect ? "good" : "bad");
+  fbBox.innerHTML =
+    '<div class="verdict">' + (isCorrect ? "✅ Correct!" : "❌ Incorrect.") + "</div>" +
+    '<div class="expl">' + qData.explanation + "</div>";
+  updateScoreDisplay();
+  checkSetCompletion();
+}
+
+function updateScoreDisplay() {
+  const correctCount = Object.values(userAnswers).filter(Boolean).length;
+  document.getElementById("score-tracker").innerText = "Score: " + correctCount + " / 10";
+}
+
+function checkSetCompletion() {
+  if (Object.keys(userAnswers).length !== 10) return;
+  const score = Object.values(userAnswers).filter(Boolean).length;
+  const summaryBox = document.getElementById("score-summary");
+  const scoreText = document.getElementById("final-score-text");
+  const msgText = document.getElementById("feedback-message");
+  const rewardSection = document.getElementById("reward-section");
+  const currentReward = universityRewards[currentSetKey];
+  scoreText.innerText = score + " / 10";
+  trackSetCompletion(currentSetKey, score, 10);
+  if (score === 10) {
+    document.getElementById(currentReward.badgeId).classList.add("unlocked");
+    msgText.innerHTML = '<span style="color:' + currentReward.color + '; font-weight:bold;">Congratulations! Perfect Score!</span> You earned the ' + currentReward.name + " award! 🏆";
+    rewardSection.innerHTML =
+      '<div class="reward-badge"><img src="' + currentReward.img + '" alt="' + currentReward.name + '" onerror="this.style.display=\'none\'">' +
+      '<div class="reward-name" style="color:' + currentReward.color + ';">' + currentReward.name + "</div></div>";
+  } else if (score >= 7) {
+    msgText.innerHTML = "Great effort! You scored " + score + "/10. Review the explanations and try for a perfect score!";
+  } else {
+    msgText.innerHTML = "Keep practicing! You scored " + score + "/10. Read each explanation carefully and try the set again.";
+  }
+  summaryBox.style.display = "block";
+  summaryBox.scrollIntoView({ behavior: "smooth" });
+}
+
+function resetCurrentSet() {
+  trackManualReset(currentSetKey);
+  loadSet(currentSetKey);
+}
+
+window.onload = initApp;
+</script>
+</body>
+</html>
